@@ -1,0 +1,79 @@
+$font-family: 'Comfortaa', sans-serif;
+$background-color: lighten(#9ebedb, 22%);
+
+.cc {
+  &--signin-layout {
+    min-height: 100%;
+    position: relative;
+    padding-top: 200px;
+    text-align: center;
+    background-size: cover;
+    background: url('/img/signin-background-1.jpg') top right no-repeat;
+
+    @media screen and (max-width: 860px) {
+      padding-top: 50px;
+    }
+
+    &:before {
+      width: 0;
+      content: '';
+      height: 100%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .cc {
+      &--title-wrapper {
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 40%;
+        z-index: 0;
+        position: absolute;
+        background-color: $background-color;
+
+        @media screen and (max-width: 1095px) {
+          display: none;
+        }
+
+        .cc--title {
+          top: 50%;
+          left: -150px;
+          width: 800px;
+          font-size: 80px;
+          font-weight: 700;
+          color: #9ebedb;
+          margin-top: -60px;
+          position: absolute;
+          text-transform: uppercase;
+          transform: rotate(-90deg);
+          font-family: $font-family;
+
+          @media screen and (max-width: 1305px) {
+            left: -250px;
+          }
+        }
+      }
+
+      &--content {
+        top: 0;
+        z-index: 1;
+        width: 700px;
+        padding: 60px;
+        text-align: left;
+        border-radius: 8px;
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        background-color: #fff;
+        box-shadow: 0 0 96px 10px rgba(0, 0, 0, 0.15);
+
+        @media screen and (max-width: 860px) {
+          width: 100%;
+          min-width: auto;
+          border-radius: 0;
+        }
+      }
+    }
+  }
+}

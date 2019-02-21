@@ -1,0 +1,87 @@
+{
+  "name": "candee-camp-fe",
+  "version": "0.1.0",
+  "description": "Candee Camp Software",
+  "keywords": [
+    "candee",
+    "generations",
+    "camp",
+    "software",
+    "react"
+  ],
+  "author": {
+    "name": "Tyler Candee",
+    "email": "tyler@candeegenerations.com",
+    "url": "https://candeegenerations.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CandeeGenerations/candee-camp-fe"
+  },
+  "bugs": {
+    "url": "https://github.com/CandeeGenerations/candee-camp-fe/issues",
+    "email": "tyler@candeegenerations.com"
+  },
+  "homepage": "https://github.com/CandeeGenerations/candee-camp-fe",
+  "dependencies": {
+    "antd": "^3.13.1",
+    "axios": "^0.18.0",
+    "babel-plugin-import": "^1.11.0",
+    "customize-cra": "^0.2.11",
+    "dayjs": "^1.8.4",
+    "deep-equal": "^1.0.1",
+    "deepmerge": "^3.1.0",
+    "eslint-config-kentcdodds": "CandeeGenerations/eslint-config-kentcdodds",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-import-resolver-babel-module": "^5.0.1",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.12.4",
+    "husky": "^1.3.1",
+    "jest-dom": "^3.0.1",
+    "js-cookie": "^2.2.0",
+    "jwt-decode": "^2.2.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "lint-staged": "^8.1.3",
+    "material-design-iconic-font": "^2.2.0",
+    "moment": "^2.24.0",
+    "node-sass": "^4.11.0",
+    "prettier": "^1.16.4",
+    "prop-types": "^15.6.2",
+    "react": "^16.8.0-alpha.1",
+    "react-app-rewired": "^2.0.3",
+    "react-dom": "^16.8.0-alpha.1",
+    "react-redux": "^6.0.0",
+    "react-router5": "^7.0.2",
+    "react-scripts": "2.1.3",
+    "react-testing-library": "^5.4.4",
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-oidc": "^3.1.0",
+    "redux-router5": "^7.0.1",
+    "redux-thunk": "^2.3.0",
+    "router5": "^7.0.1",
+    "router5-helpers": "^7.0.0",
+    "router5-plugin-browser": "^7.0.1",
+    "router5-plugin-logger": "^7.0.1"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

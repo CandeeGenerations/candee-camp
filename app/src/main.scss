@@ -1,0 +1,14 @@
+html,
+body,
+#cgen-root {
+  margin: 0;
+  height: 100%;
+  background-color: #f0f2f3;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.cc {
+  &--main-content {
+    padding: 50px;
+  }
+}

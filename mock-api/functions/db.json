@@ -1,0 +1,1 @@
+{"users":[{"id":25584644.444750216,"email":"tester@test.com","password":"abc123","type":"do magna"}],"signin":{"result":"fc8b7748-71ab-5750-9296-9a6631619a67"},"signout":{"result":true},"forgotPassword":{"result":true},"validateResetPasswordToken":{"result":true},"resetPassword":{"result":true}}

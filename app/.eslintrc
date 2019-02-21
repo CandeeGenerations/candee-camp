@@ -1,0 +1,36 @@
+{
+  "parser": "babel-eslint",
+  "extends": "kentcdodds",
+  "rules": {
+    "camelcase": "off",
+    "prefer-const": "error",
+    "no-unused-vars": "error",
+
+    "import/no-cycle": "off",
+
+    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "error",
+    "react/jsx-handler-names": "error",
+    "react/jsx-sort-default-props": "error",
+    "react/jsx-sort-props": [
+      "error",
+      {
+        "callbacksLast": true,
+        "shorthandFirst": false,
+        "shorthandLast": true,
+        "ignoreCase": true,
+        "noSortAlphabetically": false,
+        "reservedFirst": true
+      }
+    ],
+    "react/jsx-filename-extension": ["error", {"extensions": [".js", ".jsx"]}]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
+  "plugins": ["import", "react"]
+}
