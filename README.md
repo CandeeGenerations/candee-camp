@@ -4,7 +4,6 @@
 <img src="https://emojipedia-us.s3.amazonaws.com/thumbs/320/apple/129/camping_1f3d5.png" style="max-width: 96px;" />
 
 <h3>Church camp system.</h3>
-<em>Front End</em>
 </div>
 
 <hr />
@@ -12,11 +11,9 @@
 ## Description
 
 This system is built to help church camps better manage
-their camps, events, campers, registrations, etc. This
-is the Front End project. You can find the API project
-here: [Candee Camp API](https://github.com/CandeeGenerations/candee-camp-api).
+their camps, events, campers, registrations, etc.
 
-This project is built with React and Redux.
+This project is built with React and .NET Core.
 
 ## Contributors
 
