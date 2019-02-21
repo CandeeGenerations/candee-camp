@@ -23,7 +23,6 @@
     "url": "https://github.com/CandeeGenerations/candee-camp-fe/issues",
     "email": "tyler@candeegenerations.com"
   },
-  "homepage": "https://github.com/CandeeGenerations/candee-camp-fe",
   "dependencies": {
     "antd": "^3.13.1",
     "axios": "^0.18.0",
