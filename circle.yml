@@ -20,14 +20,13 @@ jobs:
       - checkout
 
       # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v2-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v2-dependencies-
+      # - restore_cache:
+      # keys:
+      # - v2-dependencies-{{ checksum "package.json" }}
+      # fallback to using the latest cache if no exact match is found
+      # - v2-dependencies-
 
-      - run: cd app
-      - run: yarn install
+      - run: cd app && yarn install
 
       - save_cache:
           paths:
@@ -35,7 +34,7 @@ jobs:
           key: v2-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: yarn test
+      - run: cd app && yarn test
 
       # Make sure it builds.
-      - run: yarn build
+      - run: cd app && yarn build
