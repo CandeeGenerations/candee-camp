@@ -60,6 +60,7 @@ const App = () => {
   const isUnauthenticatedRoute = testUnauthenticatedRoutes()
 
   if (!user && !isUnauthenticatedRoute) {
+    router.router.navigate('signin', {returnUrl: router.route.name})
     return <Signin />
   }
 
