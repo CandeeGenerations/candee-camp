@@ -17,8 +17,7 @@ jobs:
     working_directory: ~/app
 
     steps:
-      - checkout:
-          path: ~/app
+      - checkout
 
       # Download and cache dependencies
       - restore_cache:
