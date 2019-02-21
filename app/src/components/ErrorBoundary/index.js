@@ -1,8 +1,11 @@
 import React from 'react'
 import equal from 'deep-equal'
-import {connect} from 'react-redux'
 
-class ErrorBoundary extends React.Component {
+type Props = {
+  router: {},
+}
+
+class ErrorBoundary extends React.Component<Props> {
   state = {error: null, hasError: false}
 
   componentDidUpdate(prevProps) {
@@ -30,8 +33,4 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  router: state.router,
-})
-
-export default connect(mapStateToProps)(ErrorBoundary)
+export default ErrorBoundary

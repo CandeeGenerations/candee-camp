@@ -15,7 +15,7 @@ if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
 
 export function configureStore(theRouter, state = {}) {
   const middleware = applyMiddleware(
-    thunk,
+    thunk.default,
     router5Middleware(theRouter),
     process.env.NODE_ENV === 'development' ? createLogger() : null,
   )

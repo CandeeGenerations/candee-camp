@@ -1,8 +1,7 @@
 import createRouter from 'router5'
-import loggerPlugin from 'router5-plugin-logger'
 import browserPlugin from 'router5-plugin-browser'
 
-const routes: Array = [
+const routes = [
   {name: 'notFound', path: '/404'},
   {name: 'signin', path: '/'},
   {
@@ -36,9 +35,10 @@ const routes: Array = [
 const router = createRouter(routes, {
   allowNotFound: true,
   defaultRoute: 'notFound',
+  queryParamsMode: 'loose',
 })
 
-router.usePlugin(loggerPlugin)
-router.usePlugin(browserPlugin({useHash: true}))
+router.usePlugin(browserPlugin())
+router.start()
 
 export default router

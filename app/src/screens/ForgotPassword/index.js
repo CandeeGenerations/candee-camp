@@ -1,6 +1,4 @@
 import React, {useState} from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 
 import {isFormReady} from '../../helpers'
 import {signinActions as actions} from '../../actions'
@@ -8,12 +6,7 @@ import {signinActions as actions} from '../../actions'
 import {SigninLayout} from '../../components/Structure'
 import ForgotPasswordContent from './components/ForgotPasswordContent'
 
-type Props = {
-  // functions
-  forgotPassword: (fields: {}) => void,
-}
-
-const ForgotPassword = (props: Props) => {
+const ForgotPassword = () => {
   const [fields, setFields] = useState({
     email: {isRequired: true, value: ''},
   })
@@ -25,7 +18,7 @@ const ForgotPassword = (props: Props) => {
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
       setLoading(true)
-      await props.forgotPassword(fields)
+      await actions.forgotPassword(fields)
       setFields({email: {isRequired: true, value: ''}})
       setLoading(false)
     }
@@ -44,15 +37,4 @@ const ForgotPassword = (props: Props) => {
   )
 }
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      forgotPassword: actions.forgotPassword,
-    },
-    dispatch,
-  )
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(ForgotPassword)
+export default ForgotPassword

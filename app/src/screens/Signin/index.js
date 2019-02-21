@@ -1,7 +1,5 @@
-import React, {useState} from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {actions as routeActions} from 'redux-router5'
+import React, {useContext, useState} from 'react'
+import {routerContext} from 'react-router5'
 
 import {isFormReady} from '../../helpers'
 import {signinActions as actions} from '../../actions'
@@ -9,13 +7,8 @@ import {signinActions as actions} from '../../actions'
 import {SigninLayout} from '../../components/Structure'
 import SigninContent from './components/SigninContent'
 
-type Props = {
-  // functions
-  navigateTo: (route: string) => void,
-  signin: (fields: {}) => void,
-}
-
-const Signin = (props: Props) => {
+const Signin = () => {
+  const router = useContext(routerContext)
   const [fields, setFields] = useState({
     email: {isRequired: true, value: ''},
     password: {isRequired: true, value: ''},
@@ -28,9 +21,9 @@ const Signin = (props: Props) => {
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
       setLoading(true)
-      await props.signin(fields)
+      await actions.signin(fields)
       setLoading(false)
-      props.navigateTo('dashboard')
+      router.navigate('dashboard')
     }
   }
 
@@ -47,16 +40,4 @@ const Signin = (props: Props) => {
   )
 }
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      navigateTo: routeActions.navigateTo,
-      signin: actions.signin,
-    },
-    dispatch,
-  )
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(Signin)
+export default Signin
