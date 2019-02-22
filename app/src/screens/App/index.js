@@ -19,12 +19,6 @@ import '../../content/antd.less'
 
 const {Content} = Layout
 
-// const openNotification = (type: string, description: string) =>
-//   notification[type]({
-//     message: type === 'success' ? 'Success' : 'Error',
-//     description,
-//   })
-
 const App = () => {
   let content = null
   const routerContext = useRoute()

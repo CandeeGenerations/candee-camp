@@ -1,5 +1,6 @@
 import request from '../api'
 import {removeUser, setUser} from '../helpers/authHelpers'
+import {handleError, openNotification} from '../helpers'
 
 export const signin = async (fields: {}) => {
   try {
@@ -12,7 +13,7 @@ export const signin = async (fields: {}) => {
 
     setUser(response.result)
   } catch (error) {
-    // handleError('Unable to Sign in. Please try again.', error, dispatch)
+    handleError('Unable to Sign in. Please try again.', error)
   }
 }
 
@@ -22,7 +23,7 @@ export const signout = async () => {
 
     removeUser()
   } catch (error) {
-    // handleError('Unable to Sign out. Please try again.', error, dispatch)
+    handleError('Unable to Sign out. Please try again.', error)
   }
 }
 
@@ -34,17 +35,15 @@ export const forgotPassword = async (fields: {}) => {
       },
     })
 
-    // dispatch(
-    //   notifications.success(
-    //     'The reset link has been sent to your email address.',
-    //   ),
-    // )
+    openNotification(
+      'success',
+      'The reset link has been sent to your email address.',
+    )
   } catch (error) {
-    // handleError(
-    //   'Unable to send reset link. Please make sure your email address is correct.',
-    //   error,
-    //   dispatch,
-    // )
+    handleError(
+      'Unable to send reset link. Please make sure your email address is correct.',
+      error,
+    )
   }
 }
 
@@ -60,12 +59,11 @@ export const validateResetPasswordToken = async (token: string) => {
       params: {token},
     })
   } catch (error) {
-    // handleError(
-    //   (error && error.message) ||
-    //     'This reset password token is invalid or has expired. Please try again later.',
-    //   {},
-    //   dispatch,
-    // )
+    handleError(
+      (error && error.message) ||
+        'This reset password token is invalid or has expired. Please try again later.',
+      {},
+    )
 
     return null
   }
@@ -77,16 +75,14 @@ export const resetPassword = async (fields: {}) => {
       params: {password: fields.newPassword.value},
     })
 
-    // dispatch(
-    //   notifications.success(
-    //     'Your password has been reset. You can now use your new password to signin.',
-    //   ),
-    // )
+    openNotification(
+      'success',
+      'Your password has been reset. You can now use your new password to signin.',
+    )
   } catch (error) {
-    // handleError(
-    //   'Unable to reset your password at this time. Please try again later.',
-    //   error,
-    //   dispatch,
-    // )
+    handleError(
+      'Unable to reset your password at this time. Please try again later.',
+      error,
+    )
   }
 }

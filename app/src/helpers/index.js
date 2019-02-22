@@ -1,5 +1,5 @@
 import merge from 'deepmerge'
-import {notificationActions as notifications} from '../actions'
+import {notification} from 'antd'
 
 const errorTrace = error => {
   console.error('Error :', error) // eslint-disable-line no-console
@@ -40,16 +40,16 @@ export const mergeFormData = (fields, data) => {
   return returnObject
 }
 
-export const handleError: void = (
-  message: string,
-  error: {},
-  dispatch: () => void = null,
-) => {
+export const openNotification: void = (type: string, description: string) =>
+  notification[type]({
+    message: type === 'success' ? 'Success' : 'Error',
+    description,
+  })
+
+export const handleError: void = (message: string, error: {}) => {
   if (error) {
     errorTrace(error)
   }
 
-  if (typeof dispatch === 'function') {
-    dispatch(notifications.error(message))
-  }
+  openNotification('error', message)
 }

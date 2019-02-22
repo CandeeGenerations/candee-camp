@@ -25,7 +25,7 @@ const ResetPassword = () => {
         routerContext.route.params.token,
       )
 
-      if (!response || !response.data) {
+      if (response && response.data) {
         setTimeout(() => {
           setLoading(stateLoading => ({
             ...stateLoading,
@@ -38,7 +38,7 @@ const ResetPassword = () => {
     } catch (error) {
       routerContext.router.navigate('signin')
     }
-  })
+  }, [])
 
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))
