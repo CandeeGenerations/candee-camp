@@ -15,9 +15,7 @@ describe(testingUtils.formatDescribeName('Nav Item'), () => {
     const props = {children, className, routeName}
 
     /* Create component */
-    const {getByText} = testingUtils.renderWithReduxAndRouter(
-      <NavItem {...props} />,
-    )
+    const {getByText} = testingUtils.renderWithRouter(<NavItem {...props} />)
 
     /* Assertions */
     // the link exists
@@ -38,9 +36,7 @@ describe(testingUtils.formatDescribeName('Nav Item'), () => {
     const props = {children, onClick, routeName}
 
     /* Create component */
-    const {getByText} = testingUtils.renderWithReduxAndRouter(
-      <NavItem {...props} />,
-    )
+    const {getByText} = testingUtils.renderWithRouter(<NavItem {...props} />)
 
     /* Assertions */
     // click the link

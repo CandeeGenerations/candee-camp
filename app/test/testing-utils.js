@@ -1,12 +1,9 @@
 import React from 'react'
 import 'jest-dom/extend-expect'
-import {createStore} from 'redux'
-import {Provider} from 'react-redux'
-import {RouterProvider} from 'react-router5'
+import {Route, RouterProvider} from 'react-router5'
 import {render} from 'react-testing-library'
 
 import router from '../src/config/router'
-import reducer from '../src/reducers'
 
 function getElement(element, tag, className) {
   return (
@@ -34,25 +31,12 @@ function formatTestName(title) {
   return `=> ${title}`
 }
 
-function renderWithRedux(
-  ui,
-  {initialState, store = createStore(reducer, initialState)} = {},
-) {
-  return {
-    ...render(<Provider store={store}>{ui}</Provider>),
-    ui,
-  }
-}
-
-function renderWithReduxAndRouter(
-  ui,
-  {initialState, store = createStore(reducer, initialState)} = {},
-) {
+function renderWithRouter(ui) {
   return {
     ...render(
-      <Provider store={store}>
-        <RouterProvider router={router}>{ui}</RouterProvider>
-      </Provider>,
+      <RouterProvider router={router}>
+        <Route>{() => ui}</Route>
+      </RouterProvider>,
     ),
     ui,
   }
@@ -73,6 +57,5 @@ export {
   generateInitialState,
   getElement,
   mouseEvent,
-  renderWithRedux,
-  renderWithReduxAndRouter,
+  renderWithRouter,
 }

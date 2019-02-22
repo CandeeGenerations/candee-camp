@@ -20,7 +20,7 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
     const props = {loading, navItems, onSignout}
 
     /* Create component */
-    const {getByText, queryByText} = testingUtils.renderWithReduxAndRouter(
+    const {getByText, queryByText} = testingUtils.renderWithRouter(
       <NavBarContent {...props} />,
     )
 
@@ -65,7 +65,7 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
       const props = {loading, navItems, onSignout, selectedItem}
 
       /* Create component */
-      const {getByText} = testingUtils.renderWithReduxAndRouter(
+      const {getByText} = testingUtils.renderWithRouter(
         <NavBarContent {...props} />,
       )
 

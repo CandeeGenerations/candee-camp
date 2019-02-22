@@ -21,7 +21,7 @@ describe(testingUtils.formatDescribeName('Reset Password Content'), () => {
     const props = {fields, loading, onFieldChange, onSubmit, validForm}
 
     /* Create component */
-    const {getByTestId, getByText} = testingUtils.renderWithReduxAndRouter(
+    const {getByTestId, getByText} = testingUtils.render(
       <ResetPasswordContent {...props} />,
     )
 
@@ -60,7 +60,7 @@ describe(testingUtils.formatDescribeName('Reset Password Content'), () => {
       const props = {fields, loading, onFieldChange, onSubmit, validForm}
 
       /* Create component */
-      const {getByTestId, getByText} = testingUtils.renderWithReduxAndRouter(
+      const {getByTestId, getByText} = testingUtils.render(
         <ResetPasswordContent {...props} />,
       )
 
@@ -91,7 +91,7 @@ describe(testingUtils.formatDescribeName('Reset Password Content'), () => {
     const props = {fields, loading, onFieldChange, onSubmit, validForm}
 
     /* Create component */
-    const {getByTestId, getByText} = testingUtils.renderWithReduxAndRouter(
+    const {getByTestId, getByText} = testingUtils.render(
       <ResetPasswordContent {...props} />,
     )
 
@@ -121,7 +121,7 @@ describe(testingUtils.formatDescribeName('Reset Password Content'), () => {
     const props = {fields, loading, onFieldChange, onSubmit, validForm}
 
     /* Create component */
-    const {getByTestId} = testingUtils.renderWithReduxAndRouter(
+    const {getByTestId} = testingUtils.render(
       <ResetPasswordContent {...props} />,
     )
 

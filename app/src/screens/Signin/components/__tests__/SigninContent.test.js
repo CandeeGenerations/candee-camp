@@ -21,7 +21,7 @@ describe(testingUtils.formatDescribeName('Signin Content'), () => {
     const props = {fields, loading, onFieldChange, onSubmit, validForm}
 
     /* Create component */
-    const {getByTestId, getByText} = testingUtils.renderWithReduxAndRouter(
+    const {getByTestId, getByText} = testingUtils.renderWithRouter(
       <SigninContent {...props} />,
     )
 
@@ -64,7 +64,7 @@ describe(testingUtils.formatDescribeName('Signin Content'), () => {
     const props = {fields, loading, onFieldChange, onSubmit, validForm}
 
     /* Create component */
-    const {getByTestId, getByText} = testingUtils.renderWithReduxAndRouter(
+    const {getByTestId, getByText} = testingUtils.renderWithRouter(
       <SigninContent {...props} />,
     )
 
@@ -97,7 +97,7 @@ describe(testingUtils.formatDescribeName('Signin Content'), () => {
     const props = {fields, loading, onFieldChange, onSubmit, validForm}
 
     /* Create component */
-    const {getByTestId} = testingUtils.renderWithReduxAndRouter(
+    const {getByTestId} = testingUtils.renderWithRouter(
       <SigninContent {...props} />,
     )
 
