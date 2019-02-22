@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {routeContext, routerContext} from 'react-router5'
+import React, {useEffect, useState} from 'react'
+import {useRoute} from 'react-router5'
 
 import {isFormReady} from '../../helpers'
 import {signinActions as actions} from '../../actions'
@@ -9,8 +9,7 @@ import {LoaderContext} from '../../components/Structure/Loader'
 import ResetPasswordContent from './components/ResetPasswordContent'
 
 const ResetPassword = () => {
-  const route = useContext(routeContext)
-  const router = useContext(routerContext)
+  const routerContext = useRoute()
   const [fields, setFields] = useState({
     confirmPassword: {isRequired: true, value: ''},
     newPassword: {isRequired: true, value: ''},
@@ -23,7 +22,7 @@ const ResetPassword = () => {
   useEffect(async () => {
     try {
       const response = await actions.validateResetPasswordToken(
-        route.params.token,
+        routerContext.route.params.token,
       )
 
       if (!response || !response.data) {
@@ -34,10 +33,10 @@ const ResetPassword = () => {
           }))
         }, 1000)
       } else {
-        router.navigate('signin')
+        routerContext.router.navigate('signin')
       }
     } catch (error) {
-      router.navigate('signin')
+      routerContext.router.navigate('signin')
     }
   })
 
@@ -49,7 +48,7 @@ const ResetPassword = () => {
       setLoading(stateLoading => ({...stateLoading, resetPassword: true}))
       await actions.resetPassword(fields)
       setLoading(stateLoading => ({...stateLoading, resetPassword: false}))
-      router.navigate('signin')
+      routerContext.router.navigate('signin')
     }
   }
 

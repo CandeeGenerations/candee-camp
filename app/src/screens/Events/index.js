@@ -1,6 +1,6 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Card} from 'antd'
-import {routeContext} from 'react-router5'
+import {useRoute} from 'react-router5'
 
 import {eventActions as actions} from '../../actions'
 import {LoaderContext} from '../../components/Structure/Loader'
@@ -12,7 +12,7 @@ import EventView from './components/EventView'
 import EventsTable from './components/EventsTable'
 
 const Events = () => {
-  const router = useContext(routeContext)
+  const routerContext = useRoute()
   const errorWrapper = useError()
   const [loading, setLoading] = useState(true)
   const [events, setEvents] = useState([])
@@ -51,10 +51,14 @@ const Events = () => {
         </Card>
       </section>
 
-      {(router.route.name === 'events.edit' ||
-        router.route.name === 'events.add') && (
+      {(routerContext.route.name === 'events.edit' ||
+        routerContext.route.name === 'events.add') && (
         <EventView
-          id={(router.route.params && router.route.params.eventId) || null}
+          id={
+            (routerContext.route.params &&
+              routerContext.route.params.eventId) ||
+            null
+          }
         />
       )}
     </>

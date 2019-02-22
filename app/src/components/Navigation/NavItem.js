@@ -1,5 +1,5 @@
-import React, {useContext} from 'react'
-import {routerContext} from 'react-router5'
+import React from 'react'
+import {useRouter} from 'react-router5'
 
 type Props = {
   children?: any,
@@ -14,7 +14,7 @@ type Props = {
 }
 
 const NavItem = (props: Props) => {
-  const router = useContext(routerContext)
+  const router = useRouter()
   const href = router.buildUrl(props.routeName, props.params)
   const handleClick = evt => {
     evt.preventDefault()

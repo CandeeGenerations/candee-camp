@@ -1,13 +1,12 @@
-import React, {useContext, useState} from 'react'
-import {routerContext, routeContext} from 'react-router5'
+import React, {useState} from 'react'
+import {useRoute} from 'react-router5'
 
 import {signinActions as actions} from '../../actions'
 
 import NavBarContent from './components/NavBarContent'
 
 const NavBar = () => {
-  const route = useContext(routeContext)
-  const router = useContext(routerContext)
+  const routerContext = useRoute()
   const [loading, setLoading] = useState(false)
 
   const handleSignout = async () => {
@@ -17,7 +16,7 @@ const NavBar = () => {
 
     setLoading(false)
 
-    router.navigate('signin')
+    routerContext.router.navigate('signin')
   }
 
   const navItems = [
@@ -26,7 +25,7 @@ const NavBar = () => {
       routeName: 'events',
     },
   ]
-  const selected = navItems.find(item => item.routeName === route.name)
+  const selected = navItems.find(item => item.routeName === routerContext.route.name)
 
   return (
     <NavBarContent

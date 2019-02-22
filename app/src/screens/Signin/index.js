@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react'
-import {routeContext} from 'react-router5'
+import React, {useState} from 'react'
+import {useRoute} from 'react-router5'
 
 import {isFormReady} from '../../helpers'
 import {signinActions as actions} from '../../actions'
@@ -8,7 +8,7 @@ import {SigninLayout} from '../../components/Structure'
 import SigninContent from './components/SigninContent'
 
 const Signin = () => {
-  const router = useContext(routeContext)
+  const routerContext = useRoute()
   const [fields, setFields] = useState({
     email: {isRequired: true, value: ''},
     password: {isRequired: true, value: ''},
@@ -26,13 +26,13 @@ const Signin = () => {
 
       let newRoute = 'dashboard'
 
-      if (router.route.name !== 'signin') {
-        newRoute = router.route.name
-      } else if (router.route.params.returnUrl) {
-        newRoute = router.route.params.returnUrl
+      if (routerContext.route.name !== 'signin') {
+        newRoute = routerContext.route.name
+      } else if (routerContext.route.params.returnUrl) {
+        newRoute = routerContext.route.params.returnUrl
       }
 
-      router.router.navigate(newRoute)
+      routerContext.router.navigate(newRoute)
     }
   }
 

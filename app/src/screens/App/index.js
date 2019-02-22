@@ -1,6 +1,6 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {Layout} from 'antd'
-import {routeContext} from 'react-router5'
+import {useRoute} from 'react-router5'
 
 import {getUser} from '../../helpers/authHelpers'
 
@@ -27,7 +27,7 @@ const {Content} = Layout
 
 const App = () => {
   let content = null
-  const router = useContext(routeContext)
+  const routerContext = useRoute()
   const user = getUser()
 
   const testUnauthenticatedRoutes = () => {
@@ -35,7 +35,8 @@ const App = () => {
     let isUnauthenticated = false
 
     unauthenticatedRoutes.forEach(route => {
-      isUnauthenticated = isUnauthenticated || router.route.name.includes(route)
+      isUnauthenticated =
+        isUnauthenticated || routerContext.route.name.includes(route)
     })
 
     return isUnauthenticated
@@ -51,7 +52,7 @@ const App = () => {
     let isNoNav = false
 
     noNavRoutes.forEach(route => {
-      isNoNav = isNoNav || router.route.name.includes(route)
+      isNoNav = isNoNav || routerContext.route.name.includes(route)
     })
 
     return isNoNav
@@ -60,22 +61,24 @@ const App = () => {
   const isUnauthenticatedRoute = testUnauthenticatedRoutes()
 
   if (!user && !isUnauthenticatedRoute) {
-    router.router.navigate('signin', {returnUrl: router.route.name})
+    routerContext.router.navigate('signin', {
+      returnUrl: routerContext.route.name,
+    })
     return <Signin />
   }
 
   if (
     (user && isUnauthenticatedRoute) ||
-    router.route.name.includes('dashboard')
+    routerContext.route.name.includes('dashboard')
   ) {
     content = <Dashboard />
-  } else if (router.route.name.includes('signin')) {
+  } else if (routerContext.route.name.includes('signin')) {
     content = <Signin />
-  } else if (router.route.name.includes('forgotPassword')) {
+  } else if (routerContext.route.name.includes('forgotPassword')) {
     content = <ForgotPassword />
-  } else if (router.route.name.includes('resetPassword')) {
+  } else if (routerContext.route.name.includes('resetPassword')) {
     content = <ResetPassword />
-  } else if (router.route.name.includes('events')) {
+  } else if (routerContext.route.name.includes('events')) {
     content = <Events />
   } else {
     content = <NotFound />
@@ -87,7 +90,7 @@ const App = () => {
     <div style={{display: 'inline'}}>
       <NavBar />
 
-      <ErrorBoundary router={router.route}>
+      <ErrorBoundary router={routerContext.route}>
         <Content className="cc--content-top">{content}</Content>
       </ErrorBoundary>
     </div>

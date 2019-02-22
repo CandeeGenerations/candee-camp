@@ -1,6 +1,6 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {Button, Drawer} from 'antd'
-import {routerContext} from 'react-router5'
+import {useRouter} from 'react-router5'
 
 type Props = {
   children: React.Node,
@@ -16,7 +16,7 @@ type Props = {
 const DrawerView = (
   props: Props = {submitButtonDisabled: false, width: 256},
 ) => {
-  const router = useContext(routerContext)
+  const router = useRouter()
   const handleClose = () => router.navigate(props.parentRoute)
 
   return (
