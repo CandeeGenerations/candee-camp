@@ -1,0 +1,32 @@
+{
+  "name": "candee-camp",
+  "version": "0.1.0",
+  "description": "Candee Camp Software",
+  "keywords": [
+    "candee",
+    "generations",
+    "camp",
+    "software",
+    "react",
+    ".NET Core"
+  ],
+  "authors": [
+    {
+      "name": "Tyler Candee",
+      "email": "tyler@candeegenerations.com",
+      "url": "https://candeegenerations.com"
+    },
+    {
+      "name": "Glenn Stegall"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CandeeGenerations/candee-camp"
+  },
+  "bugs": {
+    "url": "https://github.com/CandeeGenerations/candee-camp/issues",
+    "email": "tyler@candeegenerations.com"
+  }
+}

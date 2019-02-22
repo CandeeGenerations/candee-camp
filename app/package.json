@@ -1,7 +1,7 @@
 {
   "name": "candee-camp-fe",
   "version": "0.1.0",
-  "description": "Candee Camp Software",
+  "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
     "generations",
@@ -17,10 +17,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/CandeeGenerations/candee-camp-fe"
+    "url": "https://github.com/CandeeGenerations/candee-camp"
   },
   "bugs": {
-    "url": "https://github.com/CandeeGenerations/candee-camp-fe/issues",
+    "url": "https://github.com/CandeeGenerations/candee-camp/issues",
     "email": "tyler@candeegenerations.com"
   },
   "dependencies": {
