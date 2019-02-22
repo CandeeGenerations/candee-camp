@@ -4,7 +4,6 @@
 mock-api/db.json
 build
 vendor*
-.vscode
 
 # User-specific files
 *.suo
