@@ -1,9 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Card} from 'antd'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {startsWithSegment} from 'router5-helpers'
-import {createRouteNodeSelector} from 'redux-router5'
+import {useRoute} from 'react-router5'
 
 import {eventActions as actions} from '../../actions'
 import {LoaderContext} from '../../components/Structure/Loader'
@@ -14,27 +11,15 @@ import ErrorWrapper, {
 import EventView from './components/EventView'
 import EventsTable from './components/EventsTable'
 
-type Props = {
-  route?: {
-    name: string,
-    params: {
-      eventId?: number,
-    },
-  },
-
-  // functions
-  loadEvents: () => void,
-}
-
-const Events = (props: Props) => {
+const Events = () => {
+  const routerContext = useRoute()
   const errorWrapper = useError()
   const [loading, setLoading] = useState(true)
   const [events, setEvents] = useState([])
-  const testRoute = startsWithSegment(props.route.name)
 
   const getEvents = async () => {
     try {
-      const response = await props.loadEvents()
+      const response = await actions.loadEvents()
 
       setLoading(false)
       setEvents(response.data)
@@ -66,28 +51,18 @@ const Events = (props: Props) => {
         </Card>
       </section>
 
-      {(testRoute('events.edit') || testRoute('events.add')) && (
+      {(routerContext.route.name === 'events.edit' ||
+        routerContext.route.name === 'events.add') && (
         <EventView
-          id={(props.route.params && props.route.params.eventId) || null}
+          id={
+            (routerContext.route.params &&
+              routerContext.route.params.eventId) ||
+            null
+          }
         />
       )}
     </>
   )
 }
 
-const mapStateToProps = state => ({
-  ...createRouteNodeSelector('event')(state),
-})
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      loadEvents: actions.loadEvents,
-    },
-    dispatch,
-  )
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Events)
+export default Events

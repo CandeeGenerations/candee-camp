@@ -1,11 +1,6 @@
-import React, {useEffect} from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {Layout, notification} from 'antd'
-import {startsWithSegment} from 'router5-helpers'
-import {createRouteNodeSelector} from 'redux-router5'
-
-import {notificationActions as actions} from '../../actions'
+import React from 'react'
+import {Layout} from 'antd'
+import {useRoute} from 'react-router5'
 
 import {getUser} from '../../helpers/authHelpers'
 
@@ -24,87 +19,72 @@ import '../../content/antd.less'
 
 const {Content} = Layout
 
-type Props = {
-  errors: [],
-  route?: {name: string},
-  successes: [],
-
-  // functions
-  clearErrors: () => void,
-  clearSuccesses: () => void,
-}
-
-const openNotification = (type: string, description: string) =>
-  notification[type]({
-    message: type === 'success' ? 'Success' : 'Error',
-    description,
-  })
-
-const testUnauthenticatedRoutes = testRoute => {
-  const unauthenticatedRoutes = ['signin', 'forgotPassword', 'resetPassword']
-  let isUnauthenticated = false
-
-  unauthenticatedRoutes.forEach(route => {
-    isUnauthenticated = isUnauthenticated || testRoute(route)
-  })
-
-  return isUnauthenticated
-}
-
-const testNoNavRoutes = testRoute => {
-  const noNavRoutes = ['signin', 'forgotPassword', 'resetPassword', 'notFound']
-  let isNoNav = false
-
-  noNavRoutes.forEach(route => {
-    isNoNav = isNoNav || testRoute(route)
-  })
-
-  return isNoNav
-}
-
-const App = (props: Props) => {
-  useEffect(() => {
-    if (!props.errors) return
-    props.errors.map(error => openNotification('error', error))
-    props.clearErrors()
-  }, [{errors: props.errors}])
-
-  useEffect(() => {
-    if (!props.successes) return
-    props.successes.map(success => openNotification('success', success))
-    props.clearSuccesses()
-  }, [{successes: props.success}])
-
+const App = () => {
   let content = null
+  const routerContext = useRoute()
   const user = getUser()
-  const testRoute = startsWithSegment(props.route.name)
-  const isUnauthenticatedRoute = testUnauthenticatedRoutes(testRoute)
+
+  const testUnauthenticatedRoutes = () => {
+    const unauthenticatedRoutes = ['signin', 'forgotPassword', 'resetPassword']
+    let isUnauthenticated = false
+
+    unauthenticatedRoutes.forEach(route => {
+      isUnauthenticated =
+        isUnauthenticated || routerContext.route.name.includes(route)
+    })
+
+    return isUnauthenticated
+  }
+
+  const testNoNavRoutes = () => {
+    const noNavRoutes = [
+      'signin',
+      'forgotPassword',
+      'resetPassword',
+      'notFound',
+    ]
+    let isNoNav = false
+
+    noNavRoutes.forEach(route => {
+      isNoNav = isNoNav || routerContext.route.name.includes(route)
+    })
+
+    return isNoNav
+  }
+
+  const isUnauthenticatedRoute = testUnauthenticatedRoutes()
 
   if (!user && !isUnauthenticatedRoute) {
+    routerContext.router.navigate('signin', {
+      returnUrl: routerContext.route.name,
+    })
     return <Signin />
   }
 
-  if ((user && isUnauthenticatedRoute) || testRoute('dashboard')) {
+  if (
+    (user && isUnauthenticatedRoute) ||
+    routerContext.route.name.includes('dashboard')
+  ) {
     content = <Dashboard />
-  } else if (testRoute('signin')) {
+  } else if (routerContext.route.name.includes('signin')) {
     content = <Signin />
-  } else if (testRoute('forgotPassword')) {
+  } else if (routerContext.route.name.includes('forgotPassword')) {
     content = <ForgotPassword />
-  } else if (testRoute('resetPassword')) {
+  } else if (routerContext.route.name.includes('resetPassword')) {
     content = <ResetPassword />
-  } else if (testRoute('events')) {
+  } else if (routerContext.route.name.includes('events')) {
     content = <Events />
   } else {
     content = <NotFound />
   }
 
-  return testNoNavRoutes(testRoute) && !(user && isUnauthenticatedRoute) ? (
+  return testNoNavRoutes() && !(user && isUnauthenticatedRoute) ? (
     content
   ) : (
     <div style={{display: 'inline'}}>
       <NavBar />
 
-      <ErrorBoundary>
+      <ErrorBoundary router={routerContext.route}>
         <Content className="cc--content-top">{content}</Content>
       </ErrorBoundary>
     </div>
@@ -115,22 +95,4 @@ App.defaultProps = {
   route: {name: ''},
 }
 
-const mapStateToProps = state => ({
-  ...createRouteNodeSelector('')(state),
-  errors: state.notifications.errors,
-  successes: state.notifications.successes,
-})
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      clearErrors: actions.clearErrors,
-      clearSuccesses: actions.clearSuccesses,
-    },
-    dispatch,
-  )
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(App)
+export default App

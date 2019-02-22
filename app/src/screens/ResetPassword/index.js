@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {actions as routeActions, createRouteNodeSelector} from 'redux-router5'
+import {useRoute} from 'react-router5'
 
 import {isFormReady} from '../../helpers'
 import {signinActions as actions} from '../../actions'
@@ -10,20 +8,8 @@ import {SigninLayout} from '../../components/Structure'
 import {LoaderContext} from '../../components/Structure/Loader'
 import ResetPasswordContent from './components/ResetPasswordContent'
 
-type Props = {
-  route: {
-    params: {
-      token?: string,
-    },
-  },
-
-  // functions
-  navigateTo: (route: string) => void,
-  resetPassword: (fields: {}) => void,
-  validateResetPasswordToken: (token: string) => void,
-}
-
-const ResetPassword = (props: Props) => {
+const ResetPassword = () => {
+  const routerContext = useRoute()
   const [fields, setFields] = useState({
     confirmPassword: {isRequired: true, value: ''},
     newPassword: {isRequired: true, value: ''},
@@ -35,11 +21,11 @@ const ResetPassword = (props: Props) => {
 
   useEffect(async () => {
     try {
-      const response = await props.validateResetPasswordToken(
-        props.route.params.token,
+      const response = await actions.validateResetPasswordToken(
+        routerContext.route.params.token,
       )
 
-      if (!response || !response.data) {
+      if (response && response.data) {
         setTimeout(() => {
           setLoading(stateLoading => ({
             ...stateLoading,
@@ -47,12 +33,12 @@ const ResetPassword = (props: Props) => {
           }))
         }, 1000)
       } else {
-        props.navigateTo('signin')
+        routerContext.router.navigate('signin')
       }
     } catch (error) {
-      props.navigateTo('signin')
+      routerContext.router.navigate('signin')
     }
-  })
+  }, [])
 
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))
@@ -60,9 +46,9 @@ const ResetPassword = (props: Props) => {
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
       setLoading(stateLoading => ({...stateLoading, resetPassword: true}))
-      await props.resetPassword(fields)
+      await actions.resetPassword(fields)
       setLoading(stateLoading => ({...stateLoading, resetPassword: false}))
-      props.navigateTo('signin')
+      routerContext.router.navigate('signin')
     }
   }
 
@@ -86,21 +72,4 @@ const ResetPassword = (props: Props) => {
   )
 }
 
-const mapStateToProps = state => ({
-  ...createRouteNodeSelector('resetPassword')(state),
-})
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      navigateTo: routeActions.navigateTo,
-      resetPassword: actions.resetPassword,
-      validateResetPasswordToken: actions.validateResetPasswordToken,
-    },
-    dispatch,
-  )
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ResetPassword)
+export default ResetPassword

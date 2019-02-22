@@ -1,10 +1,8 @@
 import request from '../api'
-import {handleError} from '../helpers'
 import {removeUser, setUser} from '../helpers/authHelpers'
+import {handleError, openNotification} from '../helpers'
 
-import {notificationActions as notifications} from '.'
-
-export const signin = (fields: {}) => async (dispatch: () => void) => {
+export const signin = async (fields: {}) => {
   try {
     const response = await request.post('/signin', {
       params: {
@@ -15,21 +13,21 @@ export const signin = (fields: {}) => async (dispatch: () => void) => {
 
     setUser(response.result)
   } catch (error) {
-    handleError('Unable to Sign in. Please try again.', error, dispatch)
+    handleError('Unable to Sign in. Please try again.', error)
   }
 }
 
-export const signout = () => async (dispatch: () => void) => {
+export const signout = async () => {
   try {
     await request.post('/signout')
 
     removeUser()
   } catch (error) {
-    handleError('Unable to Sign out. Please try again.', error, dispatch)
+    handleError('Unable to Sign out. Please try again.', error)
   }
 }
 
-export const forgotPassword = (fields: {}) => async (dispatch: () => void) => {
+export const forgotPassword = async (fields: {}) => {
   try {
     await request.post('/forgotpassword', {
       params: {
@@ -37,23 +35,19 @@ export const forgotPassword = (fields: {}) => async (dispatch: () => void) => {
       },
     })
 
-    dispatch(
-      notifications.success(
-        'The reset link has been sent to your email address.',
-      ),
+    openNotification(
+      'success',
+      'The reset link has been sent to your email address.',
     )
   } catch (error) {
     handleError(
       'Unable to send reset link. Please make sure your email address is correct.',
       error,
-      dispatch,
     )
   }
 }
 
-export const validateResetPasswordToken = (token: string) => async (
-  dispatch: () => void,
-) => {
+export const validateResetPasswordToken = async (token: string) => {
   try {
     if (!token) {
       throw new Error(
@@ -69,29 +63,26 @@ export const validateResetPasswordToken = (token: string) => async (
       (error && error.message) ||
         'This reset password token is invalid or has expired. Please try again later.',
       {},
-      dispatch,
     )
 
     return null
   }
 }
 
-export const resetPassword = (fields: {}) => async (dispatch: () => void) => {
+export const resetPassword = async (fields: {}) => {
   try {
     await request.post('/resetpassword', {
       params: {password: fields.newPassword.value},
     })
 
-    dispatch(
-      notifications.success(
-        'Your password has been reset. You can now use your new password to signin.',
-      ),
+    openNotification(
+      'success',
+      'Your password has been reset. You can now use your new password to signin.',
     )
   } catch (error) {
     handleError(
       'Unable to reset your password at this time. Please try again later.',
       error,
-      dispatch,
     )
   }
 }

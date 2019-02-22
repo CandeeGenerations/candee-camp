@@ -1,8 +1,6 @@
 import React from 'react'
 import {Button, Drawer} from 'antd'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {actions as routerActions} from 'redux-router5'
+import {useRouter} from 'react-router5'
 
 type Props = {
   children: React.Node,
@@ -12,14 +10,14 @@ type Props = {
   width?: number,
 
   // functions
-  navigateTo: (routeName: string, params: {}, options: {}) => void,
   onSubmit: () => void,
 }
 
 const DrawerView = (
   props: Props = {submitButtonDisabled: false, width: 256},
 ) => {
-  const handleClose = () => props.navigateTo(props.parentRoute)
+  const router = useRouter()
+  const handleClose = () => router.navigate(props.parentRoute)
 
   return (
     <Drawer
@@ -59,15 +57,4 @@ const DrawerView = (
   )
 }
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      navigateTo: routerActions.navigateTo,
-    },
-    dispatch,
-  )
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(DrawerView)
+export default DrawerView

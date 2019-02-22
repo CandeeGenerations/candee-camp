@@ -18,7 +18,7 @@ module.exports = function(app) {
   app.route('/forgotpassword').post((req, res) => res.json(db.forgotPassword))
 
   app
-    .route('/validateresetpassword')
+    .route('/validateresetpasswordtoken')
     .post((req, res) => res.json(db.validateResetPasswordToken))
 
   app.route('/resetpassword').post((req, res) => res.json(db.resetPassword))

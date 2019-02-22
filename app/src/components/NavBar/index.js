@@ -1,32 +1,22 @@
 import React, {useState} from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {createRouteNodeSelector, actions as routerActions} from 'redux-router5'
+import {useRoute} from 'react-router5'
 
 import {signinActions as actions} from '../../actions'
 
 import NavBarContent from './components/NavBarContent'
 
-type Props = {
-  loading: {},
-  route?: {name: string},
-
-  // functions
-  navigateTo: () => void,
-  signout: () => void,
-}
-
-const NavBar = (props: Props) => {
+const NavBar = () => {
+  const routerContext = useRoute()
   const [loading, setLoading] = useState(false)
 
   const handleSignout = async () => {
     setLoading(true)
 
-    await props.signout()
+    await actions.signout()
 
     setLoading(false)
 
-    props.navigateTo('signin')
+    routerContext.router.navigate('signin')
   }
 
   const navItems = [
@@ -35,7 +25,7 @@ const NavBar = (props: Props) => {
       routeName: 'events',
     },
   ]
-  const selected = navItems.find(item => item.routeName === props.route.name)
+  const selected = navItems.find(item => item.routeName === routerContext.route.name)
 
   return (
     <NavBarContent
@@ -47,20 +37,4 @@ const NavBar = (props: Props) => {
   )
 }
 
-const mapStateToProps = state => ({
-  ...createRouteNodeSelector('')(state),
-})
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      navigateTo: routerActions.navigateTo,
-      signout: actions.signout,
-    },
-    dispatch,
-  )
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NavBar)
+export default NavBar

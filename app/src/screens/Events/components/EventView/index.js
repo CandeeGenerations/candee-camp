@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 
 import {eventActions as actions} from '../../../../actions'
 import {isFormReady, mergeFormData} from '../../../../helpers'
@@ -42,7 +40,7 @@ const EventView = (props: Props) => {
 
   const getEvent = async () => {
     try {
-      const response = await props.loadEvent(props.id)
+      const response = await actions.loadEvent(props.id)
 
       setLoading(false)
       setEventName(response.data.name)
@@ -108,15 +106,4 @@ const EventView = (props: Props) => {
   )
 }
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(
-    {
-      loadEvent: actions.loadEvent,
-    },
-    dispatch,
-  )
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(EventView)
+export default EventView
