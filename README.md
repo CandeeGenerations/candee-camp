@@ -8,6 +8,8 @@
 
 <hr />
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a2fdca8d-d111-473f-b5fc-810b4e84d9ce/deploy-status)](https://app.netlify.com/sites/candee-camp/deploys)
+
 ## Description
 
 This system is built to help church camps better manage
