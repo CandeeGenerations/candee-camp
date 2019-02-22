@@ -8,7 +8,7 @@
 
 <hr />
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/a2fdca8d-d111-473f-b5fc-810b4e84d9ce/deploy-status)](https://app.netlify.com/sites/candee-camp/deploys)
+[![CircleCI](https://circleci.com/gh/CandeeGenerations/candee-camp/tree/master.svg?style=svg)](https://circleci.com/gh/CandeeGenerations/candee-camp/tree/master) [![Netlify Status](https://api.netlify.com/api/v1/badges/a2fdca8d-d111-473f-b5fc-810b4e84d9ce/deploy-status)](https://app.netlify.com/sites/candee-camp/deploys)
 
 ## Description
 
