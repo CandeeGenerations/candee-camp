@@ -6,10 +6,3 @@ echo
 
 cd ./app
 yarn
-
-echo
-echo "Loading Mock API & Installing Packages..."
-echo
-
-cd ../mock-api
-yarn

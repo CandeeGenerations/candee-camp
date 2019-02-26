@@ -32,10 +32,6 @@ The packages will be installed. Use the following commands to start the projects
 
 `$ cd ./app; yarn start`
 
-**mock-api**
-
-`$ cd ./mock-api; yarn start`
-
 ### Windows
 
 - Open new command prompt to the project root.
@@ -48,10 +44,6 @@ The packages will be installed. Use the following commands to start the projects
 **app**
 
 `> cd app && yarn start`
-
-**mock-api**
-
-`> cd mock-api && yarn start`
 
 ## Contributors
 
