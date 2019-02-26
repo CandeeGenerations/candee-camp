@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 
 import {isFormReady} from '../../helpers'
+import {useTitle} from '../../helpers/hooks/useTitle'
 import {signinActions as actions} from '../../actions'
 
 import {SigninLayout} from '../../components/Structure'
@@ -11,6 +12,8 @@ const ForgotPassword = () => {
     email: {isRequired: true, value: ''},
   })
   const [loading, setLoading] = useState(false)
+
+  useTitle('Forgot Your Password')
 
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))

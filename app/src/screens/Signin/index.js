@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {useRoute} from 'react-router5'
 
 import {isFormReady} from '../../helpers'
+import {useTitle} from '../../helpers/hooks/useTitle'
 import {signinActions as actions} from '../../actions'
 
 import {SigninLayout} from '../../components/Structure'
@@ -14,6 +15,8 @@ const Signin = () => {
     password: {isRequired: true, value: ''},
   })
   const [loading, setLoading] = useState(false)
+
+  useTitle('Sign In')
 
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))

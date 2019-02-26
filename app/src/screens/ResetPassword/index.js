@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useRoute} from 'react-router5'
 
 import {isFormReady} from '../../helpers'
+import {useTitle} from '../../helpers/hooks/useTitle'
 import {signinActions as actions} from '../../actions'
 
 import {SigninLayout} from '../../components/Structure'
@@ -18,6 +19,8 @@ const ResetPassword = () => {
     resetPassword: false,
     resetPasswordValidate: true,
   })
+
+  useTitle('Reset Password')
 
   useEffect(async () => {
     try {
