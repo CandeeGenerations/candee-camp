@@ -1,4 +1,3 @@
-import qaConfig from './config.qa'
 import devConfig from './config.dev'
 import prodConfig from './config.production'
 
@@ -8,9 +7,6 @@ function getEnv(envStr) {
   switch (envStr) {
     case 'production':
       return prodConfig
-
-    case 'qa':
-      return qaConfig
 
     default:
       return devConfig
