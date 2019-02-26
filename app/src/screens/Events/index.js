@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Card, Divider} from 'antd'
+import {Card, Divider, Button} from 'antd'
 import {useRoute} from 'react-router5'
 
 import {eventActions as actions} from '../../actions'
@@ -40,6 +40,13 @@ const Events = () => {
       <section className="cc--main-content">
         <Card>
           <Divider orientation="left">Events</Divider>
+
+          <Button
+            type="primary"
+            onClick={() => routerContext.router.navigate('events.add')}
+          >
+            Add Event
+          </Button>
 
           <LoaderContext.Provider
             value={{spinning: loading, tip: 'Loading events...'}}

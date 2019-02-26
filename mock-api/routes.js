@@ -3,11 +3,17 @@ var fs = require('fs')
 var db = JSON.parse(fs.readFileSync('db.json'))
 
 module.exports = function(app) {
-  app.route('/events').get((req, res) => res.json(db.events))
+  app
+    .route('/events')
+    .get((req, res) => res.json(db.events))
+    .post((req, res) => res.json(db.events[0]))
 
   app
     .route('/events/:eventId')
     .get((req, res) =>
+      res.json(db.events.find(e => e.id === Number(req.params.eventId))),
+    )
+    .put((req, res) =>
       res.json(db.events.find(e => e.id === Number(req.params.eventId))),
     )
 

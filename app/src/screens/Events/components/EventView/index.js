@@ -9,6 +9,7 @@ import ErrorWrapper, {
 } from '../../../../components/ErrorBoundary/ErrorWrapper'
 
 import EventViewWrapper from './EventViewWrapper'
+import {useRouter} from 'react-router5'
 
 type Props = {
   id?: number,
@@ -29,6 +30,7 @@ type Props = {
 }
 
 const EventView = (props: Props) => {
+  const router = useRouter()
   const errorWrapper = useError()
   const [loading, setLoading] = useState(true)
   const [eventName, setEventName] = useState('')
@@ -50,22 +52,27 @@ const EventView = (props: Props) => {
     }
   }
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
-
-  const handleFormSubmit = () => {
-    if (isFormReady(fields)) {
-      console.log(fields) // eslint-disable-line
-    }
-  }
-
   useEffect(() => {
     if (props.id) {
       getEvent()
     } else {
       setLoading(false)
     }
-  }, [])
+  }, [props.id])
+
+  const handleFieldChange = changedFields =>
+    setFields(stateFields => ({...stateFields, ...changedFields}))
+
+  const handleFormSubmit = async () => {
+    if (isFormReady(fields)) {
+      setLoading(true)
+
+      const response = await actions.saveEvent(fields)
+
+      setLoading(false)
+      router.navigate('events.edit', {eventId: response.data.id})
+    }
+  }
 
   const anyTouchedFields = () => {
     for (const key in fields) {
