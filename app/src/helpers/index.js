@@ -26,6 +26,18 @@ export const isFormReady: boolean = (fields: {}) => {
   return true
 }
 
+export const formDataToBody = fields => {
+  const returnObject = {}
+
+  for (const key in fields) {
+    if (fields[key]) {
+      returnObject[key] = fields[key].value
+    }
+  }
+
+  return returnObject
+}
+
 export const mergeFormData = (fields, data) => {
   const returnObject = deepCopy(fields)
 
