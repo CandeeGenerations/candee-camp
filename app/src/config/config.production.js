@@ -1,5 +1,5 @@
 const Config = {
-  apiUrl: 'http://localhost:3001',
+  apiUrl: 'https://candee-camp-mock-api.netlify.com/.netlify/functions/server',
 }
 
 export default Config
