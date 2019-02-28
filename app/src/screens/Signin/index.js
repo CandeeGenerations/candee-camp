@@ -11,8 +11,8 @@ import SigninContent from './components/SigninContent'
 const Signin = () => {
   const routerContext = useRoute()
   const [fields, setFields] = useState({
-    email: {isRequired: true, value: ''},
-    password: {isRequired: true, value: ''},
+    email: {includePercent: true, isRequired: true, value: ''},
+    password: {includePercent: true, isRequired: true, value: ''},
   })
   const [loading, setLoading] = useState(false)
 

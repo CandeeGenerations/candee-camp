@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
+import {useRouter} from 'react-router5'
 
 import {eventActions as actions} from '../../../../actions'
-import {isFormReady, mergeFormData} from '../../../../helpers'
+import {isFormReady, mergeFormData, anyTouchedFields} from '../../../../helpers'
 import DrawerView from '../../../../components/Structure/DrawerView'
 import {LoaderContext} from '../../../../components/Structure/Loader'
 import ErrorWrapper, {
@@ -9,7 +10,6 @@ import ErrorWrapper, {
 } from '../../../../components/ErrorBoundary/ErrorWrapper'
 
 import EventViewWrapper from './EventViewWrapper'
-import {useRouter} from 'react-router5'
 
 type Props = {
   id?: number,
@@ -35,9 +35,9 @@ const EventView = (props: Props) => {
   const [loading, setLoading] = useState(true)
   const [eventName, setEventName] = useState('')
   const [fields, setFields] = useState({
-    endDate: {isRequired: true, value: null},
-    name: {isRequired: true, value: ''},
-    startDate: {isRequired: true, value: null},
+    endDate: {includePercent: true, isRequired: true, value: null},
+    name: {includePercent: true, isRequired: true, value: ''},
+    startDate: {includePercent: true, isRequired: true, value: null},
   })
 
   const getEvent = async () => {
@@ -74,28 +74,15 @@ const EventView = (props: Props) => {
     }
   }
 
-  const anyTouchedFields = () => {
-    for (const key in fields) {
-      if (Object.prototype.hasOwnProperty.call(fields, key)) {
-        const property = fields[key]
-
-        if (property.touched) {
-          return true
-        }
-      }
-    }
-
-    return false
-  }
-
   const submitButtonDisabled =
     loading ||
     (!fields.id && !isFormReady(fields)) ||
-    (fields.id && !anyTouchedFields()) ||
-    (anyTouchedFields() && !isFormReady(fields))
+    (fields.id && !anyTouchedFields(fields)) ||
+    (anyTouchedFields(fields) && !isFormReady(fields))
 
   return (
     <DrawerView
+      fields={fields}
       parentRoute="events"
       submitButtonDisabled={submitButtonDisabled}
       title={fields.id ? `Edit Event - ${eventName}` : 'Add a New Event'}

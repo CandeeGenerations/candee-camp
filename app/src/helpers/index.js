@@ -9,6 +9,9 @@ const errorTrace = error => {
 
 export const deepCopy = obj => merge(obj, {})
 
+export const splitCamelCase = str =>
+  str.replace(/([A-Z])/g, ' $1').toLowerCase()
+
 export const isFormReady: boolean = (fields: {}) => {
   for (const key in fields) {
     if (Object.prototype.hasOwnProperty.call(fields, key)) {
@@ -24,6 +27,81 @@ export const isFormReady: boolean = (fields: {}) => {
   }
 
   return true
+}
+
+export const percentComplete = (fields: {}) => {
+  let fieldCount = 0
+  let validFields = 0
+
+  console.log('fields :', fields)
+
+  for (const key in fields) {
+    if (Object.prototype.hasOwnProperty.call(fields, key)) {
+      const property = fields[key]
+
+      if (property.includePercent) {
+        fieldCount++
+
+        if (
+          !property.isRequired ||
+          (property.value && (!property.errors || property.errors.length === 0))
+        ) {
+          validFields++
+        }
+      }
+    }
+  }
+
+  return fieldCount === 0 ? 0 : (validFields / fieldCount) * 100
+}
+
+export const formErrors = (fields: {}) => {
+  const errors = []
+  let touched = false
+
+  for (const key in fields) {
+    if (Object.prototype.hasOwnProperty.call(fields, key)) {
+      const property = fields[key]
+
+      touched = touched || (property.touched || false)
+
+      if (property.errors && property.errors.length > 0) {
+        property.errors.forEach(({message}) =>
+          errors.push({message, type: 'error'}),
+        )
+      } else if (
+        property.isRequired &&
+        (property.value === undefined ||
+          property.value === null ||
+          property.value === '')
+      ) {
+        errors.push({
+          message: `The ${splitCamelCase(key)} field is required.`,
+          type: 'error',
+        })
+      }
+    }
+  }
+
+  if (errors.length === 0 && !touched) {
+    errors.push({message: 'There is nothing to update yet.', type: 'warning'})
+  }
+
+  return errors
+}
+
+export const anyTouchedFields = (fields: {}) => {
+  for (const key in fields) {
+    if (Object.prototype.hasOwnProperty.call(fields, key)) {
+      const property = fields[key]
+
+      if (property.touched) {
+        return true
+      }
+    }
+  }
+
+  return false
 }
 
 export const formDataToBody = fields => {

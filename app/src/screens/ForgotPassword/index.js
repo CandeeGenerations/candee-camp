@@ -9,7 +9,7 @@ import ForgotPasswordContent from './components/ForgotPasswordContent'
 
 const ForgotPassword = () => {
   const [fields, setFields] = useState({
-    email: {isRequired: true, value: ''},
+    email: {includePercent: true, isRequired: true, value: ''},
   })
   const [loading, setLoading] = useState(false)
 

@@ -3,6 +3,8 @@ import {Col, Row, Button} from 'antd'
 
 import {NavItem} from '../../../components/Navigation'
 import {Copyright} from '../../../components/Structure'
+import DisabledButtonPopup from '../../../components/DisabledButtonPopup'
+
 import ForgotPasswordForm from './ForgotPasswordForm'
 
 import './forgotPasswordContent.scss'
@@ -33,17 +35,19 @@ export default (props: Props) => (
           onSubmit={props.onSubmit}
         />
 
-        <Button
-          data-testid="sendResetLinkButton"
-          disabled={!props.validForm}
-          loading={props.loading}
-          size="large"
-          type="primary"
-          block
-          onClick={props.onSubmit}
-        >
-          Send reset link
-        </Button>
+        <DisabledButtonPopup fields={props.fields}>
+          <Button
+            data-testid="sendResetLinkButton"
+            disabled={!props.validForm}
+            loading={props.loading}
+            size="large"
+            type="primary"
+            block
+            onClick={props.onSubmit}
+          >
+            Send reset link
+          </Button>
+        </DisabledButtonPopup>
 
         <div className="cc--signin-link">
           <NavItem options={{reload: true}} routeName="signin">

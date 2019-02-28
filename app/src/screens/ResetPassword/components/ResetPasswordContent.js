@@ -3,6 +3,7 @@ import {Button, Col, Row} from 'antd'
 
 import {Copyright} from '../../../components/Structure'
 import loader from '../../../components/Structure/Loader'
+import DisabledButtonPopup from '../../../components/DisabledButtonPopup'
 
 import ResetPasswordForm from './ResetPasswordForm'
 
@@ -37,17 +38,19 @@ const ResetPasswordContent = (props: Props) => {
             onSubmit={props.onSubmit}
           />
 
-          <Button
-            data-testid="resetPasswordButton"
-            disabled={!props.validForm}
-            loading={props.loading}
-            size="large"
-            type="primary"
-            block
-            onClick={props.onSubmit}
-          >
-            Reset password
-          </Button>
+          <DisabledButtonPopup fields={props.fields}>
+            <Button
+              data-testid="resetPasswordButton"
+              disabled={!props.validForm}
+              loading={props.loading}
+              size="large"
+              type="primary"
+              block
+              onClick={props.onSubmit}
+            >
+              Reset password
+            </Button>
+          </DisabledButtonPopup>
         </Col>
       </Row>
 
