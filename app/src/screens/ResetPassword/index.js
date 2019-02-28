@@ -12,8 +12,8 @@ import ResetPasswordContent from './components/ResetPasswordContent'
 const ResetPassword = () => {
   const routerContext = useRoute()
   const [fields, setFields] = useState({
-    confirmPassword: {isRequired: true, value: ''},
-    newPassword: {isRequired: true, value: ''},
+    confirmPassword: {includePercent: true, isRequired: true, value: ''},
+    newPassword: {includePercent: true, isRequired: true, value: ''},
   })
   const [loading, setLoading] = useState({
     resetPassword: false,

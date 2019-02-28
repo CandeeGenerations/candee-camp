@@ -2,8 +2,11 @@ import React from 'react'
 import {Button, Drawer} from 'antd'
 import {useRouter} from 'react-router5'
 
+import DisabledButtonPopup from '../DisabledButtonPopup'
+
 type Props = {
   children: React.Node,
+  fields: {},
   parentRoute: string,
   submitButtonDisabled?: boolean,
   title: string,
@@ -13,9 +16,7 @@ type Props = {
   onSubmit: () => void,
 }
 
-const DrawerView = (
-  props: Props = {submitButtonDisabled: false, width: 256},
-) => {
+const DrawerView = (props: Props) => {
   const router = useRouter()
   const handleClose = () => router.navigate(props.parentRoute)
 
@@ -45,16 +46,23 @@ const DrawerView = (
           Cancel
         </Button>
 
-        <Button
-          disabled={props.submitButtonDisabled}
-          type="primary"
-          onClick={props.onSubmit}
-        >
-          Submit
-        </Button>
+        <DisabledButtonPopup fields={props.fields} placement="topRight">
+          <Button
+            disabled={props.submitButtonDisabled}
+            type="primary"
+            onClick={props.onSubmit}
+          >
+            Submit
+          </Button>
+        </DisabledButtonPopup>
       </div>
     </Drawer>
   )
+}
+
+DrawerView.defaultProps = {
+  submitButtonDisabled: false,
+  width: 256,
 }
 
 export default DrawerView
