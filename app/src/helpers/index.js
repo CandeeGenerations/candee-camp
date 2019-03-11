@@ -33,8 +33,6 @@ export const percentComplete = (fields: {}) => {
   let fieldCount = 0
   let validFields = 0
 
-  console.log('fields :', fields)
-
   for (const key in fields) {
     if (Object.prototype.hasOwnProperty.call(fields, key)) {
       const property = fields[key]
