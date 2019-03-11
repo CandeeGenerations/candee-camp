@@ -1,0 +1,11 @@
+setup:
+  - yarn
+
+dev:
+  - yarn start
+
+build:
+  - yarn build
+
+test:
+  - yarn test
