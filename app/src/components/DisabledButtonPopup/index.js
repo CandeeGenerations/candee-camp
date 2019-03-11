@@ -1,6 +1,7 @@
 import React from 'react'
 import {Icon, Popover, Progress} from 'antd'
 
+import Config from '../../config'
 import {formErrors, percentComplete} from '../../helpers'
 
 type Props = {
@@ -53,7 +54,10 @@ const DisabledButtonPopup = (props: Props) => {
       ) : (
         props.children
       )}
-      {props.showProgress && <Progress percent={percent} showInfo={false} />}
+
+      {props.showProgress && Config.features.loadingBar && (
+        <Progress percent={percent} showInfo={false} />
+      )}
     </>
   )
 }
