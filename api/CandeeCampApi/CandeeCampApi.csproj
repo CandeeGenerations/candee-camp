@@ -727,6 +727,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DataEventRecordsController.cs" />
     <Compile Include="Controllers\FooController.cs" />
+    <Compile Include="Controllers\UserInfoController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\TokenTestController.cs" />
     <Compile Include="DBObjects\AuthContext.cs" />
@@ -750,6 +751,7 @@
     <Compile Include="Models\NewUserModel.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\ResponseUser.cs" />
     <Compile Include="Models\ResultModel.cs" />
     <Compile Include="Models\TokenModel.cs" />
     <Compile Include="Models\UserModel.cs" />

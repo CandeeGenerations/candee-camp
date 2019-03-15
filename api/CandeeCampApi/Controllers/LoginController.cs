@@ -11,6 +11,9 @@ using CandeeCampApi.BackgroundHandlers;
 using CandeeCampApi.DomainObjects;
 using System.Web.Http;
 using System.Net.Http;
+using CandeeCampApi.Repositories;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 //using System.Web.Http;
 
 namespace CandeeCampApi.Controllers
@@ -19,6 +22,13 @@ namespace CandeeCampApi.Controllers
     //[Route("api/Login")]
     public class LoginController : ApiController
     {
+
+        private AuthRepository _repo = null;
+
+        public LoginController()
+        {
+            _repo = new AuthRepository();
+        }
         // GET api/values
         //[HttpGet("{getUserInfo}")]
         //[Route("api/[controller]/getUserInfo")]
@@ -42,7 +52,7 @@ namespace CandeeCampApi.Controllers
         [HttpPost]
         //[ActionName("userLogin")]
         [ActionName("userLogin")]
-        public IHttpActionResult Post(LoginUser loginUser)
+        public async System.Threading.Tasks.Task<IHttpActionResult> PostAsync(LoginUser loginUser)
         {
             
             UserModel user = new UserModel();
@@ -50,10 +60,28 @@ namespace CandeeCampApi.Controllers
             user.Email = "1";
             user.Password = "1";
             //string authorized = TokenTestController.Authorize();
-
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            IdentityUser result = await _repo.FindUser(loginUser.userName, loginUser.Password);
+            result = FormatResponse(result);
             //ServerResponse serverResponse = new ServerResponse(user);
-            return Ok(user);
+            return Ok(result);
         }
+
+        private static IdentityUser FormatResponse(IdentityUser result)
+        {
+            result.PasswordHash = null;
+            result.SecurityStamp = null;
+            //result.TwoFactorEnabled = null;
+            result.LockoutEndDateUtc = null;
+            //result.LockoutEnabled = null;
+
+            return result;
+        }
+
+
 
         //// PUT api/values/5
         //[HttpPut("{id}")]
