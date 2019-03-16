@@ -719,7 +719,7 @@
     <Compile Include="App_Start\ApiConfig.cs" />
     <Compile Include="App_Start\ApiExceptionHandler.cs" />
     <Compile Include="App_Start\ApiExceptionLogger.cs" />
-    <Compile Include="App_Start\SimpleAuthorizationServiceProvider.cs" />
+    <Compile Include="Providers\SimpleAuthorizationServiceProvider.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="BackgroundHandlers\EmailService.cs" />
     <Compile Include="Common\GuidId.cs" />
@@ -756,6 +756,7 @@
     <Compile Include="Models\TokenModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Providers\DomainModelMySqlContext.cs" />
     <Compile Include="Providers\MySqlConfiguration.cs" />
     <Compile Include="Providers\MySqlHistoryContext.cs" />

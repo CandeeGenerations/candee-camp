@@ -72,13 +72,14 @@ namespace CandeeCampApi
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(60),
-                Provider = new CandeeCampApi.App_Start.SimpleAuthorizationServiceProvider()
+                Provider = new CandeeCampApi.Providers.SimpleAuthorizationServiceProvider()
             };
 
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
         }
 
+        //public void 
        
     }
 }

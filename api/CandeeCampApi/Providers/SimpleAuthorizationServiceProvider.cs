@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using CandeeCampApi.Repositories;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace CandeeCampApi.App_Start
+namespace CandeeCampApi.Providers
 {
     public class SimpleAuthorizationServiceProvider : OAuthAuthorizationServerProvider
     {
