@@ -40,6 +40,7 @@ namespace CandeeCampApi.DBObjects
 
             modelBuilder.Entity<IdentityUserRole>().Property(p => p.UserId).HasMaxLength(1);
             modelBuilder.Entity<IdentityUserRole>().Property(p => p.RoleId).HasMaxLength(1);
+            //modelBuilder.Entity<Event>().Property(p => p.eventName).HasMaxLength(50);
         }
 
         public System.Data.Entity.DbSet<Person> People { get; set; }

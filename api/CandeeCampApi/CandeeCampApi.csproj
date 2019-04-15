@@ -497,6 +497,9 @@
     <Reference Include="System.Interactive.Async, Version=3.2.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Interactive.Async.3.2.0\lib\net46\System.Interactive.Async.dll</HintPath>
     </Reference>
+    <Reference Include="System.Interactive.Async.Providers, Version=3.2.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Interactive.Async.Providers.3.2.0\lib\net45\System.Interactive.Async.Providers.dll</HintPath>
+    </Reference>
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
       <Private>True</Private>
@@ -719,6 +722,14 @@
     <Compile Include="App_Start\ApiConfig.cs" />
     <Compile Include="App_Start\ApiExceptionHandler.cs" />
     <Compile Include="App_Start\ApiExceptionLogger.cs" />
+    <Compile Include="Controllers\EventController.cs" />
+    <Compile Include="Database\IEntity.cs" />
+    <Compile Include="Interfaces\IEventsRepository.cs" />
+    <Compile Include="Migrations\201904062227474_newest.cs" />
+    <Compile Include="Migrations\201904062227474_newest.Designer.cs">
+      <DependentUpon>201904062227474_newest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IRepositoryBase.cs" />
     <Compile Include="Providers\SimpleAuthorizationServiceProvider.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="BackgroundHandlers\EmailService.cs" />
@@ -737,10 +748,6 @@
     <Compile Include="DomainObjects\UserRole.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903150039458_new.cs" />
-    <Compile Include="Migrations\201903150039458_new.Designer.cs">
-      <DependentUpon>201903150039458_new.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\MyOwnMigrationSqlGeneratorOverride.cs" />
@@ -761,7 +768,10 @@
     <Compile Include="Providers\MySqlConfiguration.cs" />
     <Compile Include="Providers\MySqlHistoryContext.cs" />
     <Compile Include="Providers\MySqlInitializer.cs" />
+    <Compile Include="Repositories\EventRepository.cs" />
     <Compile Include="Repositories\AuthRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -782,8 +792,8 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201903150039458_new.resx">
-      <DependentUpon>201903150039458_new.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904062227474_newest.resx">
+      <DependentUpon>201904062227474_newest.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
