@@ -24,8 +24,14 @@ const NavBar = () => {
       name: 'Events',
       routeName: 'events',
     },
+    {
+      name: 'Users',
+      routeName: 'users',
+    },
   ]
-  const selected = navItems.find(item => item.routeName === routerContext.route.name)
+  const selected = navItems.find(
+    item => item.routeName === routerContext.route.name,
+  )
 
   return (
     <NavBarContent

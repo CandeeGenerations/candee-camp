@@ -1,6 +1,6 @@
 import {useEffect} from 'react'
 
-export const useTitle = title => {
+export default title => {
   useEffect(() => {
     document.title = `${title} - Candee Camp`
   }, [])
