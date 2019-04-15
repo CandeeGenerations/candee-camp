@@ -6,4 +6,11 @@ export class Constants {
       showSizeChanger: true,
     },
   }
+
+  static Roles = {
+    FullAdmin: 0,
+    Admin: 1,
+    Manager: 2,
+    ReadOnly: 3,
+  }
 }

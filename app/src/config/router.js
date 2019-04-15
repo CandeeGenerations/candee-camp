@@ -30,6 +30,20 @@ const routes = [
       },
     ],
   },
+  {
+    name: 'users',
+    path: '/users',
+    children: [
+      {
+        name: 'add',
+        path: '/add',
+      },
+      {
+        name: 'edit',
+        path: '/edit/:userId',
+      },
+    ],
+  },
 ]
 
 const router = createRouter(routes, {

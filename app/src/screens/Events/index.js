@@ -3,7 +3,7 @@ import {Card, Divider, Button} from 'antd'
 import {useRoute} from 'react-router5'
 
 import {eventActions as actions} from '../../actions'
-import {useTitle} from '../../helpers/hooks/useTitle'
+import useTitle from '../../helpers/hooks/useTitle'
 import {LoaderContext} from '../../components/Structure/Loader'
 import ErrorWrapper, {
   useError,

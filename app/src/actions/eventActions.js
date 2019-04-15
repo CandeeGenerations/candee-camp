@@ -12,6 +12,17 @@ export const loadEvents = async () => {
   }
 }
 
+export const loadEventStats = async () => {
+  try {
+    const response = await request.get('/events')
+
+    return response.data.length
+  } catch (error) {
+    handleError('Unable to load Event Stats. Please try again.', error)
+    throw new Error(error)
+  }
+}
+
 export const loadEvent = async (eventId: number) => {
   try {
     const response = await request.get(`/events/${eventId}`)

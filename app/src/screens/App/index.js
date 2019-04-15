@@ -4,6 +4,7 @@ import {useRoute} from 'react-router5'
 
 import {getUser} from '../../helpers/authHelpers'
 
+import Users from '../Users'
 import Signin from '../Signin'
 import Events from '../Events'
 import NotFound from '../NotFound'
@@ -74,6 +75,8 @@ const App = () => {
     content = <ResetPassword />
   } else if (routerContext.route.name.includes('events')) {
     content = <Events />
+  } else if (routerContext.route.name.includes('users')) {
+    content = <Users />
   } else {
     content = <NotFound />
   }

@@ -1,5 +1,8 @@
+import React from 'react'
+import dayjs from 'dayjs'
 import merge from 'deepmerge'
-import {notification} from 'antd'
+import {notification, Tag} from 'antd'
+import {Constants} from './constants'
 
 const errorTrace = error => {
   console.error('Error :', error) // eslint-disable-line no-console
@@ -8,6 +11,42 @@ const errorTrace = error => {
 }
 
 export const deepCopy = obj => merge(obj, {})
+
+export const formatDate = date => dayjs(date).format('ddd, MMM D, YYYY')
+
+export const formatRole = role => {
+  let color = null
+  let name = 'None'
+
+  switch (role) {
+    case Constants.Roles.FullAdmin:
+      color = 'purple'
+      name = 'Full Admin'
+      break
+
+    case Constants.Roles.Admin:
+      color = 'red'
+      name = 'Admin'
+      break
+
+    case Constants.Roles.Manager:
+      color = 'blue'
+      name = 'Manager'
+      break
+
+    case Constants.Roles.ReadOnly:
+      color = 'green'
+      name = 'Ready Only'
+      break
+
+    default:
+      color = null
+      name = 'none'
+      break
+  }
+
+  return <Tag color={color}>{name}</Tag>
+}
 
 export const splitCamelCase = str =>
   str.replace(/([A-Z])/g, ' $1').toLowerCase()
