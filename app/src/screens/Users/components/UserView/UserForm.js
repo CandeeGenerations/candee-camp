@@ -45,7 +45,7 @@ const UserForm = Form.create({
           <Form.Item label="First Name" hasFeedback>
             {getFieldDecorator('firstName', {
               rules: [{required: true, message: 'The first name is required.'}],
-            })(<Input placeholder="First Name" autoFocus />)}
+            })(<Input placeholder="e.g. John" autoFocus />)}
           </Form.Item>
         </Col>
 
@@ -53,7 +53,7 @@ const UserForm = Form.create({
           <Form.Item label="Last Name" hasFeedback>
             {getFieldDecorator('lastName', {
               rules: [{required: true, message: 'The last name is required.'}],
-            })(<Input placeholder="Last Name" />)}
+            })(<Input placeholder="e.g. Doe" />)}
           </Form.Item>
         </Col>
       </Row>
@@ -63,7 +63,7 @@ const UserForm = Form.create({
           <Form.Item label="Username" hasFeedback>
             {getFieldDecorator('username', {
               rules: [{required: true, message: 'The username is required.'}],
-            })(<Input placeholder="Username" />)}
+            })(<Input placeholder="e.g. jdoe" />)}
           </Form.Item>
         </Col>
 
@@ -74,7 +74,7 @@ const UserForm = Form.create({
                 {required: true, message: 'The email address is required.'},
                 {type: 'email', message: 'Please use a valid email.'},
               ],
-            })(<Input placeholder="Email Address" />)}
+            })(<Input placeholder="e.g. johndoe@gmail.com" />)}
           </Form.Item>
         </Col>
       </Row>

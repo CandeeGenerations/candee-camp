@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import {Col, DatePicker, Form, Input, Row} from 'antd'
 
 const EventForm = Form.create({
@@ -15,7 +15,7 @@ const EventForm = Form.create({
     return {
       endDate: Form.createFormField({
         ...endDate,
-        value: endDate.value ? moment(endDate.value) : null,
+        value: endDate.value ? dayjs(endDate.value) : null,
       }),
       name: Form.createFormField({
         ...name,
@@ -23,7 +23,7 @@ const EventForm = Form.create({
       }),
       startDate: Form.createFormField({
         ...startDate,
-        value: startDate.value ? moment(startDate.value) : null,
+        value: startDate.value ? dayjs(startDate.value) : null,
       }),
     }
   },
@@ -63,7 +63,7 @@ const EventForm = Form.create({
           rules: [
             {required: true, message: 'The name of the event is required.'},
           ],
-        })(<Input placeholder="Name" autoFocus />)}
+        })(<Input placeholder="e.g. Summer Camp" autoFocus />)}
       </Form.Item>
 
       <Row gutter={16}>
@@ -79,7 +79,7 @@ const EventForm = Form.create({
             })(
               <DatePicker
                 disabledDate={disabledStartDate}
-                placeholder="Start Date"
+                placeholder={`e.g. ${dayjs().format('MM/DD/YYYY')}`}
                 onOpenChange={handleStartOpenChange}
               />,
             )}
@@ -99,7 +99,9 @@ const EventForm = Form.create({
               <DatePicker
                 disabledDate={disabledEndDate}
                 open={endOpen}
-                placeholder="End Date"
+                placeholder={`e.g. ${dayjs()
+                  .add(1, 'week')
+                  .format('MM/DD/YYYY')}`}
                 onOpenChange={handleEndOpenChange}
               />,
             )}
