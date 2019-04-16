@@ -32,7 +32,7 @@ export default Form.create({
           ],
         })(
           <Input
-            placeholder="Email"
+            placeholder="e.g. johndoe@gmail.com"
             size="large"
             autoFocus
             onKeyUp={e => {

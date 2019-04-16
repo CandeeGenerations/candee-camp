@@ -34,7 +34,9 @@ const SigninForm = Form.create({
             {required: true, message: 'Your email is required.'},
             {type: 'email', message: 'Please use a valid email.'},
           ],
-        })(<Input placeholder="Email" size="large" autoFocus />)}
+        })(
+          <Input placeholder="e.g. johndoe@gmail.com" size="large" autoFocus />,
+        )}
       </Form.Item>
 
       <Form.Item style={{marginTop: 20}}>
@@ -45,7 +47,7 @@ const SigninForm = Form.create({
           ],
         })(
           <Input.Password
-            placeholder="Password"
+            placeholder="e.g. password123!"
             size="large"
             onKeyUp={e => {
               if (e.keyCode === 13) {

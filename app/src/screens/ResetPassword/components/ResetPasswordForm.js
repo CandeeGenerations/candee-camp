@@ -43,7 +43,7 @@ const ResetPasswordForm = Form.create({
 
   return (
     <Form>
-      <Form.Item hasFeedback>
+      <Form.Item>
         {getFieldDecorator('newPassword', {
           rules: [
             {required: true, message: 'Your new password is required.'},
@@ -51,16 +51,15 @@ const ResetPasswordForm = Form.create({
             {validator: validateToNextPassword},
           ],
         })(
-          <Input
-            placeholder="New password"
+          <Input.Password
+            placeholder="e.g. password123!"
             size="large"
-            type="password"
             autoFocus
           />,
         )}
       </Form.Item>
 
-      <Form.Item hasFeedback>
+      <Form.Item>
         {getFieldDecorator('confirmPassword', {
           rules: [
             {
@@ -70,10 +69,9 @@ const ResetPasswordForm = Form.create({
             {validator: compareToFirstPassword},
           ],
         })(
-          <Input
-            placeholder="Confirm password"
+          <Input.Password
+            placeholder="e.g. password123!"
             size="large"
-            type="password"
             onKeyUp={e => {
               if (e.keyCode === 13) {
                 onSubmit()
