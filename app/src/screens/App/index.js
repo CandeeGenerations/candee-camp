@@ -25,6 +25,8 @@ const App = () => {
   const routerContext = useRoute()
   const user = getUser()
 
+  console.log('version :', process.env.REACT_APP_VERSION)
+
   const testUnauthenticatedRoutes = () => {
     const unauthenticatedRoutes = ['signin', 'forgotPassword', 'resetPassword']
     let isUnauthenticated = false
