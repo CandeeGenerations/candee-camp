@@ -37,17 +37,16 @@ const SigninForm = Form.create({
         })(<Input placeholder="Email" size="large" autoFocus />)}
       </Form.Item>
 
-      <Form.Item style={{marginTop: 20}} hasFeedback>
+      <Form.Item style={{marginTop: 20}}>
         {getFieldDecorator('password', {
           rules: [
             {required: true, message: 'Your password is required.'},
             {min: 6, message: 'This password is too short.'},
           ],
         })(
-          <Input
+          <Input.Password
             placeholder="Password"
             size="large"
-            type="password"
             onKeyUp={e => {
               if (e.keyCode === 13) {
                 onSubmit()

@@ -18,7 +18,7 @@ Stat.propTypes = {
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
   }).isRequired,
-  title: PropTypes.title.isRequired,
+  title: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
 }
 
