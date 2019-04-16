@@ -1,13 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import './signinLayout.scss'
 
-type Props = {
-  children: React.ReactNode,
-  title: string,
-}
-
-export default (props: Props) => {
+const SigninLayout = props => {
   return (
     <div className="cc--signin-layout">
       <div className="cc--content">{props.children}</div>
@@ -18,3 +14,10 @@ export default (props: Props) => {
     </div>
   )
 }
+
+SigninLayout.propTypes = {
+  children: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
+}
+
+export default SigninLayout

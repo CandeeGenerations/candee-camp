@@ -94,8 +94,4 @@ const App = () => {
   )
 }
 
-App.defaultProps = {
-  route: {name: ''},
-}
-
 export default App

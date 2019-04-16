@@ -1,17 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Card, Statistic} from 'antd'
 
 import loader from '../../../components/Structure/Loader'
 
-type Props = {
-  loader: {
-    spinning: boolean,
-  },
-  title: string,
-  value: number,
-}
-
-const Stat = (props: Props) => (
+const Stat = props => (
   <Card>
     {props.loader.spinning ? (
       <div style={{minHeight: 75}} />
@@ -20,5 +13,13 @@ const Stat = (props: Props) => (
     )}
   </Card>
 )
+
+Stat.propTypes = {
+  loader: PropTypes.shape({
+    spinning: PropTypes.bool.isRequired,
+  }).isRequired,
+  title: PropTypes.title.isRequired,
+  value: PropTypes.number.isRequired,
+}
 
 export default loader(Stat)

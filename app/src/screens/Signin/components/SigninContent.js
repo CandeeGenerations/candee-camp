@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Col, Row, Button} from 'antd'
 
 import {NavItem} from '../../../components/Navigation'
@@ -9,17 +10,7 @@ import SigninForm from './SigninForm'
 
 import './signinContent.scss'
 
-type Props = {
-  fields: {},
-  loading: boolean,
-  validForm: boolean,
-
-  // functions
-  onFieldChange: () => void,
-  onSubmit: () => void,
-}
-
-const SigninContent = (props: Props) => (
+const SigninContent = props => (
   <div>
     <h1 className="cc--signin--header">Sign in</h1>
 
@@ -60,5 +51,15 @@ const SigninContent = (props: Props) => (
     <Copyright />
   </div>
 )
+
+SigninContent.propTypes = {
+  fields: PropTypes.shape({}).isRequired,
+  loading: PropTypes.bool.isRequired,
+  validForm: PropTypes.bool.isRequired,
+
+  // functions
+  onFieldChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+}
 
 export default SigninContent

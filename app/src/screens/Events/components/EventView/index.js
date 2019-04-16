@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 
 import {eventActions as actions} from '../../../../actions'
@@ -11,25 +12,7 @@ import ErrorWrapper, {
 
 import EventViewWrapper from './EventViewWrapper'
 
-type Props = {
-  id?: number,
-
-  // functions
-  getEvent: (
-    eventId: number,
-  ) => [
-    {
-      createBy: string,
-      createdDate: number,
-      endDate: number,
-      id: number,
-      name: string,
-      startDate: number,
-    },
-  ],
-}
-
-const EventView = (props: Props) => {
+const EventView = props => {
   const router = useRouter()
   const errorWrapper = useError()
   const [loading, setLoading] = useState(true)
@@ -98,6 +81,17 @@ const EventView = (props: Props) => {
       </LoaderContext.Provider>
     </DrawerView>
   )
+}
+
+EventView.defaultProps = {
+  id: null,
+}
+
+EventView.propTypes = {
+  id: PropTypes.number,
+
+  // functions
+  getEvent: PropTypes.func.isRequired,
 }
 
 export default EventView

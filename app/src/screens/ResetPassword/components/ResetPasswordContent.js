@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Button, Col, Row} from 'antd'
 
 import {Copyright} from '../../../components/Structure'
@@ -9,18 +10,8 @@ import ResetPasswordForm from './ResetPasswordForm'
 
 import './resetPasswordContent.scss'
 
-type Props = {
-  fields: {},
-  loading: boolean,
-  validForm: boolean,
-
-  // functions
-  onFieldChange: () => void,
-  onSubmit: () => void,
-}
-
-const ResetPasswordContent = (props: Props) => {
-  return props.loader.spinning ? (
+const ResetPasswordContent = props =>
+  props.loader.spinning ? (
     <div style={{minHeight: 533}} />
   ) : (
     <div>
@@ -57,6 +48,15 @@ const ResetPasswordContent = (props: Props) => {
       <Copyright />
     </div>
   )
+
+ResetPasswordContent.propTypes = {
+  fields: PropTypes.shape({}).isRequired,
+  loading: PropTypes.bool.isRequired,
+  validForm: PropTypes.bool.isRequired,
+
+  // functions
+  onFieldChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 }
 
 export default loader(ResetPasswordContent)

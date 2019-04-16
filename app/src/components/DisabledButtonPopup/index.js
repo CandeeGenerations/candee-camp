@@ -1,17 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Icon, Popover, Progress} from 'antd'
 
 import Config from '../../config'
 import {formErrors, percentComplete} from '../../helpers'
 
-type Props = {
-  children: React.ReactNode,
-  fields: {},
-  placement?: string,
-  showProgress?: boolean,
-}
-
-const DisabledButtonPopup = (props: Props) => {
+const DisabledButtonPopup = props => {
   const errors = formErrors(props.fields)
   const percent = percentComplete(props.fields)
 
@@ -65,6 +59,13 @@ const DisabledButtonPopup = (props: Props) => {
 DisabledButtonPopup.defaultProps = {
   placement: 'top',
   showProgress: true,
+}
+
+DisabledButtonPopup.propTypes = {
+  children: PropTypes.node.isRequired,
+  fields: PropTypes.shape({}).isRequired,
+  placement: PropTypes.string,
+  showProgress: PropTypes.bool,
 }
 
 export default DisabledButtonPopup

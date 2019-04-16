@@ -1,22 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Button, Drawer} from 'antd'
 import {useRouter} from 'react-router5'
 
 import DisabledButtonPopup from '../DisabledButtonPopup'
 
-type Props = {
-  children: React.Node,
-  fields: {},
-  parentRoute: string,
-  submitButtonDisabled?: boolean,
-  title: string,
-  width?: number,
-
-  // functions
-  onSubmit: () => void,
-}
-
-const DrawerView = (props: Props) => {
+const DrawerView = props => {
   const router = useRouter()
   const handleClose = () => router.navigate(props.parentRoute)
 
@@ -63,6 +52,18 @@ const DrawerView = (props: Props) => {
 DrawerView.defaultProps = {
   submitButtonDisabled: false,
   width: 256,
+}
+
+DrawerView.propTypes = {
+  children: PropTypes.node.isRequired,
+  fields: PropTypes.shape({}),
+  parentRoute: PropTypes.string.isRequired,
+  submitButtonDisabled: PropTypes.bool,
+  title: PropTypes.string.isRequired,
+  width: PropTypes.number,
+
+  // functions
+  onSubmit: PropTypes.func.isRequired,
 }
 
 export default DrawerView

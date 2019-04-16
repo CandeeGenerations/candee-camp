@@ -1,20 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import loader from '../../../../components/Structure/Loader'
 
 import EventForm from './EventForm'
 
-type Props = {
-  fields: {},
-  loader: {
-    spinner: boolean,
-  },
-
-  // functions
-  onFieldChange: () => void,
-}
-
-const EventViewWrapper = (props: Props) =>
+const EventViewWrapper = props =>
   props.loader.spinner ? null : (
     <>
       <p>
@@ -24,5 +15,15 @@ const EventViewWrapper = (props: Props) =>
       <EventForm {...props.fields} onChange={props.onFieldChange} />
     </>
   )
+
+EventViewWrapper.propTypes = {
+  fields: PropTypes.shape({}).isRequired,
+  loader: PropTypes.shape({
+    spinner: PropTypes.bool.isRequired,
+  }).isRequired,
+
+  // functions
+  onFieldChange: PropTypes.func.isRequired,
+}
 
 export default loader(EventViewWrapper)

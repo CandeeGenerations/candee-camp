@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Icon, Layout, Menu, Spin} from 'antd'
 
 import {NavItem} from '../../Navigation'
@@ -8,26 +9,7 @@ import './navBarContent.scss'
 const {Header} = Layout
 const {ItemGroup, SubMenu} = Menu
 
-type Props = {
-  loading: {
-    signout: boolean,
-  },
-  navItems: [
-    {
-      name: string,
-      routeName: string,
-    },
-  ],
-  selectedItem?: {
-    name: string,
-    routeName: string,
-  },
-
-  // functions
-  onSignout: () => void,
-}
-
-export default (props: Props = {selectedItem: null}) => {
+const NavBarContent = props => {
   return (
     <Header className="cc--navbar--header">
       <div className="cc--logo">
@@ -71,3 +53,28 @@ export default (props: Props = {selectedItem: null}) => {
     </Header>
   )
 }
+
+NavBarContent.defaultProps = {
+  selectedItem: null,
+}
+
+NavBarContent.propTypes = {
+  loading: PropTypes.shape({
+    signout: PropTypes.bool.isRequired,
+  }).isRequired,
+  navItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      routeName: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  selectedItem: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    routeName: PropTypes.string.isRequired,
+  }),
+
+  // functions
+  onSignout: PropTypes.func.isRequired,
+}
+
+export default NavBarContent

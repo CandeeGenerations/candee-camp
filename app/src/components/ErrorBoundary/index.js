@@ -1,11 +1,8 @@
 import React from 'react'
 import equal from 'deep-equal'
+import PropTypes from 'prop-types'
 
-type Props = {
-  router: {},
-}
-
-class ErrorBoundary extends React.Component<Props> {
+class ErrorBoundary extends React.Component {
   state = {error: null, hasError: false}
 
   componentDidUpdate(prevProps) {
@@ -31,6 +28,10 @@ class ErrorBoundary extends React.Component<Props> {
     // Normally, just render children
     return this.props.children
   }
+}
+
+ErrorBoundary.propTypes = {
+  router: PropTypes.shape({}).isRequired,
 }
 
 export default ErrorBoundary

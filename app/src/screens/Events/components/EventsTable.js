@@ -1,5 +1,6 @@
 import React from 'react'
 import dayjs from 'dayjs'
+import PropTypes from 'prop-types'
 import {Divider, Table, Tag} from 'antd'
 
 import {Constants} from '../../../helpers/constants'
@@ -7,27 +8,10 @@ import {Constants} from '../../../helpers/constants'
 import {NavItem} from '../../../components/Navigation'
 import loader from '../../../components/Structure/Loader'
 
-type Props = {
-  events: [
-    {
-      createdBy: string,
-      createdDate: number,
-      endDate: number,
-      key: number,
-      id: number,
-      name: string,
-      startDate: number,
-    },
-  ],
-  loader: {
-    spinning: boolean,
-  },
-}
-
 const {Column} = Table
 const formatDate = date => dayjs(date).format('ddd, MMM D, YYYY')
 
-const EventsTable = (props: Props) => {
+const EventsTable = props => {
   return props.loader.spinning ? (
     <div style={{minHeight: 500}} />
   ) : (
@@ -103,6 +87,23 @@ const EventsTable = (props: Props) => {
       />
     </Table>
   )
+}
+
+EventsTable.propTypes = {
+  events: PropTypes.arrayOf(
+    PropTypes.shape({
+      createdBy: PropTypes.string.isRequired,
+      createdDate: PropTypes.number.isRequired,
+      endDate: PropTypes.number.isRequired,
+      key: PropTypes.number.isRequired,
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      startDate: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  loader: PropTypes.shape({
+    spinning: PropTypes.bool.isRequired,
+  }).isRequired,
 }
 
 export default loader(EventsTable)

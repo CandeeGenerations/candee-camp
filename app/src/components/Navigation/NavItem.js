@@ -1,19 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 
-type Props = {
-  children?: any,
-  className?: string,
-  noClick?: boolean,
-  options?: {},
-  params?: {},
-  routeName: string,
-
-  // functions
-  onClick?: () => void,
-}
-
-const NavItem = (props: Props) => {
+const NavItem = props => {
   const router = useRouter()
   const href = router.buildUrl(props.routeName, props.params)
   const handleClick = evt => {
@@ -42,6 +31,18 @@ NavItem.defaultProps = {
   onClick: null,
   options: {},
   params: {},
+}
+
+NavItem.propTypes = {
+  children: PropTypes.any,
+  className: PropTypes.string,
+  noClick: PropTypes.bool,
+  options: PropTypes.shape({}),
+  params: PropTypes.shape({}),
+  routeName: PropTypes.string.isRequired,
+
+  // functions
+  onClick: PropTypes.func.isRequired,
 }
 
 export default NavItem

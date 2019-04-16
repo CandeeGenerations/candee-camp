@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Col, Row, Button} from 'antd'
 
 import {NavItem} from '../../../components/Navigation'
@@ -9,17 +10,7 @@ import ForgotPasswordForm from './ForgotPasswordForm'
 
 import './forgotPasswordContent.scss'
 
-type Props = {
-  fields: {},
-  loading: boolean,
-  validForm: boolean,
-
-  // functions
-  onFieldChange: () => void,
-  onSubmit: () => void,
-}
-
-export default (props: Props) => (
+const ForgotPasswordContent = props => (
   <div>
     <h1 className="cc--forgot-password--header">Forgot your password?</h1>
 
@@ -60,3 +51,15 @@ export default (props: Props) => (
     <Copyright />
   </div>
 )
+
+ForgotPasswordContent.propTypes = {
+  fields: PropTypes.shape({}).isRequired,
+  loading: PropTypes.bool.isRequired,
+  validForm: PropTypes.bool.isRequired,
+
+  // functions
+  onFieldChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+}
+
+export default ForgotPasswordContent

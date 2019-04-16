@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 
 import {userActions as actions} from '../../../../actions'
@@ -13,27 +14,7 @@ import ErrorWrapper, {
 
 import UserViewWrapper from './UserViewWrapper'
 
-type Props = {
-  id?: number,
-
-  // functions
-  getUser: (
-    userId: number,
-  ) => [
-    {
-      createdDate: number,
-      firstName: string,
-      id: number,
-      key: number,
-      lastLoggedInDate?: number,
-      lastName: string,
-      role: number,
-      updatedDate: number,
-    },
-  ],
-}
-
-const UserView = (props: Props) => {
+const UserView = props => {
   const router = useRouter()
   const errorWrapper = useError()
   const user = useAsyncLoad(actions.loadUser, props.id)
@@ -105,6 +86,17 @@ const UserView = (props: Props) => {
       </LoaderContext.Provider>
     </DrawerView>
   )
+}
+
+UserView.defaultProps = {
+  id: null,
+}
+
+UserView.propTypes = {
+  id: PropTypes.number,
+
+  // functions
+  getUser: PropTypes.func.isRequired,
 }
 
 export default UserView

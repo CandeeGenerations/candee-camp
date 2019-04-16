@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Divider, Table} from 'antd'
 
 import {Constants} from '../../../helpers/constants'
@@ -7,28 +8,10 @@ import {formatDate, formatRole} from '../../../helpers'
 import {NavItem} from '../../../components/Navigation'
 import loader from '../../../components/Structure/Loader'
 
-type Props = {
-  users: [
-    {
-      createdDate: number,
-      firstName: string,
-      id: number,
-      key: number,
-      lastLoggedInDate?: number,
-      lastName: string,
-      role: number,
-      updatedDate: number,
-    },
-  ],
-  loader: {
-    spinning: boolean,
-  },
-}
-
 const {Column} = Table
 
-const UsersTable = (props: Props) => {
-  return props.loader.spinning ? (
+const UsersTable = props =>
+  props.loader.spinning ? (
     <div style={{minHeight: 500}} />
   ) : (
     <Table
@@ -85,6 +68,23 @@ const UsersTable = (props: Props) => {
       />
     </Table>
   )
+
+UsersTable.propTypes = {
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      createdDate: PropTypes.number.isRequired,
+      firstName: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      key: PropTypes.number.isRequired,
+      lastLoggedInDate: PropTypes.number,
+      lastName: PropTypes.string.isRequired,
+      role: PropTypes.number.isRequired,
+      updatedDate: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
+  loader: PropTypes.shape({
+    spinning: PropTypes.bool.isRequired,
+  }).isRequired,
 }
 
 export default loader(UsersTable)
