@@ -88,10 +88,7 @@ EventView.defaultProps = {
 }
 
 EventView.propTypes = {
-  id: PropTypes.number,
-
-  // functions
-  getEvent: PropTypes.func.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 }
 
 export default EventView

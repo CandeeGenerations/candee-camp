@@ -37,7 +37,7 @@ const NavBarContent = props => {
         >
           <ItemGroup title="Username">
             <Menu.Item className="cc--sign-out" onClick={props.onSignout}>
-              {props.loading.signout ? (
+              {props.loading ? (
                 <Spin
                   indicator={
                     <Icon style={{fontSize: 18}} type="loading" spin />
@@ -59,9 +59,7 @@ NavBarContent.defaultProps = {
 }
 
 NavBarContent.propTypes = {
-  loading: PropTypes.shape({
-    signout: PropTypes.bool.isRequired,
-  }).isRequired,
+  loading: PropTypes.bool.isRequired,
   navItems: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,

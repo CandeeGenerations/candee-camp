@@ -6,7 +6,7 @@ import loader from '../../../../components/Structure/Loader'
 import UserForm from './UserForm'
 
 const UserViewWrapper = props =>
-  props.loader.spinner ? null : (
+  props.loader.spinning ? null : (
     <>
       <p>{props.fields.id ? 'Edit the user here.' : 'Add a new user here.'}</p>
 
@@ -17,7 +17,7 @@ const UserViewWrapper = props =>
 UserViewWrapper.propTypes = {
   fields: PropTypes.shape({}).isRequired,
   loader: PropTypes.shape({
-    spinner: PropTypes.bool.isRequired,
+    spinning: PropTypes.bool.isRequired,
   }).isRequired,
 
   // functions

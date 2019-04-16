@@ -14,12 +14,16 @@ const Stat = props => (
   </Card>
 )
 
+Stat.defaultProps = {
+  value: 0,
+}
+
 Stat.propTypes = {
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
   }).isRequired,
   title: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
 }
 
 export default loader(Stat)

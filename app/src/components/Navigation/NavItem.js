@@ -42,7 +42,7 @@ NavItem.propTypes = {
   routeName: PropTypes.string.isRequired,
 
   // functions
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
 }
 
 export default NavItem

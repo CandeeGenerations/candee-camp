@@ -93,10 +93,7 @@ UserView.defaultProps = {
 }
 
 UserView.propTypes = {
-  id: PropTypes.number,
-
-  // functions
-  getUser: PropTypes.func.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 }
 
 export default UserView

@@ -22,7 +22,7 @@ const ResetPassword = () => {
 
   useTitle('Reset Password')
 
-  useEffect(async () => {
+  const validateToken = async () => {
     try {
       const response = await actions.validateResetPasswordToken(
         routerContext.route.params.token,
@@ -41,6 +41,10 @@ const ResetPassword = () => {
     } catch (error) {
       routerContext.router.navigate('signin')
     }
+  }
+
+  useEffect(() => {
+    validateToken()
   }, [])
 
   const handleFieldChange = changedFields =>
