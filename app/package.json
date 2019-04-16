@@ -76,5 +76,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24"
+  }
 }

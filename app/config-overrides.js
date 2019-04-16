@@ -1,6 +1,12 @@
-const {addLessLoader, fixBabelImports, override} = require('customize-cra')
+const {
+  addLessLoader,
+  fixBabelImports,
+  override,
+  useBabelRc,
+} = require('customize-cra')
 
 module.exports = override(
+  useBabelRc(),
   fixBabelImports('import', {
     libraryName: 'antd',
     libraryDirectory: 'es',
