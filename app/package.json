@@ -65,8 +65,9 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test"
+    "build": "REACT_APP_VERSION=$npm_package_version react-app-rewired build",
+    "test": "react-app-rewired test",
+    "precommit": "npm version patch && lint-staged"
   },
   "eslintConfig": {
     "extends": "react-app"
