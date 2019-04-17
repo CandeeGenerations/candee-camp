@@ -15,11 +15,8 @@ import ForgotPassword from '../ForgotPassword'
 import Version from '../../components/Version'
 import ErrorBoundary from '../../components/ErrorBoundary'
 
-import './app.scss'
 import '../../content/zmdi.less'
 import '../../content/antd.less'
-
-const {Content} = Layout
 
 const App = () => {
   let content = null
@@ -95,17 +92,17 @@ const App = () => {
       <Version light={isUnauthenticatedRoute} />
     </>
   ) : (
-    <>
+    <Layout>
       <NavBar />
 
-      <ErrorBoundary router={routerContext.route}>
-        <Content className="cc--content-top">
+      <Layout>
+        <ErrorBoundary router={routerContext.route}>
           {content}
 
           <Version />
-        </Content>
-      </ErrorBoundary>
-    </>
+        </ErrorBoundary>
+      </Layout>
+    </Layout>
   )
 }
 

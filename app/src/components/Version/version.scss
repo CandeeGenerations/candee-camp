@@ -1,9 +1,8 @@
 .cc {
   &--version {
-    float: right;
     color: #333;
     font-size: 11px;
-    margin: 0 15px 10px 0;
+    margin: 0 15px 10px auto;
 
     &.light {
       right: 0;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import {Icon, Layout, Menu, Spin} from 'antd'
 
@@ -6,51 +6,56 @@ import {NavItem} from '../../Navigation'
 
 import './navBarContent.scss'
 
-const {Header} = Layout
-const {ItemGroup, SubMenu} = Menu
+const lsEntry = 'cc--nav-collapsed'
 
 const NavBarContent = props => {
-  return (
-    <Header className="cc--navbar--header">
-      <div className="cc--logo">
-        <NavItem options={{reload: true}} routeName="dashboard">
-          Candee Camp
-        </NavItem>
-      </div>
+  const [collapsed, setCollapsed] = useState(
+    localStorage.getItem(lsEntry) === 'true',
+  )
 
-      <Menu
-        mode="horizontal"
-        selectedKeys={props.selectedItem ? [props.selectedItem.routeName] : []}
-        theme="dark"
-      >
+  const handleCollapse = col => {
+    localStorage.setItem(lsEntry, col)
+    setCollapsed(col)
+  }
+
+  return (
+    <Layout.Sider collapsed={collapsed} collapsible onCollapse={handleCollapse}>
+      <Menu className="cc--menu-list" theme="dark">
+        <Menu.Item className="cc--logo" title="Dashboard">
+          <NavItem options={{reload: true}} routeName="dashboard">
+            {collapsed ? 'CC' : 'Candee Camp'}
+          </NavItem>
+        </Menu.Item>
+
         {props.navItems.map(item => (
           <Menu.Item key={item.routeName} className="cc--menu-item--text">
             <NavItem options={{reload: true}} routeName={item.routeName}>
-              {item.name}
+              <Icon type={item.icon} />
+              <span>{item.name}</span>
             </NavItem>
           </Menu.Item>
         ))}
 
-        <SubMenu
-          className="cc--menu-item--right cc--menu-item--icon"
-          title={<i className="icon ion-md-contact" />}
-        >
-          <ItemGroup title="Username">
-            <Menu.Item className="cc--sign-out" onClick={props.onSignout}>
-              {props.loading ? (
-                <Spin
-                  indicator={
-                    <Icon style={{fontSize: 18}} type="loading" spin />
-                  }
-                />
-              ) : (
-                <span>Sign out</span>
-              )}
-            </Menu.Item>
-          </ItemGroup>
-        </SubMenu>
+        <Menu.Item className="cc--bottom-item cc--sign-out">
+          {props.loading ? (
+            <Spin
+              indicator={<Icon style={{fontSize: 18}} type="loading" spin />}
+            />
+          ) : (
+            <a
+              href="#"
+              onClick={e => {
+                e.preventDefault()
+                props.onSignout()
+              }}
+            >
+              <Icon type="logout" />
+              <span>Sign out</span>
+            </a>
+          )}
+        </Menu.Item>
       </Menu>
-    </Header>
+    </Layout.Sider>
   )
 }
 

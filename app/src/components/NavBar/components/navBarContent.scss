@@ -1,44 +1,29 @@
 .cc {
-  &--navbar--header {
-    top: 0;
-    z-index: 1;
-    width: 100%;
-    position: fixed;
+  &--logo a {
+    font-size: 21px;
+    font-weight: 700;
+    margin-left: -8px;
+    text-transform: uppercase;
+    color: #f3f3f4 !important;
+    font-family: 'Comfortaa', sans-serif;
 
-    .cc {
-      &--logo a {
-        float: left;
-        font-size: 21px;
-        color: #f3f3f4;
-        font-weight: 700;
-        margin: 0 40px 0 0;
-        text-transform: uppercase;
-        font-family: 'Comfortaa', sans-serif;
-
-        &:focus,
-        &:active {
-          text-decoration: none;
-        }
-      }
-
-      &--menu-item {
-        &--text {
-          line-height: 64px;
-        }
-
-        &--icon {
-          font-size: 24px;
-          line-height: 62px;
-        }
-
-        &--right {
-          float: right;
-        }
-      }
+    &:focus,
+    &:active {
+      text-decoration: none;
     }
   }
 
-  &--sign-out {
+  &--menu-list {
+    height: 100%;
+    position: fixed;
+
+    li.cc--bottom-item {
+      bottom: 50px;
+      position: fixed;
+    }
+  }
+
+  &--sign-out a {
     color: #ea5e5e !important;
   }
 }

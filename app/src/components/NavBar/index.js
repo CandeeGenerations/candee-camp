@@ -21,10 +21,12 @@ const NavBar = () => {
 
   const navItems = [
     {
+      icon: 'calendar',
       name: 'Events',
       routeName: 'events',
     },
     {
+      icon: 'user',
       name: 'Users',
       routeName: 'users',
     },

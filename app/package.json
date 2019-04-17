@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -24,7 +24,7 @@
     "email": "tyler@candeegenerations.com"
   },
   "dependencies": {
-    "antd": "^3.13.1",
+    "antd": "^3.16.3",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.11.0",
     "customize-cra": "^0.2.11",
