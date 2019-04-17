@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -67,7 +67,7 @@
     "start": "react-app-rewired start",
     "build": "REACT_APP_VERSION=$npm_package_version react-app-rewired build",
     "test": "react-app-rewired test",
-    "pre-commit": "npm version patch && git add package.json && lint-staged"
+    "precommit": "npm version patch && git add package.json && lint-staged"
   },
   "eslintConfig": {
     "extends": "react-app"
