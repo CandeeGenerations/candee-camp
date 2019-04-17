@@ -12,6 +12,7 @@ import Dashboard from '../Dashboard'
 import ResetPassword from '../ResetPassword'
 import NavBar from '../../components/NavBar'
 import ForgotPassword from '../ForgotPassword'
+import Version from '../../components/Version'
 import ErrorBoundary from '../../components/ErrorBoundary'
 
 import './app.scss'
@@ -24,8 +25,6 @@ const App = () => {
   let content = null
   const routerContext = useRoute()
   const user = getUser()
-
-  console.log('version :', process.env.REACT_APP_VERSION)
 
   const testUnauthenticatedRoutes = () => {
     const unauthenticatedRoutes = ['signin', 'forgotPassword', 'resetPassword']
@@ -61,7 +60,13 @@ const App = () => {
     routerContext.router.navigate('signin', {
       returnUrl: routerContext.route.name,
     })
-    return <Signin />
+
+    return (
+      <>
+        <Signin />
+        <Version light />
+      </>
+    )
   }
 
   if (
@@ -84,15 +89,23 @@ const App = () => {
   }
 
   return testNoNavRoutes() && !(user && isUnauthenticatedRoute) ? (
-    content
+    <>
+      {content}
+
+      <Version light={isUnauthenticatedRoute} />
+    </>
   ) : (
-    <div style={{display: 'inline'}}>
+    <>
       <NavBar />
 
       <ErrorBoundary router={routerContext.route}>
-        <Content className="cc--content-top">{content}</Content>
+        <Content className="cc--content-top">
+          {content}
+
+          <Version />
+        </Content>
       </ErrorBoundary>
-    </div>
+    </>
   )
 }
 

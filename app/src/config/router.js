@@ -52,7 +52,7 @@ const router = createRouter(routes, {
   queryParamsMode: 'loose',
 })
 
-router.usePlugin(browserPlugin())
+router.usePlugin(browserPlugin({useHash: true}))
 router.start()
 
 export default router

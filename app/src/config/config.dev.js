@@ -3,6 +3,7 @@ const Config = {
   features: {
     loadingBar: false,
   },
+  version: process.env.REACT_APP_VERSION,
 }
 
 export default Config
