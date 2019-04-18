@@ -8,10 +8,18 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
 
   test(testingUtils.formatTestName('displays correctly'), () => {
     /* Constants */
-    const loading = {signout: false}
+    const loading = false
     const navItems = [
-      {name: 'nav 1', routeName: 'nav1'},
-      {name: 'nav 2', routeName: 'nav2'},
+      {
+        icon: 'calendar',
+        name: 'nav 1',
+        routeName: 'nav1',
+      },
+      {
+        icon: 'user',
+        name: 'nav 2',
+        routeName: 'nav2',
+      },
     ]
 
     /* Mock functions */
@@ -36,7 +44,7 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
     // user icon exists
     expect(
       getByText((content, element) =>
-        testingUtils.getElement(element, 'i', 'ion-md-contact'),
+        testingUtils.getElement(element, 'i', 'anticon anticon-logout'),
       ),
     ).toBeTruthy()
 
@@ -52,12 +60,20 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
     testingUtils.formatTestName('displays correctly with active link'),
     () => {
       /* Constants */
-      const loading = {signout: false}
+      const loading = false
       const navItems = [
-        {name: 'nav 1', routeName: 'nav1'},
-        {name: 'nav 2', routeName: 'nav2'},
+        {
+          icon: 'calendar',
+          name: 'nav 1',
+          routeName: 'nav1',
+        },
+        {
+          icon: 'user',
+          name: 'nav 2',
+          routeName: 'nav2',
+        },
       ]
-      const selectedItem = {name: 'nav 1', routeName: 'nav1'}
+      const selectedItem = {icon: 'calendar', name: 'nav 1', routeName: 'nav1'}
 
       /* Mock functions */
       const onSignout = testingUtils.emptyFunction()

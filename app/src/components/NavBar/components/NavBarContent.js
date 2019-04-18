@@ -20,7 +20,11 @@ const NavBarContent = props => {
 
   return (
     <Layout.Sider collapsed={collapsed} collapsible onCollapse={handleCollapse}>
-      <Menu className="cc--menu-list" theme="dark">
+      <Menu
+        className="cc--menu-list"
+        selectedKeys={props.selectedItem ? [props.selectedItem.routeName] : []}
+        theme="dark"
+      >
         <Menu.Item className="cc--logo" title="Dashboard">
           <NavItem options={{reload: true}} routeName="dashboard">
             {collapsed ? 'CC' : 'Candee Camp'}
