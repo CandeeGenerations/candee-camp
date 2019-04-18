@@ -8,6 +8,8 @@
 
     "import/no-cycle": "off",
 
+    "jsx-a11y/anchor-is-valid": "off",
+
     "react/jsx-uses-vars": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-handler-names": "error",
