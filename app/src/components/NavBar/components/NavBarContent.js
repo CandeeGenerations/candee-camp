@@ -46,8 +46,8 @@ const NavBarContent = props => {
               indicator={<Icon style={{fontSize: 18}} type="loading" spin />}
             />
           ) : (
+            // eslint-disable-next-line
             <a
-              href="#"
               onClick={e => {
                 e.preventDefault()
                 props.onSignout()
