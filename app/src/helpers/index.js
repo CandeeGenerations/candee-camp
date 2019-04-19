@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import dayjs from 'dayjs'
 import merge from 'deepmerge'
 import {notification, Tag} from 'antd'
@@ -12,7 +13,8 @@ const errorTrace = error => {
 
 export const deepCopy = obj => merge(obj, {})
 
-export const formatDate = date => dayjs(date).format('ddd, MMM D, YYYY')
+export const formatDate = date =>
+  date ? dayjs(date).format('ddd, MMM D, YYYY') : <em>None</em>
 
 export const formatRole = role => {
   let color = null
@@ -48,8 +50,17 @@ export const formatRole = role => {
   return <Tag color={color}>{name}</Tag>
 }
 
-export const splitCamelCase = str =>
-  str.replace(/([A-Z])/g, ' $1').toLowerCase()
+export const splitCamelCase = str => str.replace(/([A-Z])/g, ' $1').trim()
+
+export const rolesList = () => {
+  const roles = []
+
+  _.keys(Constants.Roles).forEach(key => {
+    roles.push({text: splitCamelCase(key), value: Constants.Roles[key]})
+  })
+
+  return roles
+}
 
 export const isFormReady: boolean = (fields: {}) => {
   for (const key in fields) {
@@ -113,7 +124,9 @@ export const formErrors = (fields: {}) => {
           property.value === '')
       ) {
         errors.push({
-          message: `The ${splitCamelCase(key)} field is required.`,
+          message: `The ${splitCamelCase(
+            key,
+          ).toLowerCase()} field is required.`,
           type: 'error',
         })
       }

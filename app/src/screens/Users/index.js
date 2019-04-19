@@ -1,10 +1,13 @@
 import React, {useEffect} from 'react'
 import {useRoute} from 'react-router5'
-import {Button, Card, Divider} from 'antd'
+import {Button, Card} from 'antd'
+
+import {userActions as actions} from '../../actions'
 
 import useTitle from '../../helpers/hooks/useTitle'
-import {userActions as actions} from '../../actions'
 import useAsyncLoad from '../../helpers/hooks/useAsyncLoad'
+
+import PageHeader from '../../components/Structure/PageHeader'
 import {LoaderContext} from '../../components/Structure/Loader'
 import ErrorWrapper, {
   useError,
@@ -14,7 +17,7 @@ import UserView from './components/UserView'
 import UsersTable from './components/UsersTable'
 
 const Users = () => {
-  useTitle('Events')
+  useTitle('Users')
 
   const routerContext = useRoute()
   const errorWrapper = useError()
@@ -32,14 +35,22 @@ const Users = () => {
     <>
       <section className="cc--main-content">
         <Card>
-          <Divider orientation="left">Users</Divider>
-
-          <Button
-            type="primary"
-            onClick={() => routerContext.router.navigate('users.add')}
-          >
-            Add User
-          </Button>
+          <PageHeader
+            actions={[
+              <Button
+                key="add"
+                type="primary"
+                onClick={() => routerContext.router.navigate('users.add')}
+              >
+                Add User
+              </Button>,
+            ]}
+            routes={[
+              {path: '/dashboard', breadcrumbName: 'Dashboard'},
+              {path: '/users', breadcrumbName: 'Users'},
+            ]}
+            title="Users"
+          />
 
           <LoaderContext.Provider
             value={{spinning: users.loading, tip: 'Loading users...'}}

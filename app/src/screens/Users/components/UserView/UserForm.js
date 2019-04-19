@@ -1,5 +1,7 @@
 import React from 'react'
-import {Col, Form, Input, Row} from 'antd'
+import {Col, Form, Input, Row, Select} from 'antd'
+
+import {rolesList} from '../../../../helpers'
 
 const UserForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -69,7 +71,7 @@ const UserForm = Form.create({
 
         <Col span={12}>
           <Form.Item label="Email Address" hasFeedback>
-            {getFieldDecorator('lastName', {
+            {getFieldDecorator('emailAddress', {
               rules: [
                 {required: true, message: 'The email address is required.'},
                 {type: 'email', message: 'Please use a valid email.'},
@@ -81,10 +83,18 @@ const UserForm = Form.create({
 
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item label="Role" hasFeedback>
+          <Form.Item label="Role">
             {getFieldDecorator('role', {
-              rules: [{required: true, meessage: 'The role is required.'}],
-            })(<Input placeholder="Role" />)}
+              rules: [{required: true, message: 'The role is required.'}],
+            })(
+              <Select placeholder="e.g. Admin" showSearch>
+                {rolesList().map(r => (
+                  <Select.Option key={r.value} value={r.value}>
+                    {r.text}
+                  </Select.Option>
+                ))}
+              </Select>,
+            )}
           </Form.Item>
         </Col>
       </Row>

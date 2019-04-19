@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import {Card, Divider, Button} from 'antd'
+import {Card, Button} from 'antd'
 import {useRoute} from 'react-router5'
 
 import {eventActions as actions} from '../../actions'
+
 import useTitle from '../../helpers/hooks/useTitle'
+
+import PageHeader from '../../components/Structure/PageHeader'
 import {LoaderContext} from '../../components/Structure/Loader'
 import ErrorWrapper, {
   useError,
@@ -39,14 +42,22 @@ const Events = () => {
     <>
       <section className="cc--main-content">
         <Card>
-          <Divider orientation="left">Events</Divider>
-
-          <Button
-            type="primary"
-            onClick={() => routerContext.router.navigate('events.add')}
-          >
-            Add Event
-          </Button>
+          <PageHeader
+            actions={[
+              <Button
+                key="add"
+                type="primary"
+                onClick={() => routerContext.router.navigate('events.add')}
+              >
+                Add Event
+              </Button>,
+            ]}
+            routes={[
+              {path: '/dashboard', breadcrumbName: 'Dashboard'},
+              {path: '/events', breadcrumbName: 'Events'},
+            ]}
+            title="Events"
+          />
 
           <LoaderContext.Provider
             value={{spinning: loading, tip: 'Loading events...'}}
