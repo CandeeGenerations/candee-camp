@@ -7,7 +7,7 @@ export const loadEvents = async () => {
 
     return response
   } catch (error) {
-    handleError('Unable to load Events. Please try again.', error)
+    handleError('Unable to load the Events. Please try again.', error)
     throw new Error(error)
   }
 }
@@ -18,7 +18,7 @@ export const loadEventStats = async () => {
 
     return response.data.length
   } catch (error) {
-    handleError('Unable to load Event Stats. Please try again.', error)
+    handleError('Unable to load the Event Stats. Please try again.', error)
     throw new Error(error)
   }
 }
@@ -29,7 +29,7 @@ export const loadEvent = async (eventId: number) => {
 
     return response
   } catch (error) {
-    handleError('Unable to load Event. Please try again.', error)
+    handleError('Unable to load the Event. Please try again.', error)
     return null
   }
 }
@@ -52,7 +52,20 @@ export const saveEvent = async event => {
 
     return response
   } catch (error) {
-    handleError('Unable to save Event. Please try again.', error)
+    handleError('Unable to save the Event. Please try again.', error)
+    return null
+  }
+}
+
+export const deleteEvent = async eventId => {
+  try {
+    const response = await request.delete(`/events/${eventId}`)
+
+    openNotification('success', 'The Event has been deleted successfully.')
+
+    return response
+  } catch (error) {
+    handleError('Unable to delete the Event. Please try again.', error)
     return null
   }
 }

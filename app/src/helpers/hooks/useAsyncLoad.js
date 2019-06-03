@@ -6,13 +6,20 @@ export default (func, ...params) => {
   const [data, setData] = useState(null)
   const [reload, setReload] = useState(false)
 
-  const load = async () => {
+  const replaceResultItem = (item, idField) =>
+    setData({
+      ...data,
+      results: data.results.map(x => (x[idField] === item[idField] ? item : x)),
+    })
+
+  const load = async (keepLoading = false) => {
     let d = null
 
     if (isLoading) {
       setReload(true)
       return data
     }
+
     setReload(false)
     setLoading(true)
     setIsLoading(true)
@@ -23,11 +30,23 @@ export default (func, ...params) => {
     } catch (error) {
       throw new Error(error)
     } finally {
-      setLoading(false)
-      setIsLoading(false)
+      if (!keepLoading) {
+        setLoading(false)
+        setIsLoading(false)
+      }
     }
 
     return d
+  }
+
+  const startLoading = () => {
+    setLoading(true)
+    setIsLoading(true)
+  }
+
+  const stopLoading = () => {
+    setLoading(false)
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -36,7 +55,13 @@ export default (func, ...params) => {
     }
   }, [reload, isLoading])
 
-  const stopLoading = () => setLoading(false)
-
-  return {data, load, loading, stopLoading}
+  return {
+    data,
+    load,
+    loading,
+    startLoading,
+    stopLoading,
+    setData,
+    replaceResultItem,
+  }
 }

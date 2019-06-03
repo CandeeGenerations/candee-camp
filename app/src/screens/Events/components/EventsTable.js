@@ -1,15 +1,16 @@
 import React from 'react'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
-import {Divider, Table, Tag} from 'antd'
+import {Divider, Icon, Table, Tag} from 'antd'
 
+import {formatDate} from '../../../helpers'
 import {Constants} from '../../../helpers/constants'
 
 import {NavItem} from '../../../components/Navigation'
 import loader from '../../../components/Structure/Loader'
+import DeleteLink from '../../../components/Structure/DeleteLink'
 
 const {Column} = Table
-const formatDate = date => dayjs(date).format('ddd, MMM D, YYYY')
 
 const EventsTable = props => {
   return props.loader.spinning ? (
@@ -26,11 +27,10 @@ const EventsTable = props => {
         align="center"
         render={(text, record) =>
           record.startDate < dayjs().valueOf() &&
-          record.endDate > dayjs().valueOf() && (
-            <i
-              className="icon ion-md-checkmark-circle-outline"
-              style={{fontSize: 15, color: 'green'}}
-            />
+          record.endDate > dayjs().valueOf() ? (
+            <Icon theme="twoTone" twoToneColor="#52c41a" type="check-circle" />
+          ) : (
+            <Icon theme="twoTone" twoToneColor="#eb2f96" type="close-circle" />
           )
         }
         title="On Going"
@@ -78,9 +78,16 @@ const EventsTable = props => {
 
             <Divider type="vertical" />
 
-            <NavItem params={{eventId: record.id}} routeName="events.delete">
-              Delete
-            </NavItem>
+            <DeleteLink
+              title={
+                <p>
+                  Are you sure you want
+                  <br />
+                  to delete this item?
+                </p>
+              }
+              onConfirm={() => props.deleteEvent(record.id)}
+            />
           </span>
         )}
         title="Actions"
@@ -104,6 +111,9 @@ EventsTable.propTypes = {
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
   }).isRequired,
+
+  // functions
+  deleteEvent: PropTypes.func.isRequired,
 }
 
 export default loader(EventsTable)

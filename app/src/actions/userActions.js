@@ -7,7 +7,7 @@ export const loadUsers = async () => {
 
     return response
   } catch (error) {
-    handleError('Unable to load Users. Please try again.', error)
+    handleError('Unable to load the Users. Please try again.', error)
     throw new Error(error)
   }
 }
@@ -18,7 +18,7 @@ export const loadUserStats = async () => {
 
     return response.data.length
   } catch (error) {
-    handleError('Unable to load User Stats. Please try again.', error)
+    handleError('Unable to load the User Stats. Please try again.', error)
     throw new Error(error)
   }
 }
@@ -29,7 +29,7 @@ export const loadUser = async (userId: number) => {
 
     return response
   } catch (error) {
-    handleError('Unable to load User. Please try again.', error)
+    handleError('Unable to load the User. Please try again.', error)
     return null
   }
 }
@@ -52,7 +52,20 @@ export const saveUser = async user => {
 
     return response
   } catch (error) {
-    handleError('Unable to save User. Please try again.', error)
+    handleError('Unable to save the User. Please try again.', error)
+    return null
+  }
+}
+
+export const deleteUser = async userId => {
+  try {
+    const response = await request.delete(`/users/${userId}`)
+
+    openNotification('success', 'The User has been delete successfully.')
+
+    return response
+  } catch (error) {
+    handleError('Unable to delete the User. Please try again.', error)
     return null
   }
 }

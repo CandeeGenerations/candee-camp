@@ -38,6 +38,18 @@ const Events = () => {
     getEvents()
   }, [])
 
+  const deleteEvent = async eventId => {
+    setLoading(true)
+
+    const response = await actions.deleteEvent(eventId)
+
+    if (response) {
+      getEvents()
+    } else {
+      setLoading(false)
+    }
+  }
+
   return (
     <>
       <section className="cc--main-content">
@@ -67,6 +79,7 @@ const Events = () => {
               hasError={errorWrapper.hasError}
             >
               <EventsTable
+                deleteEvent={deleteEvent}
                 events={events.map(event => ({...event, key: event.id}))}
               />
             </ErrorWrapper>
