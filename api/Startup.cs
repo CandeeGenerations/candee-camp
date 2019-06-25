@@ -35,7 +35,7 @@ namespace CandeeCamp.API
         
         public void ConfigureServices(IServiceCollection services)
         {
-            var logger = _loggerFactory.CreateLogger<Startup>();
+            ILogger<Startup> logger = _loggerFactory.CreateLogger<Startup>();
 
             logger.LogInformation(_env.IsDevelopment()
                 ? "Development environment"

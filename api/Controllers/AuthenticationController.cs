@@ -68,7 +68,7 @@ namespace CandeeCamp.API.Controllers
         [ProducesResponseType(401)]
         public async Task<ActionResult<TokenModel>> RegisterAndCreateToken(NewUserModel newUser)
         {
-            var createdUser = await _userRepository.AddUser(newUser);
+            User createdUser = await _userRepository.AddUser(newUser);
             
             if (createdUser == null)
             {
@@ -93,11 +93,11 @@ namespace CandeeCamp.API.Controllers
 
         private TokenModel BuildToken(User user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var identityClaims = BuildClaims(user);
-            var expires = DateTime.Now.AddMinutes(30);
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"], identityClaims.Claims,
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            ClaimsIdentity identityClaims = BuildClaims(user);
+            DateTime expires = DateTime.Now.AddMinutes(30);
+            JwtSecurityToken token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"], identityClaims.Claims,
                 expires: expires, signingCredentials: creds);
 
             return new TokenModel
@@ -110,12 +110,12 @@ namespace CandeeCamp.API.Controllers
 
         private static ClaimsIdentity BuildClaims(User user)
         {
-            var claims = new List<Claim>
+            List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.EmailAddress),
             };
-            var claimsIdentity = new ClaimsIdentity(claims, "Token");
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
 
             // claimsIdentity.AddClaims(user.UserRoles.Select(x => new Claim(ClaimTypes.Role, x.Role.Name)));
 

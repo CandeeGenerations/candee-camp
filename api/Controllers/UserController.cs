@@ -29,7 +29,7 @@ namespace CandeeCamp.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var newUser = await _userRepository.AddUser(user);
+            User newUser = await _userRepository.AddUser(user);
 
             return Ok(newUser);
         }

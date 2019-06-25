@@ -24,7 +24,7 @@ namespace CandeeCamp.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<Event>), 200)]
         public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
         {
-            var events = await _eventRepository.GetEvents();
+            IEnumerable<Event> events = await _eventRepository.GetEvents();
             
             return Ok(events);
         }
@@ -33,7 +33,7 @@ namespace CandeeCamp.API.Controllers
         [ProducesResponseType(typeof(Task<Event>), 200)]
         public async Task<Event> GetEventById(int id)
         {
-            var newEvent = await _eventRepository.GetEventById(id);
+            Event newEvent = await _eventRepository.GetEventById(id);
             return newEvent;
         }
 
@@ -41,7 +41,7 @@ namespace CandeeCamp.API.Controllers
         [ProducesResponseType(typeof(Task<Event>), 200)]
         public async Task<int> CreateEvent(Event incomingEvent)
         {
-            var newEvent = await _eventRepository.CreateEvent(incomingEvent);
+            int newEvent = await _eventRepository.CreateEvent(incomingEvent);
             return newEvent;
         }
 
@@ -49,7 +49,7 @@ namespace CandeeCamp.API.Controllers
         [ProducesResponseType(typeof(Task<Event>), 200)]
         public async Task<int> UpdateEvent(Event incomingEvent)
         {
-            var updatedEvent = await _eventRepository.UpdateEvent(incomingEvent);
+            int updatedEvent = await _eventRepository.UpdateEvent(incomingEvent);
             return updatedEvent;
         }
 
@@ -57,7 +57,7 @@ namespace CandeeCamp.API.Controllers
         [ProducesResponseType(typeof(Task<Event>), 200)]
         public async Task<int> RemoveEventById(Event incomingEvent)
         {
-            var removedEvent = await _eventRepository.RemoveEventById(incomingEvent);
+            int removedEvent = await _eventRepository.RemoveEventById(incomingEvent);
             return removedEvent;
         }
     }

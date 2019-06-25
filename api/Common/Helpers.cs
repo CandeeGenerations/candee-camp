@@ -9,17 +9,17 @@ namespace CandeeCamp.API.Common
         
         public static string CreateUniqueString(int maxSize, string characters = CharactersLibrary.ALPHABETIC_CAPITAL_LOWER)
         {
-            var res = new StringBuilder();
+            StringBuilder res = new StringBuilder();
 
-            using (var rng = new RNGCryptoServiceProvider())
+            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
             {
-                var uintBuffer = new byte[sizeof(uint)];
+                byte[] uintBuffer = new byte[sizeof(uint)];
 
                 while (maxSize-- > 0)
                 {
                     rng.GetBytes(uintBuffer);
 
-                    var num = BitConverter.ToUInt32(uintBuffer, 0);
+                    uint num = BitConverter.ToUInt32(uintBuffer, 0);
 
                     res.Append(characters[(int) (num % (uint) characters.Length)]);
                 }

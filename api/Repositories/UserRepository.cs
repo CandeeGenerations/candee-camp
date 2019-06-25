@@ -17,8 +17,8 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<User> AddUser(NewUserModel user)
         {
-            var salt = Helpers.CreateUniqueString(64);
-            var newUser = new User
+            string salt = Helpers.CreateUniqueString(64);
+            User newUser = new User
             {
                 Id = Guid.NewGuid(),
                 FirstName = user.FirstName,
@@ -37,21 +37,21 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<User> ValidateUser(AuthenticationModel user)
         {
-            var dbUser = await Context.Users.FirstOrDefaultAsync(x => x.EmailAddress == user.username);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(x => x.EmailAddress == user.username);
 
             if (dbUser == null)
             {
                 return null;
             }
 
-            var passwordHash = user.password.Encrypt(dbUser.Salt);
+            string passwordHash = user.password.Encrypt(dbUser.Salt);
 
             if (passwordHash != dbUser.PasswordHash)
             {
                 return null;
             }
 
-            var refreshToken = Helpers.CreateUniqueString(24, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER);
+            string refreshToken = Helpers.CreateUniqueString(24, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER);
             
             dbUser.LastLoggedInDate = DateTimeOffset.Now;
             dbUser.RefreshToken = refreshToken;
@@ -63,14 +63,14 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<User> ValidateRefreshToken(AuthenticationModel user)
         {
-            var dbUser = await Context.Users.FirstOrDefaultAsync(x => x.RefreshToken == user.refresh_token);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(x => x.RefreshToken == user.refresh_token);
 
             if (dbUser == null)
             {
                 return null;
             }
 
-            var refreshToken = Helpers.CreateUniqueString(24, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER);
+            string refreshToken = Helpers.CreateUniqueString(24, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER);
             
             dbUser.LastLoggedInDate = DateTimeOffset.Now;
             dbUser.RefreshToken = refreshToken;

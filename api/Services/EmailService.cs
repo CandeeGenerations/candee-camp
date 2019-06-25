@@ -19,17 +19,17 @@ namespace CandeeCamp.API.Services
                 
                 if (File.Exists(path))
                 {
-                    using (var streamReader = new StreamReader(path, Encoding.UTF8))
+                    using (StreamReader streamReader = new StreamReader(path, Encoding.UTF8))
                     {
                         emailTemplate = streamReader.ReadToEnd();
                     }
                 }
 
                 // Credentials
-                var credentials = new NetworkCredential("theblackswimmers@gmail.com", "R0salina!");
+                NetworkCredential credentials = new NetworkCredential("theblackswimmers@gmail.com", "R0salina!");
 
                 // Mail message
-                var mail = new MailMessage
+                MailMessage mail = new MailMessage
                 {
                     From = new MailAddress("theblackswimmers@gmail.com"),
                     Subject = "I guess this works",
@@ -41,7 +41,7 @@ namespace CandeeCamp.API.Services
                 mail.To.Add(new MailAddress("theblackswimmers@gmail.com "));
 
                 // Smtp client
-                var client = new SmtpClient()
+                SmtpClient client = new SmtpClient()
                 {
                     Port = 587,
                     DeliveryMethod = SmtpDeliveryMethod.Network,

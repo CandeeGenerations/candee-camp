@@ -17,7 +17,7 @@ namespace CandeeCamp.API.ExceptionHandling
 
         public void OnException(ExceptionContext context)
         {
-            var response = ExceptionHelper.ProcessError(context.Exception);
+            ExceptionModel response = ExceptionHelper.ProcessError(context.Exception);
 
             context.Result = new ObjectResult(response)
             {
