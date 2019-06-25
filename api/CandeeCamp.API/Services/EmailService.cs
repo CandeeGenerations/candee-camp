@@ -14,13 +14,14 @@ namespace CandeeCamp.API.Services
         {
             try
             {
+                string emailTemplate = null;
                 const string path = "..\\CandeeCamp.Core.Api\\EmailTemplates\\test.html";
                 
                 if (File.Exists(path))
                 {
                     using (var streamReader = new StreamReader(path, Encoding.UTF8))
                     {
-                        streamReader.ReadToEnd();
+                        emailTemplate = streamReader.ReadToEnd();
                     }
                 }
 
