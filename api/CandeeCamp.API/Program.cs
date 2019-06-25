@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace CandeeCamp.API
 {
@@ -11,7 +12,7 @@ namespace CandeeCamp.API
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:5500", "https://localhost:5501")
+            WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:5000", "https://localhost:5001")
                 .UseStartup<Startup>();
     }
 }

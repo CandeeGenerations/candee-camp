@@ -17,5 +17,28 @@ namespace CandeeCamp.API.Repositories
         {
             return await Context.Events.ToListAsync();
         }
+
+        public async Task<Event> GetEventById(int id)
+        {
+            return await Context.Events.FindAsync(id);
+        }
+
+        public async Task<int> CreateEvent(Event incomingEvent)
+        {
+            Context.Events.Add(incomingEvent);
+            return await Context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateEvent(Event incomingEvent)
+        {
+            Context.Events.Update(incomingEvent);
+            return await Context.SaveChangesAsync();
+        }
+
+        public async Task<int> RemoveEventById(Event incomingEvent)
+        {
+            Context.Events.Remove(incomingEvent);
+            return await Context.SaveChangesAsync();
+        }
     }
 }

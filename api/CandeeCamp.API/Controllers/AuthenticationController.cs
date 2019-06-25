@@ -63,6 +63,21 @@ namespace CandeeCamp.API.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpPost("register")]
+        [ProducesResponseType(typeof(TokenModel), 200)]
+        [ProducesResponseType(401)]
+        public async Task<ActionResult<TokenModel>> RegisterAndCreateToken(NewUserModel newUser)
+        {
+            User createdUser = null;
+
+            createdUser = await _userRepository.AddUser(newUser);
+            if (createdUser == null)
+                return Unauthorized();
+
+            return Ok(BuildToken(createdUser));
+        }
+
         [HttpGet("claims")]
         public IActionResult Claims()
         {

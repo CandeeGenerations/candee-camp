@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using CandeeCamp.API.Context;
@@ -17,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace CandeeCamp.API
 {
@@ -46,8 +48,12 @@ namespace CandeeCamp.API
             
             services.AddCors();
             services.AddDbContext<CampContext>(options =>
-                options.UseMySql(_config.GetConnectionString("DefaultConnection")));
-            
+                options.UseMySql(_config.GetConnectionString("DefaultConnection"), mysqlOptions =>
+                {
+                    mysqlOptions.ServerVersion(new Version(5, 1, 73), ServerType.MySql);
+                }
+                ));
+
             services.AddMvc()
                 .AddJsonOptions(options =>
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())

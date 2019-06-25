@@ -32,7 +32,7 @@ namespace CandeeCamp.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a30aed4e-0e49-4cc5-8513-8dc70c62f223"),
+                            Id = new Guid("9e9c152c-96bf-485d-b40e-5fe6530027ab"),
                             Name = "Event 1"
                         });
                 });
@@ -50,7 +50,7 @@ namespace CandeeCamp.API.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired();
 
-                    b.Property<DateTimeOffset?>("LastLoggedInDate");
+                    b.Property<DateTimeOffset>("LastLoggedInDate");
 
                     b.Property<string>("LastName")
                         .IsRequired();
@@ -70,10 +70,11 @@ namespace CandeeCamp.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("78910b9f-c713-4cb9-a5b7-548ffedde563"),
-                            DateCreated = new DateTimeOffset(new DateTime(2019, 6, 3, 10, 10, 26, 110, DateTimeKind.Unspecified).AddTicks(2360), new TimeSpan(0, -4, 0, 0, 0)),
+                            Id = new Guid("be65a3a0-ac0b-41c2-b5db-5e111175e47c"),
+                            DateCreated = new DateTimeOffset(new DateTime(2019, 6, 24, 20, 43, 40, 757, DateTimeKind.Unspecified).AddTicks(5861), new TimeSpan(0, -4, 0, 0, 0)),
                             EmailAddress = "tyler@cgen.com",
                             FirstName = "Tyler",
+                            LastLoggedInDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             LastName = "Candee",
                             PasswordHash = "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
                             Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy"

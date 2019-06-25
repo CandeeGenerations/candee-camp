@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CandeeCamp.API.Migrations
 {
-    public partial class Migration05312019 : Migration
+    public partial class myfirstmigrationtotally : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,7 +30,8 @@ namespace CandeeCamp.API.Migrations
                     PasswordHash = table.Column<string>(nullable: false),
                     Salt = table.Column<string>(nullable: false),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false),
-                    LastLoggedInDate = table.Column<DateTimeOffset>(nullable: true)
+                    LastLoggedInDate = table.Column<DateTimeOffset>(nullable: false),
+                    RefreshToken = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,9 +39,14 @@ namespace CandeeCamp.API.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Events",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { new Guid("9e9c152c-96bf-485d-b40e-5fe6530027ab"), "Event 1" });
+
+            migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "DateCreated", "EmailAddress", "FirstName", "LastLoggedInDate", "LastName", "PasswordHash", "Salt" },
-                values: new object[] { new Guid("71acd5ee-2325-4ea3-9c63-ee564f848e4e"), new DateTimeOffset(new DateTime(2019, 5, 31, 13, 54, 23, 572, DateTimeKind.Unspecified).AddTicks(1520), new TimeSpan(0, -4, 0, 0, 0)), "tyler@cgen.com", "Tyler", null, "Candee", "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==", "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy" });
+                columns: new[] { "Id", "DateCreated", "EmailAddress", "FirstName", "LastLoggedInDate", "LastName", "PasswordHash", "RefreshToken", "Salt" },
+                values: new object[] { new Guid("be65a3a0-ac0b-41c2-b5db-5e111175e47c"), new DateTimeOffset(new DateTime(2019, 6, 24, 20, 43, 40, 757, DateTimeKind.Unspecified).AddTicks(5861), new TimeSpan(0, -4, 0, 0, 0)), "tyler@cgen.com", "Tyler", new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Candee", "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==", null, "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
