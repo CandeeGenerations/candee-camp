@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using CandeeCamp.API.Common;
 using CandeeCamp.API.DomainObjects;
 using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
@@ -69,11 +68,12 @@ namespace CandeeCamp.API.Controllers
         [ProducesResponseType(401)]
         public async Task<ActionResult<TokenModel>> RegisterAndCreateToken(NewUserModel newUser)
         {
-            User createdUser = null;
-
-            createdUser = await _userRepository.AddUser(newUser);
+            var createdUser = await _userRepository.AddUser(newUser);
+            
             if (createdUser == null)
+            {
                 return Unauthorized();
+            }
 
             return Ok(BuildToken(createdUser));
         }

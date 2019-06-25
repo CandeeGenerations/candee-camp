@@ -1,8 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -17,26 +14,28 @@ namespace CandeeCamp.API.Services
         {
             try
             {
-                string emailTemplate = null;
-                string path = "..\\CandeeCamp.Core.Api\\EmailTemplates\\test.html";
+                const string path = "..\\CandeeCamp.Core.Api\\EmailTemplates\\test.html";
+                
                 if (File.Exists(path))
                 {
-                    using (StreamReader streamReader = new StreamReader(path, Encoding.UTF8))
+                    using (var streamReader = new StreamReader(path, Encoding.UTF8))
                     {
-                        emailTemplate = streamReader.ReadToEnd();
+                        streamReader.ReadToEnd();
                     }
                 }
+
                 // Credentials
                 var credentials = new NetworkCredential("theblackswimmers@gmail.com", "R0salina!");
 
                 // Mail message
-                var mail = new MailMessage()
+                var mail = new MailMessage
                 {
                     From = new MailAddress("theblackswimmers@gmail.com"),
                     Subject = "I guess this works",
-                    Body = "yo" //emailTemplate //"Test email body"
+                    Body = "yo",
+                    IsBodyHtml = true
+                    //emailTemplate //"Test email body"
                 };
-                mail.IsBodyHtml = true;
 
                 mail.To.Add(new MailAddress("theblackswimmers@gmail.com "));
 
@@ -61,7 +60,7 @@ namespace CandeeCamp.API.Services
                 return;
             }
 
-            Console.WriteLine("Email sccessfully sent");
+            Console.WriteLine("Email successfully sent");
             Console.ReadKey();
         }
 
