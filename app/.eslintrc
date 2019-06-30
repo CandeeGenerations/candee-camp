@@ -5,6 +5,7 @@
     "camelcase": "off",
     "prefer-const": "error",
     "no-unused-vars": "error",
+    "complexity": "off",
 
     "import/no-cycle": "off",
 

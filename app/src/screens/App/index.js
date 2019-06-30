@@ -17,11 +17,18 @@ import ErrorBoundary from '../../components/ErrorBoundary'
 
 import '../../content/zmdi.less'
 import '../../content/antd.less'
+import request from '../../api'
 
 const App = () => {
   let content = null
   const routerContext = useRoute()
   const user = getUser()
+
+  if (user) {
+    request.defaults.headers.common.Authorization = `Bearer ${
+      user.access_token
+    }`
+  }
 
   const testUnauthenticatedRoutes = () => {
     const unauthenticatedRoutes = ['signin', 'forgotPassword', 'resetPassword']

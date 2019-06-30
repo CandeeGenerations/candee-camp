@@ -1,25 +1,33 @@
+import qs from 'qs'
+
 import request from '../api'
 import {removeUser, setUser} from '../helpers/authHelpers'
 import {handleError, openNotification} from '../helpers'
 
 export const signin = async (fields: {}) => {
   try {
-    const response = await request.post('/signin', {
-      params: {
-        email: fields.email.value,
+    const response = await request.post(
+      '/token',
+      qs.stringify({
+        // eslint-disable-next-line babel/camelcase
+        grant_type: 'password',
+        username: fields.email.value,
         password: fields.password.value,
+      }),
+      {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       },
-    })
+    )
 
-    setUser(response.result)
+    setUser(response.data)
   } catch (error) {
     handleError('Unable to Sign in. Please try again.', error)
   }
 }
 
-export const signout = async () => {
+export const signout = () => {
   try {
-    await request.post('/signout')
+    // await request.post('/signout')
 
     removeUser()
   } catch (error) {

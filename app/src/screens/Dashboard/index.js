@@ -16,7 +16,7 @@ const Dashboard = () => {
   const eventStats = useAsyncLoad(eventActions.loadEventStats)
 
   useEffect(() => {
-    userStats.load()
+    // userStats.load()
     eventStats.load()
   }, [])
 

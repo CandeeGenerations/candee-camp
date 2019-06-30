@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -30,7 +30,6 @@
     "deep-equal": "^1.0.1",
     "deepmerge": "^3.2.0",
     "jest-dom": "^3.1.3",
-    "js-cookie": "^2.2.0",
     "jwt-decode": "^2.2.0",
     "lint-staged": "^8.1.5",
     "lodash": "^4.17.11",
@@ -39,6 +38,7 @@
     "node-sass": "^4.11.0",
     "prettier": "^1.17.0",
     "prop-types": "^15.7.2",
+    "qs": "^6.7.0",
     "react": "^16.8.6",
     "react-app-rewired": "^2.1.1",
     "react-dom": "^16.8.6",
@@ -65,8 +65,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "babel-plugin-import": "^1.11.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "customize-cra": "^0.2.11",
     "eslint-config-kentcdodds": "CandeeGenerations/eslint-config-kentcdodds",
     "eslint-config-prettier": "^4.1.0",
