@@ -2,6 +2,7 @@ import React from 'react'
 import {Layout} from 'antd'
 import {useRoute} from 'react-router5'
 
+import {axiosRequest} from '../../api'
 import {getUser} from '../../helpers/authHelpers'
 
 import Users from '../Users'
@@ -17,7 +18,6 @@ import ErrorBoundary from '../../components/ErrorBoundary'
 
 import '../../content/zmdi.less'
 import '../../content/antd.less'
-import request from '../../api'
 
 const App = () => {
   let content = null
@@ -25,7 +25,7 @@ const App = () => {
   const user = getUser()
 
   if (user) {
-    request.defaults.headers.common.Authorization = `Bearer ${
+    axiosRequest.defaults.headers.common.Authorization = `Bearer ${
       user.access_token
     }`
   }

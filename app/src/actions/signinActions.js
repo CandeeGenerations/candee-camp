@@ -1,7 +1,7 @@
 import qs from 'qs'
 
 import request from '../api'
-import {removeUser, setUser} from '../helpers/authHelpers'
+import {setUser} from '../helpers/authHelpers'
 import {handleError, openNotification} from '../helpers'
 
 export const signin = async (fields: {}) => {
@@ -20,18 +20,9 @@ export const signin = async (fields: {}) => {
     )
 
     setUser(response.data)
+    localStorage.removeItem('cc-unauthorized')
   } catch (error) {
     handleError('Unable to Sign in. Please try again.', error)
-  }
-}
-
-export const signout = () => {
-  try {
-    // await request.post('/signout')
-
-    removeUser()
-  } catch (error) {
-    handleError('Unable to Sign out. Please try again.', error)
   }
 }
 

@@ -1,21 +1,15 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {useRoute} from 'react-router5'
 
-import {signinActions as actions} from '../../actions'
+import {removeUser} from '../../helpers/authHelpers'
 
 import NavBarContent from './components/NavBarContent'
 
 const NavBar = () => {
   const routerContext = useRoute()
-  const [loading, setLoading] = useState(false)
 
-  const handleSignout = async () => {
-    setLoading(true)
-
-    await actions.signout()
-
-    setLoading(false)
-
+  const handleSignout = () => {
+    removeUser()
     routerContext.router.navigate('signin')
   }
 
@@ -37,7 +31,6 @@ const NavBar = () => {
 
   return (
     <NavBarContent
-      loading={loading}
       navItems={navItems}
       selectedItem={selected}
       onSignout={handleSignout}

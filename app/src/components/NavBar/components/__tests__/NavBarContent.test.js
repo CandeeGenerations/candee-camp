@@ -8,7 +8,6 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
 
   test(testingUtils.formatTestName('displays correctly'), () => {
     /* Constants */
-    const loading = false
     const navItems = [
       {
         icon: 'calendar',
@@ -25,7 +24,7 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
     /* Mock functions */
     const onSignout = testingUtils.emptyFunction()
 
-    const props = {loading, navItems, onSignout}
+    const props = {navItems, onSignout}
 
     /* Create component */
     const {getByText, queryByText} = testingUtils.renderWithRouter(
@@ -60,7 +59,6 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
     testingUtils.formatTestName('displays correctly with active link'),
     () => {
       /* Constants */
-      const loading = false
       const navItems = [
         {
           icon: 'calendar',
@@ -78,7 +76,7 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
       /* Mock functions */
       const onSignout = testingUtils.emptyFunction()
 
-      const props = {loading, navItems, onSignout, selectedItem}
+      const props = {navItems, onSignout, selectedItem}
 
       /* Create component */
       const {getByText} = testingUtils.renderWithRouter(

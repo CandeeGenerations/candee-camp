@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Col, Row, Button} from 'antd'
+import {Col, Row, Button, Divider} from 'antd'
+
+import useLocalStorage from '../../../helpers/hooks/useLocalStorage'
 
 import {NavItem} from '../../../components/Navigation'
 import {Copyright} from '../../../components/Structure'
@@ -10,47 +12,59 @@ import SigninForm from './SigninForm'
 
 import './signinContent.scss'
 
-const SigninContent = props => (
-  <div>
-    <h1 className="cc--signin--header">Sign in</h1>
+const SigninContent = props => {
+  const unauthorized = useLocalStorage('cc-unauthorized')
 
-    <h2 className="cc--signin--sub-header">
-      Welcome back! We are happy you like Candee Camp.
-    </h2>
+  return (
+    <>
+      <h1 className="cc--signin--header">Sign in</h1>
 
-    <Row>
-      <Col md={{span: 16, offset: 4}}>
-        <SigninForm
-          {...props.fields}
-          onChange={props.onFieldChange}
-          onSubmit={props.onSubmit}
-        />
+      <h2 className="cc--signin--sub-header">
+        Welcome back! We are happy you like Candee Camp.
+      </h2>
 
-        <div className="cc--forgot-password-link">
-          <NavItem options={{reload: true}} routeName="forgotPassword">
-            Forgot password?
-          </NavItem>
+      {unauthorized.valueAsBool && (
+        <div className="ant-typography-warning cc--text-center">
+          You have been signed out. Please log back in.
         </div>
+      )}
 
-        <DisabledButtonPopup fields={props.fields}>
-          <Button
-            data-testid="signinButton"
-            disabled={!props.validForm}
-            loading={props.loading}
-            size="large"
-            type="primary"
-            block
-            onClick={props.onSubmit}
-          >
-            Sign in
-          </Button>
-        </DisabledButtonPopup>
-      </Col>
-    </Row>
+      <Divider />
 
-    <Copyright />
-  </div>
-)
+      <Row>
+        <Col md={{span: 16, offset: 4}}>
+          <SigninForm
+            {...props.fields}
+            onChange={props.onFieldChange}
+            onSubmit={props.onSubmit}
+          />
+
+          <div className="cc--forgot-password-link">
+            <NavItem options={{reload: true}} routeName="forgotPassword">
+              Forgot password?
+            </NavItem>
+          </div>
+
+          <DisabledButtonPopup fields={props.fields}>
+            <Button
+              data-testid="signinButton"
+              disabled={!props.validForm}
+              loading={props.loading}
+              size="large"
+              type="primary"
+              block
+              onClick={props.onSubmit}
+            >
+              Sign in
+            </Button>
+          </DisabledButtonPopup>
+        </Col>
+      </Row>
+
+      <Copyright />
+    </>
+  )
+}
 
 SigninContent.propTypes = {
   fields: PropTypes.shape({}).isRequired,

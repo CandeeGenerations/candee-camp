@@ -1,6 +1,7 @@
+/* eslint jsx-a11y/anchor-is-valid: 0 */
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import {Icon, Layout, Menu, Spin} from 'antd'
+import {Icon, Layout, Menu} from 'antd'
 
 import {NavItem} from '../../Navigation'
 
@@ -41,22 +42,15 @@ const NavBarContent = props => {
         ))}
 
         <Menu.Item className="cc--bottom-item cc--sign-out">
-          {props.loading ? (
-            <Spin
-              indicator={<Icon style={{fontSize: 18}} type="loading" spin />}
-            />
-          ) : (
-            // eslint-disable-next-line
-            <a
-              onClick={e => {
-                e.preventDefault()
-                props.onSignout()
-              }}
-            >
-              <Icon type="logout" />
-              <span>Sign out</span>
-            </a>
-          )}
+          <a
+            onClick={e => {
+              e.preventDefault()
+              props.onSignout()
+            }}
+          >
+            <Icon type="logout" />
+            <span>Sign out</span>
+          </a>
         </Menu.Item>
       </Menu>
     </Layout.Sider>
@@ -68,7 +62,6 @@ NavBarContent.defaultProps = {
 }
 
 NavBarContent.propTypes = {
-  loading: PropTypes.bool.isRequired,
   navItems: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
