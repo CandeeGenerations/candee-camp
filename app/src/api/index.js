@@ -33,18 +33,26 @@ const get = (...params) => {
 }
 
 const deleteRequest = (...params) => {
+  validateToken()
+
   return axiosRequest.delete(...params)
 }
 
 const post = (...params) => {
+  validateToken()
+
   return axiosRequest.post(...params)
 }
 
 const put = (...params) => {
+  validateToken()
+
   return axiosRequest.put(...params)
 }
 
 const patch = (...params) => {
+  validateToken()
+
   return axiosRequest.patch(...params)
 }
 
