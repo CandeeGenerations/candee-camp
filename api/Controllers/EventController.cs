@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CandeeCamp.API.DomainObjects;
@@ -37,27 +38,27 @@ namespace CandeeCamp.API.Controllers
             return newEvent;
         }
 
-        [HttpPost("/createEvent/{event}")]
+        [HttpPost("/createEvent")]
         [ProducesResponseType(typeof(Task<Event>), 200)]
-        public async Task<int> CreateEvent(Event incomingEvent)
+        public async Task<Event> CreateEvent([FromBody]Event incomingEvent)
         {
-            int newEvent = await _eventRepository.CreateEvent(incomingEvent);
+            Event newEvent = await _eventRepository.CreateEvent(incomingEvent);
             return newEvent;
         }
 
-        [HttpPut("/updateEvent/{event}")]
+        [HttpPut("/updateEvent")]
         [ProducesResponseType(typeof(Task<Event>), 200)]
-        public async Task<int> UpdateEvent(Event incomingEvent)
+        public async Task<Event> UpdateEvent([FromBody]Event incomingEvent)
         {
-            int updatedEvent = await _eventRepository.UpdateEvent(incomingEvent);
+            Event updatedEvent = await _eventRepository.UpdateEvent(incomingEvent);
             return updatedEvent;
         }
 
-        [HttpDelete("/removeEvent/{event}")]
+        [HttpPut("/removeEvent")]
         [ProducesResponseType(typeof(Task<Event>), 200)]
-        public async Task<int> RemoveEventById(Event incomingEvent)
+        public async Task<Event> RemoveEvent([FromBody]Event incomingEvent)
         {
-            int removedEvent = await _eventRepository.RemoveEventById(incomingEvent);
+            Event removedEvent = await _eventRepository.RemoveEvent(incomingEvent);
             return removedEvent;
         }
     }

@@ -16,18 +16,33 @@ namespace CandeeCamp.API.Context
         {
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = Guid.NewGuid(), FirstName = "Tyler", LastName = "Candee", DateCreated = DateTimeOffset.Now,
+                Id = -1, FirstName = "Tyler",
+                LastName = "Candee",
+                CreatedDate = DateTimeOffset.Now,
                 EmailAddress = "tyler@cgen.com",
                 Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy",
                 PasswordHash =
                     "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg=="
             });
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                Id = -2,
+                FirstName = "joe",
+                LastName = "plumber",
+                CreatedDate = DateTimeOffset.Now,
+                EmailAddress = "theblackswimmers@gmail.com",
+                Salt = "nqJBdDHXBCGrPiZHRmUBgYMVdgsSCZxaWyjOZnCxAAMrPghUzARqcAcEynPwQNkD",
+                PasswordHash =
+                    "WkZsAKSKmh9C/WoaCfI4xiSOl7nRw8p5i4T90h54+EkMmtfLwcjCRi9kFkIZRMv/RFaGrTP3FzxcWapHnuNdzw=="
+            });
 
             modelBuilder.Entity<Event>().HasData(new Event
             {
-                Id = Guid.NewGuid(), Name = "Event 1"
+                Id = -1, Name = "Event 1"//,
+                //CreatedDate = DateTimeOffset.Now
             });
-            
+            modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);
+
             base.OnModelCreating(modelBuilder);
         }
     }

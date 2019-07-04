@@ -20,13 +20,13 @@ namespace CandeeCamp.API.Repositories
             string salt = Helpers.CreateUniqueString(64);
             User newUser = new User
             {
-                Id = Guid.NewGuid(),
+                //Id = Guid.NewGuid(),
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 EmailAddress = user.EmailAddress,
                 PasswordHash = user.Password.Encrypt(salt),
                 Salt = salt,
-                DateCreated = DateTimeOffset.Now
+                CreatedDate = DateTimeOffset.Now
             };
 
             await Context.Users.AddAsync(newUser);

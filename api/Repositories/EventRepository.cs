@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CandeeCamp.API.Context;
@@ -23,22 +24,32 @@ namespace CandeeCamp.API.Repositories
             return await Context.Events.FindAsync(id);
         }
 
-        public async Task<int> CreateEvent(Event incomingEvent)
+        public async Task<Event> CreateEvent(Event incomingEvent)
         {
+            //incomingEvent.Id = new Guid();
             Context.Events.Add(incomingEvent);
-            return await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
+            return await FindEvent(incomingEvent);
         }
 
-        public async Task<int> UpdateEvent(Event incomingEvent)
+        public async Task<Event> UpdateEvent(Event incomingEvent)
         {
             Context.Events.Update(incomingEvent);
-            return await Context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
+            return await FindEvent(incomingEvent);
         }
 
-        public async Task<int> RemoveEventById(Event incomingEvent)
+        public async Task<Event> RemoveEvent(Event incomingEvent)
         {
-            Context.Events.Remove(incomingEvent);
-            return await Context.SaveChangesAsync();
+            incomingEvent.isDeleted = 1;
+            Context.Events.Update(incomingEvent);
+            await Context.SaveChangesAsync();
+            return await FindEvent(incomingEvent);
+        }
+
+        public async Task<Event> FindEvent(Event incomingEvent)
+        {
+            return await Context.Events.SingleOrDefaultAsync(@event => @event.Name == incomingEvent.Name);
         }
     }
 }

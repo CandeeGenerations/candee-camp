@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
@@ -53,7 +54,8 @@ namespace CandeeCamp.API
                 .AddJsonOptions(options =>
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter(_loggerFactory)))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
             
             services.AddApiVersioning(options =>
             {
