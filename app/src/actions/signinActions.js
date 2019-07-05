@@ -44,7 +44,7 @@ export const forgotPassword = async fields => {
   }
 }
 
-export const validateResetPasswordToken = async token => {
+export const validateResetPasswordToken = async (userId, token) => {
   try {
     if (!token) {
       throw new Error(
@@ -52,9 +52,19 @@ export const validateResetPasswordToken = async token => {
       )
     }
 
-    return await request.post('/validateresetpasswordtoken', {
-      params: {token},
-    })
+    const result = await axiosRequest.get(
+      `/validate-reset-token?userId=${userId}&token=${token}`,
+    )
+
+    if (!result.data) {
+      console.log('here')
+      handleError(
+        'This reset password token is invalid or has expired. Please try again later.',
+        {},
+      )
+    }
+
+    return result
   } catch (error) {
     handleError(
       (error && error.message) ||
@@ -68,7 +78,7 @@ export const validateResetPasswordToken = async token => {
 
 export const resetPassword = async fields => {
   try {
-    await request.post('/resetpassword', {
+    await axiosRequest.post('/resetpassword', {
       params: {password: fields.newPassword.value},
     })
 

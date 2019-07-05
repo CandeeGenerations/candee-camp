@@ -25,6 +25,7 @@ const ResetPassword = () => {
   const validateToken = async () => {
     try {
       const response = await actions.validateResetPasswordToken(
+        routerContext.route.params.userId,
         routerContext.route.params.token,
       )
 

@@ -60,6 +60,15 @@ namespace CandeeCamp.API.Controllers
             return Ok();
         }
 
+        [HttpGet("validate-reset-token")]
+        [ProducesResponseType(typeof(bool), 200)]
+        public async Task<ActionResult<bool>> ValidateResetToken(int userId, string token)
+        {
+            bool valid = await _userRepository.ValidateResetToken(userId, token);
+
+            return Ok(valid);
+        }
+
         [HttpGet("claims")]
         public IActionResult Claims()
         {

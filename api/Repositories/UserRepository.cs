@@ -105,5 +105,17 @@ namespace CandeeCamp.API.Repositories
 
             await Context.SaveChangesAsync();
         }
+
+        public async Task<bool> ValidateResetToken(int userId, string token)
+        {
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId && u.ResetPasswordToken == token);
+
+            if (dbUser == null)
+            {
+                return false;
+            }
+
+            return DateTimeOffset.UtcNow < dbUser.ResetPasswordExpirationDate;
+        }
     }
 }

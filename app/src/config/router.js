@@ -10,7 +10,7 @@ const routes = [
   },
   {
     name: 'resetPassword',
-    path: '/reset-password?token',
+    path: '/reset-password?userId&token',
   },
   {
     name: 'dashboard',
