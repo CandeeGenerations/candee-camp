@@ -1,35 +1,27 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using CandeeCamp.API.DomainObjects.Common;
 
 namespace CandeeCamp.API.DomainObjects
 {
-    public class Event
+    public class Event : ActiveDeleted
     {
-        //[Key, Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
-        public int Id { get; set; }
+        public Event()
+        {
+            CreatedDate = DateTimeOffset.UtcNow;
+        }
 
         [Required]
         public string Name { get; set; }
+
+        public decimal? Cost { get; set; }
 
         public DateTimeOffset StartDate { get; set; }
 
         public DateTimeOffset EndDate { get; set; }
 
-        public byte IsActive { get; set; }
-
-        public byte isDeleted { get; set; }
-
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.UtcNow;
-
+        public DateTimeOffset CreatedDate { get; set; }
         
-        public int? CreatedBy { get; set; }
-        [ForeignKey("Id")]
-        public virtual User User { get; set; }
-        
-
-        
+        public virtual User CreatedBy { get; set; }
     }
 }

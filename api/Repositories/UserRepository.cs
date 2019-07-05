@@ -20,13 +20,14 @@ namespace CandeeCamp.API.Repositories
             string salt = Helpers.CreateUniqueString(64);
             User newUser = new User
             {
-                //Id = Guid.NewGuid(),
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 EmailAddress = user.EmailAddress,
                 PasswordHash = user.Password.Encrypt(salt),
                 Salt = salt,
-                CreatedDate = DateTimeOffset.Now
+                CreatedDate = DateTimeOffset.Now,
+                IsActive = true,
+                IsDeleted = false,
             };
 
             await Context.Users.AddAsync(newUser);
@@ -50,33 +51,11 @@ namespace CandeeCamp.API.Repositories
             {
                 return null;
             }
-
-            string refreshToken = Helpers.CreateUniqueString(24, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER);
             
             dbUser.LastLoggedInDate = DateTimeOffset.Now;
-            dbUser.RefreshToken = refreshToken;
 
             await Context.SaveChangesAsync();
                 
-            return dbUser;
-        }
-
-        public async Task<User> ValidateRefreshToken(AuthenticationModel user)
-        {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(x => x.RefreshToken == user.refresh_token);
-
-            if (dbUser == null)
-            {
-                return null;
-            }
-
-            string refreshToken = Helpers.CreateUniqueString(24, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER);
-            
-            dbUser.LastLoggedInDate = DateTimeOffset.Now;
-            dbUser.RefreshToken = refreshToken;
-
-            await Context.SaveChangesAsync();
-
             return dbUser;
         }
     }

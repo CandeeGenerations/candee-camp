@@ -8,6 +8,5 @@ namespace CandeeCamp.API.Repositories.Interfaces
     {
         Task<User> AddUser(NewUserModel user);
         Task<User> ValidateUser(AuthenticationModel user);
-        Task<User> ValidateRefreshToken(AuthenticationModel user);
     }
 }

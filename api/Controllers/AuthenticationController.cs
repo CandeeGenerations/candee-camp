@@ -48,15 +48,6 @@ namespace CandeeCamp.API.Controllers
                     return Ok(BuildToken(user));
                 }
 
-                case "refresh_token":
-                {
-                    user = await _userRepository.ValidateRefreshToken(authentication);
-
-                    if (user == null) return Unauthorized();
-
-                    return Ok(BuildToken(user));
-                }
-
                 default:
                     return BadRequest();
             }
@@ -104,7 +95,6 @@ namespace CandeeCamp.API.Controllers
             {
                 access_token = new JwtSecurityTokenHandler().WriteToken(token),
                 expires_in = "1800",
-                refresh_token = user.RefreshToken
             };
         }
 
