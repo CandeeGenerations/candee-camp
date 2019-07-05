@@ -1,5 +1,5 @@
 const Config = {
-  apiUrl: 'http://localhost:5500/api', // 'http://localhost:3001/.netlify/functions/server',
+  apiUrl: 'http://localhost:5000/api', // 'http://localhost:3001/.netlify/functions/server',
   features: {
     loadingBar: false,
   },

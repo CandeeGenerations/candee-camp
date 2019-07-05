@@ -86,5 +86,24 @@ namespace CandeeCamp.API.Repositories
 
             return dbUser;
         }
+
+        public async Task SendForgotPasswordEmail(string emailAddress)
+        {
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
+
+            if (dbUser == null)
+            {
+                return;
+            }
+            
+            string token = Helpers.CreateUniqueString(24, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER);
+
+            dbUser.ResetPasswordToken = token;
+            dbUser.ResetPasswordExpirationDate = DateTimeOffset.UtcNow.AddMinutes(10);
+            
+            // TODO : Send email
+
+            await Context.SaveChangesAsync();
+        }
     }
 }

@@ -1,12 +1,12 @@
 import qs from 'qs'
 
-import request from '../api'
+import request, {axiosRequest} from '../api'
 import {setUser} from '../helpers/authHelpers'
 import {handleError, openNotification} from '../helpers'
 
-export const signin = async (fields: {}) => {
+export const signin = async fields => {
   try {
-    const response = await request.post(
+    const response = await axiosRequest.post(
       '/token',
       qs.stringify({
         // eslint-disable-next-line babel/camelcase
@@ -26,17 +26,15 @@ export const signin = async (fields: {}) => {
   }
 }
 
-export const forgotPassword = async (fields: {}) => {
+export const forgotPassword = async fields => {
   try {
-    await request.post('/forgotpassword', {
-      params: {
-        email: fields.email.value,
-      },
-    })
+    await axiosRequest.post(
+      `/forgot-password?emailAddress=${fields.email.value}`,
+    )
 
     openNotification(
       'success',
-      'The reset link has been sent to your email address.',
+      'The reset link has been sent to your email address if it is associated with an account.',
     )
   } catch (error) {
     handleError(
@@ -46,7 +44,7 @@ export const forgotPassword = async (fields: {}) => {
   }
 }
 
-export const validateResetPasswordToken = async (token: string) => {
+export const validateResetPasswordToken = async token => {
   try {
     if (!token) {
       throw new Error(
@@ -68,7 +66,7 @@ export const validateResetPasswordToken = async (token: string) => {
   }
 }
 
-export const resetPassword = async (fields: {}) => {
+export const resetPassword = async fields => {
   try {
     await request.post('/resetpassword', {
       params: {password: fields.newPassword.value},

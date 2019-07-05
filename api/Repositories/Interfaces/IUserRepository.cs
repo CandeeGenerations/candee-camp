@@ -11,5 +11,6 @@ namespace CandeeCamp.API.Repositories.Interfaces
         Task<User> ValidateUser(AuthenticationModel user);
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUserById(int userId);
+        Task SendForgotPasswordEmail(string emailAddress);
     }
 }

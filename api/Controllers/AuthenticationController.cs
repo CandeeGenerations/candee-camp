@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using CandeeCamp.API.DomainObjects;
 using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace CandeeCamp.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Route("api/token")]
+    [Route("api")]
     [Produces("application/json")]
     public class AuthenticationController : Controller
     {
@@ -29,8 +28,7 @@ namespace CandeeCamp.API.Controllers
             _userRepository = userRepository;
         }
         
-        [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("token")]
         [ProducesResponseType(typeof(TokenModel), 200)]
         [ProducesResponseType(401)]
         public async Task<ActionResult<TokenModel>> CreateToken(AuthenticationModel authentication)
@@ -53,20 +51,13 @@ namespace CandeeCamp.API.Controllers
             }
         }
 
-        [AllowAnonymous]
-        [HttpPost("register")]
-        [ProducesResponseType(typeof(TokenModel), 200)]
-        [ProducesResponseType(401)]
-        public async Task<ActionResult<TokenModel>> RegisterAndCreateToken(NewUserModel newUser)
+        [HttpPost("forgot-password")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult> ForgotPassword(string emailAddress)
         {
-            User createdUser = await _userRepository.CreateUser(newUser);
-            
-            if (createdUser == null)
-            {
-                return Unauthorized();
-            }
+            await _userRepository.SendForgotPasswordEmail(emailAddress);
 
-            return Ok(BuildToken(createdUser));
+            return Ok();
         }
 
         [HttpGet("claims")]
