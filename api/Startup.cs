@@ -54,8 +54,7 @@ namespace CandeeCamp.API
                 .AddJsonOptions(options =>
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter(_loggerFactory)))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             services.AddApiVersioning(options =>
             {

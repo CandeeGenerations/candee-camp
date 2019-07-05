@@ -11,11 +11,11 @@ namespace CandeeCamp.API.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class EventController : ControllerBase
+    public class EventsController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;
 
-        public EventController(IEventRepository eventRepository)
+        public EventsController(IEventRepository eventRepository)
         {
             _eventRepository = eventRepository;
         }
@@ -29,36 +29,40 @@ namespace CandeeCamp.API.Controllers
             return Ok(events);
         }
 
-        [HttpGet("/getEventById/{id}")]
+        [HttpGet("{eventId}")]
         [ProducesResponseType(typeof(Task<Event>), 200)]
-        public async Task<Event> GetEventById(int id)
+        public async Task<ActionResult<Event>> GetEventById(int eventId)
         {
-            Event newEvent = await _eventRepository.GetEventById(id);
-            return newEvent;
+            Event newEvent = await _eventRepository.GetEventById(eventId);
+            
+            return Ok(newEvent);
         }
 
-        [HttpPost("/createEvent")]
+        [HttpPost]
         [ProducesResponseType(typeof(Task<Event>), 200)]
-        public async Task<Event> CreateEvent([FromBody]Event incomingEvent)
+        public async Task<ActionResult<Event>> CreateEvent([FromBody]Event incomingEvent)
         {
             Event newEvent = await _eventRepository.CreateEvent(incomingEvent);
-            return newEvent;
+            
+            return Ok(newEvent);
         }
 
-        [HttpPut("/updateEvent")]
+        [HttpPut]
         [ProducesResponseType(typeof(Task<Event>), 200)]
-        public async Task<Event> UpdateEvent([FromBody]Event incomingEvent)
+        public async Task<ActionResult<Event>> UpdateEvent([FromBody]Event incomingEvent)
         {
             Event updatedEvent = await _eventRepository.UpdateEvent(incomingEvent);
-            return updatedEvent;
+            
+            return Ok(updatedEvent);
         }
 
-        [HttpPut("/removeEvent")]
-        [ProducesResponseType(typeof(Task<Event>), 200)]
-        public async Task<Event> RemoveEvent([FromBody]Event incomingEvent)
+        [HttpPut("/delete/{eventId}")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<bool>> DeleteEvent(int eventId)
         {
-            Event removedEvent = await _eventRepository.RemoveEvent(incomingEvent);
-            return removedEvent;
+            await _eventRepository.DeleteEvent(eventId);
+            
+            return Ok();
         }
     }
 }

@@ -43,8 +43,10 @@ namespace CandeeCamp.API.Context
 
             modelBuilder.Entity<Event>().HasData(new Event
             {
-                Id = -1, Name = "Event 1", IsActive = true, IsDeleted = false
+                Id = -1, Name = "Event 1", IsActive = true, IsDeleted = false, CreatedBy = -1
             });
+
+            modelBuilder.Entity<Event>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(e => e.CreatedBy);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using CandeeCamp.API.Common;
 using CandeeCamp.API.Context;
@@ -15,8 +17,15 @@ namespace CandeeCamp.API.Repositories
         {
         }
 
-        public async Task<User> AddUser(NewUserModel user)
+        public async Task<User> CreateUser(NewUserModel user)
         {
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == user.EmailAddress);
+
+            if (dbUser != null)
+            {
+                throw new Exception("This user already exists.");
+            }
+            
             string salt = Helpers.CreateUniqueString(64);
             User newUser = new User
             {
@@ -38,24 +47,43 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<User> ValidateUser(AuthenticationModel user)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(x => x.EmailAddress == user.username);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == user.username);
 
             if (dbUser == null)
             {
-                return null;
+                throw new Exception("The email address or password is incorrect.");
             }
 
             string passwordHash = user.password.Encrypt(dbUser.Salt);
 
             if (passwordHash != dbUser.PasswordHash)
             {
-                return null;
+                throw new Exception("The email address or password is incorrect.");
             }
             
             dbUser.LastLoggedInDate = DateTimeOffset.Now;
 
             await Context.SaveChangesAsync();
                 
+            return dbUser;
+        }
+
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            IEnumerable<User> dbUsers = await Context.Users.ToListAsync();
+
+            return dbUsers;
+        }
+
+        public async Task<User> GetUserById(int userId)
+        {
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (dbUser == null)
+            {
+                throw new Exception("This user does not exist.");
+            }
+
             return dbUser;
         }
     }
