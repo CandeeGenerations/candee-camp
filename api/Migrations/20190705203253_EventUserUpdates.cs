@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CandeeCamp.API.Migrations
 {
-    public partial class updatedEventUserFields : Migration
+    public partial class EventUserUpdates : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,16 +21,6 @@ namespace CandeeCamp.API.Migrations
                 table: "Events",
                 newName: "IsDeleted");
 
-            migrationBuilder.RenameColumn(
-                name: "CreatedBy",
-                table: "Events",
-                newName: "CreatedById");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Events_CreatedBy",
-                table: "Events",
-                newName: "IX_Events_CreatedById");
-
             migrationBuilder.AlterColumn<DateTimeOffset>(
                 name: "ResetPasswordExpirationDate",
                 table: "Users",
@@ -67,46 +57,57 @@ namespace CandeeCamp.API.Migrations
                 nullable: false,
                 oldClrType: typeof(byte));
 
+            migrationBuilder.AlterColumn<int>(
+                name: "CreatedBy",
+                table: "Events",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldNullable: true);
+
             migrationBuilder.AddColumn<decimal>(
                 name: "Cost",
                 table: "Events",
-                nullable: false,
-                defaultValue: 0m);
+                nullable: true);
+
+            migrationBuilder.AddColumn<DateTimeOffset>(
+                name: "UpdatedDate",
+                table: "Events",
+                nullable: true);
 
             migrationBuilder.UpdateData(
                 table: "Events",
                 keyColumn: "Id",
                 keyValue: -1,
-                columns: new[] { "CreatedDate", "IsActive", "IsDeleted" },
-                values: new object[] { new DateTimeOffset(new DateTime(2019, 7, 5, 18, 46, 51, 824, DateTimeKind.Unspecified).AddTicks(9120), new TimeSpan(0, 0, 0, 0, 0)), false, false });
+                columns: new[] { "CreatedBy", "CreatedDate", "IsActive", "IsDeleted" },
+                values: new object[] { 0, new DateTimeOffset(new DateTime(2019, 7, 5, 20, 32, 52, 459, DateTimeKind.Unspecified).AddTicks(2050), new TimeSpan(0, 0, 0, 0, 0)), true, false });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: -2,
-                columns: new[] { "CreatedDate", "LastLoggedInDate", "ResetPasswordExpirationDate" },
-                values: new object[] { new DateTimeOffset(new DateTime(2019, 7, 5, 14, 46, 51, 824, DateTimeKind.Unspecified).AddTicks(7260), new TimeSpan(0, -4, 0, 0, 0)), null, null });
+                columns: new[] { "CreatedDate", "IsActive", "LastLoggedInDate", "ResetPasswordExpirationDate" },
+                values: new object[] { new DateTimeOffset(new DateTime(2019, 7, 5, 16, 32, 52, 458, DateTimeKind.Unspecified).AddTicks(9760), new TimeSpan(0, -4, 0, 0, 0)), true, null, null });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: -1,
-                columns: new[] { "CreatedDate", "LastLoggedInDate", "ResetPasswordExpirationDate" },
-                values: new object[] { new DateTimeOffset(new DateTime(2019, 7, 5, 14, 46, 51, 812, DateTimeKind.Unspecified).AddTicks(7840), new TimeSpan(0, -4, 0, 0, 0)), null, null });
+                columns: new[] { "CreatedDate", "IsActive", "LastLoggedInDate", "ResetPasswordExpirationDate" },
+                values: new object[] { new DateTimeOffset(new DateTime(2019, 7, 5, 16, 32, 52, 446, DateTimeKind.Unspecified).AddTicks(8500), new TimeSpan(0, -4, 0, 0, 0)), true, null, null });
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Events_Users_CreatedById",
+                name: "FK_Events_Users_CreatedBy",
                 table: "Events",
-                column: "CreatedById",
+                column: "CreatedBy",
                 principalTable: "Users",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Events_Users_CreatedById",
+                name: "FK_Events_Users_CreatedBy",
                 table: "Events");
 
             migrationBuilder.DropColumn(
@@ -121,6 +122,10 @@ namespace CandeeCamp.API.Migrations
                 name: "Cost",
                 table: "Events");
 
+            migrationBuilder.DropColumn(
+                name: "UpdatedDate",
+                table: "Events");
+
             migrationBuilder.RenameColumn(
                 name: "UserRole",
                 table: "Users",
@@ -130,16 +135,6 @@ namespace CandeeCamp.API.Migrations
                 name: "IsDeleted",
                 table: "Events",
                 newName: "isDeleted");
-
-            migrationBuilder.RenameColumn(
-                name: "CreatedById",
-                table: "Events",
-                newName: "CreatedBy");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Events_CreatedById",
-                table: "Events",
-                newName: "IX_Events_CreatedBy");
 
             migrationBuilder.AlterColumn<DateTimeOffset>(
                 name: "ResetPasswordExpirationDate",
@@ -167,12 +162,18 @@ namespace CandeeCamp.API.Migrations
                 nullable: false,
                 oldClrType: typeof(bool));
 
+            migrationBuilder.AlterColumn<int>(
+                name: "CreatedBy",
+                table: "Events",
+                nullable: true,
+                oldClrType: typeof(int));
+
             migrationBuilder.UpdateData(
                 table: "Events",
                 keyColumn: "Id",
                 keyValue: -1,
-                columns: new[] { "CreatedDate", "IsActive", "isDeleted" },
-                values: new object[] { new DateTimeOffset(new DateTime(2019, 7, 4, 2, 28, 33, 320, DateTimeKind.Unspecified).AddTicks(6292), new TimeSpan(0, 0, 0, 0, 0)), (byte)0, (byte)0 });
+                columns: new[] { "CreatedBy", "CreatedDate", "IsActive", "isDeleted" },
+                values: new object[] { null, new DateTimeOffset(new DateTime(2019, 7, 4, 2, 28, 33, 320, DateTimeKind.Unspecified).AddTicks(6292), new TimeSpan(0, 0, 0, 0, 0)), (byte)0, (byte)0 });
 
             migrationBuilder.UpdateData(
                 table: "Users",

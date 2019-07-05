@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CandeeCamp.API.Context;
@@ -15,37 +16,61 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<IEnumerable<Event>> GetEvents()
         {
-            return await Context.Events.ToListAsync();
+            IEnumerable<Event> dbEvents = await Context.Events.ToListAsync();
+
+            return dbEvents;
         }
 
-        public async Task<Event> GetEventById(int id)
+        public async Task<Event> GetEventById(int eventId)
         {
-            return await Context.Events.FindAsync(id);
+            Event dbEvent = await Context.Events.FindAsync(eventId);
+
+            return dbEvent;
         }
 
         public async Task<Event> CreateEvent(Event incomingEvent)
         {
-            Context.Events.Add(incomingEvent);
+            if (incomingEvent.StartDate == DateTimeOffset.MinValue || incomingEvent.EndDate == DateTimeOffset.MinValue)
+            {
+                throw new Exception("The Start and End Dates are required.");
+            }
+            
+            incomingEvent.IsActive = true;
+            incomingEvent.IsDeleted = false;
+            
+            await Context.Events.AddAsync(incomingEvent);
             await Context.SaveChangesAsync();
-            return await FindEvent(incomingEvent);
+            
+            return incomingEvent;
         }
 
         public async Task<Event> UpdateEvent(Event incomingEvent)
         {
+            if (incomingEvent.StartDate == DateTimeOffset.MinValue || incomingEvent.EndDate == DateTimeOffset.MinValue)
+            {
+                throw new Exception("The Start and End Dates are required.");
+            }
+            
+            incomingEvent.UpdatedDate = DateTimeOffset.UtcNow;
+            
             Context.Events.Update(incomingEvent);
             await Context.SaveChangesAsync();
-            return await FindEvent(incomingEvent);
+            
+            return incomingEvent;
         }
 
-        public async Task<Event> RemoveEvent(Event incomingEvent)
+        public async Task DeleteEvent(int eventId)
         {
-            incomingEvent.IsDeleted = true;
-            Context.Events.Update(incomingEvent);
+            Event dbEvent = await Context.Events.FindAsync(eventId);
+
+            dbEvent.IsActive = false;
+            dbEvent.IsDeleted = true;
+            
+            Context.Events.Update(dbEvent);
             await Context.SaveChangesAsync();
-            return await FindEvent(incomingEvent);
         }
 
-        public async Task<Event> FindEvent(Event incomingEvent)
+        public async Task<Event> FindEventByName(Event incomingEvent)
         {
             return await Context.Events.SingleOrDefaultAsync(@event => @event.Name == incomingEvent.Name);
         }

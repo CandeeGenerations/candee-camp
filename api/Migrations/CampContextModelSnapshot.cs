@@ -24,7 +24,7 @@ namespace CandeeCamp.API.Migrations
 
                     b.Property<decimal?>("Cost");
 
-                    b.Property<int?>("CreatedById");
+                    b.Property<int>("CreatedBy");
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
@@ -39,9 +39,11 @@ namespace CandeeCamp.API.Migrations
 
                     b.Property<DateTimeOffset>("StartDate");
 
+                    b.Property<DateTimeOffset?>("UpdatedDate");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById");
+                    b.HasIndex("CreatedBy");
 
                     b.ToTable("Events");
 
@@ -49,7 +51,8 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 18, 50, 57, 136, DateTimeKind.Unspecified).AddTicks(7040), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = 0,
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 20, 32, 52, 459, DateTimeKind.Unspecified).AddTicks(2050), new TimeSpan(0, 0, 0, 0, 0)),
                             EndDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
@@ -100,7 +103,7 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 14, 50, 57, 124, DateTimeKind.Unspecified).AddTicks(340), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 16, 32, 52, 446, DateTimeKind.Unspecified).AddTicks(8500), new TimeSpan(0, -4, 0, 0, 0)),
                             EmailAddress = "tyler@cgen.com",
                             FirstName = "Tyler",
                             IsActive = true,
@@ -112,7 +115,7 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -2,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 14, 50, 57, 136, DateTimeKind.Unspecified).AddTicks(5070), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 16, 32, 52, 458, DateTimeKind.Unspecified).AddTicks(9760), new TimeSpan(0, -4, 0, 0, 0)),
                             EmailAddress = "theblackswimmers@gmail.com",
                             FirstName = "joe",
                             IsActive = true,
@@ -125,9 +128,10 @@ namespace CandeeCamp.API.Migrations
 
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.Event", b =>
                 {
-                    b.HasOne("CandeeCamp.API.DomainObjects.User", "CreatedBy")
+                    b.HasOne("CandeeCamp.API.DomainObjects.User", "CreatedByUser")
                         .WithMany()
-                        .HasForeignKey("CreatedById");
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

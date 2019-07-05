@@ -59,7 +59,7 @@ namespace CandeeCamp.API.Controllers
         [ProducesResponseType(401)]
         public async Task<ActionResult<TokenModel>> RegisterAndCreateToken(NewUserModel newUser)
         {
-            User createdUser = await _userRepository.AddUser(newUser);
+            User createdUser = await _userRepository.CreateUser(newUser);
             
             if (createdUser == null)
             {
