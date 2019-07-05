@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CandeeCamp.API.Context;
@@ -26,7 +25,6 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<Event> CreateEvent(Event incomingEvent)
         {
-            //incomingEvent.Id = new Guid();
             Context.Events.Add(incomingEvent);
             await Context.SaveChangesAsync();
             return await FindEvent(incomingEvent);
@@ -41,7 +39,7 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<Event> RemoveEvent(Event incomingEvent)
         {
-            incomingEvent.isDeleted = 1;
+            incomingEvent.IsDeleted = true;
             Context.Events.Update(incomingEvent);
             await Context.SaveChangesAsync();
             return await FindEvent(incomingEvent);

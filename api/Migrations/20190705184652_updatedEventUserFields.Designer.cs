@@ -3,14 +3,16 @@ using System;
 using CandeeCamp.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CandeeCamp.API.Migrations
 {
     [DbContext(typeof(CampContext))]
-    partial class CampContextModelSnapshot : ModelSnapshot
+    [Migration("20190705184652_updatedEventUserFields")]
+    partial class updatedEventUserFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +24,7 @@ namespace CandeeCamp.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<decimal?>("Cost");
+                    b.Property<decimal>("Cost");
 
                     b.Property<int?>("CreatedById");
 
@@ -49,9 +51,10 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 18, 50, 57, 136, DateTimeKind.Unspecified).AddTicks(7040), new TimeSpan(0, 0, 0, 0, 0)),
+                            Cost = 0m,
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 18, 46, 51, 824, DateTimeKind.Unspecified).AddTicks(9120), new TimeSpan(0, 0, 0, 0, 0)),
                             EndDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsActive = true,
+                            IsActive = false,
                             IsDeleted = false,
                             Name = "Event 1",
                             StartDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
@@ -100,10 +103,10 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 14, 50, 57, 124, DateTimeKind.Unspecified).AddTicks(340), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 14, 46, 51, 812, DateTimeKind.Unspecified).AddTicks(7840), new TimeSpan(0, -4, 0, 0, 0)),
                             EmailAddress = "tyler@cgen.com",
                             FirstName = "Tyler",
-                            IsActive = true,
+                            IsActive = false,
                             IsDeleted = false,
                             LastName = "Candee",
                             PasswordHash = "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
@@ -112,10 +115,10 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -2,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 14, 50, 57, 136, DateTimeKind.Unspecified).AddTicks(5070), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 5, 14, 46, 51, 824, DateTimeKind.Unspecified).AddTicks(7260), new TimeSpan(0, -4, 0, 0, 0)),
                             EmailAddress = "theblackswimmers@gmail.com",
                             FirstName = "joe",
-                            IsActive = true,
+                            IsActive = false,
                             IsDeleted = false,
                             LastName = "plumber",
                             PasswordHash = "WkZsAKSKmh9C/WoaCfI4xiSOl7nRw8p5i4T90h54+EkMmtfLwcjCRi9kFkIZRMv/RFaGrTP3FzxcWapHnuNdzw==",

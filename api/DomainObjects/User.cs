@@ -1,14 +1,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using CandeeCamp.API.DomainObjects.Common;
 
 namespace CandeeCamp.API.DomainObjects
 {
-    public class User //: GuidId
+    public class User : ActiveDeleted
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
-        public int Id { get; set; }
+        public User()
+        {
+            CreatedDate = DateTimeOffset.UtcNow;
+        }
 
         [Required]
         public string FirstName { get; set; }
@@ -25,15 +26,14 @@ namespace CandeeCamp.API.DomainObjects
         [Required]
         public string Salt { get; set; }
         
-        //[Required]
-        public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.UtcNow;
+        public string UserRole { get; set; }
+        
+        public DateTimeOffset CreatedDate { get; set; }
 
+        public DateTimeOffset? LastLoggedInDate { get; set; }
+        
         public string ResetPasswordToken { get; set; }
 
-        public DateTimeOffset ResetPasswordExpirationDate { get; set; }
-
-        public DateTimeOffset LastLoggedInDate { get; set; }
-
-        public string RefreshToken { get; set; }
+        public DateTimeOffset? ResetPasswordExpirationDate { get; set; }
     }
 }
