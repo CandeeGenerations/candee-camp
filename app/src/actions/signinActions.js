@@ -1,6 +1,6 @@
 import qs from 'qs'
 
-import request, {axiosRequest} from '../api'
+import {axiosRequest} from '../api'
 import {setUser} from '../helpers/authHelpers'
 import {handleError, openNotification} from '../helpers'
 
@@ -57,7 +57,6 @@ export const validateResetPasswordToken = async (userId, token) => {
     )
 
     if (!result.data) {
-      console.log('here')
       handleError(
         'This reset password token is invalid or has expired. Please try again later.',
         {},
@@ -67,25 +66,28 @@ export const validateResetPasswordToken = async (userId, token) => {
     return result
   } catch (error) {
     handleError(
-      (error && error.message) ||
-        'This reset password token is invalid or has expired. Please try again later.',
-      {},
+      'This reset password token is invalid or has expired. Please try again later.',
+      error,
     )
 
     return null
   }
 }
 
-export const resetPassword = async fields => {
+export const resetPassword = async (userId, token, fields) => {
   try {
-    await axiosRequest.post('/resetpassword', {
-      params: {password: fields.newPassword.value},
-    })
+    await axiosRequest.post(
+      `/reset-password?userId=${userId}&token=${token}&password=${
+        fields.newPassword.value
+      }`,
+    )
 
     openNotification(
       'success',
       'Your password has been reset. You can now use your new password to signin.',
     )
+
+    return true
   } catch (error) {
     handleError(
       'Unable to reset your password at this time. Please try again later.',

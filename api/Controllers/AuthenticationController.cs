@@ -69,6 +69,15 @@ namespace CandeeCamp.API.Controllers
             return Ok(valid);
         }
 
+        [HttpPost("reset-password")]
+        [ProducesResponseType(typeof(User), 200)]
+        public async Task<ActionResult<bool>> ResetPassword(int userId, string token, string password)
+        {
+            User user = await _userRepository.ResetPassword(userId, token, password);
+
+            return Ok(user);
+        }
+
         [HttpGet("claims")]
         public IActionResult Claims()
         {

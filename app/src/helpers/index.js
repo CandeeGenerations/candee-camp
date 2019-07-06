@@ -6,8 +6,8 @@ import {notification, Tag} from 'antd'
 
 import {Constants} from './constants'
 
-const errorTrace = error => {
-  console.error('Error :', error) // eslint-disable-line no-console
+const errorTrace = (error, response) => {
+  console.error(error, response) // eslint-disable-line no-console
 
   return error
 }
@@ -189,8 +189,16 @@ export const openNotification: void = (type: string, description: string) =>
 
 export const handleError: void = (message: string, error: {}) => {
   if (error) {
-    errorTrace(error)
+    errorTrace(error, error.response || null)
   }
 
-  openNotification('error', message)
+  const msg =
+    (error &&
+      error.response &&
+      error.response.data &&
+      error.response.data.error &&
+      error.response.data.error.message) ||
+    message
+
+  openNotification('error', msg)
 }

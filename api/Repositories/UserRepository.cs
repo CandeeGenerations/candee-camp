@@ -117,5 +117,31 @@ namespace CandeeCamp.API.Repositories
 
             return DateTimeOffset.UtcNow < dbUser.ResetPasswordExpirationDate;
         }
+
+        public async Task<User> ResetPassword(int userId, string token, string password)
+        {
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (dbUser == null)
+            {
+                throw new Exception("This user does not exist.");
+            }
+
+            if (dbUser.ResetPasswordToken != token || DateTimeOffset.UtcNow >= dbUser.ResetPasswordExpirationDate)
+            {
+                throw new Exception("This reset password token is invalid or has expired. Please try again later.");
+            }
+            
+            string salt = Helpers.CreateUniqueString(64);
+
+            dbUser.ResetPasswordToken = null;
+            dbUser.ResetPasswordExpirationDate = null;
+            dbUser.Salt = salt;
+            dbUser.PasswordHash = password.Encrypt(salt);
+
+            await Context.SaveChangesAsync();
+
+            return dbUser;
+        }
     }
 }
