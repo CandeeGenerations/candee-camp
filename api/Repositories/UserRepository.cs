@@ -86,5 +86,62 @@ namespace CandeeCamp.API.Repositories
 
             return dbUser;
         }
+
+        public async Task SendForgotPasswordEmail(string emailAddress)
+        {
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
+
+            if (dbUser == null)
+            {
+                return;
+            }
+            
+            string token = Helpers.CreateUniqueString(24, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER);
+
+            dbUser.ResetPasswordToken = token;
+            dbUser.ResetPasswordExpirationDate = DateTimeOffset.UtcNow.AddMinutes(10);
+            
+            // TODO : Send email
+
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task<bool> ValidateResetToken(ResetPasswordModel model)
+        {
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId && u.ResetPasswordToken == model.Token);
+
+            if (dbUser == null)
+            {
+                return false;
+            }
+
+            return DateTimeOffset.UtcNow < dbUser.ResetPasswordExpirationDate;
+        }
+
+        public async Task<User> ResetPassword(ResetPasswordModel model)
+        {
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId);
+
+            if (dbUser == null)
+            {
+                throw new Exception("This user does not exist.");
+            }
+
+            if (dbUser.ResetPasswordToken != model.Token || DateTimeOffset.UtcNow >= dbUser.ResetPasswordExpirationDate)
+            {
+                throw new Exception("This reset password token is invalid or has expired. Please try again later.");
+            }
+            
+            string salt = Helpers.CreateUniqueString(64);
+
+            dbUser.ResetPasswordToken = null;
+            dbUser.ResetPasswordExpirationDate = null;
+            dbUser.Salt = salt;
+            dbUser.PasswordHash = model.Password.Encrypt(salt);
+
+            await Context.SaveChangesAsync();
+
+            return dbUser;
+        }
     }
 }

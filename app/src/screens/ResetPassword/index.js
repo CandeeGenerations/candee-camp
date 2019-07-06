@@ -25,6 +25,7 @@ const ResetPassword = () => {
   const validateToken = async () => {
     try {
       const response = await actions.validateResetPasswordToken(
+        routerContext.route.params.userId,
         routerContext.route.params.token,
       )
 
@@ -53,9 +54,18 @@ const ResetPassword = () => {
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
       setLoading(stateLoading => ({...stateLoading, resetPassword: true}))
-      await actions.resetPassword(fields)
+
+      const result = await actions.resetPassword(
+        routerContext.route.params.userId,
+        routerContext.route.params.token,
+        fields,
+      )
+
       setLoading(stateLoading => ({...stateLoading, resetPassword: false}))
-      routerContext.router.navigate('signin')
+
+      if (result) {
+        routerContext.router.navigate('signin')
+      }
     }
   }
 
