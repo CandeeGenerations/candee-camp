@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  build-js:
     docker:
       # specify the version you desire here
       - image: circleci/node:8.11.1
@@ -38,3 +38,16 @@ jobs:
 
       # Make sure it builds.
       - run: cd app && yarn build
+
+  build-api:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+
+    steps:
+      - checkout
+
+      # restore the packages
+      - run: cd api && dotnet restore
+
+      # build the project
+      - run: cd api && dotnet build
