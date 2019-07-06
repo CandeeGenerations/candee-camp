@@ -41,7 +41,10 @@ jobs:
 
   build-api:
     docker:
-      - image: microsoft/aspnetcore-build:2.2
+      - image: dotnet/core/sdk:2.2
+        auth:
+          username: tyler@candeegenerations.com
+          password: $DOCKERHUB_PASSWORD
 
     steps:
       - checkout
