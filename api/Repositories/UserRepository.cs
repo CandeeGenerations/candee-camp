@@ -106,9 +106,9 @@ namespace CandeeCamp.API.Repositories
             await Context.SaveChangesAsync();
         }
 
-        public async Task<bool> ValidateResetToken(int userId, string token)
+        public async Task<bool> ValidateResetToken(ResetPasswordModel model)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId && u.ResetPasswordToken == token);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId && u.ResetPasswordToken == model.Token);
 
             if (dbUser == null)
             {
@@ -118,16 +118,16 @@ namespace CandeeCamp.API.Repositories
             return DateTimeOffset.UtcNow < dbUser.ResetPasswordExpirationDate;
         }
 
-        public async Task<User> ResetPassword(int userId, string token, string password)
+        public async Task<User> ResetPassword(ResetPasswordModel model)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId);
 
             if (dbUser == null)
             {
                 throw new Exception("This user does not exist.");
             }
 
-            if (dbUser.ResetPasswordToken != token || DateTimeOffset.UtcNow >= dbUser.ResetPasswordExpirationDate)
+            if (dbUser.ResetPasswordToken != model.Token || DateTimeOffset.UtcNow >= dbUser.ResetPasswordExpirationDate)
             {
                 throw new Exception("This reset password token is invalid or has expired. Please try again later.");
             }
@@ -137,7 +137,7 @@ namespace CandeeCamp.API.Repositories
             dbUser.ResetPasswordToken = null;
             dbUser.ResetPasswordExpirationDate = null;
             dbUser.Salt = salt;
-            dbUser.PasswordHash = password.Encrypt(salt);
+            dbUser.PasswordHash = model.Password.Encrypt(salt);
 
             await Context.SaveChangesAsync();
 

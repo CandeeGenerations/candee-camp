@@ -52,9 +52,12 @@ export const validateResetPasswordToken = async (userId, token) => {
       )
     }
 
-    const result = await axiosRequest.get(
-      `/validate-reset-token?userId=${userId}&token=${token}`,
-    )
+    const result = await axiosRequest.get('/validate-reset-token', {
+      params: {
+        userId,
+        token,
+      },
+    })
 
     if (!result.data) {
       handleError(
@@ -76,11 +79,13 @@ export const validateResetPasswordToken = async (userId, token) => {
 
 export const resetPassword = async (userId, token, fields) => {
   try {
-    await axiosRequest.post(
-      `/reset-password?userId=${userId}&token=${token}&password=${
-        fields.newPassword.value
-      }`,
-    )
+    await axiosRequest.post('/reset-password', {
+      params: {
+        userId,
+        token,
+        password: fields.newPassword.value,
+      },
+    })
 
     openNotification(
       'success',

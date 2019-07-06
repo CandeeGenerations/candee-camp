@@ -62,18 +62,18 @@ namespace CandeeCamp.API.Controllers
 
         [HttpGet("validate-reset-token")]
         [ProducesResponseType(typeof(bool), 200)]
-        public async Task<ActionResult<bool>> ValidateResetToken(int userId, string token)
+        public async Task<ActionResult<bool>> ValidateResetToken([FromBody]ResetPasswordModel model)
         {
-            bool valid = await _userRepository.ValidateResetToken(userId, token);
+            bool valid = await _userRepository.ValidateResetToken(model);
 
             return Ok(valid);
         }
 
         [HttpPost("reset-password")]
         [ProducesResponseType(typeof(User), 200)]
-        public async Task<ActionResult<bool>> ResetPassword(int userId, string token, string password)
+        public async Task<ActionResult<bool>> ResetPassword([FromBody]ResetPasswordModel model)
         {
-            User user = await _userRepository.ResetPassword(userId, token, password);
+            User user = await _userRepository.ResetPassword(model);
 
             return Ok(user);
         }

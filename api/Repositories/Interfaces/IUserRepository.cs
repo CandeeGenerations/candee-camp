@@ -12,7 +12,7 @@ namespace CandeeCamp.API.Repositories.Interfaces
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUserById(int userId);
         Task SendForgotPasswordEmail(string emailAddress);
-        Task<bool> ValidateResetToken(int userId, string token);
-        Task<User> ResetPassword(int userId, string token, string password);
+        Task<bool> ValidateResetToken(ResetPasswordModel model);
+        Task<User> ResetPassword(ResetPasswordModel model);
     }
 }
