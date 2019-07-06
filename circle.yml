@@ -41,7 +41,7 @@ jobs:
 
   build-api:
     docker:
-      - image: dotnet/core/sdk:2.2
+      - image: microsoft/aspnetcore-build:2.2
 
     steps:
       - checkout
