@@ -58,9 +58,6 @@ jobs:
   deploy-api:
     docker:
       - image: google/cloud-sdk
-        auth:
-          username: tyler@candeegenerations.com
-          password: $DOCKERHUB_PASSWORD
 
     steps:
       - checkout
