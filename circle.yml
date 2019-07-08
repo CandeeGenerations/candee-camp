@@ -55,10 +55,30 @@ jobs:
       # build the project
       - run: cd api && dotnet build
 
+  deploy-api:
+    docker:
+      - image: google/cloud-sdk
+        auth:
+          username: tyler@candeegenerations.com
+          password: $DOCKERHUB_PASSWORD
+
+    steps:
+      - checkout
+
+      - run: |
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+          gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+
 workflows:
   version: 2
 
   build:
     jobs:
       - build-js
+
       - build-api
+
+      - deploy-api:
+        requires:
+          - build-api

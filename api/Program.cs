@@ -10,8 +10,15 @@ namespace CandeeCamp.API
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:5000", "https://localhost:5001")
-                .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            var builder = WebHost.CreateDefaultBuilder(args);
+
+#if DEBUG
+            builder.UseUrls("http://localhost:5000", "https://localhost:5001");
+#endif
+
+            return builder.UseStartup<Startup>();
+        }
     }
 }
