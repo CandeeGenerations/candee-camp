@@ -72,14 +72,14 @@ const UsersTable = props =>
 UsersTable.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
-      createdDate: PropTypes.number.isRequired,
+      createdDate: PropTypes.string.isRequired,
       firstName: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
       key: PropTypes.number.isRequired,
-      lastLoggedInDate: PropTypes.number,
+      lastLoggedInDate: PropTypes.string,
       lastName: PropTypes.string.isRequired,
-      role: PropTypes.number.isRequired,
-      updatedDate: PropTypes.number.isRequired,
+      role: PropTypes.string,
+      updatedDate: PropTypes.string.isRequired,
     }),
   ).isRequired,
   loader: PropTypes.shape({

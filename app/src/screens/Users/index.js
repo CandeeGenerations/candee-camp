@@ -61,8 +61,9 @@ const Users = () => {
             >
               <UsersTable
                 users={
-                  users.results &&
-                  users.results.map(user => ({...user, key: user.id}))
+                  (users.results &&
+                    users.results.map(user => ({...user, key: user.id}))) ||
+                  []
                 }
               />
             </ErrorWrapper>

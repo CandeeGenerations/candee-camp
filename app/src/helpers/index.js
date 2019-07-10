@@ -15,7 +15,7 @@ const errorTrace = (error, response) => {
 export const deepCopy = obj => merge(obj, {})
 
 export const formatDate = date =>
-  date ? dayjs(date).format('ddd, MMM D, YYYY') : <em>None</em>
+  date ? dayjs(date).format('MMM D, YYYY h:mm A') : <em>None</em>
 
 export const formatRole = role => {
   let color = null

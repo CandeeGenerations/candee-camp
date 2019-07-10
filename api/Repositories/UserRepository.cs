@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Mime;
+using System.Linq;
 using System.Threading.Tasks;
 using CandeeCamp.API.Common;
 using CandeeCamp.API.Context;
@@ -17,9 +17,13 @@ namespace CandeeCamp.API.Repositories
         {
         }
 
+        public async Task<IEnumerable<User>> GetUsers() =>
+            await Context.Users.Where(u => IsActive(u)).ToListAsync();
+
         public async Task<User> CreateUser(NewUserModel user)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == user.EmailAddress);
+            User dbUser =
+                await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == user.EmailAddress && IsActive(u));
 
             if (dbUser != null)
             {
@@ -47,7 +51,7 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<User> ValidateUser(AuthenticationModel user)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == user.username);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == user.username && IsActive(u));
 
             if (dbUser == null)
             {
@@ -68,16 +72,9 @@ namespace CandeeCamp.API.Repositories
             return dbUser;
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
-        {
-            IEnumerable<User> dbUsers = await Context.Users.ToListAsync();
-
-            return dbUsers;
-        }
-
         public async Task<User> GetUserById(int userId)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId && IsActive(u));
 
             if (dbUser == null)
             {
@@ -89,7 +86,7 @@ namespace CandeeCamp.API.Repositories
 
         public async Task SendForgotPasswordEmail(string emailAddress)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress && IsActive(u));
 
             if (dbUser == null)
             {
@@ -108,7 +105,8 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<bool> ValidateResetToken(ResetPasswordModel model)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId && u.ResetPasswordToken == model.Token);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u =>
+                u.Id == model.UserId && u.ResetPasswordToken == model.Token && IsActive(u));
 
             if (dbUser == null)
             {
@@ -120,7 +118,7 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<User> ResetPassword(ResetPasswordModel model)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId && IsActive(u));
 
             if (dbUser == null)
             {

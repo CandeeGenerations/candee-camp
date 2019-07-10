@@ -1,4 +1,6 @@
+using System;
 using CandeeCamp.API.Context;
+using CandeeCamp.API.DomainObjects.Common;
 
 namespace CandeeCamp.API.Repositories
 {
@@ -10,5 +12,7 @@ namespace CandeeCamp.API.Repositories
         {
             Context = context;
         }
+
+        public Func<ActiveDeleted, bool> IsActive = x => x.IsActive && !x.IsDeleted;
     }
 }
