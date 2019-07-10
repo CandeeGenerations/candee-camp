@@ -1,7 +1,7 @@
 import React from 'react'
-import 'jest-dom/extend-expect'
+import '@testing-library/jest-dom/extend-expect'
 import {Route, RouterProvider} from 'react-router5'
-import {render} from 'react-testing-library'
+import {render} from '@testing-library/react'
 
 import router from '../src/config/router'
 
@@ -48,7 +48,7 @@ function generateInitialState(overrides = {}) {
   }
 }
 
-export {render, cleanup, fireEvent, wait} from 'react-testing-library'
+export {render, cleanup, fireEvent, wait} from '@testing-library/react'
 
 export {
   emptyFunction,

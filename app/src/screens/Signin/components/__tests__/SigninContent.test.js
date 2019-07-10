@@ -27,7 +27,12 @@ describe(testingUtils.formatDescribeName('Signin Content'), () => {
 
     /* Assertions */
     // title displays correctly
-    expect(getByText('Sign in')).toBeTruthy()
+    expect(
+      getByText(
+        (content, element) =>
+          element.tagName.toLowerCase() === 'h1' && content === 'Sign in',
+      ),
+    ).toBeTruthy()
 
     // header displays correctly
     expect(
