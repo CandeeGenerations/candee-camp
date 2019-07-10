@@ -143,5 +143,30 @@ namespace CandeeCamp.API.Repositories
 
             return dbUser;
         }
+
+        public async Task<User> ChangePassword(int userId, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(newPassword))
+            {
+                throw new Exception("The new password field is required.");
+            }
+            
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId && IsActive(u));
+
+            if (dbUser == null)
+            {
+                throw new Exception("This user does not exist.");
+            }
+            
+            string salt = Helpers.CreateUniqueString(64);
+
+            dbUser.UpdatedDate = DateTimeOffset.Now;
+            dbUser.Salt = salt;
+            dbUser.PasswordHash = newPassword.Encrypt(salt);
+
+            await Context.SaveChangesAsync();
+
+            return dbUser;
+        }
     }
 }

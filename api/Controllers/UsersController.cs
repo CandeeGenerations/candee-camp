@@ -52,5 +52,14 @@ namespace CandeeCamp.API.Controllers
 
             return Ok(newUser);
         }
+
+        [HttpPost("{userId}/change-password")]
+        [ProducesResponseType(typeof(User), 200)]
+        public async Task<ActionResult<User>> ChangePassword(int userId, string password)
+        {
+            User user = await _userRepository.ChangePassword(userId, password);
+
+            return Ok(user);
+        }
     }
 }
