@@ -21,17 +21,22 @@ const UserView = props => {
     confirmPassword: {includePercent: true, isRequired: true, value: ''},
     newPassword: {includePercent: true, isRequired: true, value: ''},
   }
+  const fieldsInitialState = {
+    emailAddress: {includePercent: true, isRequired: true, value: null},
+    firstName: {includePercent: true, isRequired: true, value: null},
+    lastName: {includePercent: true, isRequired: true, value: null},
+    isActive: {includePercent: true, value: null},
+  }
 
   const router = useRouter()
   const errorWrapper = useError()
   const user = useAsyncLoad(actions.loadUser, props.id)
 
-  const [fields, setFields] = useState({
-    emailAddress: {includePercent: true, isRequired: true, value: null},
-    firstName: {includePercent: true, isRequired: true, value: null},
-    lastName: {includePercent: true, isRequired: true, value: null},
-    isActive: {includePercent: true, isRequired: true, value: null},
-  })
+  const [fields, setFields] = useState(
+    props.id
+      ? fieldsInitialState
+      : {...fieldsInitialState, ...passwordFieldsInitialState},
+  )
   const [passwordFields, setPasswordFields] = useState(
     passwordFieldsInitialState,
   )
@@ -51,6 +56,8 @@ const UserView = props => {
   useEffect(() => {
     if (props.id) {
       getUser()
+    } else {
+      user.stopLoading()
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -64,7 +71,11 @@ const UserView = props => {
       const response = await actions.saveUser(fields)
 
       user.stopLoading()
-      router.navigate('users.edit', {userId: response.data.id})
+
+      if (response) {
+        props.refreshUsers()
+        router.navigate('users.edit', {userId: response.data.id})
+      }
     }
   }
 
@@ -147,6 +158,9 @@ UserView.defaultProps = {
 
 UserView.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+  // functions
+  refreshUsers: PropTypes.func.isRequired,
 }
 
 export default UserView
