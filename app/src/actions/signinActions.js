@@ -80,11 +80,9 @@ export const validateResetPasswordToken = async (userId, token) => {
 export const resetPassword = async (userId, token, fields) => {
   try {
     await axiosRequest.post('/reset-password', {
-      params: {
-        userId,
-        token,
-        password: fields.newPassword.value,
-      },
+      userId,
+      token,
+      password: fields.newPassword.value,
     })
 
     openNotification(

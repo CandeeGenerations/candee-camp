@@ -18,7 +18,7 @@ const Dashboard = () => {
   useEffect(() => {
     // userStats.load()
     eventStats.load()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <section className="cc--main-content">

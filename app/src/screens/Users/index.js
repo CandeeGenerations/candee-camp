@@ -17,11 +17,11 @@ import UserView from './components/UserView'
 import UsersTable from './components/UsersTable'
 
 const Users = () => {
-  useTitle('Users')
-
-  const routerContext = useRoute()
   const errorWrapper = useError()
+  const routerContext = useRoute()
   const users = useAsyncLoad(actions.loadUsers)
+
+  useTitle('Users')
 
   useEffect(() => {
     try {
@@ -29,7 +29,7 @@ const Users = () => {
     } catch (error) {
       errorWrapper.handleCatchError()
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -61,9 +61,8 @@ const Users = () => {
             >
               <UsersTable
                 users={
-                  users.data
-                    ? users.data.data.map(user => ({...user, key: user.id}))
-                    : []
+                  users.results &&
+                  users.results.map(user => ({...user, key: user.id}))
                 }
               />
             </ErrorWrapper>

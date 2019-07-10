@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 
@@ -28,7 +28,7 @@ const UserView = props => {
     username: {includePercent: true, isRequired: true, value: null},
   })
 
-  const getUser = async () => {
+  const getUser = useCallback(async () => {
     try {
       const response = await user.load()
 
@@ -36,13 +36,13 @@ const UserView = props => {
     } catch {
       errorWrapper.handleCatchError()
     }
-  }
+  }, [errorWrapper, user])
 
   useEffect(() => {
     if (props.id) {
       getUser()
     }
-  }, [props.id])
+  }, [props.id, getUser])
 
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))

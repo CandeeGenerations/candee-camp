@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {Card, Button} from 'antd'
 import {useRoute} from 'react-router5'
 
 import {eventActions as actions} from '../../actions'
 
 import useTitle from '../../helpers/hooks/useTitle'
+import useAsyncLoad from '../../helpers/hooks/useAsyncLoad'
 
 import PageHeader from '../../components/Structure/PageHeader'
 import {LoaderContext} from '../../components/Structure/Loader'
@@ -16,37 +17,25 @@ import EventView from './components/EventView'
 import EventsTable from './components/EventsTable'
 
 const Events = () => {
-  const routerContext = useRoute()
   const errorWrapper = useError()
-  const [loading, setLoading] = useState(true)
-  const [events, setEvents] = useState([])
-
-  const getEvents = async () => {
-    try {
-      const response = await actions.loadEvents()
-
-      setLoading(false)
-      setEvents(response.data)
-    } catch (error) {
-      errorWrapper.handleCatchError()
-    }
-  }
+  const routerContext = useRoute()
+  const events = useAsyncLoad(actions.loadEvents)
 
   useTitle('Events')
 
   useEffect(() => {
-    getEvents()
-  }, [])
+    try {
+      events.load()
+    } catch (error) {
+      errorWrapper.handleCatchError()
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const deleteEvent = async eventId => {
-    setLoading(true)
-
     const response = await actions.deleteEvent(eventId)
 
     if (response) {
-      getEvents()
-    } else {
-      setLoading(false)
+      events.load()
     }
   }
 
@@ -72,15 +61,18 @@ const Events = () => {
           />
 
           <LoaderContext.Provider
-            value={{spinning: loading, tip: 'Loading events...'}}
+            value={{spinning: events.loading, tip: 'Loading events...'}}
           >
             <ErrorWrapper
-              handleRetry={getEvents}
+              handleRetry={events.load}
               hasError={errorWrapper.hasError}
             >
               <EventsTable
                 deleteEvent={deleteEvent}
-                events={events.map(event => ({...event, key: event.id}))}
+                events={
+                  events.results &&
+                  events.results.map(event => ({...event, key: event.id}))
+                }
               />
             </ErrorWrapper>
           </LoaderContext.Provider>

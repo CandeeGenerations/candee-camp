@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useCallback, useEffect, useState} from 'react'
 
 export default (func, ...params) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -12,32 +12,35 @@ export default (func, ...params) => {
       results: data.results.map(x => (x[idField] === item[idField] ? item : x)),
     })
 
-  const load = async (keepLoading = false) => {
-    let d = null
+  const load = useCallback(
+    async (keepLoading = false, overrideParams = null) => {
+      let d = null
 
-    if (isLoading) {
-      setReload(true)
-      return data
-    }
-
-    setReload(false)
-    setLoading(true)
-    setIsLoading(true)
-
-    try {
-      d = await func(...params)
-      setData(d)
-    } catch (error) {
-      throw new Error(error)
-    } finally {
-      if (!keepLoading) {
-        setLoading(false)
-        setIsLoading(false)
+      if (isLoading) {
+        setReload(true)
+        return data
       }
-    }
 
-    return d
-  }
+      setReload(false)
+      setLoading(true)
+      setIsLoading(true)
+
+      try {
+        d = overrideParams ? await func(overrideParams) : await func(...params)
+        setData(d)
+      } catch (error) {
+        throw new Error(error)
+      } finally {
+        if (!keepLoading) {
+          setLoading(false)
+          setIsLoading(false)
+        }
+      }
+
+      return d
+    },
+    [data, func, isLoading, params],
+  )
 
   const startLoading = () => {
     setLoading(true)
@@ -53,7 +56,7 @@ export default (func, ...params) => {
     if (reload && !isLoading) {
       load()
     }
-  }, [reload, isLoading])
+  }, [reload, isLoading, load])
 
   return {
     data,
@@ -63,5 +66,6 @@ export default (func, ...params) => {
     stopLoading,
     setData,
     replaceResultItem,
+    results: data && data.data ? data.data : null,
   }
 }

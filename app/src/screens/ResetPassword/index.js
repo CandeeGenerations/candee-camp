@@ -22,31 +22,35 @@ const ResetPassword = () => {
 
   useTitle('Reset Password')
 
-  const validateToken = async () => {
-    try {
-      const response = await actions.validateResetPasswordToken(
-        routerContext.route.params.userId,
-        routerContext.route.params.token,
-      )
+  useEffect(() => {
+    const validateToken = async () => {
+      try {
+        const response = await actions.validateResetPasswordToken(
+          routerContext.route.params.userId,
+          routerContext.route.params.token,
+        )
 
-      if (response && response.data) {
-        setTimeout(() => {
-          setLoading(stateLoading => ({
-            ...stateLoading,
-            resetPasswordValidate: false,
-          }))
-        }, 1000)
-      } else {
+        if (response && response.data) {
+          setTimeout(() => {
+            setLoading(stateLoading => ({
+              ...stateLoading,
+              resetPasswordValidate: false,
+            }))
+          }, 1000)
+        } else {
+          routerContext.router.navigate('signin')
+        }
+      } catch (error) {
         routerContext.router.navigate('signin')
       }
-    } catch (error) {
-      routerContext.router.navigate('signin')
     }
-  }
 
-  useEffect(() => {
     validateToken()
-  }, [])
+  }, [
+    routerContext.route.params.userId,
+    routerContext.route.params.token,
+    routerContext.router,
+  ])
 
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))

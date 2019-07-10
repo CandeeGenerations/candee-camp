@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 
 import {eventActions as actions} from '../../../../actions'
+import useAsyncLoad from '../../../../helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '../../../../helpers'
+
 import DrawerView from '../../../../components/Structure/DrawerView'
 import {LoaderContext} from '../../../../components/Structure/Loader'
 import ErrorWrapper, {
@@ -15,7 +17,9 @@ import EventViewWrapper from './EventViewWrapper'
 const EventView = props => {
   const router = useRouter()
   const errorWrapper = useError()
-  const [loading, setLoading] = useState(true)
+  const event = useAsyncLoad(actions.loadEvent, props.id)
+
+  const [loading, setLoading] = useState(false)
   const [eventName, setEventName] = useState('')
   const [fields, setFields] = useState({
     endDate: {includePercent: true, isRequired: true, value: null},
@@ -23,25 +27,22 @@ const EventView = props => {
     startDate: {includePercent: true, isRequired: true, value: null},
   })
 
-  const getEvent = async () => {
+  const getEvent = useCallback(async () => {
     try {
-      const response = await actions.loadEvent(props.id)
+      const response = await event.load()
 
-      setLoading(false)
       setEventName(response.data.name)
       setFields(stateFields => mergeFormData(stateFields, response.data))
     } catch (error) {
       errorWrapper.handleCatchError()
     }
-  }
+  }, [errorWrapper, event])
 
   useEffect(() => {
     if (props.id) {
       getEvent()
-    } else {
-      setLoading(false)
     }
-  }, [props.id])
+  }, [props.id, getEvent])
 
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))

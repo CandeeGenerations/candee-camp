@@ -33,5 +33,5 @@
       }
     }
   },
-  "plugins": ["import", "react"]
+  "plugins": ["import", "react", "react-hooks"]
 }
