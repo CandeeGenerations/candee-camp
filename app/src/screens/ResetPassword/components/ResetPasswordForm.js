@@ -73,7 +73,7 @@ const ResetPasswordForm = Form.create({
             placeholder="e.g. password123!"
             size="large"
             onKeyUp={e => {
-              if (e.keyCode === 13) {
+              if (e.keyCode === 13 && props.valid) {
                 onSubmit()
               }
             }}

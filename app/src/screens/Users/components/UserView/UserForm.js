@@ -1,7 +1,16 @@
 import React from 'react'
-import {Col, Form, Input, Row, Select} from 'antd'
-
-import {rolesList} from '../../../../helpers'
+import {
+  Button,
+  Col,
+  Divider,
+  Form,
+  Icon,
+  Input,
+  Popconfirm,
+  Row,
+  Switch,
+  Typography,
+} from 'antd'
 
 const UserForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -11,7 +20,7 @@ const UserForm = Form.create({
   },
 
   mapPropsToFields(props) {
-    const {emailAddress, firstName, lastName, role, username} = props
+    const {emailAddress, firstName, lastName, isActive} = props
 
     return {
       emailAddress: Form.createFormField({
@@ -26,13 +35,9 @@ const UserForm = Form.create({
         ...lastName,
         value: lastName.value,
       }),
-      role: Form.createFormField({
-        ...role,
-        value: role.value,
-      }),
-      username: Form.createFormField({
-        ...username,
-        value: username.value,
+      isActive: Form.createFormField({
+        ...isActive,
+        value: isActive.value,
       }),
     }
   },
@@ -42,6 +47,8 @@ const UserForm = Form.create({
 
   return (
     <Form>
+      <Divider orientation="left">User Info</Divider>
+
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item label="First Name" hasFeedback>
@@ -61,15 +68,7 @@ const UserForm = Form.create({
       </Row>
 
       <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item label="Username" hasFeedback>
-            {getFieldDecorator('username', {
-              rules: [{required: true, message: 'The username is required.'}],
-            })(<Input placeholder="e.g. jdoe" />)}
-          </Form.Item>
-        </Col>
-
-        <Col span={12}>
+        <Col span={24}>
           <Form.Item label="Email Address" hasFeedback>
             {getFieldDecorator('emailAddress', {
               rules: [
@@ -81,21 +80,51 @@ const UserForm = Form.create({
         </Col>
       </Row>
 
+      <Divider orientation="left">Security</Divider>
+
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item label="Role">
-            {getFieldDecorator('role', {
-              rules: [{required: true, message: 'The role is required.'}],
-            })(
-              <Select placeholder="e.g. Admin" showSearch>
-                {rolesList().map(r => (
-                  <Select.Option key={r.value} value={r.value}>
-                    {r.text}
-                  </Select.Option>
-                ))}
-              </Select>,
+          <Button type="primary" onClick={props.onPasswordChange}>
+            Change Password
+          </Button>
+        </Col>
+      </Row>
+
+      <Divider orientation="left" style={{marginTop: 40}}>
+        <Typography.Text type="danger">Danger Zone</Typography.Text>
+      </Divider>
+
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item label="Is Active" labelCol={{span: 10}}>
+            {getFieldDecorator('isActive')(
+              <Switch
+                checkedChildren={<Icon type="check" />}
+                unCheckedChildren={<Icon type="close" />}
+                defaultChecked
+              />,
             )}
           </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Popconfirm
+            cancelText="Cancel"
+            icon={<Icon style={{color: 'red'}} type="question-circle-o" />}
+            okText="Delete"
+            okType="danger"
+            placement="topRight"
+            title={
+              <p>
+                Are you sure you want
+                <br />
+                to delete this user?
+              </p>
+            }
+            onConfirm={props.onDeleteUser}
+          >
+            <Button type="danger">Delete User</Button>
+          </Popconfirm>
         </Col>
       </Row>
     </Form>

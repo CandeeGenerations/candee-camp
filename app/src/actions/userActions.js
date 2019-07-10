@@ -23,7 +23,7 @@ export const loadUserStats = async () => {
   }
 }
 
-export const loadUser = async (userId: number) => {
+export const loadUser = async userId => {
   try {
     const response = await request.get(`/users/${userId}`)
 
@@ -66,6 +66,27 @@ export const deleteUser = async userId => {
     return response
   } catch (error) {
     handleError('Unable to delete the User. Please try again.', error)
+    return null
+  }
+}
+
+export const changeUserPassword = async (userId, password) => {
+  try {
+    const response = await request.post(
+      `/users/${userId}/change-password?password=${password}`,
+    )
+
+    openNotification(
+      'success',
+      "The User's Password has been updated successfully.",
+    )
+
+    return response
+  } catch (error) {
+    handleError(
+      "Unable to update this User's Password. Please try again.",
+      error,
+    )
     return null
   }
 }
