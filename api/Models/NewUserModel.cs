@@ -14,7 +14,7 @@ namespace CandeeCamp.API.Models
         public string EmailAddress { get; set; }
         
         [Required]
-        public string Password { get; set; }
+        public string NewPassword { get; set; }
         
         [Required]
         public string ConfirmPassword { get; set; }

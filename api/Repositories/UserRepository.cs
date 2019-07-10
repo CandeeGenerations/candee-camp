@@ -36,7 +36,7 @@ namespace CandeeCamp.API.Repositories
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 EmailAddress = user.EmailAddress,
-                PasswordHash = user.Password.Encrypt(salt),
+                PasswordHash = user.NewPassword.Encrypt(salt),
                 Salt = salt,
                 CreatedDate = DateTimeOffset.Now,
                 UpdatedDate = DateTimeOffset.Now,
