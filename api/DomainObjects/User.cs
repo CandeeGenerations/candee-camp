@@ -30,6 +30,8 @@ namespace CandeeCamp.API.DomainObjects
         
         public DateTimeOffset CreatedDate { get; set; }
 
+        public DateTimeOffset UpdatedDate { get; set; }
+
         public DateTimeOffset? LastLoggedInDate { get; set; }
         
         public string ResetPasswordToken { get; set; }

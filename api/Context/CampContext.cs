@@ -20,6 +20,7 @@ namespace CandeeCamp.API.Context
                 FirstName = "Tyler",
                 LastName = "Candee",
                 CreatedDate = DateTimeOffset.Now,
+                UpdatedDate = DateTimeOffset.Now,
                 EmailAddress = "tyler@cgen.com",
                 Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy",
                 PasswordHash =
@@ -33,6 +34,7 @@ namespace CandeeCamp.API.Context
                 FirstName = "joe",
                 LastName = "plumber",
                 CreatedDate = DateTimeOffset.Now,
+                UpdatedDate = DateTimeOffset.Now,
                 EmailAddress = "theblackswimmers@gmail.com",
                 Salt = "nqJBdDHXBCGrPiZHRmUBgYMVdgsSCZxaWyjOZnCxAAMrPghUzARqcAcEynPwQNkD",
                 PasswordHash =

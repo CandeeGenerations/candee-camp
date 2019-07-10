@@ -39,6 +39,7 @@ namespace CandeeCamp.API.Repositories
                 PasswordHash = user.Password.Encrypt(salt),
                 Salt = salt,
                 CreatedDate = DateTimeOffset.Now,
+                UpdatedDate = DateTimeOffset.Now,
                 IsActive = true,
                 IsDeleted = false,
             };
@@ -132,6 +133,7 @@ namespace CandeeCamp.API.Repositories
             
             string salt = Helpers.CreateUniqueString(64);
 
+            dbUser.UpdatedDate = DateTimeOffset.Now;
             dbUser.ResetPasswordToken = null;
             dbUser.ResetPasswordExpirationDate = null;
             dbUser.Salt = salt;
