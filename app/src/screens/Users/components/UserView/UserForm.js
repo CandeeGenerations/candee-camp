@@ -140,9 +140,9 @@ const UserForm = Form.create({
               <Form.Item label="Is Active" labelCol={{span: 10}}>
                 {getFieldDecorator('isActive')(
                   <Switch
+                    checked={props.isActive.value}
                     checkedChildren={<Icon type="check" />}
                     unCheckedChildren={<Icon type="close" />}
-                    defaultChecked
                   />,
                 )}
               </Form.Item>

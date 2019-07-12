@@ -168,5 +168,20 @@ namespace CandeeCamp.API.Repositories
 
             await Context.SaveChangesAsync();
         }
+
+        public async Task<User> UpdateUser(int userId, UserModel user)
+        {
+            User dbUser = await GetUserById(userId);
+
+            dbUser.FirstName = user.FirstName;
+            dbUser.LastName = user.LastName;
+            dbUser.EmailAddress = user.EmailAddress;
+            dbUser.IsActive = user.IsActive;
+            dbUser.UpdatedDate = DateTimeOffset.Now;
+
+            await Context.SaveChangesAsync();
+
+            return dbUser;
+        }
     }
 }

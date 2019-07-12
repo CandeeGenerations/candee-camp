@@ -5,7 +5,6 @@ using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CandeeCamp.API.Controllers
 {
@@ -52,6 +51,20 @@ namespace CandeeCamp.API.Controllers
             User newUser = await _userRepository.CreateUser(user);
 
             return Ok(newUser);
+        }
+
+        [HttpPut("{userId}")]
+        [ProducesResponseType(typeof(User), 200)]
+        public async Task<ActionResult<User>> UpdateUser(int userId, [FromBody] UserModel user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            User updatedUser = await _userRepository.UpdateUser(userId, user);
+
+            return Ok(updatedUser);
         }
 
         [HttpDelete("{userId}")]
