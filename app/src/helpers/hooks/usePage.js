@@ -2,15 +2,15 @@ import {useRoute} from 'react-router5'
 
 export default () => {
   const routerContext = useRoute()
+  const routeName = routerContext.route.name
 
   return {
     // checks : return bool
-    isUserAddPage: routerContext.route.name.includes('users.add'),
-    isUserEditPage: routerContext.route.name.includes('users.edit'),
+    isUserAddPage: routeName.includes('users.add'),
+    isUserEditPage: routeName.includes('users.edit'),
     isUserAddOrEditPage:
-      routerContext.route.name.includes('users.add') ||
-      routerContext.route.name.includes('users.edit'),
-    isEventUserEditPage: routerContext.route.name.includes('events.user'),
+      routeName.includes('users.add') || routeName.includes('users.edit'),
+    isEventUserEditPage: routeName.includes('events.user'),
 
     // values : return string
     usersPage: 'users',

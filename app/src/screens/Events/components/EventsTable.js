@@ -59,29 +59,23 @@ const EventsTable = props => {
         key="createdBy"
         dataIndex="createdBy"
         render={userId => {
-          let name = null
-          let editUserId = null
+          let user = null
 
           if (!props.users.loading && props.users.results) {
-            const user = props.users.results.find(u => u.id === userId)
-
-            if (user) {
-              name = `${user.firstName} ${user.lastName}`
-              editUserId = user.id
-            }
+            user = props.users.results.find(u => u.id === userId)
           }
 
           return props.users.loading ? (
             <Icon type="loading" />
-          ) : name ? (
+          ) : user ? (
             <Tag
               className="cc--clickable"
               color="blue"
               onClick={() =>
-                router.navigate('events.user', {userId: editUserId}, {})
+                router.navigate('events.user', {userId: user.id}, {})
               }
             >
-              {name}
+              {user.firstName} {user.lastName}
             </Tag>
           ) : (
             <em>None</em>

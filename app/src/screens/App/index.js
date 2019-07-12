@@ -29,9 +29,10 @@ export const ObjectsContext = React.createContext({})
 
 const App = () => {
   let content = null
-  const routerContext = useRoute()
   const user = getUser()
+  const routerContext = useRoute()
 
+  const routeName = routerContext.route.name
   const users = useAsyncLoad(actions.userActions.loadUsers)
   const events = useAsyncLoad(actions.eventActions.loadEvents)
 
@@ -44,8 +45,7 @@ const App = () => {
     let isUnauthenticated = false
 
     unauthenticatedRoutes.forEach(route => {
-      isUnauthenticated =
-        isUnauthenticated || routerContext.route.name.includes(route)
+      isUnauthenticated = isUnauthenticated || routeName.includes(route)
     })
 
     return isUnauthenticated
@@ -61,7 +61,7 @@ const App = () => {
     let isNoNav = false
 
     noNavRoutes.forEach(route => {
-      isNoNav = isNoNav || routerContext.route.name.includes(route)
+      isNoNav = isNoNav || routeName.includes(route)
     })
 
     return isNoNav
@@ -76,7 +76,7 @@ const App = () => {
     const simpleCrypto = new SimpleCrypto(Config.cryptoKey)
     const params = simpleCrypto.encrypt(
       JSON.stringify({
-        returnUrl: routerContext.route.name,
+        returnUrl: routeName,
         ...returnParams,
       }),
     )
@@ -91,20 +91,17 @@ const App = () => {
     )
   }
 
-  if (
-    (user && isUnauthenticatedRoute) ||
-    routerContext.route.name.includes('dashboard')
-  ) {
+  if ((user && isUnauthenticatedRoute) || routeName.includes('dashboard')) {
     content = <Dashboard />
-  } else if (routerContext.route.name.includes('signin')) {
+  } else if (routeName.includes('signin')) {
     content = <Signin />
-  } else if (routerContext.route.name.includes('forgotPassword')) {
+  } else if (routeName.includes('forgotPassword')) {
     content = <ForgotPassword />
-  } else if (routerContext.route.name.includes('resetPassword')) {
+  } else if (routeName.includes('resetPassword')) {
     content = <ResetPassword />
-  } else if (routerContext.route.name.includes('events')) {
+  } else if (routeName.includes('events')) {
     content = <Events />
-  } else if (routerContext.route.name.includes('users')) {
+  } else if (routeName.includes('users')) {
     content = <Users />
   } else {
     content = <NotFound />
@@ -130,9 +127,9 @@ const App = () => {
           >
             {content}
 
-            {(routerContext.route.name === 'users.edit' ||
-              routerContext.route.name === 'users.add' ||
-              routerContext.route.name === 'events.user') && (
+            {(routeName === 'users.edit' ||
+              routeName === 'users.add' ||
+              routeName === 'events.user') && (
               <UserView
                 id={
                   (routerContext.route.params &&
