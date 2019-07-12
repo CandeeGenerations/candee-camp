@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.1.52",
+  "version": "0.1.53",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -47,6 +47,7 @@
     "router5-helpers": "^7.0.1",
     "router5-plugin-browser": "^7.0.2",
     "router5-plugin-logger": "^7.0.2",
+    "simple-crypto-js": "^2.0.2",
     "use-deep-compare-effect": "^1.2.0"
   },
   "scripts": {
