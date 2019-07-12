@@ -28,6 +28,10 @@ const routes = [
         name: 'edit',
         path: '/edit/:eventId',
       },
+      {
+        name: 'user',
+        path: '/user/:userId',
+      },
     ],
   },
   {

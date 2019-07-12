@@ -6,7 +6,9 @@ import SimpleCrypto from 'simple-crypto-js'
 
 import Config from '../../config'
 import {axiosRequest} from '../../api'
+import * as actions from '../../actions'
 import {getUser} from '../../helpers/authHelpers'
+import useAsyncLoad from '../../helpers/hooks/useAsyncLoad'
 
 import Users from '../Users'
 import Signin from '../Signin'
@@ -17,15 +19,21 @@ import ResetPassword from '../ResetPassword'
 import NavBar from '../../components/NavBar'
 import ForgotPassword from '../ForgotPassword'
 import Version from '../../components/Version'
+import UserView from '../Users/components/UserView'
 import ErrorBoundary from '../../components/ErrorBoundary'
 
 import '../../content/zmdi.less'
 import '../../content/antd.less'
 
+export const ObjectsContext = React.createContext({})
+
 const App = () => {
   let content = null
   const routerContext = useRoute()
   const user = getUser()
+
+  const users = useAsyncLoad(actions.userActions.loadUsers)
+  const events = useAsyncLoad(actions.eventActions.loadEvents)
 
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
@@ -114,7 +122,26 @@ const App = () => {
 
       <Layout>
         <ErrorBoundary router={routerContext.route}>
-          {content}
+          <ObjectsContext.Provider
+            value={{
+              events,
+              users,
+            }}
+          >
+            {content}
+
+            {(routerContext.route.name === 'users.edit' ||
+              routerContext.route.name === 'users.add' ||
+              routerContext.route.name === 'events.user') && (
+              <UserView
+                id={
+                  (routerContext.route.params &&
+                    routerContext.route.params.userId) ||
+                  null
+                }
+              />
+            )}
+          </ObjectsContext.Provider>
 
           <Version />
         </ErrorBoundary>

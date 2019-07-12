@@ -1,6 +1,7 @@
 import React from 'react'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
+import {useRouter} from 'react-router5'
 import {Divider, Icon, Table, Tag} from 'antd'
 
 import {formatDate} from '../../../helpers'
@@ -13,6 +14,8 @@ import DeleteLink from '../../../components/Structure/DeleteLink'
 const {Column} = Table
 
 const EventsTable = props => {
+  const router = useRouter()
+
   return props.loader.spinning ? (
     <div style={{minHeight: 500}} />
   ) : (
@@ -57,19 +60,29 @@ const EventsTable = props => {
         dataIndex="createdBy"
         render={userId => {
           let name = null
+          let editUserId = null
 
           if (!props.users.loading && props.users.results) {
             const user = props.users.results.find(u => u.id === userId)
 
             if (user) {
               name = `${user.firstName} ${user.lastName}`
+              editUserId = user.id
             }
           }
 
           return props.users.loading ? (
             <Icon type="loading" />
           ) : name ? (
-            <Tag color="blue">{name}</Tag>
+            <Tag
+              className="cc--clickable"
+              color="blue"
+              onClick={() =>
+                router.navigate('events.user', {userId: editUserId}, {})
+              }
+            >
+              {name}
+            </Tag>
           ) : (
             <em>None</em>
           )

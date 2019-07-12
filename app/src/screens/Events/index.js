@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useContext, useEffect} from 'react'
 import _ from 'lodash'
 import {Card, Button} from 'antd'
 import {useRoute} from 'react-router5'
@@ -8,6 +8,7 @@ import {eventActions as actions, userActions} from '../../actions'
 import useTitle from '../../helpers/hooks/useTitle'
 import useAsyncLoad from '../../helpers/hooks/useAsyncLoad'
 
+import {ObjectsContext} from '../App'
 import PageHeader from '../../components/Structure/PageHeader'
 import {LoaderContext} from '../../components/Structure/Loader'
 import ErrorWrapper, {
@@ -20,14 +21,14 @@ import EventsTable from './components/EventsTable'
 const Events = () => {
   const errorWrapper = useError()
   const routerContext = useRoute()
-  const events = useAsyncLoad(actions.loadEvents)
+  const objectsContext = useContext(ObjectsContext)
   const users = useAsyncLoad(userActions.loadUsersByIds)
 
   useTitle('Events')
 
   const loadEvents = async () => {
     try {
-      const response = await events.load()
+      const response = await objectsContext.events.load()
       const userIds = _.uniq(response.data.map(x => x.createdBy))
 
       users.load(false, userIds)
@@ -70,7 +71,10 @@ const Events = () => {
           />
 
           <LoaderContext.Provider
-            value={{spinning: events.loading, tip: 'Loading events...'}}
+            value={{
+              spinning: objectsContext.events.loading,
+              tip: 'Loading events...',
+            }}
           >
             <ErrorWrapper
               handleRetry={loadEvents}
@@ -79,8 +83,11 @@ const Events = () => {
               <EventsTable
                 deleteEvent={deleteEvent}
                 events={
-                  (events.results &&
-                    events.results.map(event => ({...event, key: event.id}))) ||
+                  (objectsContext.events.results &&
+                    objectsContext.events.results.map(event => ({
+                      ...event,
+                      key: event.id,
+                    }))) ||
                   []
                 }
                 users={users}

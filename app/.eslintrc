@@ -6,6 +6,7 @@
     "prefer-const": "error",
     "no-unused-vars": "error",
     "complexity": "off",
+    "max-lines-per-function": "off",
 
     "import/no-cycle": "off",
 

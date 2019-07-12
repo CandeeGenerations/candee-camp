@@ -20,4 +20,8 @@ body,
   &--text-right {
     text-align: right;
   }
+
+  &--clickable {
+    cursor: pointer;
+  }
 }
