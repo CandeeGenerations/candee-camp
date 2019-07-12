@@ -17,5 +17,6 @@ namespace CandeeCamp.API.Repositories.Interfaces
         Task<User> ChangePassword(int userId, string newPassword);
         Task DeleteUser(int userId);
         Task<User> UpdateUser(int userId, UserModel user);
+        Task<IEnumerable<User>> GetUsersByIds(IEnumerable<int> userIds);
     }
 }

@@ -1,31 +1,30 @@
-import React, {useEffect} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {useRoute} from 'react-router5'
 import {Button, Card} from 'antd'
 
 import {userActions as actions} from '../../actions'
 
 import useTitle from '../../helpers/hooks/useTitle'
-import useAsyncLoad from '../../helpers/hooks/useAsyncLoad'
 
+import {ObjectsContext} from '../App'
 import PageHeader from '../../components/Structure/PageHeader'
 import {LoaderContext} from '../../components/Structure/Loader'
 import ErrorWrapper, {
   useError,
 } from '../../components/ErrorBoundary/ErrorWrapper'
 
-import UserView from './components/UserView'
 import UsersTable from './components/UsersTable'
 
 const Users = () => {
   const errorWrapper = useError()
   const routerContext = useRoute()
-  const users = useAsyncLoad(actions.loadUsers)
+  const objectsContext = useContext(ObjectsContext)
 
   useTitle('Users')
 
   useEffect(() => {
     try {
-      users.load()
+      objectsContext.users.load()
     } catch (error) {
       errorWrapper.handleCatchError()
     }
@@ -35,7 +34,7 @@ const Users = () => {
     const response = await actions.deleteUser(userId)
 
     if (response) {
-      users.load()
+      objectsContext.users.load()
     }
   }
 
@@ -61,17 +60,23 @@ const Users = () => {
           />
 
           <LoaderContext.Provider
-            value={{spinning: users.loading, tip: 'Loading users...'}}
+            value={{
+              spinning: objectsContext.users.loading,
+              tip: 'Loading users...',
+            }}
           >
             <ErrorWrapper
-              handleRetry={users.load}
+              handleRetry={objectsContext.users.load}
               hasError={errorWrapper.hasError}
             >
               <UsersTable
                 deleteUser={handleDeleteUserClick}
                 users={
-                  (users.results &&
-                    users.results.map(user => ({...user, key: user.id}))) ||
+                  (objectsContext.users.results &&
+                    objectsContext.users.results.map(user => ({
+                      ...user,
+                      key: user.id,
+                    }))) ||
                   []
                 }
               />
@@ -79,17 +84,6 @@ const Users = () => {
           </LoaderContext.Provider>
         </Card>
       </section>
-
-      {(routerContext.route.name === 'users.edit' ||
-        routerContext.route.name === 'users.add') && (
-        <UserView
-          id={
-            (routerContext.route.params && routerContext.route.params.userId) ||
-            null
-          }
-          refreshUsers={users.load}
-        />
-      )}
     </>
   )
 }

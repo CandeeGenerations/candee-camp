@@ -183,5 +183,17 @@ namespace CandeeCamp.API.Repositories
 
             return dbUser;
         }
+
+        public async Task<IEnumerable<User>> GetUsersByIds(IEnumerable<int> userIds)
+        {
+            int[] userIdsArray = userIds as int[] ?? userIds.ToArray();
+            
+            if (!userIdsArray.Any())
+            {
+                throw new Exception("No user IDs detected.");
+            }
+            
+            return await Context.Users.Where(u => userIdsArray.Contains(u.Id)).ToListAsync();
+        }
     }
 }

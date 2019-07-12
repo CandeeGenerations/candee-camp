@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
-import {useRouter} from 'react-router5'
+import {useRoute} from 'react-router5'
 
+import usePage from '../../../../helpers/hooks/usePage'
 import useModal from '../../../../helpers/hooks/useModal'
 import {userActions as actions} from '../../../../actions'
 import useAsyncLoad from '../../../../helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '../../../../helpers'
 
+import {ObjectsContext} from '../../../App'
 import DrawerView from '../../../../components/Structure/DrawerView'
 import {LoaderContext} from '../../../../components/Structure/Loader'
 import ResetPasswordForm from '../../../ResetPassword/components/ResetPasswordForm'
@@ -28,8 +30,10 @@ const UserView = props => {
     isActive: {includePercent: true, value: null},
   }
 
-  const router = useRouter()
+  const page = usePage()
   const errorWrapper = useError()
+  const routerContext = useRoute()
+  const objectsContext = useContext(ObjectsContext)
   const user = useAsyncLoad(actions.loadUser, props.id)
 
   const [fields, setFields] = useState(
@@ -64,6 +68,9 @@ const UserView = props => {
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))
 
+  const refreshTable = () =>
+    objectsContext[page.isUserAddOrEditPage ? 'users' : 'events'].load()
+
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
       user.startLoading()
@@ -73,8 +80,11 @@ const UserView = props => {
       user.stopLoading()
 
       if (response) {
-        props.refreshUsers()
-        router.navigate('users.edit', {userId: response.data.id})
+        refreshTable()
+        routerContext.router.navigate(
+          page.isUserAddOrEditPage ? page.userEditPage : page.eventUserEditPage,
+          {userId: response.data.id},
+        )
       }
     }
   }
@@ -90,8 +100,10 @@ const UserView = props => {
     user.stopLoading()
 
     if (response) {
-      props.refreshUsers()
-      router.navigate('users')
+      refreshTable()
+      routerContext.router.navigate(
+        page.isUserEditPage ? page.usersPage : page.eventsPage,
+      )
     }
   }
 
@@ -134,7 +146,7 @@ const UserView = props => {
     <>
       <DrawerView
         fields={fields}
-        parentRoute="users"
+        parentRoute={page.isUserAddOrEditPage ? 'users' : 'events'}
         submitButtonDisabled={submitButtonDisabled}
         title={
           fields.id
@@ -169,9 +181,6 @@ UserView.defaultProps = {
 
 UserView.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-
-  // functions
-  refreshUsers: PropTypes.func.isRequired,
 }
 
 export default UserView
