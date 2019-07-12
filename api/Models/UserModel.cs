@@ -2,21 +2,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CandeeCamp.API.Models
 {
-    public class NewUserModel
+    public class UserModel
     {
-        [Required] 
+        [Required]
         public string FirstName { get; set; }
-        
+
         [Required]
         public string LastName { get; set; }
         
         [Required, EmailAddress]
         public string EmailAddress { get; set; }
-        
-        [Required]
-        public string NewPassword { get; set; }
-        
-        [Required]
-        public string ConfirmPassword { get; set; }
+
+        public string UserRole { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

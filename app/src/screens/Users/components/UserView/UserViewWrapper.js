@@ -7,11 +7,12 @@ import UserForm from './UserForm'
 
 const UserViewWrapper = props =>
   props.loader.spinning ? null : (
-    <>
-      <p>{props.fields.id ? 'Edit the user here.' : 'Add a new user here.'}</p>
-
-      <UserForm {...props.fields} onChange={props.onFieldChange} />
-    </>
+    <UserForm
+      {...props.fields}
+      onChange={props.onFieldChange}
+      onDeleteUser={props.onDeleteUser}
+      onPasswordChange={props.onPasswordChange}
+    />
   )
 
 UserViewWrapper.propTypes = {
@@ -21,7 +22,9 @@ UserViewWrapper.propTypes = {
   }).isRequired,
 
   // functions
+  onDeleteUser: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
+  onPasswordChange: PropTypes.func.isRequired,
 }
 
 export default loader(UserViewWrapper)

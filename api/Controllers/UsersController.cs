@@ -52,5 +52,37 @@ namespace CandeeCamp.API.Controllers
 
             return Ok(newUser);
         }
+
+        [HttpPut("{userId}")]
+        [ProducesResponseType(typeof(User), 200)]
+        public async Task<ActionResult<User>> UpdateUser(int userId, [FromBody] UserModel user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            User updatedUser = await _userRepository.UpdateUser(userId, user);
+
+            return Ok(updatedUser);
+        }
+
+        [HttpDelete("{userId}")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult> DeleteUser(int userId)
+        {
+            await _userRepository.DeleteUser(userId);
+
+            return Ok();
+        }
+
+        [HttpPost("{userId}/change-password")]
+        [ProducesResponseType(typeof(User), 200)]
+        public async Task<ActionResult<User>> ChangePassword(int userId, string password)
+        {
+            User user = await _userRepository.ChangePassword(userId, password);
+
+            return Ok(user);
+        }
     }
 }

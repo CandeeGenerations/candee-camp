@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import {Divider, Table} from 'antd'
 
 import {Constants} from '../../../helpers/constants'
-import {formatDate, formatRole} from '../../../helpers'
+import {formatDate, formatIsActive} from '../../../helpers'
 
 import {NavItem} from '../../../components/Navigation'
 import loader from '../../../components/Structure/Loader'
+import DeleteLink from '../../../components/Structure/DeleteLink'
 
 const {Column} = Table
 
@@ -22,7 +23,21 @@ const UsersTable = props =>
 
       <Column key="lastName" dataIndex="lastName" title="Last Name" />
 
-      <Column key="role" dataIndex="role" render={formatRole} title="Role" />
+      <Column
+        key="emailAddress"
+        dataIndex="emailAddress"
+        title="Email Address"
+      />
+
+      <Column
+        key="isActive"
+        align="center"
+        dataIndex="isActive"
+        render={formatIsActive}
+        title="Is Active"
+      />
+
+      {/* <Column key="role" dataIndex="role" render={formatRole} title="Role" /> */}
 
       <Column
         key="createdDate"
@@ -59,9 +74,16 @@ const UsersTable = props =>
 
             <Divider type="vertical" />
 
-            <NavItem params={{userId: record.id}} routeName="users.delete">
-              Delete
-            </NavItem>
+            <DeleteLink
+              title={
+                <p>
+                  Are you sure you want
+                  <br />
+                  to delete this user?
+                </p>
+              }
+              onConfirm={() => props.deleteUser(record.id)}
+            />
           </span>
         )}
         title="Actions"
@@ -72,19 +94,22 @@ const UsersTable = props =>
 UsersTable.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
-      createdDate: PropTypes.number.isRequired,
+      createdDate: PropTypes.string.isRequired,
       firstName: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
       key: PropTypes.number.isRequired,
-      lastLoggedInDate: PropTypes.number,
+      lastLoggedInDate: PropTypes.string,
       lastName: PropTypes.string.isRequired,
-      role: PropTypes.number.isRequired,
-      updatedDate: PropTypes.number.isRequired,
+      role: PropTypes.string,
+      updatedDate: PropTypes.string.isRequired,
     }),
   ).isRequired,
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
   }).isRequired,
+
+  // functions
+  deleteUser: PropTypes.func.isRequired,
 }
 
 export default loader(UsersTable)

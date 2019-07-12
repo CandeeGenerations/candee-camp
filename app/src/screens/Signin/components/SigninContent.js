@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Col, Row, Button, Divider} from 'antd'
+import {Col, Row, Button, Divider, Typography} from 'antd'
 
 import useLocalStorage from '../../../helpers/hooks/useLocalStorage'
 
@@ -24,8 +24,10 @@ const SigninContent = props => {
       </h2>
 
       {unauthorized.valueAsBool && (
-        <div className="ant-typography-warning cc--text-center">
-          You have been signed out. Please log back in.
+        <div className="cc--text-center">
+          <Typography.Text type="warning">
+            You have been signed out. Please log back in.
+          </Typography.Text>
         </div>
       )}
 

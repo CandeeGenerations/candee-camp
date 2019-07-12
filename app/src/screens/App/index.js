@@ -1,7 +1,10 @@
 import React from 'react'
+import _ from 'lodash'
 import {Layout} from 'antd'
 import {useRoute} from 'react-router5'
+import SimpleCrypto from 'simple-crypto-js'
 
+import Config from '../../config'
 import {axiosRequest} from '../../api'
 import {getUser} from '../../helpers/authHelpers'
 
@@ -25,9 +28,7 @@ const App = () => {
   const user = getUser()
 
   if (user) {
-    axiosRequest.defaults.headers.common.Authorization = `Bearer ${
-      user.access_token
-    }`
+    axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
   }
 
   const testUnauthenticatedRoutes = () => {
@@ -61,9 +62,18 @@ const App = () => {
   const isUnauthenticatedRoute = testUnauthenticatedRoutes()
 
   if (!user && !isUnauthenticatedRoute) {
-    routerContext.router.navigate('signin', {
-      returnUrl: routerContext.route.name,
-    })
+    const returnParams = _.isEmpty(routerContext.route.params)
+      ? {}
+      : {returnParams: JSON.stringify(routerContext.route.params)}
+    const simpleCrypto = new SimpleCrypto(Config.cryptoKey)
+    const params = simpleCrypto.encrypt(
+      JSON.stringify({
+        returnUrl: routerContext.route.name,
+        ...returnParams,
+      }),
+    )
+
+    routerContext.router.navigate('signin', {p: params})
 
     return (
       <>

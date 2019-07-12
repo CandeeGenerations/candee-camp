@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Mime;
+using System.Linq;
 using System.Threading.Tasks;
 using CandeeCamp.API.Common;
 using CandeeCamp.API.Context;
@@ -17,9 +17,27 @@ namespace CandeeCamp.API.Repositories
         {
         }
 
+        public async Task<IEnumerable<User>> GetUsers() =>
+            await Context.Users.Where(u => !u.IsDeleted).ToListAsync();
+
+        private async Task<User> GetUserByEmail(string emailAddress) =>
+            await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress && !u.IsDeleted);
+        
+        public async Task<User> GetUserById(int userId)
+        {
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+
+            if (dbUser == null)
+            {
+                throw new Exception("This user does not exist.");
+            }
+
+            return dbUser;
+        }
+
         public async Task<User> CreateUser(NewUserModel user)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == user.EmailAddress);
+            User dbUser = await GetUserByEmail(user.EmailAddress);
 
             if (dbUser != null)
             {
@@ -32,9 +50,10 @@ namespace CandeeCamp.API.Repositories
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 EmailAddress = user.EmailAddress,
-                PasswordHash = user.Password.Encrypt(salt),
+                PasswordHash = user.NewPassword.Encrypt(salt),
                 Salt = salt,
                 CreatedDate = DateTimeOffset.Now,
+                UpdatedDate = DateTimeOffset.Now,
                 IsActive = true,
                 IsDeleted = false,
             };
@@ -47,7 +66,7 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<User> ValidateUser(AuthenticationModel user)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == user.username);
+            User dbUser = await GetUserByEmail(user.username);
 
             if (dbUser == null)
             {
@@ -68,28 +87,9 @@ namespace CandeeCamp.API.Repositories
             return dbUser;
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
-        {
-            IEnumerable<User> dbUsers = await Context.Users.ToListAsync();
-
-            return dbUsers;
-        }
-
-        public async Task<User> GetUserById(int userId)
-        {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-            if (dbUser == null)
-            {
-                throw new Exception("This user does not exist.");
-            }
-
-            return dbUser;
-        }
-
         public async Task SendForgotPasswordEmail(string emailAddress)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
+            User dbUser = await GetUserByEmail(emailAddress);
 
             if (dbUser == null)
             {
@@ -108,9 +108,9 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<bool> ValidateResetToken(ResetPasswordModel model)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId && u.ResetPasswordToken == model.Token);
+            User dbUser = await GetUserById(model.UserId);
 
-            if (dbUser == null)
+            if (dbUser == null || dbUser.ResetPasswordToken != model.Token)
             {
                 return false;
             }
@@ -120,12 +120,7 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<User> ResetPassword(ResetPasswordModel model)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId);
-
-            if (dbUser == null)
-            {
-                throw new Exception("This user does not exist.");
-            }
+            User dbUser = await GetUserById(model.UserId);
 
             if (dbUser.ResetPasswordToken != model.Token || DateTimeOffset.UtcNow >= dbUser.ResetPasswordExpirationDate)
             {
@@ -134,10 +129,55 @@ namespace CandeeCamp.API.Repositories
             
             string salt = Helpers.CreateUniqueString(64);
 
+            dbUser.UpdatedDate = DateTimeOffset.Now;
             dbUser.ResetPasswordToken = null;
             dbUser.ResetPasswordExpirationDate = null;
             dbUser.Salt = salt;
             dbUser.PasswordHash = model.Password.Encrypt(salt);
+
+            await Context.SaveChangesAsync();
+
+            return dbUser;
+        }
+
+        public async Task<User> ChangePassword(int userId, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(newPassword))
+            {
+                throw new Exception("The new password field is required.");
+            }
+
+            User dbUser = await GetUserById(userId);
+            string salt = Helpers.CreateUniqueString(64);
+
+            dbUser.UpdatedDate = DateTimeOffset.Now;
+            dbUser.Salt = salt;
+            dbUser.PasswordHash = newPassword.Encrypt(salt);
+
+            await Context.SaveChangesAsync();
+
+            return dbUser;
+        }
+
+        public async Task DeleteUser(int userId)
+        {
+            User dbUser = await GetUserById(userId);
+
+            dbUser.IsActive = false;
+            dbUser.IsDeleted = true;
+
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task<User> UpdateUser(int userId, UserModel user)
+        {
+            User dbUser = await GetUserById(userId);
+
+            dbUser.FirstName = user.FirstName;
+            dbUser.LastName = user.LastName;
+            dbUser.EmailAddress = user.EmailAddress;
+            dbUser.IsActive = user.IsActive;
+            dbUser.UpdatedDate = DateTimeOffset.Now;
 
             await Context.SaveChangesAsync();
 
