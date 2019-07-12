@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using CandeeCamp.API.DomainObjects;
 using CandeeCamp.API.Models;
@@ -29,7 +30,16 @@ namespace CandeeCamp.API.Controllers
 
             return Ok(users);
         }
-        
+
+        [HttpGet("by-ids")]
+        [ProducesResponseType(typeof(IEnumerable<User>), 200)]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsersByIds(IEnumerable<int> userIds)
+        {
+            IEnumerable<User> users = await _userRepository.GetUsersByIds(userIds);
+
+            return Ok(users);
+        }
+
         [HttpGet("{userId}")]
         [ProducesResponseType(typeof(User), 200)]
         public async Task<ActionResult<User>> GetUser(int userId)
