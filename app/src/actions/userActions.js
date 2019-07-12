@@ -8,7 +8,20 @@ export const loadUsers = async () => {
     return response
   } catch (error) {
     handleError('Unable to load the Users. Please try again.', error)
-    throw new Error(error)
+    return null
+  }
+}
+
+export const loadUsersByIds = async userIds => {
+  try {
+    const response = await request.get(
+      `/users/by-ids?userIds=${userIds.join('&userIds=')}`,
+    )
+
+    return response
+  } catch (error) {
+    handleError('Unable to load the Users. Please try again.', error)
+    return null
   }
 }
 
@@ -19,7 +32,7 @@ export const loadUserStats = async () => {
     return response.data.length
   } catch (error) {
     handleError('Unable to load the User Stats. Please try again.', error)
-    throw new Error(error)
+    return null
   }
 }
 

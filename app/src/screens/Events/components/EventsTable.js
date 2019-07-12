@@ -55,7 +55,25 @@ const EventsTable = props => {
       <Column
         key="createdBy"
         dataIndex="createdBy"
-        render={name => <Tag color="blue">{name}</Tag>}
+        render={userId => {
+          let name = null
+
+          if (!props.users.loading && props.users.results) {
+            const user = props.users.results.find(u => u.id === userId)
+
+            if (user) {
+              name = `${user.firstName} ${user.lastName}`
+            }
+          }
+
+          return props.users.loading ? (
+            <Icon type="loading" />
+          ) : name ? (
+            <Tag color="blue">{name}</Tag>
+          ) : (
+            <em>None</em>
+          )
+        }}
         title="Created By"
       />
 
@@ -99,18 +117,19 @@ const EventsTable = props => {
 EventsTable.propTypes = {
   events: PropTypes.arrayOf(
     PropTypes.shape({
-      createdBy: PropTypes.string.isRequired,
-      createdDate: PropTypes.number.isRequired,
-      endDate: PropTypes.number.isRequired,
+      createdBy: PropTypes.number.isRequired,
+      createdDate: PropTypes.string.isRequired,
+      endDate: PropTypes.string.isRequired,
       key: PropTypes.number.isRequired,
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
-      startDate: PropTypes.number.isRequired,
+      startDate: PropTypes.string.isRequired,
     }),
   ).isRequired,
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
   }).isRequired,
+  users: PropTypes.shape().isRequired,
 
   // functions
   deleteEvent: PropTypes.func.isRequired,

@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react'
+import _ from 'lodash'
 import {Card, Button} from 'antd'
 import {useRoute} from 'react-router5'
 
-import {eventActions as actions} from '../../actions'
+import {eventActions as actions, userActions} from '../../actions'
 
 import useTitle from '../../helpers/hooks/useTitle'
 import useAsyncLoad from '../../helpers/hooks/useAsyncLoad'
@@ -20,22 +21,30 @@ const Events = () => {
   const errorWrapper = useError()
   const routerContext = useRoute()
   const events = useAsyncLoad(actions.loadEvents)
+  const users = useAsyncLoad(userActions.loadUsersByIds)
 
   useTitle('Events')
 
-  useEffect(() => {
+  const loadEvents = async () => {
     try {
-      events.load()
+      const response = await events.load()
+      const userIds = _.uniq(response.data.map(x => x.createdBy))
+
+      users.load(false, userIds)
     } catch (error) {
       errorWrapper.handleCatchError()
     }
+  }
+
+  useEffect(() => {
+    loadEvents()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const deleteEvent = async eventId => {
     const response = await actions.deleteEvent(eventId)
 
     if (response) {
-      events.load()
+      loadEvents()
     }
   }
 
@@ -64,15 +73,17 @@ const Events = () => {
             value={{spinning: events.loading, tip: 'Loading events...'}}
           >
             <ErrorWrapper
-              handleRetry={events.load}
+              handleRetry={loadEvents}
               hasError={errorWrapper.hasError}
             >
               <EventsTable
                 deleteEvent={deleteEvent}
                 events={
-                  events.results &&
-                  events.results.map(event => ({...event, key: event.id}))
+                  (events.results &&
+                    events.results.map(event => ({...event, key: event.id}))) ||
+                  []
                 }
+                users={users}
               />
             </ErrorWrapper>
           </LoaderContext.Provider>
