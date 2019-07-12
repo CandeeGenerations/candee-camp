@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import dayjs from 'dayjs'
 import merge from 'deepmerge'
-import {notification, Tag} from 'antd'
+import {Icon, notification, Tag} from 'antd'
 
 import {Constants} from './constants'
 
@@ -16,6 +16,14 @@ export const deepCopy = obj => merge(obj, {})
 
 export const formatDate = date =>
   date ? dayjs(date).format('MMM D, YYYY h:mm A') : <em>None</em>
+
+export const formatIsActive = isActive => (
+  <Icon
+    theme="twoTone"
+    twoToneColor={isActive ? '#52c41a' : '#eb2f96'}
+    type={`${isActive ? 'check' : 'close'}-circle`}
+  />
+)
 
 export const formatRole = role => {
   let color = null

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {Divider, Table} from 'antd'
 
 import {Constants} from '../../../helpers/constants'
-import {formatDate, formatRole} from '../../../helpers'
+import {formatDate, formatIsActive} from '../../../helpers'
 
 import {NavItem} from '../../../components/Navigation'
 import loader from '../../../components/Structure/Loader'
@@ -23,7 +23,21 @@ const UsersTable = props =>
 
       <Column key="lastName" dataIndex="lastName" title="Last Name" />
 
-      <Column key="role" dataIndex="role" render={formatRole} title="Role" />
+      <Column
+        key="emailAddress"
+        dataIndex="emailAddress"
+        title="Email Address"
+      />
+
+      <Column
+        key="isActive"
+        align="center"
+        dataIndex="isActive"
+        render={formatIsActive}
+        title="Is Active"
+      />
+
+      {/* <Column key="role" dataIndex="role" render={formatRole} title="Role" /> */}
 
       <Column
         key="createdDate"
