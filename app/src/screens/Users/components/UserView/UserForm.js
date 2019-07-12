@@ -12,6 +12,8 @@ import {
   Typography,
 } from 'antd'
 
+import usePage from '../../../../helpers/hooks/usePage'
+
 const UserForm = Form.create({
   onFieldsChange(props, changedFields) {
     const {onChange} = props
@@ -66,6 +68,8 @@ const UserForm = Form.create({
     return fields
   },
 })(props => {
+  const page = usePage()
+
   const {form} = props
   const {getFieldDecorator} = form
 
@@ -119,84 +123,90 @@ const UserForm = Form.create({
         </Col>
       </Row>
 
-      <Divider orientation="left">Security</Divider>
-
-      {props.id ? (
+      {page.isUserAddOrEditPage && (
         <>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Button type="primary" onClick={props.onPasswordChange}>
-                Change Password
-              </Button>
-            </Col>
-          </Row>
+          <Divider orientation="left">Security</Divider>
 
-          <Divider orientation="left" style={{marginTop: 40}}>
-            <Typography.Text type="danger">Danger Zone</Typography.Text>
-          </Divider>
+          {props.id ? (
+            <>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Button type="primary" onClick={props.onPasswordChange}>
+                    Change Password
+                  </Button>
+                </Col>
+              </Row>
 
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item label="Is Active" labelCol={{span: 10}}>
-                {getFieldDecorator('isActive')(
-                  <Switch
-                    checked={props.isActive.value}
-                    checkedChildren={<Icon type="check" />}
-                    unCheckedChildren={<Icon type="close" />}
-                  />,
-                )}
-              </Form.Item>
-            </Col>
+              <Divider orientation="left" style={{marginTop: 40}}>
+                <Typography.Text type="danger">Danger Zone</Typography.Text>
+              </Divider>
 
-            <Col span={12}>
-              <Popconfirm
-                cancelText="Cancel"
-                icon={<Icon style={{color: 'red'}} type="question-circle-o" />}
-                okText="Delete"
-                okType="danger"
-                placement="topRight"
-                title={
-                  <p>
-                    Are you sure you want
-                    <br />
-                    to delete this user?
-                  </p>
-                }
-                onConfirm={props.onDeleteUser}
-              >
-                <Button type="danger">Delete User</Button>
-              </Popconfirm>
-            </Col>
-          </Row>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item label="Is Active" labelCol={{span: 10}}>
+                    {getFieldDecorator('isActive')(
+                      <Switch
+                        checked={props.isActive.value}
+                        checkedChildren={<Icon type="check" />}
+                        unCheckedChildren={<Icon type="close" />}
+                      />,
+                    )}
+                  </Form.Item>
+                </Col>
+
+                <Col span={12}>
+                  <Popconfirm
+                    cancelText="Cancel"
+                    icon={
+                      <Icon style={{color: 'red'}} type="question-circle-o" />
+                    }
+                    okText="Delete"
+                    okType="danger"
+                    placement="topRight"
+                    title={
+                      <p>
+                        Are you sure you want
+                        <br />
+                        to delete this user?
+                      </p>
+                    }
+                    onConfirm={props.onDeleteUser}
+                  >
+                    <Button type="danger">Delete User</Button>
+                  </Popconfirm>
+                </Col>
+              </Row>
+            </>
+          ) : (
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item label="Password" hasFeedback>
+                  {getFieldDecorator('newPassword', {
+                    rules: [
+                      {required: true, message: 'The password is required.'},
+                      {min: 6, message: 'This password is too short.'},
+                      {validator: validateToNextPassword},
+                    ],
+                  })(<Input.Password placeholder="e.g. password123!" />)}
+                </Form.Item>
+              </Col>
+
+              <Col span={12}>
+                <Form.Item label="Confirm Password" hasFeedback>
+                  {getFieldDecorator('confirmPassword', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'The confirmation password is required.',
+                      },
+                      {validator: compareToFirstPassword},
+                    ],
+                  })(<Input.Password placeholder="e.g. password123!" />)}
+                </Form.Item>
+              </Col>
+            </Row>
+          )}
         </>
-      ) : (
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item label="Password" hasFeedback>
-              {getFieldDecorator('newPassword', {
-                rules: [
-                  {required: true, message: 'The password is required.'},
-                  {min: 6, message: 'This password is too short.'},
-                  {validator: validateToNextPassword},
-                ],
-              })(<Input.Password placeholder="e.g. password123!" />)}
-            </Form.Item>
-          </Col>
-
-          <Col span={12}>
-            <Form.Item label="Confirm Password" hasFeedback>
-              {getFieldDecorator('confirmPassword', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'The confirmation password is required.',
-                  },
-                  {validator: compareToFirstPassword},
-                ],
-              })(<Input.Password placeholder="e.g. password123!" />)}
-            </Form.Item>
-          </Col>
-        </Row>
       )}
     </Form>
   )
