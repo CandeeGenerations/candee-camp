@@ -5,6 +5,7 @@ using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CandeeCamp.API.Controllers
 {
@@ -51,6 +52,15 @@ namespace CandeeCamp.API.Controllers
             User newUser = await _userRepository.CreateUser(user);
 
             return Ok(newUser);
+        }
+
+        [HttpDelete("{userId}")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult> DeleteUser(int userId)
+        {
+            await _userRepository.DeleteUser(userId);
+
+            return Ok();
         }
 
         [HttpPost("{userId}/change-password")]

@@ -15,5 +15,6 @@ namespace CandeeCamp.API.Repositories.Interfaces
         Task<bool> ValidateResetToken(ResetPasswordModel model);
         Task<User> ResetPassword(ResetPasswordModel model);
         Task<User> ChangePassword(int userId, string newPassword);
+        Task DeleteUser(int userId);
     }
 }

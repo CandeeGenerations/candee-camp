@@ -18,12 +18,26 @@ namespace CandeeCamp.API.Repositories
         }
 
         public async Task<IEnumerable<User>> GetUsers() =>
-            await Context.Users.Where(u => IsActive(u)).ToListAsync();
+            await Context.Users.Where(u => !u.IsDeleted).ToListAsync();
+
+        private async Task<User> GetUserByEmail(string emailAddress) =>
+            await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress && !u.IsDeleted);
+        
+        public async Task<User> GetUserById(int userId)
+        {
+            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+
+            if (dbUser == null)
+            {
+                throw new Exception("This user does not exist.");
+            }
+
+            return dbUser;
+        }
 
         public async Task<User> CreateUser(NewUserModel user)
         {
-            User dbUser =
-                await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == user.EmailAddress && IsActive(u));
+            User dbUser = await GetUserByEmail(user.EmailAddress);
 
             if (dbUser != null)
             {
@@ -52,7 +66,7 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<User> ValidateUser(AuthenticationModel user)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == user.username && IsActive(u));
+            User dbUser = await GetUserByEmail(user.username);
 
             if (dbUser == null)
             {
@@ -73,21 +87,9 @@ namespace CandeeCamp.API.Repositories
             return dbUser;
         }
 
-        public async Task<User> GetUserById(int userId)
-        {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId && IsActive(u));
-
-            if (dbUser == null)
-            {
-                throw new Exception("This user does not exist.");
-            }
-
-            return dbUser;
-        }
-
         public async Task SendForgotPasswordEmail(string emailAddress)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress && IsActive(u));
+            User dbUser = await GetUserByEmail(emailAddress);
 
             if (dbUser == null)
             {
@@ -106,10 +108,9 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<bool> ValidateResetToken(ResetPasswordModel model)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u =>
-                u.Id == model.UserId && u.ResetPasswordToken == model.Token && IsActive(u));
+            User dbUser = await GetUserById(model.UserId);
 
-            if (dbUser == null)
+            if (dbUser == null || dbUser.ResetPasswordToken != model.Token)
             {
                 return false;
             }
@@ -119,12 +120,7 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<User> ResetPassword(ResetPasswordModel model)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == model.UserId && IsActive(u));
-
-            if (dbUser == null)
-            {
-                throw new Exception("This user does not exist.");
-            }
+            User dbUser = await GetUserById(model.UserId);
 
             if (dbUser.ResetPasswordToken != model.Token || DateTimeOffset.UtcNow >= dbUser.ResetPasswordExpirationDate)
             {
@@ -150,14 +146,8 @@ namespace CandeeCamp.API.Repositories
             {
                 throw new Exception("The new password field is required.");
             }
-            
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId && IsActive(u));
 
-            if (dbUser == null)
-            {
-                throw new Exception("This user does not exist.");
-            }
-            
+            User dbUser = await GetUserById(userId);
             string salt = Helpers.CreateUniqueString(64);
 
             dbUser.UpdatedDate = DateTimeOffset.Now;
@@ -167,6 +157,16 @@ namespace CandeeCamp.API.Repositories
             await Context.SaveChangesAsync();
 
             return dbUser;
+        }
+
+        public async Task DeleteUser(int userId)
+        {
+            User dbUser = await GetUserById(userId);
+
+            dbUser.IsActive = false;
+            dbUser.IsDeleted = true;
+
+            await Context.SaveChangesAsync();
         }
     }
 }
