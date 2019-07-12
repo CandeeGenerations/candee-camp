@@ -82,7 +82,18 @@ const UserView = props => {
   const handleChangePassword = () =>
     actions.changeUserPassword(props.id, passwordFields.newPassword.value)
 
-  const handleDeleteUserClick = () => console.log('delete user')
+  const handleDeleteUserClick = async () => {
+    user.startLoading()
+
+    const response = await actions.deleteUser(props.id)
+
+    user.stopLoading()
+
+    if (response) {
+      props.refreshUsers()
+      router.navigate('users')
+    }
+  }
 
   const validPasswordForm = isFormReady(passwordFields)
   const changePasswordModal = useModal({

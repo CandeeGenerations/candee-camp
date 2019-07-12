@@ -31,6 +31,14 @@ const Users = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const handleDeleteUserClick = async userId => {
+    const response = await actions.deleteUser(userId)
+
+    if (response) {
+      users.load()
+    }
+  }
+
   return (
     <>
       <section className="cc--main-content">
@@ -60,6 +68,7 @@ const Users = () => {
               hasError={errorWrapper.hasError}
             >
               <UsersTable
+                deleteUser={handleDeleteUserClick}
                 users={
                   (users.results &&
                     users.results.map(user => ({...user, key: user.id}))) ||

@@ -7,6 +7,7 @@ import {formatDate, formatRole} from '../../../helpers'
 
 import {NavItem} from '../../../components/Navigation'
 import loader from '../../../components/Structure/Loader'
+import DeleteLink from '../../../components/Structure/DeleteLink'
 
 const {Column} = Table
 
@@ -59,9 +60,16 @@ const UsersTable = props =>
 
             <Divider type="vertical" />
 
-            <NavItem params={{userId: record.id}} routeName="users.delete">
-              Delete
-            </NavItem>
+            <DeleteLink
+              title={
+                <p>
+                  Are you sure you want
+                  <br />
+                  to delete this user?
+                </p>
+              }
+              onConfirm={() => props.deleteUser(record.id)}
+            />
           </span>
         )}
         title="Actions"
@@ -85,6 +93,9 @@ UsersTable.propTypes = {
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
   }).isRequired,
+
+  // functions
+  deleteUser: PropTypes.func.isRequired,
 }
 
 export default loader(UsersTable)
