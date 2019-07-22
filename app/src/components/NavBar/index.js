@@ -1,9 +1,9 @@
 import React from 'react'
 import {useRoute} from 'react-router5'
 
-import {removeUser} from '../../helpers/authHelpers'
-
 import NavBarContent from './components/NavBarContent'
+
+import {removeUser} from '@/helpers/authHelpers'
 
 const NavBar = () => {
   const routerContext = useRoute()

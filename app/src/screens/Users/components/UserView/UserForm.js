@@ -12,7 +12,7 @@ import {
   Typography,
 } from 'antd'
 
-import usePage from '../../../../helpers/hooks/usePage'
+import usePage from '@/helpers/hooks/usePage'
 
 const UserForm = Form.create({
   onFieldsChange(props, changedFields) {

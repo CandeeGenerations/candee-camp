@@ -1,5 +1,5 @@
-import request from '../api'
-import {handleError, openNotification, formDataToBody} from '../helpers'
+import request from '@/api'
+import {handleError, openNotification, formDataToBody} from '@/helpers'
 
 export const loadUsers = async () => {
   try {

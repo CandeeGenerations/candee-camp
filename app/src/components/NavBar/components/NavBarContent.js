@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import {Icon, Layout, Menu} from 'antd'
 
-import {NavItem} from '../../Navigation'
+import {NavItem} from '@/components/Navigation'
 
 import './navBarContent.scss'
 

@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.3.59",
+  "version": "0.3.60",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -59,6 +59,11 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
@@ -73,9 +78,10 @@
     "customize-cra": "^0.2.14",
     "eslint-config-kentcdodds": "CandeeGenerations/eslint-config-kentcdodds",
     "eslint-config-prettier": "^6.0.0",
+    "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-babel-module": "^5.1.0",
     "eslint-loader": "^2.2.1",
-    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.2.1",

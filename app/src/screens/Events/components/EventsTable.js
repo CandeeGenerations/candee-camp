@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 import {Divider, Icon, Table, Tag} from 'antd'
 
-import {formatDate} from '../../../helpers'
-import {Constants} from '../../../helpers/constants'
+import {formatDate} from '@/helpers'
+import {Constants} from '@/helpers/constants'
 
-import {NavItem} from '../../../components/Navigation'
-import loader from '../../../components/Structure/Loader'
-import DeleteLink from '../../../components/Structure/DeleteLink'
+import {NavItem} from '@/components/Navigation'
+import loader from '@/components/Structure/Loader'
+import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 

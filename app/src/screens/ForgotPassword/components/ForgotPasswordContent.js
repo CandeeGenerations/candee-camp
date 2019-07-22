@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Col, Row, Button} from 'antd'
 
-import {NavItem} from '../../../components/Navigation'
-import {Copyright} from '../../../components/Structure'
-import DisabledButtonPopup from '../../../components/DisabledButtonPopup'
-
 import ForgotPasswordForm from './ForgotPasswordForm'
+
+import {NavItem} from '@/components/Navigation'
+import {Copyright} from '@/components/Structure'
+import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
 import './forgotPasswordContent.scss'
 

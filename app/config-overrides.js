@@ -1,5 +1,7 @@
+const path = require('path')
 const {
   addLessLoader,
+  addWebpackAlias,
   fixBabelImports,
   override,
   useBabelRc,
@@ -7,6 +9,7 @@ const {
 
 module.exports = override(
   useBabelRc(),
+
   fixBabelImports('import', {
     libraryName: 'antd',
     libraryDirectory: 'es',
@@ -17,4 +20,6 @@ module.exports = override(
     javascriptEnabled: true,
     // modifyVars: {'@primary-color': '#1DA57A'},
   }),
+
+  addWebpackAlias({'@': path.resolve(__dirname, 'src/')}),
 )

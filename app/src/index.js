@@ -2,9 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {Route, RouterProvider} from 'react-router5'
 
-import App from './screens/App'
-import router from './config/router'
-import * as serviceWorker from './serviceWorker'
+import App from '@/screens/App'
+import router from '@/config/router'
+import * as serviceWorker from '@/serviceWorker'
 
 import './main.scss'
 

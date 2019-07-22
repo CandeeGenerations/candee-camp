@@ -1,8 +1,8 @@
 import qs from 'qs'
 
-import {axiosRequest} from '../api'
-import {setUser} from '../helpers/authHelpers'
-import {handleError, openNotification} from '../helpers'
+import {axiosRequest} from '@/api'
+import {setUser} from '@/helpers/authHelpers'
+import {handleError, openNotification} from '@/helpers'
 
 export const signin = async fields => {
   try {

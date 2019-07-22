@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Button, Col, Row} from 'antd'
 
-import {Copyright} from '../../../components/Structure'
-import loader from '../../../components/Structure/Loader'
-import DisabledButtonPopup from '../../../components/DisabledButtonPopup'
-
 import ResetPasswordForm from './ResetPasswordForm'
+
+import {Copyright} from '@/components/Structure'
+import loader from '@/components/Structure/Loader'
+import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
 import './resetPasswordContent.scss'
 

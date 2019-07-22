@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import loader from '../../../../components/Structure/Loader'
-
 import UserForm from './UserForm'
+
+import loader from '@/components/Structure/Loader'
 
 const UserViewWrapper = props =>
   props.loader.spinning ? null : (

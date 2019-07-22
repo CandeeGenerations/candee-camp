@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {Button, Drawer} from 'antd'
 import {useRouter} from 'react-router5'
 
-import DisabledButtonPopup from '../DisabledButtonPopup'
+import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
 const DrawerView = props => {
   const router = useRouter()
