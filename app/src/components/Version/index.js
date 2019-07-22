@@ -2,7 +2,7 @@ import React from 'react'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 
-import Config from '../../config'
+import Config from '@/config'
 
 import './version.scss'
 

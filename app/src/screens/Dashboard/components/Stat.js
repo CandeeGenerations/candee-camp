@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Card, Statistic} from 'antd'
 
-import loader from '../../../components/Structure/Loader'
+import loader from '@/components/Structure/Loader'
 
 const Stat = props => (
   <Card>

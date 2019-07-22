@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Icon, Popover, Progress} from 'antd'
 
-import Config from '../../config'
-import {formErrors, percentComplete} from '../../helpers'
+import Config from '@/config'
+import {formErrors, percentComplete} from '@/helpers'
 
 const DisabledButtonPopup = props => {
   const errors = formErrors(props.fields)

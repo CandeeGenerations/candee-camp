@@ -2,17 +2,15 @@ import React, {useCallback, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 
-import {eventActions as actions} from '../../../../actions'
-import useAsyncLoad from '../../../../helpers/hooks/useAsyncLoad'
-import {isFormReady, mergeFormData, anyTouchedFields} from '../../../../helpers'
-
-import DrawerView from '../../../../components/Structure/DrawerView'
-import {LoaderContext} from '../../../../components/Structure/Loader'
-import ErrorWrapper, {
-  useError,
-} from '../../../../components/ErrorBoundary/ErrorWrapper'
-
 import EventViewWrapper from './EventViewWrapper'
+
+import {eventActions as actions} from '@/actions'
+import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
+
+import DrawerView from '@/components/Structure/DrawerView'
+import {LoaderContext} from '@/components/Structure/Loader'
+import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const EventView = props => {
   const router = useRouter()

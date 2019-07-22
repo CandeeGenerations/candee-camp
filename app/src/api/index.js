@@ -2,8 +2,8 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import jwtDecode from 'jwt-decode'
 
-import Config from '../config'
-import {getUser, removeUser} from '../helpers/authHelpers'
+import Config from '@/config'
+import {getUser, removeUser} from '@/helpers/authHelpers'
 
 export const axiosRequest = axios.create({
   baseURL: Config.apiUrl,

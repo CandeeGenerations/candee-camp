@@ -3,20 +3,18 @@ import _ from 'lodash'
 import {Card, Button} from 'antd'
 import {useRoute} from 'react-router5'
 
-import {eventActions as actions, userActions} from '../../actions'
-
-import useTitle from '../../helpers/hooks/useTitle'
-import useAsyncLoad from '../../helpers/hooks/useAsyncLoad'
-
-import {ObjectsContext} from '../App'
-import PageHeader from '../../components/Structure/PageHeader'
-import {LoaderContext} from '../../components/Structure/Loader'
-import ErrorWrapper, {
-  useError,
-} from '../../components/ErrorBoundary/ErrorWrapper'
-
 import EventView from './components/EventView'
 import EventsTable from './components/EventsTable'
+
+import {eventActions as actions, userActions} from '@/actions'
+
+import useTitle from '@/helpers/hooks/useTitle'
+import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+
+import {ObjectsContext} from '@/screens/App'
+import PageHeader from '@/components/Structure/PageHeader'
+import {LoaderContext} from '@/components/Structure/Loader'
+import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const Events = () => {
   const errorWrapper = useError()

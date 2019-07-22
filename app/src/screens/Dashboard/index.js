@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react'
 import {Col, Row} from 'antd'
 
-import useTitle from '../../helpers/hooks/useTitle'
-import {eventActions, userActions} from '../../actions'
-import useAsyncLoad from '../../helpers/hooks/useAsyncLoad'
-
-import {LoaderContext} from '../../components/Structure/Loader'
-
 import Stat from './components/Stat'
+
+import useTitle from '@/helpers/hooks/useTitle'
+import {eventActions, userActions} from '@/actions'
+import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+
+import {LoaderContext} from '@/components/Structure/Loader'
 
 const Dashboard = () => {
   useTitle('Home')

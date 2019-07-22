@@ -1,7 +1,7 @@
 import React from 'react'
 import {Row, Col, Button} from 'antd'
 
-import useTitle from '../../helpers/hooks/useTitle'
+import useTitle from '@/helpers/hooks/useTitle'
 
 export default () => {
   useTitle('Not Found')

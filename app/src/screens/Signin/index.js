@@ -2,13 +2,14 @@ import React, {useState} from 'react'
 import {useRoute} from 'react-router5'
 import SimpleCrypto from 'simple-crypto-js'
 
-import Config from '../../config'
-import {isFormReady} from '../../helpers'
-import useTitle from '../../helpers/hooks/useTitle'
-import {signinActions as actions} from '../../actions'
-
-import {SigninLayout} from '../../components/Structure'
 import SigninContent from './components/SigninContent'
+
+import Config from '@/config'
+import {isFormReady} from '@/helpers'
+import useTitle from '@/helpers/hooks/useTitle'
+import {signinActions as actions} from '@/actions'
+
+import {SigninLayout} from '@/components/Structure'
 
 const Signin = () => {
   const routerContext = useRoute()

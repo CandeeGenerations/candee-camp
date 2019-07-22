@@ -2,21 +2,19 @@ import React, {useContext, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
-import usePage from '../../../../helpers/hooks/usePage'
-import useModal from '../../../../helpers/hooks/useModal'
-import {userActions as actions} from '../../../../actions'
-import useAsyncLoad from '../../../../helpers/hooks/useAsyncLoad'
-import {isFormReady, mergeFormData, anyTouchedFields} from '../../../../helpers'
-
-import {ObjectsContext} from '../../../App'
-import DrawerView from '../../../../components/Structure/DrawerView'
-import {LoaderContext} from '../../../../components/Structure/Loader'
-import ResetPasswordForm from '../../../ResetPassword/components/ResetPasswordForm'
-import ErrorWrapper, {
-  useError,
-} from '../../../../components/ErrorBoundary/ErrorWrapper'
-
 import UserViewWrapper from './UserViewWrapper'
+
+import usePage from '@/helpers/hooks/usePage'
+import useModal from '@/helpers/hooks/useModal'
+import {userActions as actions} from '@/actions'
+import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
+
+import {ObjectsContext} from '@/screens/App'
+import DrawerView from '@/components/Structure/DrawerView'
+import {LoaderContext} from '@/components/Structure/Loader'
+import ResetPasswordForm from '@/screens/ResetPassword/components/ResetPasswordForm'
+import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const UserView = props => {
   const passwordFieldsInitialState = {

@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Col, Row, Button, Divider, Typography} from 'antd'
 
-import useLocalStorage from '../../../helpers/hooks/useLocalStorage'
-
-import {NavItem} from '../../../components/Navigation'
-import {Copyright} from '../../../components/Structure'
-import DisabledButtonPopup from '../../../components/DisabledButtonPopup'
-
 import SigninForm from './SigninForm'
+
+import useLocalStorage from '@/helpers/hooks/useLocalStorage'
+
+import {NavItem} from '@/components/Navigation'
+import {Copyright} from '@/components/Structure'
+import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
 import './signinContent.scss'
 
