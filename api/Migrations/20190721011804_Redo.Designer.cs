@@ -3,14 +3,16 @@ using System;
 using CandeeCamp.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CandeeCamp.API.Migrations
 {
     [DbContext(typeof(CampContext))]
-    partial class CampContextModelSnapshot : ModelSnapshot
+    [Migration("20190721011804_Redo")]
+    partial class Redo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,23 +46,15 @@ namespace CandeeCamp.API.Migrations
 
                     b.Property<DateTimeOffset>("BirthDate");
 
-                    b.Property<int>("CabinId");
-
-                    b.Property<int>("CounselorId");
-
                     b.Property<DateTimeOffset>("CreatedDate");
 
                     b.Property<string>("FirstName");
-
-                    b.Property<int>("GroupId");
 
                     b.Property<bool>("IsActive");
 
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastName");
-
-                    b.Property<int>("LoginUser");
 
                     b.Property<string>("Medicine");
 
@@ -70,14 +64,6 @@ namespace CandeeCamp.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CabinId");
-
-                    b.HasIndex("CounselorId");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("LoginUser");
-
                     b.ToTable("Campers");
                 });
 
@@ -85,8 +71,6 @@ namespace CandeeCamp.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("CabinId");
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
@@ -100,13 +84,7 @@ namespace CandeeCamp.API.Migrations
 
                     b.Property<decimal>("StartingBalance");
 
-                    b.Property<int>("UserId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CabinId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Counselors");
                 });
@@ -166,7 +144,7 @@ namespace CandeeCamp.API.Migrations
                         {
                             Id = -1,
                             CreatedBy = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 23, 4, 55, 51, 460, DateTimeKind.Unspecified).AddTicks(9303), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 21, 1, 18, 3, 839, DateTimeKind.Unspecified).AddTicks(6824), new TimeSpan(0, 0, 0, 0, 0)),
                             EndDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
@@ -192,8 +170,6 @@ namespace CandeeCamp.API.Migrations
                     b.Property<int>("LoginUser");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LoginUser");
 
                     b.ToTable("Groups");
                 });
@@ -230,17 +206,9 @@ namespace CandeeCamp.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CamperId");
-
-                    b.Property<int>("CouponId");
-
                     b.Property<DateTimeOffset>("RedeemedDate");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CamperId");
-
-                    b.HasIndex("CouponId");
 
                     b.ToTable("RedeemedCoupons");
                 });
@@ -300,10 +268,6 @@ namespace CandeeCamp.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CamperId");
-
-                    b.Property<int>("CounselorId");
-
                     b.Property<bool>("IsActive");
 
                     b.Property<bool>("IsDeleted");
@@ -312,15 +276,7 @@ namespace CandeeCamp.API.Migrations
 
                     b.Property<decimal?>("PurchasedPrice");
 
-                    b.Property<int>("SnackShopItemId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CamperId");
-
-                    b.HasIndex("CounselorId");
-
-                    b.HasIndex("SnackShopItemId");
 
                     b.ToTable("SnackShopPurchases");
                 });
@@ -369,7 +325,7 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 23, 0, 55, 51, 457, DateTimeKind.Unspecified).AddTicks(7755), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 20, 21, 18, 3, 836, DateTimeKind.Unspecified).AddTicks(3589), new TimeSpan(0, -4, 0, 0, 0)),
                             EmailAddress = "tyler@cgen.com",
                             FirstName = "Tyler",
                             IsActive = true,
@@ -377,12 +333,12 @@ namespace CandeeCamp.API.Migrations
                             LastName = "Candee",
                             PasswordHash = "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
                             Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2019, 7, 23, 0, 55, 51, 459, DateTimeKind.Unspecified).AddTicks(6648), new TimeSpan(0, -4, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2019, 7, 20, 21, 18, 3, 838, DateTimeKind.Unspecified).AddTicks(3843), new TimeSpan(0, -4, 0, 0, 0))
                         },
                         new
                         {
                             Id = -2,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 23, 0, 55, 51, 460, DateTimeKind.Unspecified).AddTicks(8546), new TimeSpan(0, -4, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 7, 20, 21, 18, 3, 839, DateTimeKind.Unspecified).AddTicks(6139), new TimeSpan(0, -4, 0, 0, 0)),
                             EmailAddress = "theblackswimmers@gmail.com",
                             FirstName = "joe",
                             IsActive = true,
@@ -390,44 +346,8 @@ namespace CandeeCamp.API.Migrations
                             LastName = "plumber",
                             PasswordHash = "WkZsAKSKmh9C/WoaCfI4xiSOl7nRw8p5i4T90h54+EkMmtfLwcjCRi9kFkIZRMv/RFaGrTP3FzxcWapHnuNdzw==",
                             Salt = "nqJBdDHXBCGrPiZHRmUBgYMVdgsSCZxaWyjOZnCxAAMrPghUzARqcAcEynPwQNkD",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2019, 7, 23, 0, 55, 51, 460, DateTimeKind.Unspecified).AddTicks(8558), new TimeSpan(0, -4, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2019, 7, 20, 21, 18, 3, 839, DateTimeKind.Unspecified).AddTicks(6150), new TimeSpan(0, -4, 0, 0, 0))
                         });
-                });
-
-            modelBuilder.Entity("CandeeCamp.API.DomainObjects.Camper", b =>
-                {
-                    b.HasOne("CandeeCamp.API.DomainObjects.Cabin", "Cabin")
-                        .WithMany()
-                        .HasForeignKey("CabinId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CandeeCamp.API.DomainObjects.Counselor", "Counselor")
-                        .WithMany()
-                        .HasForeignKey("CounselorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CandeeCamp.API.DomainObjects.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CandeeCamp.API.DomainObjects.User", "User")
-                        .WithMany()
-                        .HasForeignKey("LoginUser")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CandeeCamp.API.DomainObjects.Counselor", b =>
-                {
-                    b.HasOne("CandeeCamp.API.DomainObjects.Cabin", "Cabin")
-                        .WithMany()
-                        .HasForeignKey("CabinId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CandeeCamp.API.DomainObjects.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.Event", b =>
@@ -439,9 +359,9 @@ namespace CandeeCamp.API.Migrations
 
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.Group", b =>
                 {
-                    b.HasOne("CandeeCamp.API.DomainObjects.User", "User")
+                    b.HasOne("CandeeCamp.API.DomainObjects.User", "CreatedByUser")
                         .WithMany()
-                        .HasForeignKey("LoginUser")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -450,19 +370,6 @@ namespace CandeeCamp.API.Migrations
                     b.HasOne("CandeeCamp.API.DomainObjects.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CandeeCamp.API.DomainObjects.RedeemedCoupon", b =>
-                {
-                    b.HasOne("CandeeCamp.API.DomainObjects.Camper", "Camper")
-                        .WithMany()
-                        .HasForeignKey("CamperId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CandeeCamp.API.DomainObjects.Coupon", "Coupon")
-                        .WithMany()
-                        .HasForeignKey("CouponId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -476,24 +383,6 @@ namespace CandeeCamp.API.Migrations
                     b.HasOne("CandeeCamp.API.DomainObjects.Camper", "Camper")
                         .WithMany()
                         .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CandeeCamp.API.DomainObjects.SnackShopPurchase", b =>
-                {
-                    b.HasOne("CandeeCamp.API.DomainObjects.Camper", "Camper")
-                        .WithMany()
-                        .HasForeignKey("CamperId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CandeeCamp.API.DomainObjects.Counselor", "Counselor")
-                        .WithMany()
-                        .HasForeignKey("CounselorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("CandeeCamp.API.DomainObjects.SnackShopItem", "SnackShopItem")
-                        .WithMany()
-                        .HasForeignKey("SnackShopItemId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

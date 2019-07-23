@@ -5,27 +5,19 @@ using CandeeCamp.API.DomainObjects.Common;
 
 namespace CandeeCamp.API.DomainObjects
 {
-    public class Event : ActiveDeleted
+    public class Group : ActiveDeleted
     {
-        public Event()
+        public Group()
         {
             CreatedDate = DateTimeOffset.UtcNow;
         }
 
         [Required]
-        public string Name { get; set; }
-
-        public decimal? Cost { get; set; }
-
-        public DateTimeOffset StartDate { get; set; }
-
-        public DateTimeOffset EndDate { get; set; }
+        public string GroupName { get; set; }
 
         public DateTimeOffset CreatedDate { get; set; }
 
-        public DateTimeOffset? UpdatedDate { get; set; }
-
-        public int? CreatedBy { get; set; }
+        public int LoginUser { get; set; }
         
         [ForeignKey("Id")]
         public virtual User User { get; set; }
