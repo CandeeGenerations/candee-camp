@@ -1,15 +1,91 @@
-import React from 'react'
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
-
-import './signinLayout.scss'
 
 const SigninLayout = props => {
   return (
-    <div className="cc--signin-layout">
-      <div className="cc--content">{props.children}</div>
+    <div
+      css={{
+        paddingTop: 200,
+        minHeight: '100%',
+        textAlign: 'center',
+        position: 'relative',
+        backgroundSize: 'cover',
+        background: "url('/img/signin-background-1.jpg') top right no-repeat",
 
-      <div className="cc--title-wrapper">
-        <div className="cc--title">{props.title}</div>
+        '@media screen and (max-width: 860px)': {
+          paddingTop: 50,
+        },
+
+        '&:before': {
+          width: 0,
+          content: '',
+          height: '100%',
+          display: 'inline-block',
+          verticalAlign: 'middle',
+        },
+      }}
+    >
+      <div
+        css={{
+          top: 0,
+          zIndex: 1,
+          width: 700,
+          padding: 60,
+          borderRadius: 8,
+          textAlign: 'left',
+          position: 'relative',
+          display: 'inline-block',
+          verticalAlign: 'middle',
+          backgroundColor: '#fff',
+          boxShadow: '0 0 96px 10px rgba(0, 0, 0, 0.15)',
+
+          '@media screen and (max-width: 860px)': {
+            width: '100%',
+            borderRadius: 0,
+            minWidth: 'auto',
+          },
+        }}
+      >
+        {props.children}
+      </div>
+
+      <div
+        css={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          zIndex: 0,
+          width: '40%',
+          position: 'absolute',
+          backgroundColor: '#f0f5f9',
+
+          '@media screen and (max-width: 1095px)': {
+            display: 'none',
+          },
+        }}
+      >
+        <div
+          css={{
+            top: '50%',
+            left: -150,
+            width: 800,
+            fontSize: 80,
+            marginTop: -60,
+            fontWeight: 700,
+            color: '#9ebedb',
+            position: 'absolute',
+            textTransform: 'uppercase',
+            transform: 'rotate(-90deg)',
+            fontFamily: "'Comfortaa', sans-serif",
+
+            '@media screen and (max-width: 1305px)': {
+              left: -250,
+            },
+          }}
+        >
+          {props.title}
+        </div>
       </div>
     </div>
   )

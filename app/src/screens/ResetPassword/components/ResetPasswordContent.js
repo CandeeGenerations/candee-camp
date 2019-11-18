@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Button, Col, Row} from 'antd'
@@ -12,7 +14,7 @@ import './resetPasswordContent.scss'
 
 const ResetPasswordContent = props =>
   props.loader.spinning ? (
-    <div style={{minHeight: 533}} />
+    <div css={{minHeight: 533}} />
   ) : (
     <div>
       <h1 className="cc--reset-password--header">Reset your password?</h1>

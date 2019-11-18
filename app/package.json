@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.3.69",
+  "version": "0.3.70",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -84,6 +84,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "babel-jest": "^24.9.0",
+    "babel-plugin-emotion": "^10.0.23",
     "babel-plugin-import": "^1.12.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "customize-cra": "^0.9.1",

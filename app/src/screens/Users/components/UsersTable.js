@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Divider, Table} from 'antd'
@@ -13,7 +15,7 @@ const {Column} = Table
 
 const UsersTable = props =>
   props.loader.spinning ? (
-    <div style={{minHeight: 500}} />
+    <div css={{minHeight: 500}} />
   ) : (
     <Table
       dataSource={props.users}

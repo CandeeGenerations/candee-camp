@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React, {useState} from 'react'
 import {Button} from 'antd'
 import PropTypes from 'prop-types'
@@ -12,7 +14,7 @@ export const useError = () => {
 
 const ErrorWrapper = props => {
   return props.hasError ? (
-    <div style={{textAlign: 'center'}}>
+    <div css={{textAlign: 'center'}}>
       <h1>There was an error.</h1>
       <Button onClick={props.handleRetry}>Try again</Button>
     </div>

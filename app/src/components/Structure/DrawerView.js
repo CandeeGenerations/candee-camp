@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Button, Drawer} from 'antd'
@@ -20,7 +22,7 @@ const DrawerView = props => {
       {props.children}
 
       <div
-        style={{
+        css={{
           position: 'absolute',
           left: 0,
           bottom: 0,
@@ -31,7 +33,7 @@ const DrawerView = props => {
           textAlign: 'right',
         }}
       >
-        <Button style={{marginRight: 8}} onClick={handleClose}>
+        <Button css={{marginRight: 8}} onClick={handleClose}>
           Cancel
         </Button>
 

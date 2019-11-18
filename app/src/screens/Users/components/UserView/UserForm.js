@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React from 'react'
 import {
   Button,
@@ -137,7 +139,7 @@ const UserForm = Form.create({
                 </Col>
               </Row>
 
-              <Divider orientation="left" style={{marginTop: 40}}>
+              <Divider orientation="left" css={{marginTop: 40}}>
                 <Typography.Text type="danger">Danger Zone</Typography.Text>
               </Divider>
 
@@ -158,7 +160,7 @@ const UserForm = Form.create({
                   <Popconfirm
                     cancelText="Cancel"
                     icon={
-                      <Icon style={{color: 'red'}} type="question-circle-o" />
+                      <Icon css={{color: 'red'}} type="question-circle-o" />
                     }
                     okText="Delete"
                     okType="danger"
