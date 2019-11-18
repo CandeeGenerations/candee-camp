@@ -36,15 +36,22 @@ You will need to setup a `.env` file for the app to work correctly.
 You can create it in `/app/.env` and the contents will look similar to this:
 
 ```
+
 PORT=3300
-REACT_APP_VERSION=$npm_package_version
 BROWSER=none
+
+REACT_APP_VERSION=$npm_package_version
+REACT_APP_API_URL=http://localhost:5000/api
+REACT_APP_CRYPTO_KEY=a9f3cd176403126642c142605ef08829
+
+REACT_APP_LOADING_BAR_ENABLED=false
+
 ```
 
 ## Contributors
 
 Thanks goes to these people:
 
-| [<img src="https://avatars2.githubusercontent.com/u/39174127" width="100px;"/><br /><sub><b>Tyler Candee</b></sub>](https://candeegenerations.com)<br />[💻](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 'Code') [📖](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 'Documentation') [⚠️](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 'Tests') | [<img src="https://avatars2.githubusercontent.com/u/10689559" width="100px;"/><br /><sub><b>Glenn Stegall</b></sub>](http://github.com/darklordimperatus)<br />[💻](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 'Code') [📖](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 'Documentation') [⚠️](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 'Tests') |
+| [<img src="https://avatars2.githubusercontent.com/u/39174127" width="100px;"/><br /><sub><b>Tyler Candee</b></sub>](https://candeegenerations.com)<br />[💻](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Code") [📖](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Documentation") [⚠️](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Tests") | [<img src="https://avatars2.githubusercontent.com/u/10689559" width="100px;"/><br /><sub><b>Glenn Stegall</b></sub>](http://github.com/darklordimperatus)<br />[💻](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Code") [📖](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Documentation") [⚠️](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Tests") |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 

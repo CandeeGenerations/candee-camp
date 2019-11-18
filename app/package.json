@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.3.68",
+  "version": "0.3.69",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -24,9 +24,9 @@
     "email": "tyler@candeegenerations.com"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "REACT_APP_VERSION=$npm_package_version react-app-rewired build",
-    "test": "react-app-rewired test"
+    "start": "nodemon -w craco.config.js -w ./antd.customize.less --exec 'craco start'",
+    "build": "rimraf build && REACT_APP_VERSION=$npm_package_version craco build",
+    "test": "craco test"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,8 +49,11 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@craco/craco": "^5.6.2",
+    "@emotion/core": "^10.0.22",
     "antd": "^3.25.2",
     "axios": "^0.19.0",
+    "craco-antd": "^1.14.1",
     "dayjs": "^1.8.17",
     "deep-equal": "^1.1.1",
     "deepmerge": "^4.2.2",
@@ -67,6 +70,7 @@
     "react-dom": "^16.12.0",
     "react-router5": "^7.1.0",
     "react-scripts": "3.2.0",
+    "rimraf": "^3.0.0",
     "router5": "^7.0.2",
     "router5-helpers": "^7.0.1",
     "router5-plugin-browser": "^7.0.2",
@@ -97,6 +101,7 @@
     "husky": "^3.1.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
-    "lint-staged": "^9.4.3"
+    "lint-staged": "^9.4.3",
+    "nodemon": "^1.19.4"
   }
 }
