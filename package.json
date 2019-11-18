@@ -28,5 +28,11 @@
   "bugs": {
     "url": "https://github.com/CandeeGenerations/candee-camp/issues",
     "email": "tyler@candeegenerations.com"
+  },
+  "scripts": {
+    "bootstrap": "yarn install && lerna bootstrap"
+  },
+  "devDependencies": {
+    "lerna": "^3.18.4"
   }
 }

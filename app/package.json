@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.3.67",
+  "version": "0.3.68",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -23,14 +23,38 @@
     "url": "https://github.com/CandeeGenerations/candee-camp/issues",
     "email": "tyler@candeegenerations.com"
   },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "REACT_APP_VERSION=$npm_package_version react-app-rewired build",
+    "test": "react-app-rewired test"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm version patch && git add package.json && lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "dependencies": {
-    "antd": "^3.25.1",
+    "antd": "^3.25.2",
     "axios": "^0.19.0",
     "dayjs": "^1.8.17",
     "deep-equal": "^1.1.1",
     "deepmerge": "^4.2.2",
     "jwt-decode": "^2.2.0",
-    "lint-staged": "^9.4.3",
     "lodash": "^4.17.15",
     "material-design-iconic-font": "^2.2.0",
     "moment": "^2.24.0",
@@ -48,29 +72,11 @@
     "router5-plugin-browser": "^7.0.2",
     "router5-plugin-logger": "^7.0.2",
     "simple-crypto-js": "^2.2.0",
-    "use-deep-compare-effect": "^1.2.0"
+    "use-deep-compare-effect": "^1.3.0"
   },
-  "scripts": {
-    "start": "react-app-rewired start",
-    "build": "REACT_APP_VERSION=$npm_package_version react-app-rewired build",
-    "test": "react-app-rewired test",
-    "precommit": "npm version patch && git add package.json && lint-staged"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    }
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
   "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "babel-jest": "^24.9.0",
@@ -78,7 +84,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "customize-cra": "^0.9.1",
     "eslint-config-kentcdodds": "CandeeGenerations/eslint-config-kentcdodds",
-    "eslint-config-prettier": "^6.5.0",
+    "eslint-config-prettier": "^6.6.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-babel-module": "^5.1.0",
     "eslint-loader": "^3.0.2",
@@ -88,8 +94,9 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^2.3.0",
-    "husky": "^3.0.9",
+    "husky": "^3.1.0",
     "less": "^3.10.3",
-    "less-loader": "^5.0.0"
+    "less-loader": "^5.0.0",
+    "lint-staged": "^9.4.3"
   }
 }
