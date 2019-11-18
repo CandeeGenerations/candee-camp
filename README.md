@@ -19,31 +19,27 @@ This project is built with React and .NET Core.
 
 ## Setup
 
-### macOS
-
 - Open new terminal to the project root.
 - Run the following command:
 
-`$ ./setup.bash`
-
-The packages will be installed. Use the following commands to start the projects:
-
-**app**
-
-`$ cd ./app; yarn start`
-
-### Windows
-
-- Open new command prompt to the project root.
-- Run the following command:
-
-`> setup.bat`
+`$ yarn bootstrap`
 
 The packages will be installed. Use the following commands to start the projects:
 
 **app**
 
 `> cd app && yarn start`
+
+### ENV file
+
+You will need to setup a `.env` file for the app to work correctly.
+You can create it in `/app/.env` and the contents will look similar to this:
+
+```
+PORT=3300
+REACT_APP_VERSION=$npm_package_version
+BROWSER=none
+```
 
 ## Contributors
 
