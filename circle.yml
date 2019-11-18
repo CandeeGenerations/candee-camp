@@ -7,7 +7,7 @@ jobs:
   build-js:
     docker:
       # specify the version you desire here
-      - image: circleci/node:11.10.0
+      - image: circleci/node:11.15.0
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -77,7 +77,6 @@ workflows:
       - build-js
 
       - build-api
-
-      - deploy-api:
-          requires:
-            - build-api
+      # - deploy-api:
+      #     requires:
+      #       - build-api

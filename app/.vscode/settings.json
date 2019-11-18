@@ -1,18 +1,7 @@
 {
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#5B0A31",
-    "activityBar.foreground": "#fffcfd",
-    "activityBar.inactiveForeground": "#cececeb4",
-    "titleBar.activeBackground": "#800E45",
-    "titleBar.activeForeground": "#FFFCFD"
-  },
+  "editor.tabSize": 2,
+  "files.trimTrailingWhitespace": true,
+  "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
-  "prettier.printWidth": 80,
-  "prettier.tabWidth": 2,
-  "prettier.useTabs": false,
-  "prettier.semi": false,
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "all",
-  "prettier.bracketSpacing": false,
-  "prettier.jsxBracketSameLine": false
+  "editor.rulers": [80]
 }

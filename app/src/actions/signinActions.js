@@ -9,7 +9,6 @@ export const signin = async fields => {
     const response = await axiosRequest.post(
       '/token',
       qs.stringify({
-        // eslint-disable-next-line babel/camelcase
         grant_type: 'password',
         username: fields.email.value,
         password: fields.password.value,
