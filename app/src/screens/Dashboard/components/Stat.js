@@ -1,4 +1,5 @@
-import React from 'react'
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {Card, Statistic} from 'antd'
 
@@ -7,7 +8,7 @@ import loader from '@/components/Structure/Loader'
 const Stat = props => (
   <Card>
     {props.loader.spinning ? (
-      <div style={{minHeight: 75}} />
+      <div css={{minHeight: 75}} />
     ) : (
       <Statistic title={props.title} value={props.value} />
     )}

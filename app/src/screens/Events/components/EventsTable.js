@@ -1,4 +1,5 @@
-import React from 'react'
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
@@ -17,7 +18,7 @@ const EventsTable = props => {
   const router = useRouter()
 
   return props.loader.spinning ? (
-    <div style={{minHeight: 500}} />
+    <div css={{minHeight: 500}} />
   ) : (
     <Table
       dataSource={props.events}
@@ -69,8 +70,8 @@ const EventsTable = props => {
             <Icon type="loading" />
           ) : user ? (
             <Tag
-              className="cc--clickable"
               color="blue"
+              css={{cursor: 'pointer'}}
               onClick={() =>
                 router.navigate('events.user', {userId: user.id}, {})
               }

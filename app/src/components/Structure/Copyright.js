@@ -1,9 +1,8 @@
-import React from 'react'
-
-import './copy.scss'
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 
 export default () => (
-  <div className="cc--copy">
+  <div css={{marginTop: 50, textAlign: 'center'}}>
     <small>
       &copy; 2017 - {new Date().getFullYear()}{' '}
       <a

@@ -7,6 +7,7 @@ import useTitle from '@/helpers/hooks/useTitle'
 import {eventActions, userActions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 
+import MainContent from '@/components/MainContent'
 import {LoaderContext} from '@/components/Structure/Loader'
 
 const Dashboard = () => {
@@ -21,7 +22,7 @@ const Dashboard = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <section className="cc--main-content">
+    <MainContent>
       <h1>Dashboard</h1>
 
       <Row gutter={16}>
@@ -41,7 +42,7 @@ const Dashboard = () => {
           </LoaderContext.Provider>
         </Col>
       </Row>
-    </section>
+    </MainContent>
   )
 }
 

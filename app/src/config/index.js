@@ -1,18 +1,11 @@
-import devConfig from './config.dev'
-import prodConfig from './config.production'
+/* eslint-disable no-undef */
+const env = process.env
 
-const ENV = process.env.NODE_ENV
-
-function getEnv(envStr) {
-  switch (envStr) {
-    case 'production':
-      return prodConfig
-
-    default:
-      return devConfig
-  }
+export default {
+  apiUrl: env.REACT_APP_API_URL,
+  cryptoKey: env.REACT_APP_CRYPTO_KEY,
+  features: {
+    loadingBar: env.REACT_APP_LOADING_BAR_ENABLED,
+  },
+  version: env.REACT_APP_VERSION,
 }
-
-const Config = getEnv(ENV)
-
-export default Config

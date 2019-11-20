@@ -120,7 +120,7 @@ export const formErrors = (fields: {}) => {
     if (Object.prototype.hasOwnProperty.call(fields, key)) {
       const property = fields[key]
 
-      touched = touched || (property.touched || false)
+      touched = touched || property.touched || false
 
       if (property.errors && property.errors.length > 0) {
         property.errors.forEach(({message}) =>

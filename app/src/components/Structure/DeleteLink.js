@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
+import {useState} from 'react'
 import PropTypes from 'prop-types'
 import {Icon, Popconfirm} from 'antd'
-
-/* eslint jsx-a11y/anchor-is-valid: 0 */
 
 const DeleteLink = props => {
   const [loading, setLoading] = useState(false)
@@ -19,7 +19,7 @@ const DeleteLink = props => {
     <Popconfirm
       {...props}
       cancelText="Cancel"
-      icon={<Icon style={{color: 'red'}} type="question-circle-o" />}
+      icon={<Icon css={{color: 'red'}} type="question-circle-o" />}
       okText="Delete"
       okType="danger"
       placement="topRight"

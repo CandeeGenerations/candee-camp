@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Col, Row, Button, Divider, Typography} from 'antd'
@@ -10,21 +12,29 @@ import {NavItem} from '@/components/Navigation'
 import {Copyright} from '@/components/Structure'
 import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
-import './signinContent.scss'
-
 const SigninContent = props => {
   const unauthorized = useLocalStorage('cc-unauthorized')
 
   return (
     <>
-      <h1 className="cc--signin--header">Sign in</h1>
+      <h1
+        css={{
+          fontSize: 60,
+          color: '#085eb0',
+          margin: '20px 0',
+          textAlign: 'center',
+          fontFamily: "'Comfortaa', sans-serif",
+        }}
+      >
+        Sign in
+      </h1>
 
-      <h2 className="cc--signin--sub-header">
+      <h2 css={{textAlign: 'center'}}>
         Welcome back! We are happy you like Candee Camp.
       </h2>
 
       {unauthorized.valueAsBool && (
-        <div className="cc--text-center">
+        <div css={{textAlign: 'center'}}>
           <Typography.Text type="warning">
             You have been signed out. Please log back in.
           </Typography.Text>
@@ -41,7 +51,7 @@ const SigninContent = props => {
             onSubmit={props.onSubmit}
           />
 
-          <div className="cc--forgot-password-link">
+          <div css={{textAlign: 'right', marginBottom: 20}}>
             <NavItem options={{reload: true}} routeName="forgotPassword">
               Forgot password?
             </NavItem>

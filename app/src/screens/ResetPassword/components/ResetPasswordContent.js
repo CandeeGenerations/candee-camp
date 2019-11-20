@@ -1,4 +1,5 @@
-import React from 'react'
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {Button, Col, Row} from 'antd'
 
@@ -8,16 +9,29 @@ import {Copyright} from '@/components/Structure'
 import loader from '@/components/Structure/Loader'
 import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
-import './resetPasswordContent.scss'
-
 const ResetPasswordContent = props =>
   props.loader.spinning ? (
-    <div style={{minHeight: 533}} />
+    <div css={{minHeight: 533}} />
   ) : (
     <div>
-      <h1 className="cc--reset-password--header">Reset your password?</h1>
+      <h1
+        css={{
+          fontSize: 40,
+          color: '#085eb0',
+          margin: '20px 0',
+          textAlign: 'center',
+          fontFamily: "'Comfortaa', sans-serif",
+        }}
+      >
+        Reset your password?
+      </h1>
 
-      <h3 className="cc--reset-password--sub-header">
+      <h3
+        css={{
+          marginBottom: 50,
+          textAlign: 'center',
+        }}
+      >
         Enter a new password to reset your password.
       </h3>
 
@@ -51,6 +65,9 @@ const ResetPasswordContent = props =>
 
 ResetPasswordContent.propTypes = {
   fields: PropTypes.shape({}).isRequired,
+  loader: PropTypes.shape({
+    spinning: PropTypes.bool.isRequired,
+  }).isRequired,
   loading: PropTypes.bool.isRequired,
   validForm: PropTypes.bool.isRequired,
 

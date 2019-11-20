@@ -1,4 +1,5 @@
-import React from 'react'
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {Col, Row, Button} from 'antd'
 
@@ -8,14 +9,22 @@ import {NavItem} from '@/components/Navigation'
 import {Copyright} from '@/components/Structure'
 import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
-import './forgotPasswordContent.scss'
-
 const ForgotPasswordContent = props => (
   <div>
-    <h1 className="cc--forgot-password--header">Forgot your password?</h1>
+    <h1
+      css={{
+        fontSize: 40,
+        color: '#085eb0',
+        margin: '20px 0',
+        textAlign: 'center',
+        fontFamily: "'Comfortaa', sans-serif",
+      }}
+    >
+      Forgot your password?
+    </h1>
 
-    <h3 className="cc--forgot-password--sub-header">
-      Enter your email below, and we'll send you the reset link.
+    <h3 css={{textAlign: 'center', marginBottom: 50}}>
+      Enter your email below, and we&apos;ll send you the reset link.
     </h3>
 
     <Row>
@@ -40,7 +49,18 @@ const ForgotPasswordContent = props => (
           </Button>
         </DisabledButtonPopup>
 
-        <div className="cc--signin-link">
+        <div
+          css={{
+            marginTop: 50,
+            textAlign: 'center',
+            a: {
+              color: '#a3a3a3',
+              '&:hover': {
+                color: '#8a8a8a',
+              },
+            },
+          }}
+        >
           <NavItem options={{reload: true}} routeName="signin">
             Back to sign in
           </NavItem>

@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Icon, Popover, Progress} from 'antd'
@@ -18,7 +20,7 @@ const DisabledButtonPopup = props => {
               {errors.map((error, index) => (
                 <p
                   key={index}
-                  style={{
+                  css={{
                     color: error.type === 'error' ? '#f5222d' : '#faad14',
                   }}
                 >

@@ -6,22 +6,3 @@ body,
   background-color: #f0f2f3;
   font-family: 'Montserrat', sans-serif;
 }
-
-.cc {
-  &--main-content {
-    padding: 50px;
-    min-height: 1000px;
-  }
-
-  &--text-center {
-    text-align: center;
-  }
-
-  &--text-right {
-    text-align: right;
-  }
-
-  &--clickable {
-    cursor: pointer;
-  }
-}

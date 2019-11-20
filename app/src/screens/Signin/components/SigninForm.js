@@ -1,4 +1,5 @@
-import React from 'react'
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import {Form, Input} from 'antd'
 
 const SigninForm = Form.create({
@@ -39,7 +40,7 @@ const SigninForm = Form.create({
         )}
       </Form.Item>
 
-      <Form.Item style={{marginTop: 20}}>
+      <Form.Item css={{marginTop: 20}}>
         {getFieldDecorator('password', {
           rules: [
             {required: true, message: 'Your password is required.'},
