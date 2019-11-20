@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import {css, jsx} from '@emotion/core'
+import {jsx} from '@emotion/core'
 import {useState} from 'react'
 import PropTypes from 'prop-types'
 import {Icon, Layout, Menu} from 'antd'
