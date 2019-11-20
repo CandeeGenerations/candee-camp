@@ -22,8 +22,6 @@ import ForgotPassword from '@/screens/ForgotPassword'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import UserView from '@/screens/Users/components/UserView'
 
-import '../../content/antd.less'
-
 export const ObjectsContext = React.createContext({})
 
 const App = () => {

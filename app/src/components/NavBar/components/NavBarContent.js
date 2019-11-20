@@ -26,21 +26,20 @@ const NavBarContent = props => {
         theme="dark"
       >
         <Menu.Item
-          css={css`
-            a {
-              font-size: 21px;
-              font-weight: 700;
-              margin-left: -8px;
-              text-transform: uppercase;
-              color: #f3f3f4 !important;
-              font-family: 'Comfortaa', sans-serif;
+          css={{
+            a: {
+              fontSize: 21,
+              fontWeight: 700,
+              marginLeft: -8,
+              textTransform: 'uppercase',
+              color: '#f3f3f4 !important',
+              fontFamily: "'Comfortaa', sans-serif",
 
-              &:focus,
-              &:active {
-                text-decoration: none;
-              }
-            }
-          `}
+              '&:focus, &:active': {
+                textDecoration: 'none',
+              },
+            },
+          }}
           title="Dashboard"
         >
           <NavItem options={{reload: true}} routeName="dashboard">
@@ -58,14 +57,14 @@ const NavBarContent = props => {
         ))}
 
         <Menu.Item
-          css={`
-            bottom: 50px;
-            position: fixed;
+          css={{
+            bottom: 50,
+            position: 'fixed',
 
-            a {
-              color: #ea5e5e !important;
-            }
-          `}
+            a: {
+              color: '#ea5e5e !important',
+            },
+          }}
         >
           <a
             href="#"

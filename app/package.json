@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.3.71",
+  "version": "0.3.72",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -34,7 +34,10 @@
   "jest": {
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
-    }
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!antd)/.+\\.js$"
+    ]
   },
   "husky": {
     "hooks": {
