@@ -9,7 +9,7 @@ export const signin = async fields => {
     const response = await axiosRequest.post(
       '/token',
       qs.stringify({
-        grant_type: 'password',
+        grant_type: 'password', // eslint-disable-line babel/camelcase
         username: fields.email.value,
         password: fields.password.value,
       }),
@@ -95,5 +95,7 @@ export const resetPassword = async (userId, token, fields) => {
       'Unable to reset your password at this time. Please try again later.',
       error,
     )
+
+    return false
   }
 }

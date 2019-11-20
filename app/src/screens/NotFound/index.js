@@ -1,11 +1,10 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import React from 'react'
 import {Row, Col, Button} from 'antd'
 
 import useTitle from '@/helpers/hooks/useTitle'
 
-export default () => {
+const NotFound = () => {
   useTitle('Not Found')
 
   return (
@@ -51,3 +50,5 @@ export default () => {
     </Row>
   )
 }
+
+export default NotFound

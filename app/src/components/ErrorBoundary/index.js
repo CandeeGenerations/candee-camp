@@ -31,7 +31,10 @@ class ErrorBoundary extends React.Component {
 }
 
 ErrorBoundary.propTypes = {
-  router: PropTypes.shape({}).isRequired,
+  children: PropTypes.node.isRequired,
+  router: PropTypes.shape({
+    route: PropTypes.string,
+  }).isRequired,
 }
 
 export default ErrorBoundary

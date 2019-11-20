@@ -12,6 +12,7 @@ import useTitle from '@/helpers/hooks/useTitle'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 
 import {ObjectsContext} from '@/screens/App'
+import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
@@ -49,7 +50,7 @@ const Events = () => {
 
   return (
     <>
-      <section className="cc--main-content">
+      <MainContent>
         <Card>
           <PageHeader
             actions={[
@@ -93,7 +94,7 @@ const Events = () => {
             </ErrorWrapper>
           </LoaderContext.Provider>
         </Card>
-      </section>
+      </MainContent>
 
       {(routerContext.route.name === 'events.edit' ||
         routerContext.route.name === 'events.add') && (

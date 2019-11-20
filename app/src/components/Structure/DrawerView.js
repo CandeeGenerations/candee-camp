@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import React from 'react'
 import PropTypes from 'prop-types'
 import {Button, Drawer} from 'antd'
 import {useRouter} from 'react-router5'

@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import React from 'react'
 import {Form, Input} from 'antd'
 
 const SigninForm = Form.create({

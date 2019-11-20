@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import {css, jsx} from '@emotion/core'
-import React, {useState} from 'react'
+import {useState} from 'react'
 import PropTypes from 'prop-types'
 import {Icon, Layout, Menu} from 'antd'
 
@@ -68,6 +68,7 @@ const NavBarContent = props => {
           `}
         >
           <a
+            href="#"
             onClick={e => {
               e.preventDefault()
               props.onSignout()

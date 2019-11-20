@@ -19,7 +19,7 @@ const SigninLayout = props => {
 
         '&:before': {
           width: 0,
-          content: '',
+          content: '""',
           height: '100%',
           display: 'inline-block',
           verticalAlign: 'middle',

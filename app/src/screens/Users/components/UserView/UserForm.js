@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import React from 'react'
 import {
   Button,
   Col,
@@ -139,7 +138,7 @@ const UserForm = Form.create({
                 </Col>
               </Row>
 
-              <Divider orientation="left" css={{marginTop: 40}}>
+              <Divider css={{marginTop: 40}} orientation="left">
                 <Typography.Text type="danger">Danger Zone</Typography.Text>
               </Divider>
 

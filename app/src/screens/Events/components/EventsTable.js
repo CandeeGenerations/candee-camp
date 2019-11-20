@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import React from 'react'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
@@ -71,8 +70,8 @@ const EventsTable = props => {
             <Icon type="loading" />
           ) : user ? (
             <Tag
-              css={{cursor: 'pointer'}}
               color="blue"
+              css={{cursor: 'pointer'}}
               onClick={() =>
                 router.navigate('events.user', {userId: user.id}, {})
               }
