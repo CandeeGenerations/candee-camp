@@ -14,6 +14,7 @@ import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import Users from '@/screens/Users'
 import Signin from '@/screens/Signin'
 import Events from '@/screens/Events'
+import Campers from '@/screens/Campers'
 import NavBar from '@/components/NavBar'
 import NotFound from '@/screens/NotFound'
 import Version from '@/components/Version'
@@ -102,6 +103,8 @@ const App = () => {
     content = <Events />
   } else if (routeName.includes(page.usersPage)) {
     content = <Users />
+  } else if (routeName.includes('campers')) {
+    content = <Campers />
   } else {
     content = <NotFound />
   }
