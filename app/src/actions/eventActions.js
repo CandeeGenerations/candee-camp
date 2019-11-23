@@ -1,4 +1,5 @@
 import request from '@/api'
+import {getUserData} from '@/helpers/authHelpers'
 import {handleError, openNotification, formDataToBody} from '@/helpers'
 
 export const loadEvents = async () => {
@@ -37,7 +38,18 @@ export const loadEvent = async (eventId: number) => {
 export const saveEvent = async event => {
   try {
     let response = null
+    const user = getUserData()
+
+    if (!user) {
+      throw new Error('No user.')
+    }
+
+    event.startDate = {value: event.dateTime.value[0].format()}
+    event.endDate = {value: event.dateTime.value[1].format()}
+
     const body = formDataToBody(event)
+
+    body.createdBy = user.id
 
     if (event.id) {
       response = await request.put(`/events/${event.id.value}`, body)

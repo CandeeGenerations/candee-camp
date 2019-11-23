@@ -9,7 +9,7 @@ namespace CandeeCamp.API.Repositories.Interfaces
         Task<IEnumerable<Event>> GetEvents();
         Task<Event> GetEventById(int eventId);
         Task<Event> CreateEvent(Event incomingEvent);
-        Task<Event> UpdateEvent(Event incomingEvent);
+        Task<Event> UpdateEvent(int eventId, Event incomingEvent);
         Task DeleteEvent(int eventId);
         Task<Event> FindEventByName(Event incomingEvent);
     }

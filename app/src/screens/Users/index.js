@@ -5,7 +5,7 @@ import {Button, Card} from 'antd'
 import UsersTable from './components/UsersTable'
 
 import {userActions as actions} from '@/actions'
-
+import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 
 import {ObjectsContext} from '@/screens/App'
@@ -15,6 +15,7 @@ import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const Users = () => {
+  const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
@@ -45,7 +46,7 @@ const Users = () => {
             <Button
               key="add"
               type="primary"
-              onClick={() => routerContext.router.navigate('users.add')}
+              onClick={() => routerContext.router.navigate(page.userAddPage)}
             >
               Add User
             </Button>,

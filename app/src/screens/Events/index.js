@@ -16,8 +16,10 @@ import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+import usePage from '@/helpers/hooks/usePage'
 
 const Events = () => {
+  const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
@@ -40,12 +42,27 @@ const Events = () => {
     loadEvents()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const deleteEvent = async eventId => {
+  useEffect(() => {
+    if (
+      routerContext.previousRoute &&
+      routerContext.previousRoute.name === page.eventUserEditPage
+    ) {
+      const userIds = _.uniq(
+        objectsContext.events.data.data.map(x => x.createdBy),
+      )
+
+      users.load(false, userIds)
+    }
+  }, [routerContext.previousRoute]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleDeleteEvent = async eventId => {
     const response = await actions.deleteEvent(eventId)
 
     if (response) {
       loadEvents()
     }
+
+    return response
   }
 
   return (
@@ -57,7 +74,7 @@ const Events = () => {
               <Button
                 key="add"
                 type="primary"
-                onClick={() => routerContext.router.navigate('events.add')}
+                onClick={() => routerContext.router.navigate(page.eventAddPage)}
               >
                 Add Event
               </Button>,
@@ -80,7 +97,7 @@ const Events = () => {
               hasError={errorWrapper.hasError}
             >
               <EventsTable
-                deleteEvent={deleteEvent}
+                deleteEvent={handleDeleteEvent}
                 events={
                   (objectsContext.events.results &&
                     objectsContext.events.results.map(event => ({
@@ -96,14 +113,14 @@ const Events = () => {
         </Card>
       </MainContent>
 
-      {(routerContext.route.name === 'events.edit' ||
-        routerContext.route.name === 'events.add') && (
+      {page.isEventAddOrEditPage && (
         <EventView
           id={
             (routerContext.route.params &&
               routerContext.route.params.eventId) ||
             null
           }
+          onDeleteEvent={handleDeleteEvent}
         />
       )}
     </>

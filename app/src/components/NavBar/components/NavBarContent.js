@@ -59,7 +59,7 @@ const NavBarContent = props => {
         <Menu.Item
           css={{
             bottom: 50,
-            position: 'fixed',
+            position: 'fixed !important',
 
             a: {
               color: '#ea5e5e !important',

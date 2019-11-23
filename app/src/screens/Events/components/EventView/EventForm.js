@@ -1,113 +1,118 @@
-import React, {useState} from 'react'
-import dayjs from 'dayjs'
-import {Col, DatePicker, Form, Input, Row} from 'antd'
+import React from 'react'
+import {
+  DatePicker,
+  Form,
+  Input,
+  Divider,
+  Row,
+  Col,
+  Popconfirm,
+  Icon,
+  Button,
+  Typography,
+} from 'antd'
+
+import usePage from '@/helpers/hooks/usePage'
 
 const EventForm = Form.create({
   onFieldsChange(props, changedFields) {
     const {onChange} = props
 
+    if (changedFields.dateTime) {
+      changedFields.dateTime.value = changedFields.dateTime.value.map(x =>
+        x.startOf('minute'),
+      )
+    }
+
     onChange(changedFields)
   },
 
   mapPropsToFields(props) {
-    const {endDate, name, startDate} = props
+    const {dateTime, name} = props
 
     return {
-      endDate: Form.createFormField({
-        ...endDate,
-        value: endDate.value ? dayjs(endDate.value) : null,
+      dateTime: Form.createFormField({
+        ...dateTime,
+        value: dateTime.value,
       }),
       name: Form.createFormField({
         ...name,
         value: name.value,
       }),
-      startDate: Form.createFormField({
-        ...startDate,
-        value: startDate.value ? dayjs(startDate.value) : null,
-      }),
     }
   },
 })(props => {
+  const page = usePage()
+
   const {form} = props
   const {getFieldDecorator} = form
-  const [endOpen, setEndOpen] = useState(false)
-
-  const disabledStartDate = startValue => {
-    const endValue = props.endDate.value
-    if (!startValue || !endValue) {
-      return false
-    }
-    return startValue.valueOf() > endValue.valueOf()
-  }
-
-  const disabledEndDate = endValue => {
-    const startValue = props.startDate.value
-    if (!endValue || !startValue) {
-      return false
-    }
-    return endValue.valueOf() <= startValue.valueOf()
-  }
-
-  const handleStartOpenChange = open => {
-    if (!open) {
-      setEndOpen(true)
-    }
-  }
-
-  const handleEndOpenChange = open => setEndOpen(open)
 
   return (
     <Form>
-      <Form.Item label="Name" hasFeedback>
-        {getFieldDecorator('name', {
-          rules: [
-            {required: true, message: 'The name of the event is required.'},
-          ],
-        })(<Input placeholder="e.g. Summer Camp" autoFocus />)}
-      </Form.Item>
+      <Divider orientation="left">Event Info</Divider>
 
       <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item label="Start Date" hasFeedback>
-            {getFieldDecorator('startDate', {
+        <Col span={24}>
+          <Form.Item label="Name" hasFeedback>
+            {getFieldDecorator('name', {
               rules: [
-                {
-                  required: true,
-                  message: 'The start date of the event is required.',
-                },
+                {required: true, message: 'The name of the event is required.'},
               ],
-            })(
-              <DatePicker
-                disabledDate={disabledStartDate}
-                placeholder={`e.g. ${dayjs().format('MM/DD/YYYY')}`}
-                onOpenChange={handleStartOpenChange}
-              />,
-            )}
+            })(<Input placeholder="e.g. Summer Camp" autoFocus />)}
           </Form.Item>
         </Col>
+      </Row>
 
-        <Col span={12}>
-          <Form.Item label="End Date" hasFeedback>
-            {getFieldDecorator('endDate', {
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item label="Date &amp; Time" hasFeedback>
+            {getFieldDecorator('dateTime', {
               rules: [
                 {
                   required: true,
-                  message: 'The end date of the event is required.',
+                  message: 'The dates of the event are required.',
                 },
               ],
             })(
-              <DatePicker
-                disabledDate={disabledEndDate}
-                open={endOpen}
-                placeholder={`e.g. ${dayjs()
-                  .add(1, 'week')
-                  .format('MM/DD/YYYY')}`}
-                onOpenChange={handleEndOpenChange}
+              <DatePicker.RangePicker
+                format="MM/DD/YYYY hh:mm A"
+                placeholder={['Start Time', 'End Time']}
+                showTime={{format: 'hh:mm A'}}
               />,
             )}
           </Form.Item>
         </Col>
       </Row>
+
+      {page.isEventEditPage && (
+        <>
+          <Divider css={{marginTop: 40}} orientation="left">
+            <Typography.Text type="danger">Danger Zone</Typography.Text>
+          </Divider>
+
+          <Row gutter={16}>
+            <Col span={24}>
+              <Popconfirm
+                cancelText="Cancel"
+                icon={<Icon css={{color: 'red'}} type="question-circle-o" />}
+                okText="Delete"
+                okType="danger"
+                placement="topRight"
+                title={
+                  <p>
+                    Are you sure you want
+                    <br />
+                    to delete this event?
+                  </p>
+                }
+                onConfirm={props.onDeleteEvent}
+              >
+                <Button type="danger">Delete Event</Button>
+              </Popconfirm>
+            </Col>
+          </Row>
+        </>
+      )}
     </Form>
   )
 })

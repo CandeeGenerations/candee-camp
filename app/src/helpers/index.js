@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import dayjs from 'dayjs'
+import moment from 'moment'
 import merge from 'deepmerge'
 import {Icon, notification, Tag} from 'antd'
 
@@ -15,7 +15,7 @@ const errorTrace = (error, response) => {
 export const deepCopy = obj => merge(obj, {})
 
 export const formatDate = date =>
-  date ? dayjs(date).format('MMM D, YYYY h:mm A') : <em>None</em>
+  date ? moment(date).format('MMM D, YYYY h:mm A') : <em>None</em>
 
 export const formatIsActive = isActive => (
   <Icon

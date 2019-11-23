@@ -47,16 +47,16 @@ namespace CandeeCamp.API.Controllers
             return Ok(newEvent);
         }
 
-        [HttpPut]
+        [HttpPut("{eventId}")]
         [ProducesResponseType(typeof(Task<Event>), 200)]
-        public async Task<ActionResult<Event>> UpdateEvent([FromBody]Event incomingEvent)
+        public async Task<ActionResult<Event>> UpdateEvent(int eventId, [FromBody]Event incomingEvent)
         {
-            Event updatedEvent = await _eventRepository.UpdateEvent(incomingEvent);
+            Event updatedEvent = await _eventRepository.UpdateEvent(eventId, incomingEvent);
             
             return Ok(updatedEvent);
         }
 
-        [HttpPut("/delete/{eventId}")]
+        [HttpDelete("{eventId}")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<bool>> DeleteEvent(int eventId)
         {
