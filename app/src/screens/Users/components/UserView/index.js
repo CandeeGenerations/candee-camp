@@ -79,10 +79,14 @@ const UserView = props => {
 
       if (response) {
         refreshTable()
-        routerContext.router.navigate(
-          page.isUserAddOrEditPage ? page.userEditPage : page.eventUserEditPage,
-          {userId: response.data.id},
-        )
+
+        if (page.isEventUserEditPage) {
+          routerContext.router.navigate(page.eventsPage)
+        } else {
+          routerContext.router.navigate(page.userEditPage, {
+            userId: response.data.id,
+          })
+        }
       }
     }
   }

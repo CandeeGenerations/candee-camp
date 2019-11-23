@@ -12,7 +12,11 @@ const EventViewWrapper = props =>
         {props.fields.id ? 'Edit your event here.' : 'Add a new event here.'}
       </p>
 
-      <EventForm {...props.fields} onChange={props.onFieldChange} />
+      <EventForm
+        {...props.fields}
+        onChange={props.onFieldChange}
+        onDeleteEvent={props.onDeleteEvent}
+      />
     </>
   )
 
@@ -23,6 +27,7 @@ EventViewWrapper.propTypes = {
   }).isRequired,
 
   // functions
+  onDeleteEvent: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
 }
 

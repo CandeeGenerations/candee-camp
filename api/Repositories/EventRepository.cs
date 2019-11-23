@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CandeeCamp.API.Context;
 using CandeeCamp.API.DomainObjects;
@@ -18,7 +19,7 @@ namespace CandeeCamp.API.Repositories
         {
             IEnumerable<Event> dbEvents = await Context.Events.ToListAsync();
 
-            return dbEvents;
+            return dbEvents.Where(x => !x.IsDeleted);
         }
 
         public async Task<Event> GetEventById(int eventId)
@@ -34,6 +35,11 @@ namespace CandeeCamp.API.Repositories
             {
                 throw new Exception("The Start and End Dates are required.");
             }
+
+            if (incomingEvent.StartDate > incomingEvent.EndDate)
+            {
+                throw new Exception("The Start Date must occur before the End Date.");
+            }
             
             incomingEvent.IsActive = true;
             incomingEvent.IsDeleted = false;
@@ -44,18 +50,35 @@ namespace CandeeCamp.API.Repositories
             return incomingEvent;
         }
 
-        public async Task<Event> UpdateEvent(Event incomingEvent)
+        public async Task<Event> UpdateEvent(int eventId, Event incomingEvent)
         {
-            if (incomingEvent.StartDate == DateTimeOffset.MinValue || incomingEvent.EndDate == DateTimeOffset.MinValue)
+            if (incomingEvent.StartDate == DateTimeOffset.MinValue ||
+                incomingEvent.EndDate == DateTimeOffset.MinValue)
             {
                 throw new Exception("The Start and End Dates are required.");
             }
-            
-            incomingEvent.UpdatedDate = DateTimeOffset.UtcNow;
-            
-            Context.Events.Update(incomingEvent);
+
+            if (incomingEvent.StartDate > incomingEvent.EndDate)
+            {
+                throw new Exception("The Start Date must occur before the End Date.");
+            }
+
+            var dbEvent = await Context.Events.FindAsync(eventId);
+
+            if (dbEvent == null)
+            {
+                throw new Exception("The Event does not exist.");
+            }
+
+            dbEvent.Name = incomingEvent.Name;
+            dbEvent.Cost = incomingEvent.Cost;
+            dbEvent.StartDate = incomingEvent.StartDate;
+            dbEvent.EndDate = incomingEvent.EndDate;
+            dbEvent.UpdatedDate = DateTimeOffset.UtcNow;
+
+            Context.Events.Update(dbEvent);
             await Context.SaveChangesAsync();
-            
+
             return incomingEvent;
         }
 

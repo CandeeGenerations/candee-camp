@@ -1,5 +1,5 @@
 import axios from 'axios'
-import dayjs from 'dayjs'
+import moment from 'moment'
 import jwtDecode from 'jwt-decode'
 
 import Config from '@/config'
@@ -17,7 +17,7 @@ const validateToken = () => {
 
   epochTime.setUTCSeconds(tokenData.exp)
 
-  const expired = dayjs().isAfter(dayjs(epochTime))
+  const expired = moment().isAfter(moment(epochTime))
 
   if (expired) {
     removeUser()

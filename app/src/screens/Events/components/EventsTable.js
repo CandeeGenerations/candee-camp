@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import dayjs from 'dayjs'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 import {Divider, Icon, Table, Tag} from 'antd'
@@ -30,8 +30,8 @@ const EventsTable = props => {
         key="onGoing"
         align="center"
         render={(text, record) =>
-          record.startDate < dayjs().valueOf() &&
-          record.endDate > dayjs().valueOf() ? (
+          record.startDate < moment().valueOf() &&
+          record.endDate > moment().valueOf() ? (
             <Icon theme="twoTone" twoToneColor="#52c41a" type="check-circle" />
           ) : (
             <Icon theme="twoTone" twoToneColor="#eb2f96" type="close-circle" />
@@ -125,7 +125,7 @@ const EventsTable = props => {
 EventsTable.propTypes = {
   events: PropTypes.arrayOf(
     PropTypes.shape({
-      createdBy: PropTypes.number.isRequired,
+      createdBy: PropTypes.number,
       createdDate: PropTypes.string.isRequired,
       endDate: PropTypes.string.isRequired,
       key: PropTypes.number.isRequired,

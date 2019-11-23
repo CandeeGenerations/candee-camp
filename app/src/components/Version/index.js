@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import {css, jsx} from '@emotion/core'
-import dayjs from 'dayjs'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 
 import Config from '@/config'
@@ -20,7 +20,7 @@ const Version = props => {
 
   return (
     <div css={props.light ? [versionStyle, lightStyle] : versionStyle}>
-      v {Config.version} &copy; {dayjs().format('YYYY')} Candee Generations
+      v {Config.version} &copy; {moment().format('YYYY')} Candee Generations
     </div>
   )
 }
