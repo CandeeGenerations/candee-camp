@@ -57,23 +57,51 @@ namespace CandeeCamp.API.Context
             {
                 Id = -1, Name = "Event 1", IsActive = true, IsDeleted = false, CreatedBy = -1
             });
+            
+            modelBuilder.Entity<Camper>().HasData(new Camper
+            {
+                Id = -1,
+                FirstName = "Jocelyn",
+                LastName = "Lacombe",
+                BirthDate = new DateTimeOffset(new DateTime(2010, 5, 25, 0, 0, 0)),
+                Allergies = "Strawberries",
+                Medicine = "Ibuprofen",
+                IsActive = true,
+                IsDeleted = false,
+                ParentFirstName = "John",
+                ParentLastName = "Lacombe",
+                CreatedDate = DateTimeOffset.Now,
+                UpdatedDate = DateTimeOffset.Now,
+                CreatedBy = -1,
+            });
 
             modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);
+            
             modelBuilder.Entity<Payment_Donation>().HasOne(u => u.User).WithMany().HasForeignKey(pd => pd.UserId);
+            
             modelBuilder.Entity<Registration>().HasOne(u => u.User).WithMany().HasForeignKey(r => r.EventId);
             modelBuilder.Entity<Registration>().HasOne(u => u.User).WithMany().HasForeignKey(r => r.CamperId);
+            
             modelBuilder.Entity<Group>().HasOne(u => u.User).WithMany().HasForeignKey(g => g.LoginUser);
+            
             modelBuilder.Entity<RedeemedCoupon>().HasOne(co => co.Coupon).WithMany().HasForeignKey(rc => rc.CouponId);
             modelBuilder.Entity<RedeemedCoupon>().HasOne(ca => ca.Camper).WithMany().HasForeignKey(rc => rc.CamperId);
+            
             modelBuilder.Entity<Camper>().HasOne(u => u.User).WithMany().HasForeignKey(ca => ca.LoginUser);
+            modelBuilder.Entity<Camper>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(ca => ca.CreatedBy);
             modelBuilder.Entity<Camper>().HasOne(g => g.Group).WithMany().HasForeignKey(ca => ca.GroupId);
             modelBuilder.Entity<Camper>().HasOne(cb => cb.Cabin).WithMany().HasForeignKey(ca => ca.CabinId);
             modelBuilder.Entity<Camper>().HasOne(co => co.Counselor).WithMany().HasForeignKey(ca => ca.CounselorId);
+            
             modelBuilder.Entity<Counselor>().HasOne(u => u.User).WithMany().HasForeignKey(co => co.UserId);
             modelBuilder.Entity<Counselor>().HasOne(cb => cb.Cabin).WithMany().HasForeignKey(co => co.CabinId);
-            modelBuilder.Entity<SnackShopPurchase>().HasOne(s => s.SnackShopItem).WithMany().HasForeignKey(s => s.SnackShopItemId);
-            modelBuilder.Entity<SnackShopPurchase>().HasOne(cb => cb.Camper).WithMany().HasForeignKey(co => co.CamperId);
-            modelBuilder.Entity<SnackShopPurchase>().HasOne(cb => cb.Counselor).WithMany().HasForeignKey(co => co.CounselorId);
+
+            modelBuilder.Entity<SnackShopPurchase>().HasOne(s => s.SnackShopItem).WithMany()
+                .HasForeignKey(s => s.SnackShopItemId);
+            modelBuilder.Entity<SnackShopPurchase>().HasOne(cb => cb.Camper).WithMany()
+                .HasForeignKey(co => co.CamperId);
+            modelBuilder.Entity<SnackShopPurchase>().HasOne(cb => cb.Counselor).WithMany()
+                .HasForeignKey(co => co.CounselorId);
 
 
             base.OnModelCreating(modelBuilder);

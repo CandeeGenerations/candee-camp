@@ -47,9 +47,9 @@ namespace CandeeCamp.API.Repositories
             string salt = Helpers.CreateUniqueString(64);
             User newUser = new User
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                EmailAddress = user.EmailAddress,
+                FirstName = user.FirstName.Trim(),
+                LastName = user.LastName.Trim(),
+                EmailAddress = user.EmailAddress.Trim(),
                 PasswordHash = user.NewPassword.Encrypt(salt),
                 Salt = salt,
                 CreatedDate = DateTimeOffset.Now,
@@ -173,9 +173,9 @@ namespace CandeeCamp.API.Repositories
         {
             User dbUser = await GetUserById(userId);
 
-            dbUser.FirstName = user.FirstName;
-            dbUser.LastName = user.LastName;
-            dbUser.EmailAddress = user.EmailAddress;
+            dbUser.FirstName = user.FirstName.Trim();
+            dbUser.LastName = user.LastName.Trim();
+            dbUser.EmailAddress = user.EmailAddress.Trim();
             dbUser.IsActive = user.IsActive;
             dbUser.UpdatedDate = DateTimeOffset.Now;
 
