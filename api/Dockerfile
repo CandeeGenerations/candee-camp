@@ -8,7 +8,7 @@ WORKDIR /src
 RUN dotnet restore --packages /packages
 RUN dotnet publish -c Release -o /published
 
-FROM gcr.io/google-appengine/aspnetcore:2.2
+FROM gcr.io/google-appengine/aspnetcore:2.2.5
 
 # copy built files
 COPY --from=builder /published /app
