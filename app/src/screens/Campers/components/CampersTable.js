@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Divider, Popover, Table} from 'antd'
 
-import {Constants} from '../../../helpers/constants'
-import {formatDate, formatIsActive} from '../../../helpers'
+import {Constants} from '@/helpers/constants'
+import {formatDate, formatIsActive} from '@/helpers'
 
-import {NavItem} from '../../../components/Navigation'
-import loader from '../../../components/Structure/Loader'
-import DeleteLink from '../../../components/Structure/DeleteLink'
+import {NavItem} from '@/components/Navigation'
+import loader from '@/components/Structure/Loader'
+import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 

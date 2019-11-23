@@ -2,18 +2,16 @@ import React, {useEffect} from 'react'
 import {useRoute} from 'react-router5'
 import {Button, Card} from 'antd'
 
-import {camperActions as actions} from '../../actions'
-
-import useTitle from '../../helpers/hooks/useTitle'
-import useAsyncLoad from '../../helpers/hooks/useAsyncLoad'
-
-import PageHeader from '../../components/Structure/PageHeader'
-import {LoaderContext} from '../../components/Structure/Loader'
-import ErrorWrapper, {
-  useError,
-} from '../../components/ErrorBoundary/ErrorWrapper'
-
 import CampersTable from './components/CampersTable'
+
+import {camperActions as actions} from '@/actions'
+
+import useTitle from '@/helpers/hooks/useTitle'
+import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+
+import PageHeader from '@/components/Structure/PageHeader'
+import {LoaderContext} from '@/components/Structure/Loader'
+import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const Campers = () => {
   const errorWrapper = useError()
