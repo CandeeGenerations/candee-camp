@@ -44,8 +44,8 @@ export const saveEvent = async event => {
       throw new Error('No user.')
     }
 
-    event.startDate = {value: event.dateTime.value[0].utc().startOf('day')}
-    event.endDate = {value: event.dateTime.value[1].utc().endOf('day')}
+    event.startDate = {value: event.dateTime.value[0].format()}
+    event.endDate = {value: event.dateTime.value[1].format()}
 
     const body = formDataToBody(event)
 

@@ -18,6 +18,12 @@ const EventForm = Form.create({
   onFieldsChange(props, changedFields) {
     const {onChange} = props
 
+    if (changedFields.dateTime) {
+      changedFields.dateTime.value = changedFields.dateTime.value.map(x =>
+        x.startOf('minute'),
+      )
+    }
+
     onChange(changedFields)
   },
 
