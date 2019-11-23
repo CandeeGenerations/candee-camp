@@ -7,6 +7,7 @@ import SimpleCrypto from 'simple-crypto-js'
 import Config from '@/config'
 import {axiosRequest} from '@/api'
 import * as actions from '@/actions'
+import usePage from '@/helpers/hooks/usePage'
 import {getUser} from '@/helpers/authHelpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 
@@ -26,6 +27,7 @@ export const ObjectsContext = React.createContext({})
 
 const App = () => {
   let content = null
+  const page = usePage()
   const user = getUser()
   const routerContext = useRoute()
 
@@ -96,13 +98,19 @@ const App = () => {
     content = <ForgotPassword />
   } else if (routeName.includes('resetPassword')) {
     content = <ResetPassword />
-  } else if (routeName.includes('events')) {
+  } else if (routeName.includes(page.eventsPage)) {
     content = <Events />
-  } else if (routeName.includes('users')) {
+  } else if (routeName.includes(page.usersPage)) {
     content = <Users />
   } else {
     content = <NotFound />
   }
+
+  const userViewRoutes = [
+    page.userEditPage,
+    page.userAddPage,
+    page.eventUserEditPage,
+  ]
 
   return testNoNavRoutes() && !(user && isUnauthenticatedRoute) ? (
     <>
@@ -124,9 +132,7 @@ const App = () => {
           >
             {content}
 
-            {(routeName === 'users.edit' ||
-              routeName === 'users.add' ||
-              routeName === 'events.user') && (
+            {userViewRoutes.includes(routeName) && (
               <UserView
                 id={
                   (routerContext.route.params &&

@@ -67,7 +67,9 @@ const UserView = props => {
     setFields(stateFields => ({...stateFields, ...changedFields}))
 
   const refreshTable = () =>
-    objectsContext[page.isUserAddOrEditPage ? 'users' : 'events'].load()
+    objectsContext[
+      page.isUserAddOrEditPage ? page.usersPage : page.eventsPage
+    ].load()
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
@@ -148,7 +150,9 @@ const UserView = props => {
     <>
       <DrawerView
         fields={fields}
-        parentRoute={page.isUserAddOrEditPage ? 'users' : 'events'}
+        parentRoute={
+          page.isUserAddOrEditPage ? page.usersPage : page.eventsPage
+        }
         submitButtonDisabled={submitButtonDisabled}
         title={
           fields.id

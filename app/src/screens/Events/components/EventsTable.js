@@ -6,6 +6,7 @@ import {useRouter} from 'react-router5'
 import {Divider, Icon, Table, Tag} from 'antd'
 
 import {formatDate} from '@/helpers'
+import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
 
 import {NavItem} from '@/components/Navigation'
@@ -15,6 +16,7 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 const {Column} = Table
 
 const EventsTable = props => {
+  const page = usePage()
   const router = useRouter()
 
   return props.loader.spinning ? (
@@ -73,7 +75,7 @@ const EventsTable = props => {
               color="blue"
               css={{cursor: 'pointer'}}
               onClick={() =>
-                router.navigate('events.user', {userId: user.id}, {})
+                router.navigate(page.eventUserEditPage, {userId: user.id}, {})
               }
             >
               {user.firstName} {user.lastName}

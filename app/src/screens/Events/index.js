@@ -74,7 +74,7 @@ const Events = () => {
               <Button
                 key="add"
                 type="primary"
-                onClick={() => routerContext.router.navigate('events.add')}
+                onClick={() => routerContext.router.navigate(page.eventAddPage)}
               >
                 Add Event
               </Button>,
@@ -113,8 +113,7 @@ const Events = () => {
         </Card>
       </MainContent>
 
-      {(routerContext.route.name === 'events.edit' ||
-        routerContext.route.name === 'events.add') && (
+      {routerContext.route.name === page.isEventAddOrEditPage && (
         <EventView
           id={
             (routerContext.route.params &&

@@ -5,16 +5,18 @@ import {useRouter} from 'react-router5'
 
 import EventViewWrapper from './EventViewWrapper'
 
+import usePage from '@/helpers/hooks/usePage'
 import {eventActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
+import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
-import {ObjectsContext} from '@/screens/App'
 
 const EventView = props => {
+  const page = usePage()
   const router = useRouter()
   const errorWrapper = useError()
   const objectsContext = useContext(ObjectsContext)
@@ -84,7 +86,7 @@ const EventView = props => {
 
       if (response) {
         refreshTable()
-        router.navigate('events.edit', {eventId: response.data.id})
+        router.navigate(page.eventEditPage, {eventId: response.data.id})
       }
     }
   }
@@ -97,7 +99,7 @@ const EventView = props => {
     setLoading(false)
 
     if (response) {
-      router.navigate('events')
+      router.navigate(page.eventsPage)
     }
   }
 

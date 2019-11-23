@@ -3,9 +3,11 @@ import {useRoute} from 'react-router5'
 
 import NavBarContent from './components/NavBarContent'
 
+import usePage from '@/helpers/hooks/usePage'
 import {removeUser} from '@/helpers/authHelpers'
 
 const NavBar = () => {
+  const page = usePage()
   const routerContext = useRoute()
 
   const handleSignout = () => {
@@ -17,12 +19,12 @@ const NavBar = () => {
     {
       icon: 'calendar',
       name: 'Events',
-      routeName: 'events',
+      routeName: page.eventsPage,
     },
     {
       icon: 'user',
       name: 'Users',
-      routeName: 'users',
+      routeName: page.usersPage,
     },
   ]
   const selected = navItems.find(
