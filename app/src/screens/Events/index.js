@@ -113,7 +113,7 @@ const Events = () => {
         </Card>
       </MainContent>
 
-      {routerContext.route.name === page.isEventAddOrEditPage && (
+      {page.isEventAddOrEditPage && (
         <EventView
           id={
             (routerContext.route.params &&
