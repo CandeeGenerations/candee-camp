@@ -59,7 +59,7 @@ export const saveEvent = async event => {
 
     openNotification(
       'success',
-      `The Event has been ${event.eventId ? 'updated' : 'added'} successfully.`,
+      `The Event has been ${event.id ? 'updated' : 'added'} successfully.`,
     )
 
     return response

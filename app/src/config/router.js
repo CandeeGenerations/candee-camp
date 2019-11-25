@@ -49,6 +49,20 @@ const routes = [
     ],
   },
   {
+    name: 'groups',
+    path: '/groups',
+    children: [
+      {
+        name: 'add',
+        path: '/add',
+      },
+      {
+        name: 'edit',
+        path: '/edit/:groupId',
+      },
+    ],
+  },
+  {
     name: 'users',
     path: '/users',
     children: [

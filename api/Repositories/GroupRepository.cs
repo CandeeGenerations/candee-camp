@@ -37,9 +37,11 @@ namespace CandeeCamp.API.Repositories
             {
                 IsDeleted = false,
                 CreatedDate = DateTimeOffset.Now,
-                GroupName = group.Name.Trim(),
+                UpdatedDate = DateTimeOffset.Now,
+                Name = group.Name.Trim(),
                 IsActive = true,
-                LoginUser = group.LoginUser
+                LoginUser = group.LoginUser,
+                CreatedBy = group.CreatedBy
             };
 
             await Context.Groups.AddAsync(newGroup);
@@ -62,9 +64,10 @@ namespace CandeeCamp.API.Repositories
         {
             Group dbGroup = await GetGroupById(groupId);
 
-            dbGroup.GroupName = group.Name.Trim();
+            dbGroup.Name = group.Name.Trim();
             dbGroup.LoginUser = group.LoginUser;
             dbGroup.IsActive = group.IsActive;
+            dbGroup.UpdatedDate = DateTimeOffset.Now;
             
             await Context.SaveChangesAsync();
 

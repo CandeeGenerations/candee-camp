@@ -60,9 +60,7 @@ export const saveCamper = async camper => {
 
     openNotification(
       'success',
-      `The Camper has been ${
-        camper.eventId ? 'updated' : 'added'
-      } successfully.`,
+      `The Camper has been ${camper.id ? 'updated' : 'added'} successfully.`,
     )
 
     return response

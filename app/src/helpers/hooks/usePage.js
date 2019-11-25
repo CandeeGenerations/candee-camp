@@ -25,6 +25,12 @@ export default () => {
     isCamperAddOrEditPage:
       routeName.includes('campers.add') || routeName.includes('campers.edit'),
 
+    // groups
+    isGroupAddPage: routeName.includes('groups.add'),
+    isGroupEditPage: routeName.includes('groups.edit'),
+    isGroupAddOrEditPage:
+      routeName.includes('groups.add') || routeName.includes('groups.edit'),
+
     // values : return string
     // users
     usersPage: 'users',
@@ -41,5 +47,10 @@ export default () => {
     campersPage: 'campers',
     camperAddPage: 'campers.add',
     camperEditPage: 'campers.edit',
+
+    // groups
+    groupsPage: 'groups',
+    groupAddPage: 'groups.add',
+    groupEditPage: 'groups.edit',
   }
 }

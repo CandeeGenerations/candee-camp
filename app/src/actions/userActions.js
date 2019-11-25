@@ -60,7 +60,7 @@ export const saveUser = async user => {
 
     openNotification(
       'success',
-      `The User has been ${user.eventId ? 'updated' : 'added'} successfully.`,
+      `The User has been ${user.id ? 'updated' : 'added'} successfully.`,
     )
 
     return response

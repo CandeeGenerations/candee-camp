@@ -12,10 +12,12 @@ import * as actions from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import {getUser} from '@/helpers/authHelpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+import useLocalStorage from '@/helpers/hooks/useLocalStorage'
 
 import Users from '@/screens/Users'
 import Signin from '@/screens/Signin'
 import Events from '@/screens/Events'
+import Groups from '@/screens/Groups'
 import Campers from '@/screens/Campers'
 import NavBar from '@/components/NavBar'
 import NotFound from '@/screens/NotFound'
@@ -33,11 +35,13 @@ const App = () => {
   const page = usePage()
   const user = getUser()
   const routerContext = useRoute()
+  const localStorage = useLocalStorage('cc--debug')
 
   const routeName = routerContext.route.name
   const users = useAsyncLoad(actions.userActions.loadUsers)
   const events = useAsyncLoad(actions.eventActions.loadEvents)
   const campers = useAsyncLoad(actions.camperActions.loadCampers)
+  const groups = useAsyncLoad(actions.groupActions.loadGroups)
 
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
@@ -77,12 +81,12 @@ const App = () => {
       ? {}
       : {returnParams: JSON.stringify(routerContext.route.params)}
     const simpleCrypto = new SimpleCrypto(Config.cryptoKey)
-    const params = simpleCrypto.encrypt(
-      JSON.stringify({
-        returnUrl: routeName,
-        ...returnParams,
-      }),
-    )
+    const paramsString = JSON.stringify({
+      returnUrl: routeName,
+      ...returnParams,
+    })
+    const params = simpleCrypto.encrypt(paramsString)
+    localStorage.set(JSON.stringify({paramsString, params}))
 
     routerContext.router.navigate('signin', {p: params})
 
@@ -111,6 +115,8 @@ const App = () => {
     content = <Users />
   } else if (routeName.includes(page.campersPage)) {
     content = <Campers />
+  } else if (routeName.includes(page.groupsPage)) {
+    content = <Groups />
   } else {
     content = <NotFound />
   }
@@ -139,6 +145,7 @@ const App = () => {
             value={{
               campers,
               events,
+              groups,
               users,
             }}
           >

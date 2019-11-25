@@ -27,6 +27,11 @@ const NavBar = () => {
       routeName: page.campersPage,
     },
     {
+      icon: 'appstore',
+      name: 'Groups',
+      routeName: page.groupsPage,
+    },
+    {
       icon: 'user',
       name: 'Users',
       routeName: page.usersPage,

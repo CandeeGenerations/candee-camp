@@ -18,6 +18,7 @@ namespace CandeeCamp.API.Models
         
         public bool IsActive { get; set; }
 
+        [Required]
         public int CreatedBy { get; set; }
     }
 }
