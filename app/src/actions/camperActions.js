@@ -3,9 +3,11 @@ import {handleError, openNotification, formDataToBody} from '../helpers'
 
 import {getUserData} from '@/helpers/authHelpers'
 
+const mainPath = '/campers'
+
 export const loadCampers = async () => {
   try {
-    const response = await request.get('/campers')
+    const response = await request.get(mainPath)
 
     return response
   } catch (error) {
@@ -16,7 +18,7 @@ export const loadCampers = async () => {
 
 export const loadCamperStats = async () => {
   try {
-    const response = await request.get('/campers')
+    const response = await request.get(mainPath)
 
     return response.data.length
   } catch (error) {
@@ -27,7 +29,7 @@ export const loadCamperStats = async () => {
 
 export const loadCamper = async camperId => {
   try {
-    const response = await request.get(`/campers/${camperId}`)
+    const response = await request.get(`${mainPath}/${camperId}`)
 
     return response
   } catch (error) {
@@ -53,9 +55,9 @@ export const saveCamper = async camper => {
     body.createdBy = user.id
 
     if (camper.id) {
-      response = await request.put(`/campers/${camper.id.value}`, body)
+      response = await request.put(`${mainPath}/${camper.id.value}`, body)
     } else {
-      response = await request.post('/campers', body)
+      response = await request.post(mainPath, body)
     }
 
     openNotification(
@@ -72,7 +74,7 @@ export const saveCamper = async camper => {
 
 export const deleteCamper = async camperId => {
   try {
-    const response = await request.delete(`/campers/${camperId}`)
+    const response = await request.delete(`${mainPath}/${camperId}`)
 
     openNotification('success', 'The Camper has been delete successfully.')
 

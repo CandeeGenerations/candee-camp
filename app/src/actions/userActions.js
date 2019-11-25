@@ -1,9 +1,11 @@
 import request from '@/api'
 import {handleError, openNotification, formDataToBody} from '@/helpers'
 
+const mainPath = '/users'
+
 export const loadUsers = async () => {
   try {
-    const response = await request.get('/users')
+    const response = await request.get(mainPath)
 
     return response
   } catch (error) {
@@ -15,7 +17,7 @@ export const loadUsers = async () => {
 export const loadUsersByIds = async userIds => {
   try {
     const response = await request.get(
-      `/users/by-ids?userIds=${userIds.join('&userIds=')}`,
+      `${mainPath}/by-ids?userIds=${userIds.join('&userIds=')}`,
     )
 
     return response
@@ -27,7 +29,7 @@ export const loadUsersByIds = async userIds => {
 
 export const loadUserStats = async () => {
   try {
-    const response = await request.get('/users')
+    const response = await request.get(mainPath)
 
     return response.data.length
   } catch (error) {
@@ -38,7 +40,7 @@ export const loadUserStats = async () => {
 
 export const loadUser = async userId => {
   try {
-    const response = await request.get(`/users/${userId}`)
+    const response = await request.get(`${mainPath}/${userId}`)
 
     return response
   } catch (error) {
@@ -53,9 +55,9 @@ export const saveUser = async user => {
     const body = formDataToBody(user)
 
     if (user.id) {
-      response = await request.put(`/users/${user.id.value}`, body)
+      response = await request.put(`${mainPath}/${user.id.value}`, body)
     } else {
-      response = await request.post('/users', body)
+      response = await request.post(mainPath, body)
     }
 
     openNotification(
@@ -72,7 +74,7 @@ export const saveUser = async user => {
 
 export const deleteUser = async userId => {
   try {
-    const response = await request.delete(`/users/${userId}`)
+    const response = await request.delete(`${mainPath}/${userId}`)
 
     openNotification('success', 'The User has been delete successfully.')
 
@@ -86,7 +88,7 @@ export const deleteUser = async userId => {
 export const changeUserPassword = async (userId, password) => {
   try {
     const response = await request.post(
-      `/users/${userId}/change-password?password=${password}`,
+      `${mainPath}/${userId}/change-password?password=${password}`,
     )
 
     openNotification(

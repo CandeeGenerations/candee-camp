@@ -2,9 +2,11 @@ import request from '@/api'
 import {getUserData} from '@/helpers/authHelpers'
 import {handleError, openNotification, formDataToBody} from '@/helpers'
 
+const mainPath = '/events'
+
 export const loadEvents = async () => {
   try {
-    const response = await request.get('/events')
+    const response = await request.get(mainPath)
 
     return response
   } catch (error) {
@@ -15,7 +17,7 @@ export const loadEvents = async () => {
 
 export const loadEventStats = async () => {
   try {
-    const response = await request.get('/events')
+    const response = await request.get(mainPath)
 
     return response.data.length
   } catch (error) {
@@ -26,7 +28,7 @@ export const loadEventStats = async () => {
 
 export const loadEvent = async (eventId: number) => {
   try {
-    const response = await request.get(`/events/${eventId}`)
+    const response = await request.get(`${mainPath}/${eventId}`)
 
     return response
   } catch (error) {
@@ -52,9 +54,9 @@ export const saveEvent = async event => {
     body.createdBy = user.id
 
     if (event.id) {
-      response = await request.put(`/events/${event.id.value}`, body)
+      response = await request.put(`${mainPath}/${event.id.value}`, body)
     } else {
-      response = await request.post('/events', body)
+      response = await request.post(mainPath, body)
     }
 
     openNotification(
@@ -71,7 +73,7 @@ export const saveEvent = async event => {
 
 export const deleteEvent = async eventId => {
   try {
-    const response = await request.delete(`/events/${eventId}`)
+    const response = await request.delete(`${mainPath}/${eventId}`)
 
     openNotification('success', 'The Event has been deleted successfully.')
 
