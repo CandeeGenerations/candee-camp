@@ -2,6 +2,7 @@ import React, {useContext, useEffect} from 'react'
 import {useRoute} from 'react-router5'
 import {Button, Card} from 'antd'
 
+import CamperView from './components/CamperView'
 import CampersTable from './components/CampersTable'
 
 import {camperActions as actions} from '@/actions'
@@ -40,50 +41,65 @@ const Campers = () => {
   }
 
   return (
-    <MainContent>
-      <Card>
-        <PageHeader
-          actions={[
-            <Button
-              key="add"
-              type="primary"
-              onClick={() => routerContext.router.navigate(page.camperAddPage)}
-            >
-              Add Camper
-            </Button>,
-          ]}
-          routes={[
-            {path: '/dashboard', breadcrumbName: 'Dashboard'},
-            {path: '/campers', breadcrumbName: 'Campers'},
-          ]}
-          title="Campers"
-        />
+    <>
+      <MainContent>
+        <Card>
+          <PageHeader
+            actions={[
+              <Button
+                key="add"
+                type="primary"
+                onClick={() =>
+                  routerContext.router.navigate(page.camperAddPage)
+                }
+              >
+                Add Camper
+              </Button>,
+            ]}
+            routes={[
+              {path: '/dashboard', breadcrumbName: 'Dashboard'},
+              {path: '/campers', breadcrumbName: 'Campers'},
+            ]}
+            title="Campers"
+          />
 
-        <LoaderContext.Provider
-          value={{
-            spinning: objectsContext.campers.loading,
-            tip: 'Loading campers...',
-          }}
-        >
-          <ErrorWrapper
-            handleRetry={objectsContext.campers.load}
-            hasError={errorWrapper.hasError}
+          <LoaderContext.Provider
+            value={{
+              spinning: objectsContext.campers.loading,
+              tip: 'Loading campers...',
+            }}
           >
-            <CampersTable
-              campers={
-                (objectsContext.campers.results &&
-                  objectsContext.campers.results.map(camper => ({
-                    ...camper,
-                    key: camper.id,
-                  }))) ||
-                []
-              }
-              deleteCamper={handleDeleteCamperClick}
-            />
-          </ErrorWrapper>
-        </LoaderContext.Provider>
-      </Card>
-    </MainContent>
+            <ErrorWrapper
+              handleRetry={objectsContext.campers.load}
+              hasError={errorWrapper.hasError}
+            >
+              <CampersTable
+                campers={
+                  (objectsContext.campers.results &&
+                    objectsContext.campers.results.map(camper => ({
+                      ...camper,
+                      key: camper.id,
+                    }))) ||
+                  []
+                }
+                deleteCamper={handleDeleteCamperClick}
+              />
+            </ErrorWrapper>
+          </LoaderContext.Provider>
+        </Card>
+      </MainContent>
+
+      {page.isCamperAddOrEditPage && (
+        <CamperView
+          id={
+            (routerContext.route.params &&
+              routerContext.route.params.camperId) ||
+            null
+          }
+          onDeleteCamper={handleDeleteCamperClick}
+        />
+      )}
+    </>
   )
 }
 

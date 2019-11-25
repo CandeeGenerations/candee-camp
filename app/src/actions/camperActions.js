@@ -1,6 +1,8 @@
 import request from '../api'
 import {handleError, openNotification, formDataToBody} from '../helpers'
 
+import {getUserData} from '@/helpers/authHelpers'
+
 export const loadCampers = async () => {
   try {
     const response = await request.get('/campers')
@@ -37,7 +39,17 @@ export const loadCamper = async camperId => {
 export const saveCamper = async camper => {
   try {
     let response = null
+    const user = getUserData()
+
+    if (!user) {
+      throw new Error('No user.')
+    }
+
     const body = formDataToBody(camper)
+
+    body.medicine = body.medicine.toString()
+    body.allergies = body.allergies.toString()
+    body.createdBy = user.id
 
     if (camper.id) {
       response = await request.put(`/campers/${camper.id.value}`, body)

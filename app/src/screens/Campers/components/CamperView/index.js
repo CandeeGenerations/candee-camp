@@ -1,42 +1,57 @@
 import React, {useContext, useEffect, useState} from 'react'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
-import UserViewWrapper from './CamperViewWrapper'
+import CamperViewWrapper from './CamperViewWrapper'
 
 import usePage from '@/helpers/hooks/usePage'
-import useModal from '@/helpers/hooks/useModal'
 import {camperActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
+import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const CamperView = props => {
-  const fieldsInitialState = {
-    firstName: {includePercent: true, isRequired: true, value: null},
-    lastName: {includePercent: true, isRequired: true, value: null},
-    birthdate: {value: null},
-    parentFirstName: {value: null},
-    parentLastName: {value: null},
-    isActive: {value: null},
-  }
-
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
-  const user = useAsyncLoad(actions.loadCamper, props.id)
+  const objectsContext = useContext(ObjectsContext)
+  const camper = useAsyncLoad(actions.loadCamper, props.id)
 
-  const [fields, setFields] = useState(fieldsInitialState)
+  const [fields, setFields] = useState({
+    firstName: {includePercent: true, isRequired: true, value: null},
+    lastName: {includePercent: true, isRequired: true, value: null},
+    birthDate: {includePercent: true, value: null},
+    parentFirstName: {includePercent: true, value: null},
+    parentLastName: {includePercent: true, value: null},
+    medicine: {includePercent: true, value: []},
+    allergies: {includePercent: true, value: []},
+    isActive: {includePercent: true, value: true},
+  })
 
-  const getUser = async () => {
+  const getCamper = async () => {
     try {
-      const response = await user.load()
+      const response = await camper.load()
 
       if (response) {
-        setFields(stateFields => mergeFormData(stateFields, response.data))
+        setFields(stateFields =>
+          mergeFormData(stateFields, {
+            ...response.data,
+            birthDate: response.data.birthDate
+              ? moment(response.data.birthDate)
+              : null,
+            medicine: response.data.medicine
+              ? response.data.medicine.split(',')
+              : [],
+            allergies: response.data.allergies
+              ? response.data.allergies.split(',')
+              : [],
+          }),
+        )
       }
     } catch {
       errorWrapper.handleCatchError()
@@ -45,85 +60,50 @@ const CamperView = props => {
 
   useEffect(() => {
     if (props.id) {
-      getUser()
+      getCamper()
     } else {
-      user.stopLoading()
+      camper.stopLoading()
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))
 
-  const refreshTable = () =>
-    objectsContext[page.isUserAddOrEditPage ? 'users' : 'events'].load()
+  const refreshTable = () => objectsContext.campers.load()
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
-      user.startLoading()
+      camper.startLoading()
 
-      const response = await actions.saveUser(fields)
+      const response = await actions.saveCamper(fields)
 
-      user.stopLoading()
+      camper.stopLoading()
 
       if (response) {
         refreshTable()
-        routerContext.router.navigate(
-          page.isUserAddOrEditPage ? page.userEditPage : page.eventUserEditPage,
-          {userId: response.data.id},
-        )
+
+        routerContext.router.navigate(page.camperEditPage, {
+          camperId: response.data.id,
+        })
       }
     }
   }
 
-  const handleChangePassword = () =>
-    actions.changeUserPassword(props.id, passwordFields.newPassword.value)
+  const handleDeleteCamperClick = async () => {
+    camper.startLoading()
 
-  const handleDeleteUserClick = async () => {
-    user.startLoading()
+    const response = await actions.deleteCamper(props.id)
 
-    const response = await actions.deleteUser(props.id)
-
-    user.stopLoading()
+    camper.stopLoading()
 
     if (response) {
       refreshTable()
-      routerContext.router.navigate(
-        page.isUserEditPage ? page.usersPage : page.eventsPage,
-      )
+      routerContext.router.navigate(page.campersPage)
     }
   }
 
-  const validPasswordForm = isFormReady(passwordFields)
-  const changePasswordModal = useModal({
-    callback: () => setPasswordFields(passwordFieldsInitialState),
-    content: (
-      <ResetPasswordForm
-        {...passwordFields}
-        valid={validPasswordForm}
-        onChange={changedFields =>
-          setPasswordFields(stateFields => ({...stateFields, ...changedFields}))
-        }
-        onSubmit={async () => {
-          changePasswordModal.startLoading()
-          const result = await handleChangePassword()
-          changePasswordModal.stopLoading()
-
-          if (result) {
-            changePasswordModal.hide()
-          }
-        }}
-      />
-    ),
-    okButtonDisabled: !validPasswordForm,
-    onOk: handleChangePassword,
-    onCancel: () => setPasswordFields(passwordFieldsInitialState),
-    title: 'Change Password',
-  })
-
-  const handleChangePasswordClick = () => changePasswordModal.show()
-
   const submitButtonDisabled =
-    user.loading ||
+    camper.loading ||
     (!fields.id && !isFormReady(fields)) ||
     (fields.id && !anyTouchedFields(fields)) ||
     (anyTouchedFields(fields) && !isFormReady(fields))
@@ -132,31 +112,31 @@ const CamperView = props => {
     <>
       <DrawerView
         fields={fields}
-        parentRoute={page.isUserAddOrEditPage ? 'users' : 'events'}
+        parentRoute={page.campersPage}
         submitButtonDisabled={submitButtonDisabled}
         title={
           fields.id
-            ? `Edit User - ${user.results ? user.results.firstName : ''}`
-            : 'Add a New User'
+            ? `Edit Camper - ${camper.results ? camper.results.firstName : ''}`
+            : 'Add a New Camper'
         }
         width={512}
         onSubmit={handleFormSubmit}
       >
         <LoaderContext.Provider
-          value={{spinning: user.loading, tip: 'Loading user...'}}
+          value={{spinning: camper.loading, tip: 'Loading camper...'}}
         >
-          <ErrorWrapper handleRetry={getUser} hasError={errorWrapper.hasError}>
-            <UserViewWrapper
+          <ErrorWrapper
+            handleRetry={getCamper}
+            hasError={errorWrapper.hasError}
+          >
+            <CamperViewWrapper
               fields={fields}
-              onDeleteUser={handleDeleteUserClick}
+              onDeleteCamper={handleDeleteCamperClick}
               onFieldChange={handleFieldChange}
-              onPasswordChange={handleChangePasswordClick}
             />
           </ErrorWrapper>
         </LoaderContext.Provider>
       </DrawerView>
-
-      {changePasswordModal.render}
     </>
   )
 }

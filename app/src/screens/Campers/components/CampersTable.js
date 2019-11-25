@@ -36,9 +36,9 @@ const CampersTable = props => {
       />
 
       <Column
-        key="birthdate"
+        key="birthDate"
         align="right"
-        dataIndex="birthdate"
+        dataIndex="birthDate"
         render={formatDate}
         title="Birthdate"
       />
@@ -60,8 +60,21 @@ const CampersTable = props => {
         align="center"
         dataIndex="medicine"
         render={medicine => (
-          <Popover content={medicine} title="Medication">
-            {formatIsActive(medicine !== null)}
+          <Popover
+            content={
+              medicine === '' ? (
+                <em>None</em>
+              ) : (
+                <ul>
+                  {medicine.split(',').map((x, i) => (
+                    <li key={i}>{x}</li>
+                  ))}
+                </ul>
+              )
+            }
+            title="Medication"
+          >
+            {formatIsActive(medicine !== '')}
           </Popover>
         )}
         title="Has Medication"
@@ -72,8 +85,21 @@ const CampersTable = props => {
         align="center"
         dataIndex="allergies"
         render={allergies => (
-          <Popover content={allergies} title="Allergies">
-            {formatIsActive(allergies !== null)}
+          <Popover
+            content={
+              allergies === '' ? (
+                <em>None</em>
+              ) : (
+                <ul>
+                  {allergies.split(',').map((x, i) => (
+                    <li key={i}>{x}</li>
+                  ))}
+                </ul>
+              )
+            }
+            title="Allergies"
+          >
+            {formatIsActive(allergies !== '')}
           </Popover>
         )}
         title="Has Allergies"
@@ -131,7 +157,7 @@ CampersTable.propTypes = {
   campers: PropTypes.arrayOf(
     PropTypes.shape({
       allergies: PropTypes.string,
-      birthdate: PropTypes.string,
+      birthDate: PropTypes.string,
       createdDate: PropTypes.string.isRequired,
       firstName: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
