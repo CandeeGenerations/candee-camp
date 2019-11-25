@@ -5,8 +5,8 @@ import EventForm from './EventForm'
 
 import loader from '@/components/Structure/Loader'
 
-const EventViewWrapper = props =>
-  props.loader.spinning ? null : (
+const EventViewWrapper = props => {
+  return props.loader.spinning ? null : (
     <>
       <p>
         {props.fields.id ? 'Edit your event here.' : 'Add a new event here.'}
@@ -19,6 +19,7 @@ const EventViewWrapper = props =>
       />
     </>
   )
+}
 
 EventViewWrapper.propTypes = {
   fields: PropTypes.shape({}).isRequired,

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CandeeCamp.API.DomainObjects;
+using CandeeCamp.API.Models;
 
 namespace CandeeCamp.API.Repositories.Interfaces
 {
@@ -8,9 +9,8 @@ namespace CandeeCamp.API.Repositories.Interfaces
     {
         Task<IEnumerable<Event>> GetEvents();
         Task<Event> GetEventById(int eventId);
-        Task<Event> CreateEvent(Event incomingEvent);
-        Task<Event> UpdateEvent(int eventId, Event incomingEvent);
+        Task<Event> CreateEvent(EventModel incomingEvent);
+        Task<Event> UpdateEvent(int eventId, EventModel incomingEvent);
         Task DeleteEvent(int eventId);
-        Task<Event> FindEventByName(Event incomingEvent);
     }
 }

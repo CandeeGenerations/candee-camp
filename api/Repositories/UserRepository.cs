@@ -18,14 +18,14 @@ namespace CandeeCamp.API.Repositories
         }
 
         public async Task<IEnumerable<User>> GetUsers() =>
-            await Context.Users.Where(u => !u.IsDeleted).ToListAsync();
+            await Context.Users.Where(x => !x.IsDeleted).ToListAsync();
 
         private async Task<User> GetUserByEmail(string emailAddress) =>
-            await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress && !u.IsDeleted);
+            await Context.Users.FirstOrDefaultAsync(x => x.EmailAddress == emailAddress && !x.IsDeleted);
         
         public async Task<User> GetUserById(int userId)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(x => x.Id == userId && !x.IsDeleted);
 
             if (dbUser == null)
             {
@@ -45,11 +45,12 @@ namespace CandeeCamp.API.Repositories
             }
             
             string salt = Helpers.CreateUniqueString(64);
+            
             User newUser = new User
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                EmailAddress = user.EmailAddress,
+                FirstName = user.FirstName.Trim(),
+                LastName = user.LastName.Trim(),
+                EmailAddress = user.EmailAddress.Trim(),
                 PasswordHash = user.NewPassword.Encrypt(salt),
                 Salt = salt,
                 CreatedDate = DateTimeOffset.Now,
@@ -173,9 +174,9 @@ namespace CandeeCamp.API.Repositories
         {
             User dbUser = await GetUserById(userId);
 
-            dbUser.FirstName = user.FirstName;
-            dbUser.LastName = user.LastName;
-            dbUser.EmailAddress = user.EmailAddress;
+            dbUser.FirstName = user.FirstName.Trim();
+            dbUser.LastName = user.LastName.Trim();
+            dbUser.EmailAddress = user.EmailAddress.Trim();
             dbUser.IsActive = user.IsActive;
             dbUser.UpdatedDate = DateTimeOffset.Now;
 

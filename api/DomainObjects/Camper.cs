@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CandeeCamp.API.DomainObjects.Common;
 
@@ -16,7 +15,7 @@ namespace CandeeCamp.API.DomainObjects
 
         public string LastName { get; set; }
 
-        public DateTimeOffset BirthDate { get; set; }
+        public DateTimeOffset? BirthDate { get; set; }
 
         public string ParentFirstName { get; set; }
 
@@ -27,23 +26,30 @@ namespace CandeeCamp.API.DomainObjects
         public string Allergies { get; set; }
 
         public DateTimeOffset CreatedDate { get; set; }
+        
+        public DateTimeOffset UpdatedDate { get; set; }
 
-        public int LoginUser { get; set; }
+        public int? LoginUser { get; set; }
 
         [ForeignKey("Id")]
         public virtual User User { get; set; }
 
-        public int GroupId { get; set; }
+        public int? CreatedBy { get; set; }
+        
+        [ForeignKey("CreatedBy")]
+        public virtual User CreatedByUser { get; set; }
+
+        public int? GroupId { get; set; }
 
         [ForeignKey("Id")]
         public virtual Group Group { get; set; }
 
-        public int CabinId { get; set; }
+        public int? CabinId { get; set; }
 
         [ForeignKey("Id")]
         public virtual Cabin Cabin { get; set; }
 
-        public int CounselorId { get; set; }
+        public int? CounselorId { get; set; }
 
         [ForeignKey("Id")]
         public virtual Counselor Counselor { get; set; }

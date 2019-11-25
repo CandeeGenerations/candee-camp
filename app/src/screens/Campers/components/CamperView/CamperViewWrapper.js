@@ -1,35 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import UserForm from './UserForm'
+import CamperForm from './CamperForm'
 
 import loader from '@/components/Structure/Loader'
 
-const UserViewWrapper = props => {
+const CamperViewWrapper = props => {
   return props.loader.spinning ? null : (
     <>
-      <p>{props.fields.id ? 'Edit this user here.' : 'Add a new user here.'}</p>
+      <p>
+        {props.fields.id ? 'Edit this camper here.' : 'Add a new camper here.'}
+      </p>
 
-      <UserForm
+      <CamperForm
         {...props.fields}
         onChange={props.onFieldChange}
-        onDeleteUser={props.onDeleteUser}
-        onPasswordChange={props.onPasswordChange}
+        onDeleteCamper={props.onDeleteCamper}
       />
     </>
   )
 }
 
-UserViewWrapper.propTypes = {
+CamperViewWrapper.propTypes = {
   fields: PropTypes.shape({}).isRequired,
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
   }).isRequired,
 
   // functions
-  onDeleteUser: PropTypes.func.isRequired,
+  onDeleteCamper: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
-  onPasswordChange: PropTypes.func.isRequired,
 }
 
-export default loader(UserViewWrapper)
+export default loader(CamperViewWrapper)

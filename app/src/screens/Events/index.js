@@ -2,6 +2,7 @@ import React, {useContext, useEffect} from 'react'
 import _ from 'lodash'
 import {Card, Button} from 'antd'
 import {useRoute} from 'react-router5'
+import {css, Global} from '@emotion/core'
 
 import EventView from './components/EventView'
 import EventsTable from './components/EventsTable'
@@ -67,6 +68,14 @@ const Events = () => {
 
   return (
     <>
+      <Global
+        styles={css`
+          html {
+            min-width: 830px;
+          }
+        `}
+      />
+
       <MainContent>
         <Card>
           <PageHeader

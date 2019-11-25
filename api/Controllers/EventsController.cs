@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CandeeCamp.API.DomainObjects;
+using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,8 +42,13 @@ namespace CandeeCamp.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(Task<Event>), 200)]
-        public async Task<ActionResult<Event>> CreateEvent([FromBody]Event incomingEvent)
+        public async Task<ActionResult<Event>> CreateEvent([FromBody]EventModel incomingEvent)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
             Event newEvent = await _eventRepository.CreateEvent(incomingEvent);
             
             return Ok(newEvent);
@@ -49,8 +56,13 @@ namespace CandeeCamp.API.Controllers
 
         [HttpPut("{eventId}")]
         [ProducesResponseType(typeof(Task<Event>), 200)]
-        public async Task<ActionResult<Event>> UpdateEvent(int eventId, [FromBody]Event incomingEvent)
+        public async Task<ActionResult<Event>> UpdateEvent(int eventId, [FromBody]EventModel incomingEvent)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
             Event updatedEvent = await _eventRepository.UpdateEvent(eventId, incomingEvent);
             
             return Ok(updatedEvent);

@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React from 'react'
 import _ from 'lodash'
 import {Layout} from 'antd'
@@ -14,6 +16,7 @@ import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import Users from '@/screens/Users'
 import Signin from '@/screens/Signin'
 import Events from '@/screens/Events'
+import Campers from '@/screens/Campers'
 import NavBar from '@/components/NavBar'
 import NotFound from '@/screens/NotFound'
 import Version from '@/components/Version'
@@ -34,6 +37,7 @@ const App = () => {
   const routeName = routerContext.route.name
   const users = useAsyncLoad(actions.userActions.loadUsers)
   const events = useAsyncLoad(actions.eventActions.loadEvents)
+  const campers = useAsyncLoad(actions.camperActions.loadCampers)
 
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
@@ -85,7 +89,10 @@ const App = () => {
     return (
       <>
         <Signin />
-        <Version light />
+
+        <div css={{position: 'relative'}}>
+          <Version light />
+        </div>
       </>
     )
   }
@@ -102,6 +109,8 @@ const App = () => {
     content = <Events />
   } else if (routeName.includes(page.usersPage)) {
     content = <Users />
+  } else if (routeName.includes(page.campersPage)) {
+    content = <Campers />
   } else {
     content = <NotFound />
   }
@@ -116,7 +125,9 @@ const App = () => {
     <>
       {content}
 
-      <Version light={isUnauthenticatedRoute} />
+      <div css={{position: 'relative'}}>
+        <Version light={isUnauthenticatedRoute} />
+      </div>
     </>
   ) : (
     <Layout>
@@ -126,6 +137,7 @@ const App = () => {
         <ErrorBoundary router={routerContext.route}>
           <ObjectsContext.Provider
             value={{
+              campers,
               events,
               users,
             }}

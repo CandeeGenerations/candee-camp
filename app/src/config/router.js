@@ -35,6 +35,20 @@ const routes = [
     ],
   },
   {
+    name: 'campers',
+    path: '/campers',
+    children: [
+      {
+        name: 'add',
+        path: '/add',
+      },
+      {
+        name: 'edit',
+        path: '/edit/:camperId',
+      },
+    ],
+  },
+  {
     name: 'users',
     path: '/users',
     children: [

@@ -100,7 +100,10 @@ const EventsTable = props => {
         align="right"
         render={(text, record) => (
           <span>
-            <NavItem params={{eventId: record.id}} routeName="events.edit">
+            <NavItem
+              params={{eventId: record.id}}
+              routeName={page.eventEditPage}
+            >
               Edit
             </NavItem>
 

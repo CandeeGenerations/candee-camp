@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CandeeCamp.API.Context;
 using CandeeCamp.API.DomainObjects;
+using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,21 +16,22 @@ namespace CandeeCamp.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Event>> GetEvents()
-        {
-            IEnumerable<Event> dbEvents = await Context.Events.ToListAsync();
-
-            return dbEvents.Where(x => !x.IsDeleted);
-        }
+        public async Task<IEnumerable<Event>> GetEvents() =>
+            await Context.Events.Where(x => !x.IsDeleted).ToListAsync();
 
         public async Task<Event> GetEventById(int eventId)
         {
-            Event dbEvent = await Context.Events.FindAsync(eventId);
+            Event dbEvent = await Context.Events.FirstOrDefaultAsync(x => x.Id == eventId && !x.IsDeleted);
+
+            if (dbEvent == null)
+            {
+                throw new Exception("This event does not exist.");
+            }
 
             return dbEvent;
         }
 
-        public async Task<Event> CreateEvent(Event incomingEvent)
+        public async Task<Event> CreateEvent(EventModel incomingEvent)
         {
             if (incomingEvent.StartDate == DateTimeOffset.MinValue || incomingEvent.EndDate == DateTimeOffset.MinValue)
             {
@@ -40,17 +42,27 @@ namespace CandeeCamp.API.Repositories
             {
                 throw new Exception("The Start Date must occur before the End Date.");
             }
+
+            Event newEvent = new Event()
+            {
+                Name = incomingEvent.Name.Trim(),
+                Cost = incomingEvent.Cost,
+                CreatedBy = incomingEvent.CreatedBy,
+                CreatedDate = DateTimeOffset.Now,
+                EndDate = incomingEvent.EndDate,
+                IsActive = true,
+                IsDeleted = false,
+                StartDate = incomingEvent.StartDate,
+                UpdatedDate = DateTimeOffset.Now
+            };
             
-            incomingEvent.IsActive = true;
-            incomingEvent.IsDeleted = false;
-            
-            await Context.Events.AddAsync(incomingEvent);
+            await Context.Events.AddAsync(newEvent);
             await Context.SaveChangesAsync();
             
-            return incomingEvent;
+            return newEvent;
         }
 
-        public async Task<Event> UpdateEvent(int eventId, Event incomingEvent)
+        public async Task<Event> UpdateEvent(int eventId, EventModel incomingEvent)
         {
             if (incomingEvent.StartDate == DateTimeOffset.MinValue ||
                 incomingEvent.EndDate == DateTimeOffset.MinValue)
@@ -63,39 +75,27 @@ namespace CandeeCamp.API.Repositories
                 throw new Exception("The Start Date must occur before the End Date.");
             }
 
-            var dbEvent = await Context.Events.FindAsync(eventId);
+            Event dbEvent = await GetEventById(eventId);
 
-            if (dbEvent == null)
-            {
-                throw new Exception("The Event does not exist.");
-            }
-
-            dbEvent.Name = incomingEvent.Name;
+            dbEvent.Name = incomingEvent.Name.Trim();
             dbEvent.Cost = incomingEvent.Cost;
             dbEvent.StartDate = incomingEvent.StartDate;
             dbEvent.EndDate = incomingEvent.EndDate;
             dbEvent.UpdatedDate = DateTimeOffset.UtcNow;
-
-            Context.Events.Update(dbEvent);
+            
             await Context.SaveChangesAsync();
 
-            return incomingEvent;
+            return dbEvent;
         }
 
         public async Task DeleteEvent(int eventId)
         {
-            Event dbEvent = await Context.Events.FindAsync(eventId);
+            Event dbEvent = await GetEventById(eventId);
 
             dbEvent.IsActive = false;
             dbEvent.IsDeleted = true;
             
-            Context.Events.Update(dbEvent);
             await Context.SaveChangesAsync();
-        }
-
-        public async Task<Event> FindEventByName(Event incomingEvent)
-        {
-            return await Context.Events.SingleOrDefaultAsync(@event => @event.Name == incomingEvent.Name);
         }
     }
 }
