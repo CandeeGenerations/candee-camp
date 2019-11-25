@@ -35,6 +35,7 @@ const App = () => {
   const routeName = routerContext.route.name
   const users = useAsyncLoad(actions.userActions.loadUsers)
   const events = useAsyncLoad(actions.eventActions.loadEvents)
+  const campers = useAsyncLoad(actions.camperActions.loadCampers)
 
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
@@ -103,7 +104,7 @@ const App = () => {
     content = <Events />
   } else if (routeName.includes(page.usersPage)) {
     content = <Users />
-  } else if (routeName.includes('campers')) {
+  } else if (routeName.includes(page.campersPage)) {
     content = <Campers />
   } else {
     content = <NotFound />
@@ -129,6 +130,7 @@ const App = () => {
         <ErrorBoundary router={routerContext.route}>
           <ObjectsContext.Provider
             value={{
+              campers,
               events,
               users,
             }}

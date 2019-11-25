@@ -24,7 +24,7 @@ const NavBar = () => {
     {
       icon: 'team',
       name: 'Campers',
-      routeName: 'campers',
+      routeName: page.campersPage,
     },
     {
       icon: 'user',

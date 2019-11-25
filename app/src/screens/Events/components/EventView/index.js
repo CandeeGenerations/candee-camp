@@ -112,7 +112,7 @@ const EventView = props => {
   return (
     <DrawerView
       fields={fields}
-      parentRoute="events"
+      parentRoute={page.eventsPage}
       submitButtonDisabled={submitButtonDisabled}
       title={fields.id ? `Edit Event - ${eventName}` : 'Add a New Event'}
       width={512}

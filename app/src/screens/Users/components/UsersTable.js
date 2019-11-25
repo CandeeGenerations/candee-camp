@@ -3,6 +3,7 @@ import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {Divider, Table} from 'antd'
 
+import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
 import {formatDate, formatIsActive} from '@/helpers'
 
@@ -12,8 +13,10 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const UsersTable = props =>
-  props.loader.spinning ? (
+const UsersTable = props => {
+  const page = usePage()
+
+  return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
   ) : (
     <Table
@@ -69,7 +72,7 @@ const UsersTable = props =>
         align="right"
         render={(text, record) => (
           <span>
-            <NavItem params={{userId: record.id}} routeName="users.edit">
+            <NavItem params={{userId: record.id}} routeName={page.userEditPage}>
               Edit
             </NavItem>
 
@@ -91,6 +94,7 @@ const UsersTable = props =>
       />
     </Table>
   )
+}
 
 UsersTable.propTypes = {
   users: PropTypes.arrayOf(

@@ -1,7 +1,9 @@
-import React from 'react'
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {Divider, Popover, Table} from 'antd'
 
+import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
 import {formatDate, formatIsActive} from '@/helpers'
 
@@ -11,9 +13,11 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const CampersTable = props =>
-  props.loader.spinning ? (
-    <div style={{minHeight: 500}} />
+const CampersTable = props => {
+  const page = usePage()
+
+  return props.loader.spinning ? (
+    <div css={{minHeight: 500}} />
   ) : (
     <Table
       dataSource={props.campers}
@@ -96,7 +100,10 @@ const CampersTable = props =>
         align="right"
         render={(text, record) => (
           <span>
-            <NavItem params={{userId: record.id}} routeName="users.edit">
+            <NavItem
+              params={{camperId: record.id}}
+              routeName={page.camperEditPage}
+            >
               Edit
             </NavItem>
 
@@ -110,7 +117,7 @@ const CampersTable = props =>
                   to delete this camper?
                 </p>
               }
-              onConfirm={() => props.deleteUser(record.id)}
+              onConfirm={() => props.deleteCamper(record.id)}
             />
           </span>
         )}
@@ -118,6 +125,7 @@ const CampersTable = props =>
       />
     </Table>
   )
+}
 
 CampersTable.propTypes = {
   campers: PropTypes.arrayOf(

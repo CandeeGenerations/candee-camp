@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {useRoute} from 'react-router5'
 import {Button, Card} from 'antd'
 
@@ -6,23 +6,26 @@ import CampersTable from './components/CampersTable'
 
 import {camperActions as actions} from '@/actions'
 
+import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
-import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 
+import {ObjectsContext} from '@/screens/App'
+import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const Campers = () => {
+  const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
-  const campers = useAsyncLoad(actions.loadCampers)
+  const objectsContext = useContext(ObjectsContext)
 
   useTitle('Campers')
 
   useEffect(() => {
     try {
-      campers.load()
+      objectsContext.campers.load()
     } catch (error) {
       errorWrapper.handleCatchError()
     }
@@ -32,57 +35,55 @@ const Campers = () => {
     const response = await actions.deleteCamper(camperId)
 
     if (response) {
-      campers.load()
+      objectsContext.campers.load()
     }
   }
 
   return (
-    <>
-      <section className="cc--main-content">
-        <Card>
-          <PageHeader
-            actions={[
-              <Button
-                key="add"
-                type="primary"
-                onClick={() => routerContext.router.navigate('users.camper')}
-              >
-                Add Camper
-              </Button>,
-            ]}
-            routes={[
-              {path: '/dashboard', breadcrumbName: 'Dashboard'},
-              {path: '/campers', breadcrumbName: 'Campers'},
-            ]}
-            title="Campers"
-          />
-
-          <LoaderContext.Provider
-            value={{
-              spinning: campers.loading,
-              tip: 'Loading campers...',
-            }}
-          >
-            <ErrorWrapper
-              handleRetry={campers.load}
-              hasError={errorWrapper.hasError}
+    <MainContent>
+      <Card>
+        <PageHeader
+          actions={[
+            <Button
+              key="add"
+              type="primary"
+              onClick={() => routerContext.router.navigate(page.camperAddPage)}
             >
-              <CampersTable
-                campers={
-                  (campers.results &&
-                    campers.results.map(camper => ({
-                      ...camper,
-                      key: camper.id,
-                    }))) ||
-                  []
-                }
-                deleteCamper={handleDeleteCamperClick}
-              />
-            </ErrorWrapper>
-          </LoaderContext.Provider>
-        </Card>
-      </section>
-    </>
+              Add Camper
+            </Button>,
+          ]}
+          routes={[
+            {path: '/dashboard', breadcrumbName: 'Dashboard'},
+            {path: '/campers', breadcrumbName: 'Campers'},
+          ]}
+          title="Campers"
+        />
+
+        <LoaderContext.Provider
+          value={{
+            spinning: objectsContext.campers.loading,
+            tip: 'Loading campers...',
+          }}
+        >
+          <ErrorWrapper
+            handleRetry={objectsContext.campers.load}
+            hasError={errorWrapper.hasError}
+          >
+            <CampersTable
+              campers={
+                (objectsContext.campers.results &&
+                  objectsContext.campers.results.map(camper => ({
+                    ...camper,
+                    key: camper.id,
+                  }))) ||
+                []
+              }
+              deleteCamper={handleDeleteCamperClick}
+            />
+          </ErrorWrapper>
+        </LoaderContext.Provider>
+      </Card>
+    </MainContent>
   )
 }
 

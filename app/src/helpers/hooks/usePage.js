@@ -19,6 +19,12 @@ export default () => {
       routeName.includes('events.add') || routeName.includes('events.edit'),
     isEventUserEditPage: routeName.includes('events.user'),
 
+    // campers
+    isCamperAddPage: routeName.includes('campers.add'),
+    isCamperEditPage: routeName.includes('campers.edit'),
+    isCamperAddOrEditPage:
+      routeName.includes('campers.add') || routeName.includes('campers.edit'),
+
     // values : return string
     // users
     usersPage: 'users',
@@ -30,5 +36,10 @@ export default () => {
     eventAddPage: 'events.add',
     eventEditPage: 'events.edit',
     eventUserEditPage: 'events.user',
+
+    // campers
+    campersPage: 'campers',
+    camperAddPage: 'campers.add',
+    camperEditPage: 'campers.edit',
   }
 }
