@@ -18,7 +18,7 @@ const DrawerView = props => {
       visible
       onClose={handleClose}
     >
-      {props.children}
+      <div css={{paddingBottom: 20}}>{props.children}</div>
 
       <div
         css={{

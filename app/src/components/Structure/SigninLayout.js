@@ -8,6 +8,7 @@ const SigninLayout = props => {
       css={{
         paddingTop: 200,
         minHeight: '100%',
+        paddingBottom: 50,
         textAlign: 'center',
         position: 'relative',
         backgroundSize: 'cover',
@@ -31,6 +32,7 @@ const SigninLayout = props => {
           top: 0,
           zIndex: 1,
           width: 700,
+          height: 611,
           padding: 60,
           borderRadius: 8,
           textAlign: 'left',

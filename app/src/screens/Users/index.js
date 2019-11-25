@@ -1,6 +1,7 @@
 import React, {useContext, useEffect} from 'react'
-import {useRoute} from 'react-router5'
 import {Button, Card} from 'antd'
+import {useRoute} from 'react-router5'
+import {css, Global} from '@emotion/core'
 
 import UsersTable from './components/UsersTable'
 
@@ -39,50 +40,60 @@ const Users = () => {
   }
 
   return (
-    <MainContent>
-      <Card>
-        <PageHeader
-          actions={[
-            <Button
-              key="add"
-              type="primary"
-              onClick={() => routerContext.router.navigate(page.userAddPage)}
-            >
-              Add User
-            </Button>,
-          ]}
-          routes={[
-            {path: '/dashboard', breadcrumbName: 'Dashboard'},
-            {path: '/users', breadcrumbName: 'Users'},
-          ]}
-          title="Users"
-        />
+    <>
+      <Global
+        styles={css`
+          html {
+            min-width: 1090px;
+          }
+        `}
+      />
 
-        <LoaderContext.Provider
-          value={{
-            spinning: objectsContext.users.loading,
-            tip: 'Loading users...',
-          }}
-        >
-          <ErrorWrapper
-            handleRetry={objectsContext.users.load}
-            hasError={errorWrapper.hasError}
+      <MainContent>
+        <Card>
+          <PageHeader
+            actions={[
+              <Button
+                key="add"
+                type="primary"
+                onClick={() => routerContext.router.navigate(page.userAddPage)}
+              >
+                Add User
+              </Button>,
+            ]}
+            routes={[
+              {path: '/dashboard', breadcrumbName: 'Dashboard'},
+              {path: '/users', breadcrumbName: 'Users'},
+            ]}
+            title="Users"
+          />
+
+          <LoaderContext.Provider
+            value={{
+              spinning: objectsContext.users.loading,
+              tip: 'Loading users...',
+            }}
           >
-            <UsersTable
-              deleteUser={handleDeleteUserClick}
-              users={
-                (objectsContext.users.results &&
-                  objectsContext.users.results.map(user => ({
-                    ...user,
-                    key: user.id,
-                  }))) ||
-                []
-              }
-            />
-          </ErrorWrapper>
-        </LoaderContext.Provider>
-      </Card>
-    </MainContent>
+            <ErrorWrapper
+              handleRetry={objectsContext.users.load}
+              hasError={errorWrapper.hasError}
+            >
+              <UsersTable
+                deleteUser={handleDeleteUserClick}
+                users={
+                  (objectsContext.users.results &&
+                    objectsContext.users.results.map(user => ({
+                      ...user,
+                      key: user.id,
+                    }))) ||
+                  []
+                }
+              />
+            </ErrorWrapper>
+          </LoaderContext.Provider>
+        </Card>
+      </MainContent>
+    </>
   )
 }
 

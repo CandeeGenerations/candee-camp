@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React from 'react'
 import _ from 'lodash'
 import {Layout} from 'antd'
@@ -87,7 +89,10 @@ const App = () => {
     return (
       <>
         <Signin />
-        <Version light />
+
+        <div css={{position: 'relative'}}>
+          <Version light />
+        </div>
       </>
     )
   }
@@ -120,7 +125,9 @@ const App = () => {
     <>
       {content}
 
-      <Version light={isUnauthenticatedRoute} />
+      <div css={{position: 'relative'}}>
+        <Version light={isUnauthenticatedRoute} />
+      </div>
     </>
   ) : (
     <Layout>

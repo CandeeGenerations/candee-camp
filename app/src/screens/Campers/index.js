@@ -1,6 +1,7 @@
 import React, {useContext, useEffect} from 'react'
-import {useRoute} from 'react-router5'
 import {Button, Card} from 'antd'
+import {useRoute} from 'react-router5'
+import {css, Global} from '@emotion/core'
 
 import CamperView from './components/CamperView'
 import CampersTable from './components/CampersTable'
@@ -42,6 +43,14 @@ const Campers = () => {
 
   return (
     <>
+      <Global
+        styles={css`
+          html {
+            min-width: 1160px;
+          }
+        `}
+      />
+
       <MainContent>
         <Card>
           <PageHeader
