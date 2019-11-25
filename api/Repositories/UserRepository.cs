@@ -18,14 +18,14 @@ namespace CandeeCamp.API.Repositories
         }
 
         public async Task<IEnumerable<User>> GetUsers() =>
-            await Context.Users.Where(u => !u.IsDeleted).ToListAsync();
+            await Context.Users.Where(x => !x.IsDeleted).ToListAsync();
 
         private async Task<User> GetUserByEmail(string emailAddress) =>
-            await Context.Users.FirstOrDefaultAsync(u => u.EmailAddress == emailAddress && !u.IsDeleted);
+            await Context.Users.FirstOrDefaultAsync(x => x.EmailAddress == emailAddress && !x.IsDeleted);
         
         public async Task<User> GetUserById(int userId)
         {
-            User dbUser = await Context.Users.FirstOrDefaultAsync(u => u.Id == userId && !u.IsDeleted);
+            User dbUser = await Context.Users.FirstOrDefaultAsync(x => x.Id == userId && !x.IsDeleted);
 
             if (dbUser == null)
             {
@@ -45,6 +45,7 @@ namespace CandeeCamp.API.Repositories
             }
             
             string salt = Helpers.CreateUniqueString(64);
+            
             User newUser = new User
             {
                 FirstName = user.FirstName.Trim(),

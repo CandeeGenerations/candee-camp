@@ -17,11 +17,11 @@ namespace CandeeCamp.API.Repositories
         }
 
         public async Task<IEnumerable<Camper>> GetCampers() =>
-            await Context.Campers.Where(c => !c.IsDeleted).ToListAsync();
+            await Context.Campers.Where(x => !x.IsDeleted).ToListAsync();
 
         public async Task<Camper> GetCamperById(int camperId)
         {
-            Camper dbCamper = await Context.Campers.FirstOrDefaultAsync(c => c.Id == camperId && !c.IsDeleted);
+            Camper dbCamper = await Context.Campers.FirstOrDefaultAsync(x => x.Id == camperId && !x.IsDeleted);
 
             if (dbCamper == null)
             {

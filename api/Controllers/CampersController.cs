@@ -34,6 +34,11 @@ namespace CandeeCamp.API.Controllers
         [ProducesResponseType(typeof(Camper), 200)]
         public async Task<ActionResult<Camper>> GetCamper(int camperId)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
             Camper camper = await _camperRepository.GetCamperById(camperId);
 
             return Ok(camper);
