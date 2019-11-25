@@ -47,8 +47,9 @@ export const saveCamper = async camper => {
 
     const body = formDataToBody(camper)
 
-    body.medicine = body.medicine.toString()
-    body.allergies = body.allergies.toString()
+    body.medicine = body.medicine.length > 0 ? body.medicine.toString() : null
+    body.allergies =
+      body.allergies.length > 0 ? body.allergies.toString() : null
     body.createdBy = user.id
 
     if (camper.id) {

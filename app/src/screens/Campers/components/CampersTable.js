@@ -62,19 +62,19 @@ const CampersTable = props => {
         render={medicine => (
           <Popover
             content={
-              medicine === '' ? (
-                <em>None</em>
-              ) : (
+              medicine ? (
                 <ul>
                   {medicine.split(',').map((x, i) => (
                     <li key={i}>{x}</li>
                   ))}
                 </ul>
+              ) : (
+                <em>None</em>
               )
             }
             title="Medication"
           >
-            {formatIsActive(medicine !== '')}
+            {formatIsActive(medicine)}
           </Popover>
         )}
         title="Has Medication"
@@ -87,19 +87,19 @@ const CampersTable = props => {
         render={allergies => (
           <Popover
             content={
-              allergies === '' ? (
-                <em>None</em>
-              ) : (
+              allergies ? (
                 <ul>
                   {allergies.split(',').map((x, i) => (
                     <li key={i}>{x}</li>
                   ))}
                 </ul>
+              ) : (
+                <em>None</em>
               )
             }
             title="Allergies"
           >
-            {formatIsActive(allergies !== '')}
+            {formatIsActive(allergies)}
           </Popover>
         )}
         title="Has Allergies"
