@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CandeeCamp.API.DomainObjects;
 using CandeeCamp.API.Models;
@@ -15,10 +16,12 @@ namespace CandeeCamp.API.Controllers
     public class GroupsController : Controller
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly ICamperRepository _camperRepository;
 
-        public GroupsController(IGroupRepository groupRepository)
+        public GroupsController(IGroupRepository groupRepository, ICamperRepository camperRepository)
         {
             _groupRepository = groupRepository;
+            _camperRepository = camperRepository;
         }
 
         [HttpGet]
@@ -31,8 +34,8 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpGet("{groupId}")]
-        [ProducesResponseType(typeof(Group), 200)]
-        public async Task<ActionResult<Group>> GetGroup(int groupId)
+        [ProducesResponseType(typeof(GroupModel), 200)]
+        public async Task<ActionResult<GroupModel>> GetGroup(int groupId)
         {
             if (!ModelState.IsValid)
             {
@@ -40,8 +43,18 @@ namespace CandeeCamp.API.Controllers
             }
             
             Group group = await _groupRepository.GetGroupById(groupId);
+            IEnumerable<Camper> campers = await _camperRepository.GetCampersByGroup(groupId);
 
-            return Ok(group);
+            GroupModel model = new GroupModel
+            {
+                Id = group.Id,
+                Name = group.Name,
+                IsActive = group.IsActive,
+                LoginUser = group.LoginUser,
+                Campers = campers.Select(x => x.Id).ToArray()
+            };
+
+            return Ok(model);
         }
 
         [HttpPost]

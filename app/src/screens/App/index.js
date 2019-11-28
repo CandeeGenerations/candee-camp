@@ -136,10 +136,10 @@ const App = () => {
       </div>
     </>
   ) : (
-    <Layout>
+    <Layout css={{backgroundColor: '#2a363e', margin: '0 10px'}}>
       <NavBar />
 
-      <Layout>
+      <Layout css={{borderRadius: 20, margin: '10px 10px 10px 0'}}>
         <ErrorBoundary router={routerContext.route}>
           <ObjectsContext.Provider
             value={{

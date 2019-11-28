@@ -32,8 +32,8 @@ const EventsTable = props => {
         key="onGoing"
         align="center"
         render={(text, record) =>
-          record.startDate < moment().valueOf() &&
-          record.endDate > moment().valueOf() ? (
+          moment(record.startDate).valueOf() < moment().valueOf() &&
+          moment(record.endDate).valueOf() > moment().valueOf() ? (
             <Icon theme="twoTone" twoToneColor="#52c41a" type="check-circle" />
           ) : (
             <Icon theme="twoTone" twoToneColor="#eb2f96" type="close-circle" />

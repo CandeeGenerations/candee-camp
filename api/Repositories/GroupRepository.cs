@@ -12,8 +12,11 @@ namespace CandeeCamp.API.Repositories
 {
     public class GroupRepository : BaseRepository, IGroupRepository
     {
-        public GroupRepository(CampContext context) : base(context)
+        private readonly ICamperRepository _camperRepository;
+        
+        public GroupRepository(CampContext context, ICamperRepository camperRepository) : base(context)
         {
+            _camperRepository = camperRepository;
         }
 
         public async Task<IEnumerable<Group>> GetGroups() =>
@@ -31,8 +34,19 @@ namespace CandeeCamp.API.Repositories
             return dbGroup;
         }
 
+        public async Task<IEnumerable<Group>> GetGroupsByName(string name) => await Context.Groups
+            .Where(x => !x.IsDeleted && string.Equals(x.Name, name.Trim(), StringComparison.CurrentCultureIgnoreCase))
+            .ToListAsync();
+
         public async Task<Group> CreateGroup(GroupModel group)
         {
+            IEnumerable<Group> existingGroups = await GetGroupsByName(group.Name);
+
+            if (existingGroups.Any())
+            {
+                throw new Exception("This group already exists. Please use another name.");
+            }
+            
             Group newGroup = new Group
             {
                 IsDeleted = false,
@@ -46,6 +60,8 @@ namespace CandeeCamp.API.Repositories
 
             await Context.Groups.AddAsync(newGroup);
             await Context.SaveChangesAsync();
+            
+            await _camperRepository.UpdateGroups(group.Campers, newGroup.Id);
 
             return newGroup;
         }
@@ -58,10 +74,19 @@ namespace CandeeCamp.API.Repositories
             dbGroup.IsDeleted = true;
 
             await Context.SaveChangesAsync();
+            
+            await _camperRepository.RemoveGroups(groupId);
         }
 
         public async Task<Group> UpdateGroup(int groupId, GroupModel group)
         {
+            IEnumerable<Group> existingGroups = await GetGroupsByName(group.Name);
+
+            if (existingGroups.Count() > 1)
+            {
+                throw new Exception("This group already exists. Please use another name.");
+            }
+            
             Group dbGroup = await GetGroupById(groupId);
 
             dbGroup.Name = group.Name.Trim();
@@ -70,6 +95,9 @@ namespace CandeeCamp.API.Repositories
             dbGroup.UpdatedDate = DateTimeOffset.Now;
             
             await Context.SaveChangesAsync();
+            
+            await _camperRepository.RemoveGroups(groupId);
+            await _camperRepository.UpdateGroups(group.Campers, groupId);
 
             return dbGroup;
         }

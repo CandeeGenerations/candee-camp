@@ -12,6 +12,7 @@ import {
   Row,
   Switch,
   Typography,
+  Select,
 } from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
@@ -26,6 +27,7 @@ const GroupForm = Form.create({
   mapPropsToFields(props) {
     const {
       name,
+      campers,
       // loginUser,
       isActive,
     } = props
@@ -34,6 +36,10 @@ const GroupForm = Form.create({
       name: Form.createFormField({
         ...name,
         value: name.value,
+      }),
+      campers: Form.createFormField({
+        ...campers,
+        value: campers.value,
       }),
       isActive: Form.createFormField({
         ...isActive,
@@ -57,6 +63,34 @@ const GroupForm = Form.create({
             {getFieldDecorator('name', {
               rules: [{required: true, message: 'The name is required.'}],
             })(<Input placeholder="e.g. Central Baptist Church" autoFocus />)}
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item label="Campers">
+            {getFieldDecorator('campers')(
+              <Select
+                filterOption={(inputValue, option) =>
+                  option.props.children.filter(x =>
+                    x
+                      .trim()
+                      .toLowerCase()
+                      .includes(inputValue),
+                  ).length > 0
+                }
+                mode="multiple"
+                placeholder="e.g. John Doe"
+                allowClear
+              >
+                {props.campersList.map(x => (
+                  <Select.Option key={x.id} value={`${x.id}`}>
+                    {x.firstName} {x.lastName}
+                  </Select.Option>
+                ))}
+              </Select>,
+            )}
           </Form.Item>
         </Col>
       </Row>

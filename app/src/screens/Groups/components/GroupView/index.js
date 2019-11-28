@@ -23,6 +23,7 @@ const GroupView = props => {
 
   const [fields, setFields] = useState({
     name: {includePercent: true, isRequired: true, value: null},
+    campers: {includePercent: true, value: []},
     isActive: {includePercent: true, value: true},
   })
 
@@ -31,7 +32,12 @@ const GroupView = props => {
       const response = await group.load()
 
       if (response) {
-        setFields(stateFields => mergeFormData(stateFields, response.data))
+        setFields(stateFields =>
+          mergeFormData(stateFields, {
+            ...response.data,
+            campers: response.data.campers.map(x => `${x}`),
+          }),
+        )
       }
     } catch {
       errorWrapper.handleCatchError()
@@ -84,6 +90,7 @@ const GroupView = props => {
 
   const submitButtonDisabled =
     group.loading ||
+    objectsContext.campers.loading ||
     (!fields.id && !isFormReady(fields)) ||
     (fields.id && !anyTouchedFields(fields)) ||
     (anyTouchedFields(fields) && !isFormReady(fields))
@@ -103,10 +110,14 @@ const GroupView = props => {
         onSubmit={handleFormSubmit}
       >
         <LoaderContext.Provider
-          value={{spinning: group.loading, tip: 'Loading group...'}}
+          value={{
+            spinning: group.loading || objectsContext.campers.loading,
+            tip: 'Loading group...',
+          }}
         >
           <ErrorWrapper handleRetry={getGroup} hasError={errorWrapper.hasError}>
             <GroupViewWrapper
+              campersList={objectsContext.campers.results || []}
               fields={fields}
               onDeleteGroup={handleDeleteGroupClick}
               onFieldChange={handleFieldChange}

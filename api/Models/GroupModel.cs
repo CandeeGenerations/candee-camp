@@ -4,6 +4,8 @@ namespace CandeeCamp.API.Models
 {
     public class GroupModel
     {
+        public int Id { get; set; }
+        
         [Required]
         public string Name { get; set; }
         
@@ -14,5 +16,7 @@ namespace CandeeCamp.API.Models
 
         [Required]
         public int CreatedBy { get; set; }
+        
+        public int[] Campers { get; set; }
     }
 }

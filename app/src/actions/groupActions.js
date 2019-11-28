@@ -51,6 +51,7 @@ export const saveGroup = async group => {
 
     body.loginUser = 3
     body.createdBy = user.id
+    body.campers = body.campers.map(x => Number(x))
 
     if (group.id) {
       response = await request.put(`${mainPath}/${group.id.value}`, body)

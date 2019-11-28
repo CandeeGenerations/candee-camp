@@ -14,6 +14,7 @@ const GroupViewWrapper = props => {
 
       <GroupForm
         {...props.fields}
+        campersList={props.campersList}
         onChange={props.onFieldChange}
         onDeleteGroup={props.onDeleteGroup}
       />

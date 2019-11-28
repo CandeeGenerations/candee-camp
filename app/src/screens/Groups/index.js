@@ -28,6 +28,7 @@ const Groups = () => {
   useEffect(() => {
     try {
       objectsContext.groups.load()
+      objectsContext.campers.load()
     } catch (error) {
       errorWrapper.handleCatchError()
     }
