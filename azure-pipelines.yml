@@ -33,7 +33,7 @@ jobs:
 
   - script: |
       cd app
-      yarn test
+      yarn test:ci
     displayName: 'Test code'
 
   - script: |
