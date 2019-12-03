@@ -21,7 +21,7 @@ jobs:
   - task: Cache@2
     displayName: 'Save cache'
     inputs:
-      key: 'v2-dependencies-${{ Build.BuildId }}'
+      key: 'v2-dependencies-$(Build.BuildId)'
       path: 'node_modules'
 
   - script: cd app && yarn test
