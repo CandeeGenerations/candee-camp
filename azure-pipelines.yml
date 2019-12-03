@@ -31,10 +31,10 @@ jobs:
       yarn install
     displayName: 'Install node modules'
 
-  # - script: |
-  #     cd app
-  #     yarn test
-  #   displayName: 'Test code'
+  - script: |
+      cd app
+      yarn test
+    displayName: 'Test code'
 
   - script: |
       cd app
