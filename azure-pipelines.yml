@@ -20,7 +20,7 @@ jobs:
   - task: Cache@2
     displayName: 'Cache packages'
     inputs:
-      key: 'yarn | "$(Agent.OS)" | yarn.lock'
+      key: 'yarn | "$(Agent.OS)" | app/yarn.lock'
       restoreKeys: |
         yarn | "$(Agent.OS)"
         yarn
@@ -28,7 +28,7 @@ jobs:
 
   - script: |
       cd app
-      yarn install
+      yarn --frozen-lockfile
     displayName: 'Install node modules'
 
   - script: |
