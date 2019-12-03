@@ -1,65 +1,76 @@
+name: 'Master Builder'
 variables:
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
 
 trigger:
 - master
 
-jobs:
-- job: build_js
-  pool:
-    vmImage: 'ubuntu-latest'
+stages:
+- stage: build
+  displayName: 'Build JS and API'
 
-  steps:
-  - checkout: self
-    
-  - task: NodeTool@0
-    displayName: 'Install Node'
-    inputs:
-      versionSpec: '11.15.0'
+  jobs:
+  - job: build_js
+    pool:
+      vmImage: 'ubuntu-latest'
 
-  - task: Cache@2
-    displayName: 'Cache packages'
-    inputs:
-      key: 'yarn | "$(Agent.OS)" | app/yarn.lock'
-      restoreKeys: |
-        yarn | "$(Agent.OS)"
-        yarn
-      path: $(YARN_CACHE_FOLDER)
+    steps:
+    - checkout: self
+      
+    - task: NodeTool@0
+      displayName: 'Install Node'
+      inputs:
+        versionSpec: '11.15.0'
 
-  - script: |
-      cd app
-      yarn --frozen-lockfile
-    displayName: 'Install node modules'
+    - task: Cache@2
+      displayName: 'Cache packages'
+      inputs:
+        key: 'yarn | "$(Agent.OS)" | app/yarn.lock'
+        restoreKeys: |
+          yarn | "$(Agent.OS)"
+          yarn
+        path: $(YARN_CACHE_FOLDER)
 
-  - script: |
-      cd app
-      yarn test:ci
-    displayName: 'Test code'
+    - script: |
+        cd app
+        yarn --frozen-lockfile
+      displayName: 'Install node modules'
 
-  - script: |
-      cd app
-      yarn build
-    displayName: 'Build code'
+    - script: |
+        cd app
+        yarn test:ci
+      displayName: 'Test code'
 
-- job: build_api
-  pool:
-    vmImage: 'ubuntu-latest'
+    - script: |
+        cd app
+        yarn build
+      displayName: 'Build code'
 
-  steps:
-  - checkout: self
+  - job: build_api
+    pool:
+      vmImage: 'ubuntu-latest'
 
-  - task: UseDotNet@2
-    displayName: 'Install .NET Core SDK'
-    inputs:
-      version: '2.2.x'
-      packageType: runtime
+    steps:
+    - checkout: self
 
-  - script: |
-      cd api
-      dotnet restore
-    displayName: 'Restore packages'
+    - task: UseDotNet@2
+      displayName: 'Install .NET Core SDK'
+      inputs:
+        version: '2.2.x'
+        packageType: runtime
 
-  - script: |
-      cd api
-      dotnet build
-    displayName: 'Build API'
+    - script: |
+        cd api
+        dotnet restore
+      displayName: 'Restore packages'
+
+    - script: |
+        cd api
+        dotnet build
+      displayName: 'Build API'
+
+# - stage: deploy
+#   displayName: 'Deploy API'
+
+#   jobs:
+#   - job: deploy_api
