@@ -1,3 +1,7 @@
+variables:
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+  WORKING_DIRECTORY: $(Pipeline.Workspace)/build
+
 trigger:
 - master
 
@@ -14,17 +18,33 @@ jobs:
     inputs:
       versionSpec: '11.15.0'
 
-  - script: cd app && yarn install
-    displayName: 'Install node modules'
+  - script: |
+      mkdir $(WORKING_DIRECTORY)
+    displayName: 'Create build folder'
 
   - task: Cache@2
-    displayName: 'Save cache'
+    displayName: 'Cache packages'
     inputs:
-      key: 'v2-dependencies-$(Build.BuildId)'
-      path: 'node_modules'
+      key: 'yarn | "$(Agent.OS)" | yarn.lock'
+      restoreKeys: |
+        yarn | "$(Agent.OS)"
+        yarn
+      path: $(YARN_CACHE_FOLDER)
 
-  - script: cd app && yarn test
-    displayName: 'Test code'
+  - script: |
+      cd app
+      yarn install
+    displayName: 'Install node modules'
+    workingDirectory: $(WORKING_DIRECTORY)
 
-  - script: cd app && yarn build
+  # - script: |
+  #     cd app
+  #     yarn test
+  #   displayName: 'Test code'
+  #   workingDirectory: $(WORKING_DIRECTORY)
+
+  - script: |
+      cd app
+      yarn build
     displayName: 'Build code'
+    workingDirectory: $(WORKING_DIRECTORY)
