@@ -1,0 +1,42 @@
+variables:
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+
+trigger:
+- master
+
+jobs:
+- job: build_js
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - checkout: self
+    
+  - task: NodeTool@0
+    displayName: 'Install Node'
+    inputs:
+      versionSpec: '11.15.0'
+
+  - task: Cache@2
+    displayName: 'Cache packages'
+    inputs:
+      key: 'yarn | "$(Agent.OS)" | yarn.lock'
+      restoreKeys: |
+        yarn | "$(Agent.OS)"
+        yarn
+      path: $(YARN_CACHE_FOLDER)
+
+  - script: |
+      cd app
+      yarn install
+    displayName: 'Install node modules'
+
+  # - script: |
+  #     cd app
+  #     yarn test
+  #   displayName: 'Test code'
+
+  - script: |
+      cd app
+      yarn build
+    displayName: 'Build code'
