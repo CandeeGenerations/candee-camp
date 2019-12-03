@@ -40,3 +40,26 @@ jobs:
       cd app
       yarn build
     displayName: 'Build code'
+
+- job: build_api
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - checkout: self
+
+  - task: UseDotNet@2
+    displayName: 'Install .NET Core SDK'
+    inputs:
+      version: '2.2.x'
+      packageType: runtime
+
+  - script: |
+      cd api
+      dotnet restore
+    displayName: 'Restore packages'
+
+  - script: |
+      cd api
+      dotnet build
+    displayName: 'Build API'
