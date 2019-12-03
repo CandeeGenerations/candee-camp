@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.4.95",
+  "version": "0.4.96",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -26,7 +26,8 @@
   "scripts": {
     "start": "nodemon -w craco.config.js -w ./src/content/antd.less --exec 'craco start'",
     "build": "rimraf build && REACT_APP_VERSION=$npm_package_version craco build",
-    "test": "craco test --watchAll"
+    "test": "craco test",
+    "test:ci": "CI=true yarn test"
   },
   "eslintConfig": {
     "extends": "react-app"
