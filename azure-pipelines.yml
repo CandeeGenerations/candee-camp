@@ -1,0 +1,33 @@
+trigger:
+- master
+
+jobs:
+- job: build_js
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  steps:
+  - checkout: self
+    
+  - task: NodeTool@0
+    displayName: 'Install Node'
+    inputs:
+      versionSpec: '11.15.0'
+
+  - script: cd app && yarn install
+    displayName: 'Install node modules'
+    workingDirectory: '~/build'
+
+  - task: Cache@2
+    displayName: 'Save cache'
+    inputs:
+      key: 'v2-dependencies-${{ checksum "app/package.json" }}'
+      path: 'node_modules'
+
+  - script: cd app && yarn test
+    displayName: 'Test code'
+    workingDirectory: '~/build'
+
+  - script: cd app && yarn build
+    displayName: 'Build code'
+    workingDirectory: '~/build'
