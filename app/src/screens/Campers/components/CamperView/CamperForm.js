@@ -102,7 +102,7 @@ const CamperForm = Form.create({
 
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item label="Birthdate" hasFeedback>
+          <Form.Item label="Birthdate">
             {getFieldDecorator('birthDate')(<DatePicker format="MM/DD/YYYY" />)}
           </Form.Item>
         </Col>
@@ -110,7 +110,7 @@ const CamperForm = Form.create({
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item label="Parent First Name" hasFeedback>
+          <Form.Item label="Parent First Name">
             {getFieldDecorator('parentFirstName')(
               <Input placeholder="e.g. Joe" />,
             )}
@@ -118,7 +118,7 @@ const CamperForm = Form.create({
         </Col>
 
         <Col span={12}>
-          <Form.Item label="Parent Last Name" hasFeedback>
+          <Form.Item label="Parent Last Name">
             {getFieldDecorator('parentLastName')(
               <Input placeholder="e.g. Doe" />,
             )}
@@ -128,7 +128,7 @@ const CamperForm = Form.create({
 
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item label="Medicine" hasFeedback>
+          <Form.Item label="Medicine">
             {getFieldDecorator('medicine')(
               <Select mode="tags" placeholder="e.g. tylenol" />,
             )}
@@ -136,7 +136,7 @@ const CamperForm = Form.create({
         </Col>
 
         <Col span={12}>
-          <Form.Item label="Allergies" hasFeedback>
+          <Form.Item label="Allergies">
             {getFieldDecorator('allergies')(
               <Select mode="tags" placeholder="e.g. lactose intolerant" />,
             )}

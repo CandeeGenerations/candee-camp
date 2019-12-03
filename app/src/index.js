@@ -7,6 +7,7 @@ import router from '@/config/router'
 import * as serviceWorker from '@/serviceWorker'
 
 import './main.scss'
+import './content/antd.overrides.less'
 
 ReactDOM.render(
   <RouterProvider router={router}>

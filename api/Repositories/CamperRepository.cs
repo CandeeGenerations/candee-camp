@@ -19,6 +19,9 @@ namespace CandeeCamp.API.Repositories
         public async Task<IEnumerable<Camper>> GetCampers() =>
             await Context.Campers.Where(x => !x.IsDeleted).ToListAsync();
 
+        public async Task<IEnumerable<Camper>> GetCampersByGroup(int groupId) =>
+            await Context.Campers.Where(x => !x.IsDeleted && x.GroupId == groupId).ToListAsync();
+
         public async Task<Camper> GetCamperById(int camperId)
         {
             Camper dbCamper = await Context.Campers.FirstOrDefaultAsync(x => x.Id == camperId && !x.IsDeleted);
@@ -102,6 +105,25 @@ namespace CandeeCamp.API.Repositories
             await Context.SaveChangesAsync();
 
             return dbCamper;
+        }
+
+        public async Task UpdateGroups(int[] camperIds, int groupId)
+        {
+            List<Camper> campers =
+                await Context.Campers.Where(x => camperIds.Contains(x.Id) && !x.IsDeleted).ToListAsync();
+
+            campers.ForEach(x => x.GroupId = groupId);
+
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task RemoveGroups(int groupId)
+        {
+            List<Camper> campers = await Context.Campers.Where(x => x.GroupId == groupId).ToListAsync();
+
+            campers.ForEach(x => x.GroupId = null);
+
+            await Context.SaveChangesAsync();
         }
     }
 } 

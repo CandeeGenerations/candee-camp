@@ -13,13 +13,20 @@ namespace CandeeCamp.API.DomainObjects
         }
 
         [Required]
-        public string GroupName { get; set; }
+        public string Name { get; set; }
 
         public DateTimeOffset CreatedDate { get; set; }
+        
+        public DateTimeOffset UpdatedDate { get; set; }
 
         public int LoginUser { get; set; }
         
         [ForeignKey("Id")]
         public virtual User User { get; set; }
+        
+        public int CreatedBy { get; set; }
+        
+        [ForeignKey("CreatedBy")]
+        public virtual User CreatedByUser { get; set; }
     }
 }
