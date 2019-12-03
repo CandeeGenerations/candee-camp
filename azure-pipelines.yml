@@ -1,6 +1,5 @@
 variables:
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
-  WORKING_DIRECTORY: $(Pipeline.Workspace)/build
 
 trigger:
 - master
@@ -18,10 +17,6 @@ jobs:
     inputs:
       versionSpec: '11.15.0'
 
-  - script: |
-      mkdir $(WORKING_DIRECTORY)
-    displayName: 'Create build folder'
-
   - task: Cache@2
     displayName: 'Cache packages'
     inputs:
@@ -35,16 +30,13 @@ jobs:
       cd app
       yarn install
     displayName: 'Install node modules'
-    workingDirectory: $(WORKING_DIRECTORY)
 
   # - script: |
   #     cd app
   #     yarn test
   #   displayName: 'Test code'
-  #   workingDirectory: $(WORKING_DIRECTORY)
 
   - script: |
       cd app
       yarn build
     displayName: 'Build code'
-    workingDirectory: $(WORKING_DIRECTORY)
