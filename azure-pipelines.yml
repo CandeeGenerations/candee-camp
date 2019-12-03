@@ -14,12 +14,8 @@ jobs:
     inputs:
       versionSpec: '11.15.0'
 
-  - script: mkdir ~/build
-    displayName: 'Make build directory'
-
   - script: cd app && yarn install
     displayName: 'Install node modules'
-    workingDirectory: '~/build'
 
   - task: Cache@2
     displayName: 'Save cache'
@@ -29,8 +25,6 @@ jobs:
 
   - script: cd app && yarn test
     displayName: 'Test code'
-    workingDirectory: '~/build'
 
   - script: cd app && yarn build
     displayName: 'Build code'
-    workingDirectory: '~/build'
