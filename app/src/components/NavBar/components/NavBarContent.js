@@ -140,11 +140,13 @@ NavBarContent.defaultProps = {
 NavBarContent.propTypes = {
   navItems: PropTypes.arrayOf(
     PropTypes.shape({
+      icon: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       routeName: PropTypes.string.isRequired,
     }),
   ).isRequired,
   selectedItem: PropTypes.shape({
+    icon: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     routeName: PropTypes.string.isRequired,
   }),
