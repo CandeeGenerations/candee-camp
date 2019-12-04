@@ -43,8 +43,6 @@ const App = () => {
   const campers = useAsyncLoad(actions.camperActions.loadCampers)
   const groups = useAsyncLoad(actions.groupActions.loadGroups)
 
-  console.log('Config.apiUrl :', Config.apiUrl)
-
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
   }
