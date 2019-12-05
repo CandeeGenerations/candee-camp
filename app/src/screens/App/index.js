@@ -23,6 +23,7 @@ import NavBar from '@/components/NavBar'
 import NotFound from '@/screens/NotFound'
 import Version from '@/components/Version'
 import Dashboard from '@/screens/Dashboard'
+import Counselors from '@/screens/Counselors'
 import ResetPassword from '@/screens/ResetPassword'
 import ForgotPassword from '@/screens/ForgotPassword'
 import ErrorBoundary from '@/components/ErrorBoundary'
@@ -42,8 +43,7 @@ const App = () => {
   const events = useAsyncLoad(actions.eventActions.loadEvents)
   const campers = useAsyncLoad(actions.camperActions.loadCampers)
   const groups = useAsyncLoad(actions.groupActions.loadGroups)
-
-  console.log('Config.apiUrl :', Config.apiUrl)
+  const counselors = useAsyncLoad(actions.counselorActions.loadCounselors)
 
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
@@ -119,6 +119,8 @@ const App = () => {
     content = <Campers />
   } else if (routeName.includes(page.groupsPage)) {
     content = <Groups />
+  } else if (routeName.includes(page.counselorsPage)) {
+    content = <Counselors />
   } else {
     content = <NotFound />
   }
@@ -146,6 +148,7 @@ const App = () => {
           <ObjectsContext.Provider
             value={{
               campers,
+              counselors,
               events,
               groups,
               users,
