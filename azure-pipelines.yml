@@ -1,0 +1,86 @@
+name: '[PR] Candee Camp - $(date:yyyyMMdd)$(rev:.r)'
+
+pr:
+- master
+
+pool:
+  name: Azure Pipelines
+
+variables:
+  YARN_CACHE_FOLDER: '$(Pipeline.Workspace)/.yarn'
+
+stages:
+- stage: build
+  displayName: 'Build'
+
+  jobs:
+  - job: buildJs
+    displayName: 'Build JS'
+
+    steps:
+    - task: NodeTool@0
+      displayName: 'Install Node'
+      inputs:
+        versionSpec: 11.15.0
+
+    - task: Cache@2
+      displayName: 'Cache Packages'
+      inputs:
+        key: 'yarn | "$(Agent.OS)" | app/yarn.lock'
+        path: '$(YARN_CACHE_FOLDER)'
+        restoreKeys: |
+          yarn | "$(Agent.OS)"
+          yarn
+
+    - script: 'yarn --frozen-lockfile'
+      workingDirectory: app
+      displayName: 'Install Node Packages'
+
+    - script: 'yarn build'
+      workingDirectory: app
+      displayName: 'Build Code'
+
+  - job: buildApi
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore Packages'
+      inputs:
+        command: restore
+        projects: api/CandeeCamp.API.csproj
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build Code'
+      inputs:
+        projects: api/CandeeCamp.API.csproj
+
+
+- stage: test
+  displayName: 'Test'
+  dependsOn: build
+
+  jobs:
+  - job: testJs
+    displayName: 'Test JS'
+
+    steps:
+    - task: NodeTool@0
+      displayName: 'Install Node'
+      inputs:
+        versionSpec: 11.15.0
+
+    - task: Cache@2
+      displayName: 'Cache packages'
+      inputs:
+        key: 'yarn | "$(Agent.OS)" | app/yarn.lock'
+        path: '$(YARN_CACHE_FOLDER)'
+        restoreKeys: |
+          yarn | "$(Agent.OS)"
+          yarn
+
+    - script: 'yarn --frozen-lockfile'
+      workingDirectory: app
+      displayName: 'Install Node Packages'
+
+    - script: 'yarn test:ci'
+      workingDirectory: app
+      displayName: 'Test Code'
