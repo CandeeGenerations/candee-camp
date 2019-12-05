@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CandeeCamp.API.DomainObjects;
+using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,57 @@ namespace CandeeCamp.API.Controllers
             IEnumerable<Counselor> counselors = await _counselorRepository.GetCounselors();
 
             return Ok(counselors);
+        }
+
+        [HttpGet("{counselorId}")]
+        [ProducesResponseType(typeof(Counselor), 200)]
+        public async Task<ActionResult<Counselor>> GetCounselor(int counselorId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            Counselor counselor = await _counselorRepository.GetCounselorById(counselorId);
+
+            return Ok(counselor);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(Counselor), 200)]
+        public async Task<ActionResult<Counselor>> CreateCounselor([FromBody]CounselorModel counselor)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Counselor newCounselor = await _counselorRepository.CreateCounselor(counselor);
+
+            return Ok(newCounselor);
+        }
+
+        [HttpPut("{counselorId}")]
+        [ProducesResponseType(typeof(Counselor), 200)]
+        public async Task<ActionResult<Counselor>> UpdateCounselor(int counselorId, [FromBody]CounselorModel counselor)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Counselor updatedCounselor = await _counselorRepository.UpdateCounselor(counselorId, counselor);
+
+            return Ok(updatedCounselor);
+        }
+
+        [HttpDelete("{counselorId}")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult> DeleteCounselor(int counselorId)
+        {
+            await _counselorRepository.DeleteCounselor(counselorId);
+
+            return Ok();
         }
     }
 }
