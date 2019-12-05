@@ -63,6 +63,20 @@ const routes = [
     ],
   },
   {
+    name: 'counselors',
+    path: '/counselors',
+    children: [
+      {
+        name: 'add',
+        path: '/add',
+      },
+      {
+        name: 'edit',
+        path: '/edit/:counselorId',
+      },
+    ],
+  },
+  {
     name: 'users',
     path: '/users',
     children: [

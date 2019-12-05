@@ -31,6 +31,13 @@ export default () => {
     isGroupAddOrEditPage:
       routeName.includes('groups.add') || routeName.includes('groups.edit'),
 
+    // counselors
+    isCounselorsAddPage: routeName.includes('counselors.add'),
+    isCounselorsEditPage: routeName.includes('counselors.edit'),
+    isCounselorsAddOrEditPage:
+      routeName.includes('counselors.add') ||
+      routeName.includes('counselors.edit'),
+
     // values : return string
     // users
     usersPage: 'users',
@@ -52,5 +59,10 @@ export default () => {
     groupsPage: 'groups',
     groupAddPage: 'groups.add',
     groupEditPage: 'groups.edit',
+
+    // counselors
+    counselorsPage: 'counselors',
+    counselorsAddPage: 'counselors.add',
+    counselorsEditPage: 'counselors.edit',
   }
 }

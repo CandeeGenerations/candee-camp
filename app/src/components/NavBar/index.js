@@ -23,6 +23,11 @@ const NavBar = () => {
     },
     {
       icon: 'team',
+      name: 'Counselors',
+      routeName: page.counselorsPage,
+    },
+    {
+      icon: 'team',
       name: 'Campers',
       routeName: page.campersPage,
     },

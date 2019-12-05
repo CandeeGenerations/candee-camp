@@ -17,6 +17,8 @@ export const deepCopy = obj => merge(obj, {})
 export const formatDate = date =>
   date ? moment(date).format('MMM D, YYYY h:mm A') : <em>None</em>
 
+export const formatCurrency = amount => `$${amount}`
+
 export const formatIsActive = isActive => (
   <Icon
     theme="twoTone"

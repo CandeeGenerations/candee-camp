@@ -3,14 +3,16 @@ using System;
 using CandeeCamp.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CandeeCamp.API.Migrations
 {
     [DbContext(typeof(CampContext))]
-    partial class CampContextModelSnapshot : ModelSnapshot
+    [Migration("20191205164307_added-created-by-to-counselor")]
+    partial class addedcreatedbytocounselor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +95,7 @@ namespace CandeeCamp.API.Migrations
                             Allergies = "Strawberries",
                             BirthDate = new DateTimeOffset(new DateTime(2010, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
                             CreatedBy = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 13, 53, 53, 879, DateTimeKind.Unspecified).AddTicks(4250), new TimeSpan(0, -5, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 11, 43, 6, 440, DateTimeKind.Unspecified).AddTicks(9070), new TimeSpan(0, -5, 0, 0, 0)),
                             FirstName = "Jocelyn",
                             IsActive = true,
                             IsDeleted = false,
@@ -101,7 +103,7 @@ namespace CandeeCamp.API.Migrations
                             Medicine = "Ibuprofen",
                             ParentFirstName = "John",
                             ParentLastName = "Lacombe",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 13, 53, 53, 879, DateTimeKind.Unspecified).AddTicks(4280), new TimeSpan(0, -5, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 11, 43, 6, 440, DateTimeKind.Unspecified).AddTicks(9100), new TimeSpan(0, -5, 0, 0, 0))
                         });
                 });
 
@@ -110,7 +112,7 @@ namespace CandeeCamp.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CabinId");
+                    b.Property<int>("CabinId");
 
                     b.Property<int>("CreatedBy");
 
@@ -125,8 +127,6 @@ namespace CandeeCamp.API.Migrations
                     b.Property<string>("LastName");
 
                     b.Property<decimal>("StartingBalance");
-
-                    b.Property<DateTimeOffset>("UpdatedDate");
 
                     b.Property<int>("UserId");
 
@@ -196,7 +196,7 @@ namespace CandeeCamp.API.Migrations
                         {
                             Id = -1,
                             CreatedBy = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 18, 53, 53, 878, DateTimeKind.Unspecified).AddTicks(5330), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 16, 43, 6, 440, DateTimeKind.Unspecified).AddTicks(1050), new TimeSpan(0, 0, 0, 0, 0)),
                             EndDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
@@ -405,7 +405,7 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 13, 53, 53, 863, DateTimeKind.Unspecified).AddTicks(1820), new TimeSpan(0, -5, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 11, 43, 6, 424, DateTimeKind.Unspecified).AddTicks(6980), new TimeSpan(0, -5, 0, 0, 0)),
                             EmailAddress = "tyler@cgen.com",
                             FirstName = "Tyler",
                             IsActive = true,
@@ -413,12 +413,12 @@ namespace CandeeCamp.API.Migrations
                             LastName = "Candee",
                             PasswordHash = "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
                             Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 13, 53, 53, 875, DateTimeKind.Unspecified).AddTicks(6730), new TimeSpan(0, -5, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 11, 43, 6, 437, DateTimeKind.Unspecified).AddTicks(6700), new TimeSpan(0, -5, 0, 0, 0))
                         },
                         new
                         {
                             Id = -2,
-                            CreatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 13, 53, 53, 878, DateTimeKind.Unspecified).AddTicks(3140), new TimeSpan(0, -5, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 11, 43, 6, 439, DateTimeKind.Unspecified).AddTicks(9190), new TimeSpan(0, -5, 0, 0, 0)),
                             EmailAddress = "theblackswimmers@gmail.com",
                             FirstName = "joe",
                             IsActive = true,
@@ -426,7 +426,7 @@ namespace CandeeCamp.API.Migrations
                             LastName = "plumber",
                             PasswordHash = "WkZsAKSKmh9C/WoaCfI4xiSOl7nRw8p5i4T90h54+EkMmtfLwcjCRi9kFkIZRMv/RFaGrTP3FzxcWapHnuNdzw==",
                             Salt = "nqJBdDHXBCGrPiZHRmUBgYMVdgsSCZxaWyjOZnCxAAMrPghUzARqcAcEynPwQNkD",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 13, 53, 53, 878, DateTimeKind.Unspecified).AddTicks(3170), new TimeSpan(0, -5, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2019, 12, 5, 11, 43, 6, 439, DateTimeKind.Unspecified).AddTicks(9200), new TimeSpan(0, -5, 0, 0, 0))
                         });
                 });
 
@@ -457,7 +457,8 @@ namespace CandeeCamp.API.Migrations
                 {
                     b.HasOne("CandeeCamp.API.DomainObjects.Cabin", "Cabin")
                         .WithMany()
-                        .HasForeignKey("CabinId");
+                        .HasForeignKey("CabinId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("CandeeCamp.API.DomainObjects.User", "CreatedByUser")
                         .WithMany()
