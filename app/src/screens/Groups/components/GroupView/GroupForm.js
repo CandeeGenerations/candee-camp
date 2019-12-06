@@ -26,12 +26,7 @@ const GroupForm = Form.create({
   },
 
   mapPropsToFields(props) {
-    const {
-      name,
-      campers,
-      // loginUser,
-      isActive,
-    } = props
+    const {name, campers, loginUser, isActive} = props
 
     return {
       name: Form.createFormField({
@@ -45,6 +40,10 @@ const GroupForm = Form.create({
       isActive: Form.createFormField({
         ...isActive,
         value: isActive.value,
+      }),
+      loginUser: Form.createFormField({
+        ...loginUser,
+        value: loginUser.value,
       }),
     }
   },
@@ -64,6 +63,52 @@ const GroupForm = Form.create({
             {getFieldDecorator('name', {
               rules: [{required: true, message: 'The name is required.'}],
             })(<Input placeholder="e.g. Central Baptist Church" autoFocus />)}
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item label="Login User Account">
+            {getFieldDecorator('loginUser', {
+              rules: [
+                {
+                  required: true,
+                  message: 'The login user account is required.',
+                },
+              ],
+            })(
+              <Select
+                dropdownRender={menu => (
+                  <div>
+                    <div
+                      css={{padding: 8, cursor: 'pointer'}}
+                      onClick={() =>
+                        props.onCreateNewAccount(page.isGroupAddPage)
+                      }
+                      onMouseDown={e => e.preventDefault()}
+                    >
+                      <Icon type="plus" /> Create New User
+                    </div>
+
+                    <Divider css={{margin: '4px 0'}} />
+
+                    {menu}
+                  </div>
+                )}
+                filterOption={selectSearchFunc}
+                optionFilterProp="children"
+                placeholder="e.g. John Doe"
+                allowClear
+                showSearch
+              >
+                {props.usersList.map(x => (
+                  <Select.Option key={x.id} value={`${x.id}`}>
+                    {x.firstName} {x.lastName}
+                  </Select.Option>
+                ))}
+              </Select>,
+            )}
           </Form.Item>
         </Col>
       </Row>

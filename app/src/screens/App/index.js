@@ -40,6 +40,7 @@ const App = () => {
   const localStorage = useLocalStorage('cc--debug')
 
   const [counselorValues, setCounselorValues] = useState(undefined)
+  const [groupValues, setGroupValues] = useState(undefined)
 
   const routeName = routerContext.route.name
   const users = useAsyncLoad(actions.userActions.loadUsers)
@@ -133,6 +134,7 @@ const App = () => {
     page.userAddPage,
     page.eventUserEditPage,
     page.counselorUserAddPage,
+    page.groupUserAddPage,
   ]
 
   return testNoNavRoutes() && !(user && isUnauthenticatedRoute) ? (
@@ -152,7 +154,9 @@ const App = () => {
           <ValuesContext.Provider
             value={{
               counselorValues,
+              groupValues,
               setCounselorValues,
+              setGroupValues,
             }}
           >
             <ObjectsContext.Provider

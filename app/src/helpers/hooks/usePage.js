@@ -12,7 +12,8 @@ export default () => {
     isUserAddOrEditPage:
       routeName.includes('users.add') ||
       routeName.includes('users.edit') ||
-      routeName.includes('counselors.user'),
+      routeName.includes('counselors.user') ||
+      routeName.includes('groups.user'),
 
     // events
     isEventAddPage: routeName.includes('events.add'),
@@ -32,6 +33,7 @@ export default () => {
     isGroupEditPage: routeName.includes('groups.edit'),
     isGroupAddOrEditPage:
       routeName.includes('groups.add') || routeName.includes('groups.edit'),
+    isGroupUserAddPage: routeName.includes('groups.user'),
 
     // counselors
     isCounselorAddPage: routeName.includes('counselors.add'),
@@ -62,6 +64,7 @@ export default () => {
     groupsPage: 'groups',
     groupAddPage: 'groups.add',
     groupEditPage: 'groups.edit',
+    groupUserAddPage: 'groups.user',
 
     // counselors
     counselorsPage: 'counselors',

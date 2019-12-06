@@ -60,6 +60,10 @@ const routes = [
         name: 'edit',
         path: '/edit/:groupId',
       },
+      {
+        name: 'user',
+        path: '/user',
+      },
     ],
   },
   {
