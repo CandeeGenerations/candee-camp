@@ -2,10 +2,10 @@ import React, {useContext, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
-import GroupViewWrapper from './GroupViewWrapper'
+import CounselorViewWrapper from './CounselorViewWrapper'
 
 import usePage from '@/helpers/hooks/usePage'
-import {groupActions as actions} from '@/actions'
+import {counselorActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
@@ -14,28 +14,30 @@ import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const GroupView = props => {
+const CounselorView = props => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
-  const group = useAsyncLoad(actions.loadGroup, props.id)
+  const counselor = useAsyncLoad(actions.loadCounselor, props.id)
 
   const [fields, setFields] = useState({
-    name: {includePercent: true, isRequired: true, value: null},
-    campers: {value: []},
+    firstName: {includePercent: true, isRequired: true, value: null},
+    lastName: {includePercent: true, isRequired: true, value: null},
+    startingBalance: {value: 0},
+    userId: {includePercent: true, isRequired: true, value: null},
     isActive: {value: true},
   })
 
-  const getGroup = async () => {
+  const getCounselor = async () => {
     try {
-      const response = await group.load()
+      const response = await counselor.load()
 
       if (response) {
         setFields(stateFields =>
           mergeFormData(stateFields, {
             ...response.data,
-            campers: response.data.campers.map(x => `${x}`),
+            userId: `${response.data.userId}`,
           }),
         )
       }
@@ -45,54 +47,54 @@ const GroupView = props => {
   }
 
   useEffect(() => {
-    objectsContext.campers.load()
+    objectsContext.users.load()
 
     if (props.id) {
-      getGroup()
+      getCounselor()
     } else {
-      group.stopLoading()
+      counselor.stopLoading()
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))
 
-  const refreshTable = () => objectsContext.groups.load()
+  const refreshTable = () => objectsContext.counselors.load()
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
-      group.startLoading()
+      counselor.startLoading()
 
-      const response = await actions.saveGroup(fields)
+      const response = await actions.saveCounselor(fields)
 
-      group.stopLoading()
+      counselor.stopLoading()
 
       if (response) {
         refreshTable()
 
-        routerContext.router.navigate(page.groupEditPage, {
-          groupId: response.data.id,
+        routerContext.router.navigate(page.counselorsEditPage, {
+          counselorId: response.data.id,
         })
       }
     }
   }
 
-  const handleDeleteGroupClick = async () => {
-    group.startLoading()
+  const handleDeleteCounselorClick = async () => {
+    counselor.startLoading()
 
-    const response = await actions.deleteGroup(props.id)
+    const response = await actions.deleteCounselor(props.id)
 
-    group.stopLoading()
+    counselor.stopLoading()
 
     if (response) {
       refreshTable()
-      routerContext.router.navigate(page.groupsPage)
+      routerContext.router.navigate(page.counselorsPage)
     }
   }
 
   const submitButtonDisabled =
-    group.loading ||
-    objectsContext.campers.loading ||
+    counselor.loading ||
+    objectsContext.users.loading ||
     (!fields.id && !isFormReady(fields)) ||
     (fields.id && !anyTouchedFields(fields)) ||
     (anyTouchedFields(fields) && !isFormReady(fields))
@@ -101,27 +103,32 @@ const GroupView = props => {
     <>
       <DrawerView
         fields={fields}
-        parentRoute={page.groupsPage}
+        parentRoute={page.counselorsPage}
         submitButtonDisabled={submitButtonDisabled}
         title={
           fields.id
-            ? `Edit Group - ${group.results ? group.results.name : ''}`
-            : 'Add a New Group'
+            ? `Edit Counselor - ${
+                counselor.results ? counselor.results.firstName : ''
+              }`
+            : 'Add a New Counselor'
         }
         width={512}
         onSubmit={handleFormSubmit}
       >
         <LoaderContext.Provider
           value={{
-            spinning: group.loading || objectsContext.campers.loading,
-            tip: 'Loading group...',
+            spinning: counselor.loading || objectsContext.users.loading,
+            tip: 'Loading counselor...',
           }}
         >
-          <ErrorWrapper handleRetry={getGroup} hasError={errorWrapper.hasError}>
-            <GroupViewWrapper
-              campersList={objectsContext.campers.results || []}
+          <ErrorWrapper
+            handleRetry={getCounselor}
+            hasError={errorWrapper.hasError}
+          >
+            <CounselorViewWrapper
               fields={fields}
-              onDeleteGroup={handleDeleteGroupClick}
+              usersList={objectsContext.users.results || []}
+              onDeleteCounselor={handleDeleteCounselorClick}
               onFieldChange={handleFieldChange}
             />
           </ErrorWrapper>
@@ -131,12 +138,12 @@ const GroupView = props => {
   )
 }
 
-GroupView.defaultProps = {
+CounselorView.defaultProps = {
   id: null,
 }
 
-GroupView.propTypes = {
+CounselorView.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 }
 
-export default GroupView
+export default CounselorView

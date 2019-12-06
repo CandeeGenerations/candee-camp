@@ -8,6 +8,7 @@ import {
   Form,
   Icon,
   Input,
+  InputNumber,
   Popconfirm,
   Row,
   Switch,
@@ -15,10 +16,14 @@ import {
   Select,
 } from 'antd'
 
-import {selectSearchFunc} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
+import {
+  inputNumberFormatter,
+  inputNumberParser,
+  selectSearchFunc,
+} from '@/helpers'
 
-const GroupForm = Form.create({
+const CounselorForm = Form.create({
   onFieldsChange(props, changedFields) {
     const {onChange} = props
 
@@ -26,25 +31,28 @@ const GroupForm = Form.create({
   },
 
   mapPropsToFields(props) {
-    const {
-      name,
-      campers,
-      // loginUser,
-      isActive,
-    } = props
+    const {firstName, lastName, startingBalance, userId, isActive} = props
 
     return {
-      name: Form.createFormField({
-        ...name,
-        value: name.value,
+      firstName: Form.createFormField({
+        ...firstName,
+        value: firstName.value,
       }),
-      campers: Form.createFormField({
-        ...campers,
-        value: campers.value,
+      lastName: Form.createFormField({
+        ...lastName,
+        value: lastName.value,
+      }),
+      startingBalance: Form.createFormField({
+        ...startingBalance,
+        value: startingBalance.value,
       }),
       isActive: Form.createFormField({
         ...isActive,
         value: isActive.value,
+      }),
+      userId: Form.createFormField({
+        ...userId,
+        value: userId.value,
       }),
     }
   },
@@ -56,29 +64,42 @@ const GroupForm = Form.create({
 
   return (
     <Form>
-      <Divider orientation="left">Group Info</Divider>
+      <Divider orientation="left">Counselor Info</Divider>
 
       <Row gutter={16}>
-        <Col span={24}>
-          <Form.Item label="Name" hasFeedback>
-            {getFieldDecorator('name', {
-              rules: [{required: true, message: 'The name is required.'}],
-            })(<Input placeholder="e.g. Central Baptist Church" autoFocus />)}
+        <Col span={12}>
+          <Form.Item label="First Name" hasFeedback>
+            {getFieldDecorator('firstName', {
+              rules: [{required: true, message: 'The first name is required.'}],
+            })(<Input placeholder="e.g. John" autoFocus />)}
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item label="Last Name" hasFeedback>
+            {getFieldDecorator('lastName', {
+              rules: [{required: true, message: 'The last name is required.'}],
+            })(<Input placeholder="e.g. Doe" />)}
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={16}>
-        <Col span={24}>
-          <Form.Item label="Campers">
-            {getFieldDecorator('campers')(
+        <Col span={12}>
+          <Form.Item label="User Account">
+            {getFieldDecorator('userId', {
+              rules: [
+                {required: true, message: 'The user account is required.'},
+              ],
+            })(
               <Select
                 filterOption={selectSearchFunc}
-                mode="multiple"
+                optionFilterProp="children"
                 placeholder="e.g. John Doe"
                 allowClear
+                showSearch
               >
-                {props.campersList.map(x => (
+                {props.usersList.map(x => (
                   <Select.Option key={x.id} value={`${x.id}`}>
                     {x.firstName} {x.lastName}
                   </Select.Option>
@@ -87,9 +108,20 @@ const GroupForm = Form.create({
             )}
           </Form.Item>
         </Col>
+
+        <Col span={12}>
+          <Form.Item label="Starting Balance">
+            {getFieldDecorator('startingBalance')(
+              <InputNumber
+                formatter={inputNumberFormatter}
+                parser={inputNumberParser}
+              />,
+            )}
+          </Form.Item>
+        </Col>
       </Row>
 
-      {page.isGroupEditPage && (
+      {page.isCounselorsEditPage && (
         <>
           <Divider css={{marginTop: 40}} orientation="left">
             <Typography.Text type="danger">Danger Zone</Typography.Text>
@@ -119,12 +151,12 @@ const GroupForm = Form.create({
                   <p>
                     Are you sure you want
                     <br />
-                    to delete this group?
+                    to delete this counselor?
                   </p>
                 }
-                onConfirm={props.onDeleteGroup}
+                onConfirm={props.onDeleteCounselor}
               >
-                <Button type="danger">Delete Group</Button>
+                <Button type="danger">Delete Counselor</Button>
               </Popconfirm>
             </Col>
           </Row>
@@ -134,4 +166,4 @@ const GroupForm = Form.create({
   )
 })
 
-export default GroupForm
+export default CounselorForm

@@ -25,7 +25,7 @@ const UserView = props => {
     emailAddress: {includePercent: true, isRequired: true, value: null},
     firstName: {includePercent: true, isRequired: true, value: null},
     lastName: {includePercent: true, isRequired: true, value: null},
-    isActive: {includePercent: true, value: null},
+    isActive: {value: true},
   }
 
   const page = usePage()
