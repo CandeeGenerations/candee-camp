@@ -23,6 +23,7 @@ const GroupViewWrapper = props => {
 }
 
 GroupViewWrapper.propTypes = {
+  campersList: PropTypes.array.isRequired,
   fields: PropTypes.shape({}).isRequired,
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,

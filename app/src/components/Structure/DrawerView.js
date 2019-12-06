@@ -8,7 +8,9 @@ import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
 const DrawerView = props => {
   const router = useRouter()
-  const handleClose = () => router.navigate(props.parentRoute)
+
+  const handleClose = () =>
+    props.onClose ? props.onClose() : router.navigate(props.parentRoute)
 
   return (
     <Drawer
@@ -51,6 +53,8 @@ const DrawerView = props => {
 }
 
 DrawerView.defaultProps = {
+  onClose: null,
+  parentRoute: null,
   submitButtonDisabled: false,
   width: 256,
 }
@@ -58,12 +62,13 @@ DrawerView.defaultProps = {
 DrawerView.propTypes = {
   children: PropTypes.node.isRequired,
   fields: PropTypes.shape({}),
-  parentRoute: PropTypes.string.isRequired,
+  parentRoute: PropTypes.string,
   submitButtonDisabled: PropTypes.bool,
   title: PropTypes.string.isRequired,
   width: PropTypes.number,
 
   // functions
+  onClose: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
 }
 

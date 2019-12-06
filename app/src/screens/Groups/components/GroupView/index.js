@@ -23,8 +23,8 @@ const GroupView = props => {
 
   const [fields, setFields] = useState({
     name: {includePercent: true, isRequired: true, value: null},
-    campers: {includePercent: true, value: []},
-    isActive: {includePercent: true, value: true},
+    campers: {value: []},
+    isActive: {value: true},
   })
 
   const getGroup = async () => {
@@ -45,6 +45,8 @@ const GroupView = props => {
   }
 
   useEffect(() => {
+    objectsContext.campers.load()
+
     if (props.id) {
       getGroup()
     } else {

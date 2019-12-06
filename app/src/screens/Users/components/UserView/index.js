@@ -10,9 +10,9 @@ import {userActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
-import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ResetPasswordForm from '@/screens/ResetPassword/components/ResetPasswordForm'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
@@ -25,13 +25,14 @@ const UserView = props => {
     emailAddress: {includePercent: true, isRequired: true, value: null},
     firstName: {includePercent: true, isRequired: true, value: null},
     lastName: {includePercent: true, isRequired: true, value: null},
-    isActive: {includePercent: true, value: null},
+    isActive: {value: true},
   }
 
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const valuesContext = useContext(ValuesContext)
   const user = useAsyncLoad(actions.loadUser, props.id)
 
   const [fields, setFields] = useState(
@@ -71,6 +72,44 @@ const UserView = props => {
       page.isUserAddOrEditPage ? page.usersPage : page.eventsPage
     ].load()
 
+  const navigateToCounselor = userId => {
+    const updates = {valid: true}
+
+    if (userId) {
+      updates.fields = {
+        ...valuesContext.counselorValues.fields,
+        userId: {
+          ...valuesContext.counselorValues.fields.userId,
+          value: `${userId}`,
+        },
+      }
+    }
+
+    valuesContext.setCounselorValues({
+      ...valuesContext.counselorValues,
+      ...updates,
+    })
+
+    routerContext.router.navigate(
+      valuesContext.counselorValues.adding
+        ? page.counselorAddPage
+        : page.counselorEditPage,
+      valuesContext.counselorValues.adding
+        ? {}
+        : {counselorId: valuesContext.counselorValues.fields.id.value},
+    )
+  }
+
+  const handleFormClose = () => {
+    if (page.isCounselorUserAddPage) {
+      navigateToCounselor()
+    } else {
+      routerContext.router.navigate(
+        page.isUserAddOrEditPage ? page.usersPage : page.eventsPage,
+      )
+    }
+  }
+
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
       user.startLoading()
@@ -84,6 +123,8 @@ const UserView = props => {
 
         if (page.isEventUserEditPage) {
           routerContext.router.navigate(page.eventsPage)
+        } else if (page.isCounselorUserAddPage) {
+          navigateToCounselor(response.data.id)
         } else {
           routerContext.router.navigate(page.userEditPage, {
             userId: response.data.id,
@@ -150,9 +191,6 @@ const UserView = props => {
     <>
       <DrawerView
         fields={fields}
-        parentRoute={
-          page.isUserAddOrEditPage ? page.usersPage : page.eventsPage
-        }
         submitButtonDisabled={submitButtonDisabled}
         title={
           fields.id
@@ -160,6 +198,7 @@ const UserView = props => {
             : 'Add a New User'
         }
         width={512}
+        onClose={handleFormClose}
         onSubmit={handleFormSubmit}
       >
         <LoaderContext.Provider

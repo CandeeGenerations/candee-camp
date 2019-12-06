@@ -25,12 +25,12 @@ const CamperView = props => {
   const [fields, setFields] = useState({
     firstName: {includePercent: true, isRequired: true, value: null},
     lastName: {includePercent: true, isRequired: true, value: null},
-    birthDate: {includePercent: true, value: null},
-    parentFirstName: {includePercent: true, value: null},
-    parentLastName: {includePercent: true, value: null},
-    medicine: {includePercent: true, value: []},
-    allergies: {includePercent: true, value: []},
-    isActive: {includePercent: true, value: true},
+    birthDate: {value: null},
+    parentFirstName: {value: null},
+    parentLastName: {value: null},
+    medicine: {value: []},
+    allergies: {value: []},
+    isActive: {value: true},
   })
 
   const getCamper = async () => {

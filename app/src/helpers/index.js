@@ -14,6 +14,19 @@ const errorTrace = (error, response) => {
 
 export const deepCopy = obj => merge(obj, {})
 
+export const selectSearchFunc = (inputValue, option) =>
+  option.props.children.filter(x =>
+    x
+      .trim()
+      .toLowerCase()
+      .includes(inputValue),
+  ).length > 0
+
+export const inputNumberFormatter = value =>
+  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+export const inputNumberParser = value => value.replace(/\$\s?|(,*)/g, '')
+
 export const formatDate = date =>
   date ? moment(date).format('MMM D, YYYY h:mm A') : <em>None</em>
 

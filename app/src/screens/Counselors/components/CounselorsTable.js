@@ -66,7 +66,7 @@ const CounselorsTable = props => {
           <span>
             <NavItem
               params={{counselorId: record.id}}
-              routeName={page.counselorsEditPage}
+              routeName={page.counselorEditPage}
             >
               Edit
             </NavItem>
@@ -81,7 +81,7 @@ const CounselorsTable = props => {
                   to delete this counselor?
                 </p>
               }
-              // onConfirm={() => props.deleteCounselor(record.id)}
+              onConfirm={() => props.deleteCounselor(record.id)}
             />
           </span>
         )}
@@ -107,6 +107,9 @@ CounselorsTable.propTypes = {
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
   }).isRequired,
+
+  // function
+  deleteCounselor: PropTypes.func.isRequired,
 }
 
 export default loader(CounselorsTable)

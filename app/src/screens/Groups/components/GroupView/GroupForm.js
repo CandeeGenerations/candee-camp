@@ -15,6 +15,7 @@ import {
   Select,
 } from 'antd'
 
+import {selectSearchFunc} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
 
 const GroupForm = Form.create({
@@ -72,14 +73,7 @@ const GroupForm = Form.create({
           <Form.Item label="Campers">
             {getFieldDecorator('campers')(
               <Select
-                filterOption={(inputValue, option) =>
-                  option.props.children.filter(x =>
-                    x
-                      .trim()
-                      .toLowerCase()
-                      .includes(inputValue),
-                  ).length > 0
-                }
+                filterOption={selectSearchFunc}
                 mode="multiple"
                 placeholder="e.g. John Doe"
                 allowClear
