@@ -72,6 +72,44 @@ const UserView = props => {
       page.isUserAddOrEditPage ? page.usersPage : page.eventsPage
     ].load()
 
+  const navigateToCounselor = userId => {
+    const updates = {valid: true}
+
+    if (userId) {
+      updates.fields = {
+        ...valuesContext.counselorValues.fields,
+        userId: {
+          ...valuesContext.counselorValues.fields.userId,
+          value: `${userId}`,
+        },
+      }
+    }
+
+    valuesContext.setCounselorValues({
+      ...valuesContext.counselorValues,
+      ...updates,
+    })
+
+    routerContext.router.navigate(
+      valuesContext.counselorValues.adding
+        ? page.counselorAddPage
+        : page.counselorEditPage,
+      valuesContext.counselorValues.adding
+        ? {}
+        : {counselorId: valuesContext.counselorValues.fields.id.value},
+    )
+  }
+
+  const handleFormClose = () => {
+    if (page.isCounselorUserAddPage) {
+      navigateToCounselor()
+    } else {
+      routerContext.router.navigate(
+        page.isUserAddOrEditPage ? page.usersPage : page.eventsPage,
+      )
+    }
+  }
+
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
       user.startLoading()
@@ -86,26 +124,7 @@ const UserView = props => {
         if (page.isEventUserEditPage) {
           routerContext.router.navigate(page.eventsPage)
         } else if (page.isCounselorUserAddPage) {
-          valuesContext.setCounselorValues({
-            ...valuesContext.counselorValues,
-            valid: true,
-            fields: {
-              ...valuesContext.counselorValues.fields,
-              userId: {
-                ...valuesContext.counselorValues.fields.userId,
-                value: `${response.data.id}`,
-              },
-            },
-          })
-
-          routerContext.router.navigate(
-            valuesContext.counselorValues.adding
-              ? page.counselorAddPage
-              : page.counselorEditPage,
-            valuesContext.counselorValues.adding
-              ? {}
-              : {counselorId: valuesContext.counselorValues.fields.id.value},
-          )
+          navigateToCounselor(response.data.id)
         } else {
           routerContext.router.navigate(page.userEditPage, {
             userId: response.data.id,
@@ -172,9 +191,6 @@ const UserView = props => {
     <>
       <DrawerView
         fields={fields}
-        parentRoute={
-          page.isUserAddOrEditPage ? page.usersPage : page.eventsPage
-        }
         submitButtonDisabled={submitButtonDisabled}
         title={
           fields.id
@@ -182,6 +198,7 @@ const UserView = props => {
             : 'Add a New User'
         }
         width={512}
+        onClose={handleFormClose}
         onSubmit={handleFormSubmit}
       >
         <LoaderContext.Provider
