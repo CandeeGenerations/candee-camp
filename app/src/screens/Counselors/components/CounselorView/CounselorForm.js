@@ -93,6 +93,23 @@ const CounselorForm = Form.create({
               ],
             })(
               <Select
+                dropdownRender={menu => (
+                  <div>
+                    <div
+                      css={{padding: 8, cursor: 'pointer'}}
+                      onClick={() =>
+                        props.onCreateNewAccount(page.isCounselorAddPage)
+                      }
+                      onMouseDown={e => e.preventDefault()}
+                    >
+                      <Icon type="plus" /> Create New User
+                    </div>
+
+                    <Divider css={{margin: '4px 0'}} />
+
+                    {menu}
+                  </div>
+                )}
                 filterOption={selectSearchFunc}
                 optionFilterProp="children"
                 placeholder="e.g. John Doe"
@@ -121,7 +138,7 @@ const CounselorForm = Form.create({
         </Col>
       </Row>
 
-      {page.isCounselorsEditPage && (
+      {page.isCounselorEditPage && (
         <>
           <Divider css={{marginTop: 40}} orientation="left">
             <Typography.Text type="danger">Danger Zone</Typography.Text>

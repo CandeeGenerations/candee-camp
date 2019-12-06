@@ -9,9 +9,9 @@ import {counselorActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
-import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const CounselorView = props => {
@@ -19,6 +19,7 @@ const CounselorView = props => {
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const valuesContext = useContext(ValuesContext)
   const counselor = useAsyncLoad(actions.loadCounselor, props.id)
 
   const [fields, setFields] = useState({
@@ -49,7 +50,12 @@ const CounselorView = props => {
   useEffect(() => {
     objectsContext.users.load()
 
-    if (props.id) {
+    if (valuesContext.counselorValues && valuesContext.counselorValues.valid) {
+      counselor.stopLoading()
+
+      setFields(valuesContext.counselorValues.fields)
+      valuesContext.setCounselorValues(undefined)
+    } else if (props.id) {
       getCounselor()
     } else {
       counselor.stopLoading()
@@ -72,7 +78,7 @@ const CounselorView = props => {
       if (response) {
         refreshTable()
 
-        routerContext.router.navigate(page.counselorsEditPage, {
+        routerContext.router.navigate(page.counselorEditPage, {
           counselorId: response.data.id,
         })
       }
@@ -90,6 +96,16 @@ const CounselorView = props => {
       refreshTable()
       routerContext.router.navigate(page.counselorsPage)
     }
+  }
+
+  const handleCreateNewAccount = adding => {
+    valuesContext.setCounselorValues({
+      fields,
+      valid: false,
+      adding,
+    })
+
+    routerContext.router.navigate(page.counselorUserAddPage)
   }
 
   const submitButtonDisabled =
@@ -128,6 +144,7 @@ const CounselorView = props => {
             <CounselorViewWrapper
               fields={fields}
               usersList={objectsContext.users.results || []}
+              onCreateNewAccount={handleCreateNewAccount}
               onDeleteCounselor={handleDeleteCounselorClick}
               onFieldChange={handleFieldChange}
             />

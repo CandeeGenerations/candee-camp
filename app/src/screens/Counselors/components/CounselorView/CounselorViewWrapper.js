@@ -18,6 +18,7 @@ const CounselorViewWrapper = props => {
         {...props.fields}
         usersList={props.usersList}
         onChange={props.onFieldChange}
+        onCreateNewAccount={props.onCreateNewAccount}
         onDeleteCounselor={props.onDeleteCounselor}
       />
     </>
@@ -32,6 +33,7 @@ CounselorViewWrapper.propTypes = {
   usersList: PropTypes.array.isRequired,
 
   // functions
+  onCreateNewAccount: PropTypes.func.isRequired,
   onDeleteCounselor: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
 }

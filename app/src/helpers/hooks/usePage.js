@@ -10,7 +10,9 @@ export default () => {
     isUserAddPage: routeName.includes('users.add'),
     isUserEditPage: routeName.includes('users.edit'),
     isUserAddOrEditPage:
-      routeName.includes('users.add') || routeName.includes('users.edit'),
+      routeName.includes('users.add') ||
+      routeName.includes('users.edit') ||
+      routeName.includes('counselors.user'),
 
     // events
     isEventAddPage: routeName.includes('events.add'),
@@ -32,11 +34,12 @@ export default () => {
       routeName.includes('groups.add') || routeName.includes('groups.edit'),
 
     // counselors
-    isCounselorsAddPage: routeName.includes('counselors.add'),
-    isCounselorsEditPage: routeName.includes('counselors.edit'),
-    isCounselorsAddOrEditPage:
+    isCounselorAddPage: routeName.includes('counselors.add'),
+    isCounselorEditPage: routeName.includes('counselors.edit'),
+    isCounselorAddOrEditPage:
       routeName.includes('counselors.add') ||
       routeName.includes('counselors.edit'),
+    isCounselorUserAddPage: routeName.includes('counselors.user'),
 
     // values : return string
     // users
@@ -62,7 +65,8 @@ export default () => {
 
     // counselors
     counselorsPage: 'counselors',
-    counselorsAddPage: 'counselors.add',
-    counselorsEditPage: 'counselors.edit',
+    counselorAddPage: 'counselors.add',
+    counselorEditPage: 'counselors.edit',
+    counselorUserAddPage: 'counselors.user',
   }
 }

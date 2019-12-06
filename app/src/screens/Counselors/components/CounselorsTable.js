@@ -66,7 +66,7 @@ const CounselorsTable = props => {
           <span>
             <NavItem
               params={{counselorId: record.id}}
-              routeName={page.counselorsEditPage}
+              routeName={page.counselorEditPage}
             >
               Edit
             </NavItem>

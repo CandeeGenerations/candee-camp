@@ -10,9 +10,9 @@ import {userActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
-import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ResetPasswordForm from '@/screens/ResetPassword/components/ResetPasswordForm'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
@@ -32,6 +32,7 @@ const UserView = props => {
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const valuesContext = useContext(ValuesContext)
   const user = useAsyncLoad(actions.loadUser, props.id)
 
   const [fields, setFields] = useState(
@@ -84,6 +85,27 @@ const UserView = props => {
 
         if (page.isEventUserEditPage) {
           routerContext.router.navigate(page.eventsPage)
+        } else if (page.isCounselorUserAddPage) {
+          valuesContext.setCounselorValues({
+            ...valuesContext.counselorValues,
+            valid: true,
+            fields: {
+              ...valuesContext.counselorValues.fields,
+              userId: {
+                ...valuesContext.counselorValues.fields.userId,
+                value: `${response.data.id}`,
+              },
+            },
+          })
+
+          routerContext.router.navigate(
+            valuesContext.counselorValues.adding
+              ? page.counselorAddPage
+              : page.counselorEditPage,
+            valuesContext.counselorValues.adding
+              ? {}
+              : {counselorId: valuesContext.counselorValues.fields.id.value},
+          )
         } else {
           routerContext.router.navigate(page.userEditPage, {
             userId: response.data.id,

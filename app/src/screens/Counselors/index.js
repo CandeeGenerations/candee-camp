@@ -59,7 +59,7 @@ const Counselors = () => {
                 key="add"
                 type="primary"
                 onClick={() =>
-                  routerContext.router.navigate(page.counselorsAddPage)
+                  routerContext.router.navigate(page.counselorAddPage)
                 }
               >
                 Add Counselor
@@ -98,7 +98,7 @@ const Counselors = () => {
         </Card>
       </MainContent>
 
-      {page.isCounselorsAddOrEditPage && (
+      {page.isCounselorAddOrEditPage && (
         <CounselorView
           id={
             (routerContext.route.params &&

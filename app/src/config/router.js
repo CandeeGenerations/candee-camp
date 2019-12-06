@@ -74,6 +74,10 @@ const routes = [
         name: 'edit',
         path: '/edit/:counselorId',
       },
+      {
+        name: 'user',
+        path: '/user',
+      },
     ],
   },
   {

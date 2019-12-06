@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import React from 'react'
+import React, {useState} from 'react'
 import _ from 'lodash'
 import {Layout} from 'antd'
 import {useRoute} from 'react-router5'
@@ -30,6 +30,7 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 import UserView from '@/screens/Users/components/UserView'
 
 export const ObjectsContext = React.createContext({})
+export const ValuesContext = React.createContext({})
 
 const App = () => {
   let content = null
@@ -37,6 +38,8 @@ const App = () => {
   const user = getUser()
   const routerContext = useRoute()
   const localStorage = useLocalStorage('cc--debug')
+
+  const [counselorValues, setCounselorValues] = useState(undefined)
 
   const routeName = routerContext.route.name
   const users = useAsyncLoad(actions.userActions.loadUsers)
@@ -129,6 +132,7 @@ const App = () => {
     page.userEditPage,
     page.userAddPage,
     page.eventUserEditPage,
+    page.counselorUserAddPage,
   ]
 
   return testNoNavRoutes() && !(user && isUnauthenticatedRoute) ? (
@@ -145,27 +149,34 @@ const App = () => {
 
       <Layout css={{borderRadius: 20, margin: '10px 10px 10px 0'}}>
         <ErrorBoundary router={routerContext.route}>
-          <ObjectsContext.Provider
+          <ValuesContext.Provider
             value={{
-              campers,
-              counselors,
-              events,
-              groups,
-              users,
+              counselorValues,
+              setCounselorValues,
             }}
           >
-            {content}
+            <ObjectsContext.Provider
+              value={{
+                campers,
+                counselors,
+                events,
+                groups,
+                users,
+              }}
+            >
+              {content}
 
-            {userViewRoutes.includes(routeName) && (
-              <UserView
-                id={
-                  (routerContext.route.params &&
-                    routerContext.route.params.userId) ||
-                  null
-                }
-              />
-            )}
-          </ObjectsContext.Provider>
+              {userViewRoutes.includes(routeName) && (
+                <UserView
+                  id={
+                    (routerContext.route.params &&
+                      routerContext.route.params.userId) ||
+                    null
+                  }
+                />
+              )}
+            </ObjectsContext.Provider>
+          </ValuesContext.Provider>
 
           <Version />
         </ErrorBoundary>
