@@ -1,5 +1,6 @@
 import request from '../api'
 import {handleError, formDataToBody, openNotification} from '../helpers'
+
 import {getUserData} from '@/helpers/authHelpers'
 
 const mainPath = '/counselors'
