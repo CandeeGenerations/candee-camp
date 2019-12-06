@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
 import React, {useState} from 'react'
@@ -18,12 +19,14 @@ import Users from '@/screens/Users'
 import Signin from '@/screens/Signin'
 import Events from '@/screens/Events'
 import Groups from '@/screens/Groups'
+import CampPage from '@/screens/Camp'
 import Campers from '@/screens/Campers'
 import NavBar from '@/components/NavBar'
 import NotFound from '@/screens/NotFound'
 import Version from '@/components/Version'
 import Dashboard from '@/screens/Dashboard'
 import Counselors from '@/screens/Counselors'
+import VisitorsPage from '@/screens/Visitors'
 import ResetPassword from '@/screens/ResetPassword'
 import ForgotPassword from '@/screens/ForgotPassword'
 import ErrorBoundary from '@/components/ErrorBoundary'
@@ -117,14 +120,18 @@ const App = () => {
     content = <ResetPassword />
   } else if (routeName.includes(page.eventsPage)) {
     content = <Events />
-  } else if (routeName.includes(page.usersPage)) {
-    content = <Users />
+  } else if (routeName === page.visitorsPage) {
+    content = <VisitorsPage />
   } else if (routeName.includes(page.campersPage)) {
     content = <Campers />
   } else if (routeName.includes(page.groupsPage)) {
     content = <Groups />
+  } else if (routeName === page.campPage) {
+    content = <CampPage />
   } else if (routeName.includes(page.counselorsPage)) {
     content = <Counselors />
+  } else if (routeName.includes(page.usersPage)) {
+    content = <Users />
   } else {
     content = <NotFound />
   }

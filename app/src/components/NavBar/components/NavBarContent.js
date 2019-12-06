@@ -17,7 +17,6 @@ const NavBarContent = props => {
           height: '100%',
           position: 'fixed',
         }}
-        selectedKeys={props.selectedItem ? [props.selectedItem.routeName] : []}
         theme="dark"
       >
         <Menu.Item
@@ -45,65 +44,69 @@ const NavBarContent = props => {
 
       <Menu
         css={{position: 'fixed', top: '50%', marginTop: -190}}
-        selectedKeys={[routeName]}
+        selectedKeys={props.selectedItem ? [props.selectedItem.routeName] : []}
         theme="dark"
       >
-        {props.navItems.map(item => (
-          <Menu.Item
-            key={item.routeName}
-            css={{
-              '&.ant-menu-item-selected > a': {
-                borderTopLeftRadius: 20,
-                borderBottomLeftRadius: 20,
-                backgroundColor: '#f0f2f5 !important',
-              },
-            }}
-          >
-            <NavItem options={{reload: true}} routeName={item.routeName}>
-              <Icon type={item.icon} />
+        {props.navItems.map(item => {
+          const regex = new RegExp(`${item.routeName}\\W`, 'g')
 
-              <span>{item.name}</span>
+          return (
+            <Menu.Item
+              key={item.routeName}
+              css={{
+                '&.ant-menu-item-selected > a': {
+                  borderTopLeftRadius: 20,
+                  borderBottomLeftRadius: 20,
+                  backgroundColor: '#f0f2f5 !important',
+                },
+              }}
+            >
+              <NavItem options={{reload: true}} routeName={item.routeName}>
+                <Icon type={item.icon} />
 
-              {routeName === item.routeName && (
-                <div
-                  className="navbar-extra"
-                  css={css`
-                    top: 0;
-                    right: 0;
-                    bottom: 0;
-                    width: 20px;
-                    position: absolute;
-                    background-color: #f0f2f5;
+                <span>{item.name}</span>
 
-                    &:after {
-                      top: -9px;
-                      width: 22px;
-                      content: '';
-                      height: 19px;
-                      position: absolute;
-                      background-color: #2a363e;
-                      border-bottom-right-radius: 20px;
-                    }
-                  `}
-                >
+                {(routeName === item.routeName || routeName.match(regex)) && (
                   <div
+                    className="navbar-extra"
                     css={css`
+                      top: 0;
+                      right: 0;
+                      bottom: 0;
+                      width: 20px;
+                      position: absolute;
+                      background-color: #f0f2f5;
+
                       &:after {
-                        bottom: -9px;
+                        top: -9px;
                         width: 22px;
                         content: '';
                         height: 19px;
                         position: absolute;
                         background-color: #2a363e;
-                        border-top-right-radius: 20px;
+                        border-bottom-right-radius: 20px;
                       }
                     `}
-                  />
-                </div>
-              )}
-            </NavItem>
-          </Menu.Item>
-        ))}
+                  >
+                    <div
+                      css={css`
+                        &:after {
+                          bottom: -9px;
+                          width: 22px;
+                          content: '';
+                          height: 19px;
+                          position: absolute;
+                          background-color: #2a363e;
+                          border-top-right-radius: 20px;
+                        }
+                      `}
+                    />
+                  </div>
+                )}
+              </NavItem>
+            </Menu.Item>
+          )
+        })}
       </Menu>
 
       <Menu
