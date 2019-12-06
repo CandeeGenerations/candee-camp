@@ -83,6 +83,12 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<Camper> UpdateCamper(int camperId, CamperModel camper)
         {
+            if (camper.IsMinor && (string.IsNullOrEmpty(camper.ParentFirstName) ||
+                                   string.IsNullOrEmpty(camper.ParentLastName)))
+            {
+                throw new Exception("This parent's information is required for this minor camper.");
+            }
+            
             Camper dbCamper = await GetCamperById(camperId);
 
             dbCamper.FirstName = camper.FirstName.Trim();

@@ -34,6 +34,6 @@ namespace CandeeCamp.API.Models
         
         public int? CounselorId { get; set; }
 
-        public bool IsMinor => BirthDate > DateTimeOffset.Now.AddYears(-18) && BirthDate <= DateTimeOffset.Now;
+        public bool IsMinor => BirthDate > DateTimeOffset.Now.AddYears(-18) && BirthDate < DateTimeOffset.Now;
     }
 } 
