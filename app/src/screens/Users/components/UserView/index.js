@@ -100,9 +100,37 @@ const UserView = props => {
     )
   }
 
+  const navigateToGroup = userId => {
+    const updates = {valid: true}
+
+    if (userId) {
+      updates.fields = {
+        ...valuesContext.groupValues.fields,
+        loginUser: {
+          ...valuesContext.groupValues.fields.loginUser,
+          value: `${userId}`,
+        },
+      }
+    }
+
+    valuesContext.setGroupValues({
+      ...valuesContext.groupValues,
+      ...updates,
+    })
+
+    routerContext.router.navigate(
+      valuesContext.groupValues.adding ? page.groupAddPage : page.groupEditPage,
+      valuesContext.groupValues.adding
+        ? {}
+        : {groupId: valuesContext.groupValues.fields.id.value},
+    )
+  }
+
   const handleFormClose = () => {
     if (page.isCounselorUserAddPage) {
       navigateToCounselor()
+    } else if (page.isGroupUserAddPage) {
+      navigateToGroup()
     } else {
       routerContext.router.navigate(
         page.isUserAddOrEditPage ? page.usersPage : page.eventsPage,
@@ -125,6 +153,8 @@ const UserView = props => {
           routerContext.router.navigate(page.eventsPage)
         } else if (page.isCounselorUserAddPage) {
           navigateToCounselor(response.data.id)
+        } else if (page.isGroupUserAddPage) {
+          navigateToGroup(response.data.id)
         } else {
           routerContext.router.navigate(page.userEditPage, {
             userId: response.data.id,

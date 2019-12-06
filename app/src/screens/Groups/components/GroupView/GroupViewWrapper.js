@@ -15,7 +15,9 @@ const GroupViewWrapper = props => {
       <GroupForm
         {...props.fields}
         campersList={props.campersList}
+        usersList={props.usersList}
         onChange={props.onFieldChange}
+        onCreateNewAccount={props.onCreateNewAccount}
         onDeleteGroup={props.onDeleteGroup}
       />
     </>
@@ -28,8 +30,10 @@ GroupViewWrapper.propTypes = {
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
   }).isRequired,
+  usersList: PropTypes.array.isRequired,
 
   // functions
+  onCrateNewAccount: PropTypes.func.isRequired,
   onDeleteGroup: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
 }

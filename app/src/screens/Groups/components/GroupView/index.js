@@ -9,9 +9,9 @@ import {groupActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
-import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const GroupView = props => {
@@ -19,12 +19,14 @@ const GroupView = props => {
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const valuesContext = useContext(ValuesContext)
   const group = useAsyncLoad(actions.loadGroup, props.id)
 
   const [fields, setFields] = useState({
     name: {includePercent: true, isRequired: true, value: null},
     campers: {value: []},
     isActive: {value: true},
+    loginUser: {includePercent: true, isRequired: true, value: null},
   })
 
   const getGroup = async () => {
@@ -36,6 +38,7 @@ const GroupView = props => {
           mergeFormData(stateFields, {
             ...response.data,
             campers: response.data.campers.map(x => `${x}`),
+            loginUser: `${response.data.loginUser}`,
           }),
         )
       }
@@ -46,8 +49,14 @@ const GroupView = props => {
 
   useEffect(() => {
     objectsContext.campers.load()
+    objectsContext.users.load()
 
-    if (props.id) {
+    if (valuesContext.groupValues && valuesContext.groupValues.valid) {
+      group.stopLoading()
+
+      setFields(valuesContext.groupValues.fields)
+      valuesContext.setGroupValues(undefined)
+    } else if (props.id) {
       getGroup()
     } else {
       group.stopLoading()
@@ -90,6 +99,16 @@ const GroupView = props => {
     }
   }
 
+  const handleCreateNewAccount = adding => {
+    valuesContext.setGroupValues({
+      fields,
+      valid: false,
+      adding,
+    })
+
+    routerContext.router.navigate(page.groupUserAddPage)
+  }
+
   const submitButtonDisabled =
     group.loading ||
     objectsContext.campers.loading ||
@@ -121,6 +140,8 @@ const GroupView = props => {
             <GroupViewWrapper
               campersList={objectsContext.campers.results || []}
               fields={fields}
+              usersList={objectsContext.users.results || []}
+              onCreateNewAccount={handleCreateNewAccount}
               onDeleteGroup={handleDeleteGroupClick}
               onFieldChange={handleFieldChange}
             />
