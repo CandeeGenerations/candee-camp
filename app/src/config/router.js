@@ -35,66 +35,78 @@ const routes = [
     ],
   },
   {
-    name: 'campers',
-    path: '/campers',
+    name: 'visitors',
+    path: '/visitors',
     children: [
       {
-        name: 'add',
-        path: '/add',
+        name: 'campers',
+        path: '/campers',
+        children: [
+          {
+            name: 'add',
+            path: '/add',
+          },
+          {
+            name: 'edit',
+            path: '/edit/:camperId',
+          },
+        ],
       },
       {
-        name: 'edit',
-        path: '/edit/:camperId',
+        name: 'groups',
+        path: '/groups',
+        children: [
+          {
+            name: 'add',
+            path: '/add',
+          },
+          {
+            name: 'edit',
+            path: '/edit/:groupId',
+          },
+          {
+            name: 'user',
+            path: '/user',
+          },
+        ],
       },
     ],
   },
   {
-    name: 'groups',
-    path: '/groups',
+    name: 'camp',
+    path: '/camp',
     children: [
       {
-        name: 'add',
-        path: '/add',
+        name: 'counselors',
+        path: '/counselors',
+        children: [
+          {
+            name: 'add',
+            path: '/add',
+          },
+          {
+            name: 'edit',
+            path: '/edit/:counselorId',
+          },
+          {
+            name: 'user',
+            path: '/user',
+          },
+        ],
       },
       {
-        name: 'edit',
-        path: '/edit/:groupId',
-      },
-      {
-        name: 'user',
-        path: '/user',
-      },
-    ],
-  },
-  {
-    name: 'counselors',
-    path: '/counselors',
-    children: [
-      {
-        name: 'add',
-        path: '/add',
-      },
-      {
-        name: 'edit',
-        path: '/edit/:counselorId',
-      },
-      {
-        name: 'user',
-        path: '/user',
-      },
-    ],
-  },
-  {
-    name: 'users',
-    path: '/users',
-    children: [
-      {
-        name: 'add',
-        path: '/add',
-      },
-      {
-        name: 'edit',
-        path: '/edit/:userId',
+        name: 'users',
+        path: '/users',
+        children: [
+          {
+            name: 'add',
+            path: '/add',
+          },
+          {
+            name: 'edit',
+            path: '/edit/:userId',
+          },
+        ],
       },
     ],
   },

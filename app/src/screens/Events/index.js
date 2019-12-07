@@ -88,10 +88,6 @@ const Events = () => {
                 Add Event
               </Button>,
             ]}
-            routes={[
-              {path: '/dashboard', breadcrumbName: 'Dashboard'},
-              {path: '/events', breadcrumbName: 'Events'},
-            ]}
             title="Events"
           />
 

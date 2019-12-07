@@ -23,27 +23,18 @@ const NavBar = () => {
     },
     {
       icon: 'team',
-      name: 'Counselors',
-      routeName: page.counselorsPage,
-    },
-    {
-      icon: 'team',
-      name: 'Campers',
-      routeName: page.campersPage,
+      name: 'Visitors',
+      routeName: page.visitorsPage,
     },
     {
       icon: 'appstore',
-      name: 'Groups',
-      routeName: page.groupsPage,
-    },
-    {
-      icon: 'user',
-      name: 'Users',
-      routeName: page.usersPage,
+      name: 'Camp Management',
+      routeName: page.campPage,
     },
   ]
-  const selected = navItems.find(
-    item => item.routeName === routerContext.route.name,
+
+  const selected = navItems.find(item =>
+    routerContext.route.name.includes(item.routeName),
   )
 
   return (
