@@ -6,27 +6,25 @@ using CandeeCamp.API.Repositories;
 using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace CandeeCamp.API
 {
     public class Startup
     {
-        private readonly IHostingEnvironment _env;
+        private readonly IHostEnvironment _env;
         private readonly IConfiguration _config;
         private readonly ILoggerFactory _loggerFactory;
         
-        public Startup(IHostingEnvironment env, IConfiguration config, 
+        public Startup(IHostEnvironment env, IConfiguration config, 
             ILoggerFactory loggerFactory)
         {
             _env = env;
@@ -51,10 +49,12 @@ namespace CandeeCamp.API
                 ));
 
             services.AddMvc()
-                .AddJsonOptions(options =>
-                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
-                .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter(_loggerFactory)))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddMvcOptions(options =>
+                {
+                    options.EnableEndpointRouting = false;
+                    options.Filters.Add(new GlobalExceptionFilter(_loggerFactory));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             
             services.AddApiVersioning(options =>
             {
@@ -82,7 +82,7 @@ namespace CandeeCamp.API
                     });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -96,14 +96,14 @@ namespace CandeeCamp.API
             
             app.UseCors(options =>
             {
-                options.AllowAnyOrigin();
+                options.WithOrigins(env.IsDevelopment()
+                    ? "http://localhost:3300"
+                    : _config["FrontFacingUrl"]);
+
                 options.AllowAnyHeader();
                 options.AllowAnyMethod();
                 options.AllowCredentials();
             });
-
-            loggerFactory.AddConsole(_config.GetSection("Logging"));
-            loggerFactory.AddDebug();
 
             app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
