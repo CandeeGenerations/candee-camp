@@ -31,6 +31,7 @@ import ResetPassword from '@/screens/ResetPassword'
 import ForgotPassword from '@/screens/ForgotPassword'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import UserView from '@/screens/Users/components/UserView'
+import Cabins from '../Cabins'
 
 export const ObjectsContext = React.createContext({})
 export const ValuesContext = React.createContext({})
@@ -46,11 +47,12 @@ const App = () => {
   const [groupValues, setGroupValues] = useState(undefined)
 
   const routeName = routerContext.route.name
-  const users = useAsyncLoad(actions.userActions.loadUsers)
   const events = useAsyncLoad(actions.eventActions.loadEvents)
   const campers = useAsyncLoad(actions.camperActions.loadCampers)
   const groups = useAsyncLoad(actions.groupActions.loadGroups)
   const counselors = useAsyncLoad(actions.counselorActions.loadCounselors)
+  const cabins = useAsyncLoad(actions.cabinActions.loadCabins)
+  const users = useAsyncLoad(actions.userActions.loadUsers)
 
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
@@ -130,6 +132,8 @@ const App = () => {
     content = <CampPage />
   } else if (routeName.includes(page.counselorsPage)) {
     content = <Counselors />
+  } else if (routeName.includes(page.cabinsPage)) {
+    content = <Cabins />
   } else if (routeName.includes(page.usersPage)) {
     content = <Users />
   } else {
@@ -168,10 +172,11 @@ const App = () => {
           >
             <ObjectsContext.Provider
               value={{
-                campers,
-                counselors,
                 events,
+                campers,
                 groups,
+                counselors,
+                cabins,
                 users,
               }}
             >

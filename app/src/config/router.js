@@ -95,6 +95,20 @@ const routes = [
         ],
       },
       {
+        name: 'cabins',
+        path: '/cabins',
+        children: [
+          {
+            name: 'add',
+            path: '/add',
+          },
+          {
+            name: 'edit',
+            path: '/edit/:cabinId',
+          },
+        ],
+      },
+      {
         name: 'users',
         path: '/users',
         children: [

@@ -40,6 +40,13 @@ export default () => {
       routeName.includes('camp.counselors.edit'),
     isCounselorUserAddPage: routeName.includes('camp.counselors.user'),
 
+    // cabins
+    isCabinAddPage: routeName.includes('camp.cabins.add'),
+    isCabinEditPage: routeName.includes('camp.cabins.edit'),
+    isCabinAddOrEditPage:
+      routeName.includes('camp.cabins.add') ||
+      routeName.includes('camp.cabins.edit'),
+
     // users
     isUserAddPage: routeName.includes('camp.users.add'),
     isUserEditPage: routeName.includes('camp.users.edit'),
@@ -78,6 +85,11 @@ export default () => {
     counselorAddPage: 'camp.counselors.add',
     counselorEditPage: 'camp.counselors.edit',
     counselorUserAddPage: 'camp.counselors.user',
+
+    // cabins
+    cabinsPage: 'camp.cabins',
+    cabinAddPage: 'camp.cabins.add',
+    cabinEditPage: 'camp.cabins.edit',
 
     // users
     usersPage: 'camp.users',
