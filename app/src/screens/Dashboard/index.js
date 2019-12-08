@@ -9,11 +9,12 @@ import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {
-  camperActions,
-  counselorActions,
   eventActions,
-  userActions,
+  camperActions,
   groupActions,
+  counselorActions,
+  cabinActions,
+  userActions,
 } from '@/actions'
 
 import {NavItem} from '@/components/Navigation'
@@ -29,6 +30,7 @@ const Dashboard = () => {
   const camperStats = useAsyncLoad(camperActions.loadCamperStats)
   const groupStats = useAsyncLoad(groupActions.loadGroupStats)
   const counselorStats = useAsyncLoad(counselorActions.loadCounselorStats)
+  const cabinStats = useAsyncLoad(cabinActions.loadCabinStats)
   const userStats = useAsyncLoad(userActions.loadUserStats)
 
   useEffect(() => {
@@ -36,6 +38,7 @@ const Dashboard = () => {
     camperStats.load()
     groupStats.load()
     counselorStats.load()
+    cabinStats.load()
     userStats.load()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -96,6 +99,18 @@ const Dashboard = () => {
                 <NavItem routeName={page.counselorsPage}>
                   View Counselors >
                 </NavItem>
+              </div>
+            </Stat>
+          </LoaderContext.Provider>
+        </Col>
+
+        <Col {...statWidths}>
+          <LoaderContext.Provider
+            value={{spinning: cabinStats.loading, tip: 'Loading...'}}
+          >
+            <Stat title="Cabins" value={cabinStats.data}>
+              <div css={{textAlign: 'right', marginTop: 5}}>
+                <NavItem routeName={page.cabinsPage}>View Cabins ></NavItem>
               </div>
             </Stat>
           </LoaderContext.Provider>

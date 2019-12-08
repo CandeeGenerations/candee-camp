@@ -19,6 +19,7 @@ import Users from '@/screens/Users'
 import Signin from '@/screens/Signin'
 import Events from '@/screens/Events'
 import Groups from '@/screens/Groups'
+import Cabins from '@/screens/Cabins'
 import CampPage from '@/screens/Camp'
 import Campers from '@/screens/Campers'
 import NavBar from '@/components/NavBar'
@@ -46,11 +47,12 @@ const App = () => {
   const [groupValues, setGroupValues] = useState(undefined)
 
   const routeName = routerContext.route.name
-  const users = useAsyncLoad(actions.userActions.loadUsers)
   const events = useAsyncLoad(actions.eventActions.loadEvents)
   const campers = useAsyncLoad(actions.camperActions.loadCampers)
   const groups = useAsyncLoad(actions.groupActions.loadGroups)
   const counselors = useAsyncLoad(actions.counselorActions.loadCounselors)
+  const cabins = useAsyncLoad(actions.cabinActions.loadCabins)
+  const users = useAsyncLoad(actions.userActions.loadUsers)
 
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
@@ -130,6 +132,8 @@ const App = () => {
     content = <CampPage />
   } else if (routeName.includes(page.counselorsPage)) {
     content = <Counselors />
+  } else if (routeName.includes(page.cabinsPage)) {
+    content = <Cabins />
   } else if (routeName.includes(page.usersPage)) {
     content = <Users />
   } else {
@@ -168,10 +172,11 @@ const App = () => {
           >
             <ObjectsContext.Provider
               value={{
-                campers,
-                counselors,
                 events,
+                campers,
                 groups,
+                counselors,
+                cabins,
                 users,
               }}
             >
