@@ -43,6 +43,7 @@ namespace CandeeCamp.API.Repositories
                 CreatedDate = DateTimeOffset.Now,
                 UpdatedDate = DateTimeOffset.Now,
                 UserId = counselor.UserId,
+                CabinId = counselor.CabinId,
                 IsActive = true,
                 IsDeleted = false
             };
@@ -73,6 +74,7 @@ namespace CandeeCamp.API.Repositories
             dbCounselor.IsActive = counselor.IsActive;
             dbCounselor.UpdatedDate = DateTimeOffset.Now;
             dbCounselor.UserId = counselor.UserId;
+            dbCounselor.CabinId = counselor.CabinId;
 
             await Context.SaveChangesAsync();
 

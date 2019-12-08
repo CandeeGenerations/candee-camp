@@ -31,7 +31,14 @@ const CounselorForm = Form.create({
   },
 
   mapPropsToFields(props) {
-    const {firstName, lastName, startingBalance, userId, isActive} = props
+    const {
+      firstName,
+      lastName,
+      startingBalance,
+      userId,
+      isActive,
+      cabinId,
+    } = props
 
     return {
       firstName: Form.createFormField({
@@ -53,6 +60,10 @@ const CounselorForm = Form.create({
       userId: Form.createFormField({
         ...userId,
         value: userId.value,
+      }),
+      cabinId: Form.createFormField({
+        ...cabinId,
+        value: cabinId.value,
       }),
     }
   },
@@ -133,6 +144,45 @@ const CounselorForm = Form.create({
                 formatter={inputNumberFormatter}
                 parser={inputNumberParser}
               />,
+            )}
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item label="Cabin">
+            {getFieldDecorator('cabinId')(
+              <Select
+                dropdownRender={menu => (
+                  <div>
+                    <div
+                      css={{padding: 8, cursor: 'pointer'}}
+                      onClick={() =>
+                        props.onCreateNewCabin(page.isCounselorAddPage)
+                      }
+                      onMouseDown={e => e.preventDefault()}
+                    >
+                      <Icon type="plus" /> Create New Cabin
+                    </div>
+
+                    <Divider css={{margin: '4px 0'}} />
+
+                    {menu}
+                  </div>
+                )}
+                filterOption={selectSearchFunc}
+                optionFilterProp="children"
+                placeholder="e.g. Cabin A"
+                allowClear
+                showSearch
+              >
+                {props.cabinsList.map(x => (
+                  <Select.Option key={x.id} value={`${x.id}`}>
+                    {x.name}
+                  </Select.Option>
+                ))}
+              </Select>,
             )}
           </Form.Item>
         </Col>

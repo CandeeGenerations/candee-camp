@@ -9,9 +9,9 @@ import {cabinActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
-import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const CabinView = props => {
@@ -19,6 +19,7 @@ const CabinView = props => {
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const valuesContext = useContext(ValuesContext)
   const cabin = useAsyncLoad(actions.loadCabin, props.id)
 
   const [fields, setFields] = useState({
@@ -51,6 +52,42 @@ const CabinView = props => {
 
   const refreshTable = () => objectsContext.cabins.load()
 
+  const navigateToCounselor = cabinId => {
+    const updates = {valid: true}
+
+    if (cabinId) {
+      updates.fields = {
+        ...valuesContext.counselorValues.fields,
+        cabinId: {
+          ...valuesContext.counselorValues.fields.cabinId,
+          value: `${cabinId}`,
+        },
+      }
+    }
+
+    valuesContext.setCounselorValues({
+      ...valuesContext.counselorValues,
+      ...updates,
+    })
+
+    routerContext.router.navigate(
+      valuesContext.counselorValues.adding
+        ? page.counselorAddPage
+        : page.counselorEditPage,
+      valuesContext.counselorValues.adding
+        ? {}
+        : {counselorId: valuesContext.counselorValues.fields.id.value},
+    )
+  }
+
+  const handleFormClose = () => {
+    if (page.isCounselorCabinAddPage) {
+      navigateToCounselor()
+    } else {
+      routerContext.router.navigate(page.cabinsPage)
+    }
+  }
+
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
       cabin.startLoading()
@@ -62,9 +99,13 @@ const CabinView = props => {
       if (response) {
         refreshTable()
 
-        routerContext.router.navigate(page.cabinEditPage, {
-          cabinId: response.data.id,
-        })
+        if (page.isCounselorCabinAddPage) {
+          navigateToCounselor(response.data.id)
+        } else {
+          routerContext.router.navigate(page.cabinEditPage, {
+            cabinId: response.data.id,
+          })
+        }
       }
     }
   }
@@ -92,7 +133,6 @@ const CabinView = props => {
     <>
       <DrawerView
         fields={fields}
-        parentRoute={page.cabinsPage}
         submitButtonDisabled={submitButtonDisabled}
         title={
           fields.id
@@ -100,6 +140,7 @@ const CabinView = props => {
             : 'Add a New Cabin'
         }
         width={512}
+        onClose={handleFormClose}
         onSubmit={handleFormSubmit}
       >
         <LoaderContext.Provider

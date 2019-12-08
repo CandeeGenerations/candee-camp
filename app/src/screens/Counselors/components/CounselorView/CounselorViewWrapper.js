@@ -16,9 +16,11 @@ const CounselorViewWrapper = props => {
 
       <CounselorForm
         {...props.fields}
+        cabinsList={props.cabinsList}
         usersList={props.usersList}
         onChange={props.onFieldChange}
         onCreateNewAccount={props.onCreateNewAccount}
+        onCreateNewCabin={props.onCreateNewCabin}
         onDeleteCounselor={props.onDeleteCounselor}
       />
     </>
@@ -26,6 +28,7 @@ const CounselorViewWrapper = props => {
 }
 
 CounselorViewWrapper.propTypes = {
+  cabinsList: PropTypes.array.isRequired,
   fields: PropTypes.shape({}).isRequired,
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
@@ -34,6 +37,7 @@ CounselorViewWrapper.propTypes = {
 
   // functions
   onCreateNewAccount: PropTypes.func.isRequired,
+  onCreateNewCabin: PropTypes.func.isRequired,
   onDeleteCounselor: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
 }

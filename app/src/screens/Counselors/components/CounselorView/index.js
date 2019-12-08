@@ -27,6 +27,7 @@ const CounselorView = props => {
     lastName: {includePercent: true, isRequired: true, value: null},
     startingBalance: {value: 0},
     userId: {includePercent: true, isRequired: true, value: null},
+    cabinId: {value: null},
     isActive: {value: true},
   })
 
@@ -39,6 +40,9 @@ const CounselorView = props => {
           mergeFormData(stateFields, {
             ...response.data,
             userId: `${response.data.userId}`,
+            cabinId: response.data.cabinId
+              ? `${response.data.cabinId}`
+              : undefined,
           }),
         )
       }
@@ -49,6 +53,7 @@ const CounselorView = props => {
 
   useEffect(() => {
     objectsContext.users.load()
+    objectsContext.cabins.load()
 
     if (valuesContext.counselorValues && valuesContext.counselorValues.valid) {
       counselor.stopLoading()
@@ -108,9 +113,20 @@ const CounselorView = props => {
     routerContext.router.navigate(page.counselorUserAddPage)
   }
 
+  const handleCreateNewCabin = adding => {
+    valuesContext.setCounselorValues({
+      fields,
+      valid: false,
+      adding,
+    })
+
+    routerContext.router.navigate(page.counselorCabinAddPage)
+  }
+
   const submitButtonDisabled =
     counselor.loading ||
     objectsContext.users.loading ||
+    objectsContext.cabins.loading ||
     (!fields.id && !isFormReady(fields)) ||
     (fields.id && !anyTouchedFields(fields)) ||
     (anyTouchedFields(fields) && !isFormReady(fields))
@@ -133,7 +149,10 @@ const CounselorView = props => {
       >
         <LoaderContext.Provider
           value={{
-            spinning: counselor.loading || objectsContext.users.loading,
+            spinning:
+              counselor.loading ||
+              objectsContext.users.loading ||
+              objectsContext.cabins.loading,
             tip: 'Loading counselor...',
           }}
         >
@@ -142,9 +161,11 @@ const CounselorView = props => {
             hasError={errorWrapper.hasError}
           >
             <CounselorViewWrapper
+              cabinsList={objectsContext.cabins.results || []}
               fields={fields}
               usersList={objectsContext.users.results || []}
               onCreateNewAccount={handleCreateNewAccount}
+              onCreateNewCabin={handleCreateNewCabin}
               onDeleteCounselor={handleDeleteCounselorClick}
               onFieldChange={handleFieldChange}
             />

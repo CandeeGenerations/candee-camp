@@ -3,7 +3,6 @@ import {Button, Card} from 'antd'
 import {useRoute} from 'react-router5'
 import {css, Global} from '@emotion/core'
 
-import CabinView from './components/CabinView'
 import CabinsTable from './components/CabinsTable'
 
 import {cabinActions as actions} from '@/actions'
@@ -95,17 +94,6 @@ const Cabins = () => {
           </LoaderContext.Provider>
         </Card>
       </MainContent>
-
-      {page.isCabinAddOrEditPage && (
-        <CabinView
-          id={
-            (routerContext.route.params &&
-              routerContext.route.params.cabinId) ||
-            null
-          }
-          onDeleteCabin={handleDeleteCabinClick}
-        />
-      )}
     </>
   )
 }
