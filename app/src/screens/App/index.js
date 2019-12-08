@@ -19,6 +19,7 @@ import Users from '@/screens/Users'
 import Signin from '@/screens/Signin'
 import Events from '@/screens/Events'
 import Groups from '@/screens/Groups'
+import Cabins from '@/screens/Cabins'
 import CampPage from '@/screens/Camp'
 import Campers from '@/screens/Campers'
 import NavBar from '@/components/NavBar'
@@ -31,7 +32,6 @@ import ResetPassword from '@/screens/ResetPassword'
 import ForgotPassword from '@/screens/ForgotPassword'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import UserView from '@/screens/Users/components/UserView'
-import Cabins from '../Cabins'
 
 export const ObjectsContext = React.createContext({})
 export const ValuesContext = React.createContext({})
