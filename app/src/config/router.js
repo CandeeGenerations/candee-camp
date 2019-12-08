@@ -92,6 +92,10 @@ const routes = [
             name: 'user',
             path: '/user',
           },
+          {
+            name: 'cabin',
+            path: '/cabin',
+          },
         ],
       },
       {

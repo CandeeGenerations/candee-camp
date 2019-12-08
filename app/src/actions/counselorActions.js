@@ -49,6 +49,8 @@ export const saveCounselor = async counselor => {
 
     const body = formDataToBody(counselor)
 
+    body.cabinId = body.cabinId ? Number(body.cabinId) : null
+    body.userId = Number(body.userId)
     body.createdBy = user.id
 
     if (counselor.id) {

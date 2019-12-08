@@ -31,8 +31,19 @@ namespace CandeeCamp.API.Repositories
             return dbCabin;
         }
 
+        public async Task<IEnumerable<Cabin>> GetCabinsByName(string name) => await Context.Cabins
+            .Where(x => !x.IsDeleted && string.Equals(x.Name, name.Trim(), StringComparison.CurrentCultureIgnoreCase))
+            .ToListAsync();
+
         public async Task<Cabin> CreateCabin(CabinModel cabin)
         {
+            IEnumerable<Cabin> existingCabins = await GetCabinsByName(cabin.Name);
+
+            if (existingCabins.Any())
+            {
+                throw new Exception("This cabin already exists. Please use another name.");
+            }
+            
             Cabin newCabin = new Cabin
             {
                 Name = cabin.Name,
@@ -61,6 +72,13 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<Cabin> UpdateCabin(int cabinId, CabinModel cabin)
         {
+            IEnumerable<Cabin> existingCabins = await GetCabinsByName(cabin.Name);
+
+            if (existingCabins.Count() > 1)
+            {
+                throw new Exception("This cabin already exists. Please use another name.");
+            }
+            
             Cabin dbCabin = await GetCabinById(cabinId);
 
             dbCabin.Name = cabin.Name;

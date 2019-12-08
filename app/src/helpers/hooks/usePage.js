@@ -39,22 +39,25 @@ export default () => {
       routeName.includes('camp.counselors.add') ||
       routeName.includes('camp.counselors.edit'),
     isCounselorUserAddPage: routeName.includes('camp.counselors.user'),
+    isCounselorCabinAddPage: routeName.includes('camp.counselors.cabin'),
 
     // cabins
     isCabinAddPage: routeName.includes('camp.cabins.add'),
     isCabinEditPage: routeName.includes('camp.cabins.edit'),
     isCabinAddOrEditPage:
       routeName.includes('camp.cabins.add') ||
-      routeName.includes('camp.cabins.edit'),
+      routeName.includes('camp.cabins.edit') ||
+      routeName.includes('camp.counselors.cabin'),
 
     // users
     isUserAddPage: routeName.includes('camp.users.add'),
     isUserEditPage: routeName.includes('camp.users.edit'),
     isUserAddOrEditPage:
-      routeName.includes('camp.users.add') ||
-      routeName.includes('camp.users.edit') ||
+      routeName.includes('event.user') ||
+      routeName.includes('visitors.groups.user') ||
       routeName.includes('camp.counselors.user') ||
-      routeName.includes('visitors.groups.user'),
+      routeName.includes('camp.users.add') ||
+      routeName.includes('camp.users.edit'),
 
     // values : return string
     // events
@@ -85,6 +88,7 @@ export default () => {
     counselorAddPage: 'camp.counselors.add',
     counselorEditPage: 'camp.counselors.edit',
     counselorUserAddPage: 'camp.counselors.user',
+    counselorCabinAddPage: 'camp.counselors.cabin',
 
     // cabins
     cabinsPage: 'camp.cabins',

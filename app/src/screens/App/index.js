@@ -32,6 +32,7 @@ import ResetPassword from '@/screens/ResetPassword'
 import ForgotPassword from '@/screens/ForgotPassword'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import UserView from '@/screens/Users/components/UserView'
+import CabinView from '@/screens/Cabins/components/CabinView'
 
 export const ObjectsContext = React.createContext({})
 export const ValuesContext = React.createContext({})
@@ -140,14 +141,6 @@ const App = () => {
     content = <NotFound />
   }
 
-  const userViewRoutes = [
-    page.userEditPage,
-    page.userAddPage,
-    page.eventUserEditPage,
-    page.counselorUserAddPage,
-    page.groupUserAddPage,
-  ]
-
   return testNoNavRoutes() && !(user && isUnauthenticatedRoute) ? (
     <>
       {content}
@@ -182,11 +175,21 @@ const App = () => {
             >
               {content}
 
-              {userViewRoutes.includes(routeName) && (
+              {page.isUserAddOrEditPage && (
                 <UserView
                   id={
                     (routerContext.route.params &&
                       routerContext.route.params.userId) ||
+                    null
+                  }
+                />
+              )}
+
+              {page.isCabinAddOrEditPage && (
+                <CabinView
+                  id={
+                    (routerContext.route.params &&
+                      routerContext.route.params.cabinId) ||
                     null
                   }
                 />

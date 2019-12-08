@@ -18,5 +18,7 @@ namespace CandeeCamp.API.Models
         public int CreatedBy { get; set; }
 
         public int UserId { get; set; }
+
+        public int? CabinId { get; set; }
     }
 }
