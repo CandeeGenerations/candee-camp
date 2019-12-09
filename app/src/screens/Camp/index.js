@@ -6,7 +6,12 @@ import {Row, Col} from 'antd'
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
-import {counselorActions, cabinActions, userActions} from '@/actions'
+import {
+  counselorActions,
+  cabinActions,
+  userActions,
+  couponActions,
+} from '@/actions'
 
 import {NavItem} from '@/components/Navigation'
 import MainContent from '@/components/MainContent'
@@ -21,11 +26,13 @@ const CampPage = () => {
   const counselorStats = useAsyncLoad(counselorActions.loadCounselorStats)
   const cabinStats = useAsyncLoad(cabinActions.loadCabinStats)
   const userStats = useAsyncLoad(userActions.loadUserStats)
+  const couponStats = useAsyncLoad(couponActions.loadCouponStats)
 
   useEffect(() => {
     counselorStats.load()
     cabinStats.load()
     userStats.load()
+    couponStats.load()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const statWidths = {
@@ -73,6 +80,18 @@ const CampPage = () => {
             <Stat title="Users" value={userStats.data}>
               <div css={{textAlign: 'right', marginTop: 5}}>
                 <NavItem routeName={page.usersPage}>View Users ></NavItem>
+              </div>
+            </Stat>
+          </LoaderContext.Provider>
+        </Col>
+
+        <Col {...statWidths}>
+          <LoaderContext.Provider
+            value={{spinning: couponStats.loading, tip: 'Loading...'}}
+          >
+            <Stat title="Coupons" value={couponStats.data}>
+              <div css={{textAlign: 'right', marginTop: 5}}>
+                <NavItem routeName={page.couponsPage}>View Coupons ></NavItem>
               </div>
             </Stat>
           </LoaderContext.Provider>

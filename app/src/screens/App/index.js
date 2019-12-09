@@ -21,6 +21,7 @@ import Events from '@/screens/Events'
 import Groups from '@/screens/Groups'
 import Cabins from '@/screens/Cabins'
 import CampPage from '@/screens/Camp'
+import Coupons from '@/screens/Coupons'
 import Campers from '@/screens/Campers'
 import NavBar from '@/components/NavBar'
 import NotFound from '@/screens/NotFound'
@@ -33,6 +34,7 @@ import ForgotPassword from '@/screens/ForgotPassword'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import UserView from '@/screens/Users/components/UserView'
 import CabinView from '@/screens/Cabins/components/CabinView'
+import CouponView from '@/screens/Coupons/components/CouponView'
 
 export const ObjectsContext = React.createContext({})
 export const ValuesContext = React.createContext({})
@@ -54,6 +56,7 @@ const App = () => {
   const counselors = useAsyncLoad(actions.counselorActions.loadCounselors)
   const cabins = useAsyncLoad(actions.cabinActions.loadCabins)
   const users = useAsyncLoad(actions.userActions.loadUsers)
+  const coupons = useAsyncLoad(actions.couponActions.loadCoupons)
 
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
@@ -137,6 +140,8 @@ const App = () => {
     content = <Cabins />
   } else if (routeName.includes(page.usersPage)) {
     content = <Users />
+  } else if (routeName.includes(page.couponsPage)) {
+    content = <Coupons />
   } else {
     content = <NotFound />
   }
@@ -171,6 +176,7 @@ const App = () => {
                 counselors,
                 cabins,
                 users,
+                coupons,
               }}
             >
               {content}
@@ -190,6 +196,16 @@ const App = () => {
                   id={
                     (routerContext.route.params &&
                       routerContext.route.params.cabinId) ||
+                    null
+                  }
+                />
+              )}
+
+              {page.isCouponAddOrEditPage && (
+                <CouponView
+                  id={
+                    (routerContext.route.params &&
+                      routerContext.route.params.couponId) ||
                     null
                   }
                 />

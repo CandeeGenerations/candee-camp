@@ -21,6 +21,7 @@ export default () => {
     isCamperAddOrEditPage:
       routeName.includes('visitors.campers.add') ||
       routeName.includes('visitors.campers.edit'),
+    isCamperCouponAddPage: routeName.includes('visitors.campers.coupon'),
 
     // groups
     isGroupAddPage: routeName.includes('visitors.groups.add'),
@@ -59,6 +60,14 @@ export default () => {
       routeName.includes('camp.users.add') ||
       routeName.includes('camp.users.edit'),
 
+    // coupons
+    isCouponAddPage: routeName.includes('camp.coupons.add'),
+    isCouponEditPage: routeName.includes('camp.coupons.edit'),
+    isCouponAddOrEditPage:
+      routeName.includes('camp.coupons.add') ||
+      routeName.includes('camp.coupons.edit') ||
+      routeName.includes('visitors.campers.coupon'),
+
     // values : return string
     // events
     eventsPage: 'events',
@@ -73,6 +82,7 @@ export default () => {
     campersPage: 'visitors.campers',
     camperAddPage: 'visitors.campers.add',
     camperEditPage: 'visitors.campers.edit',
+    camperCouponAddPage: 'visitors.campers.coupon',
 
     // groups
     groupsPage: 'visitors.groups',
@@ -99,5 +109,10 @@ export default () => {
     usersPage: 'camp.users',
     userAddPage: 'camp.users.add',
     userEditPage: 'camp.users.edit',
+
+    // coupons
+    couponsPage: 'camp.coupons',
+    couponAddPage: 'camp.coupons.add',
+    couponEditPage: 'camp.coupons.edit',
   }
 }
