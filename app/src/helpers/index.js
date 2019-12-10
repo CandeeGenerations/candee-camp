@@ -27,8 +27,12 @@ export const inputNumberFormatter = value =>
 
 export const inputNumberParser = value => value.replace(/\$\s?|(,*)/g, '')
 
-export const formatDate = date =>
-  date ? moment(date).format('MMM D, YYYY h:mm A') : <em>None</em>
+export const formatDate = (date, withTime = true) =>
+  date ? (
+    moment(date).format(`MMM D, YYYY${withTime ? ' h:mm A' : ''}`)
+  ) : (
+    <em>None</em>
+  )
 
 export const formatCurrency = amount => `$${amount}`
 

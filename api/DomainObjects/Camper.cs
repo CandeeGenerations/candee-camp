@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using CandeeCamp.API.DomainObjects.Common;
 
 namespace CandeeCamp.API.DomainObjects
@@ -68,6 +69,7 @@ namespace CandeeCamp.API.DomainObjects
             }
         }
         
+        [JsonIgnore]
         public Camper Camper { get; set; }
         
         public int? CouponId { get; set; }

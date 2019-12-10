@@ -39,7 +39,7 @@ const CouponsTable = props => {
         key="expirationDate"
         align="right"
         dataIndex="expirationDate"
-        render={formatDate}
+        render={date => formatDate(date, false)}
         title="Expiration Date"
       />
 
