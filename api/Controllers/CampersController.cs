@@ -15,10 +15,12 @@ namespace CandeeCamp.API.Controllers
     public class CampersController : Controller
     {
         private readonly ICamperRepository _camperRepository;
+        private readonly IRedeemedCouponRepository _redeemedCouponRepository;
 
-        public CampersController(ICamperRepository camperRepository)
+        public CampersController(ICamperRepository camperRepository, IRedeemedCouponRepository redeemedCouponRepository)
         {
             _camperRepository = camperRepository;
+            _redeemedCouponRepository = redeemedCouponRepository;
         }
 
         [HttpGet]
@@ -31,8 +33,8 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpGet("{camperId}")]
-        [ProducesResponseType(typeof(Camper), 200)]
-        public async Task<ActionResult<Camper>> GetCamper(int camperId)
+        [ProducesResponseType(typeof(AdjustedCamper), 200)]
+        public async Task<ActionResult<AdjustedCamper>> GetCamper(int camperId)
         {
             if (!ModelState.IsValid)
             {
@@ -40,13 +42,14 @@ namespace CandeeCamp.API.Controllers
             }
             
             Camper camper = await _camperRepository.GetCamperById(camperId);
-
-            return Ok(camper);
+            AdjustedCamper adjustedCamper = await AdjustCamper(camper);
+            
+            return Ok(adjustedCamper);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Camper), 200)]
-        public async Task<ActionResult<Camper>> CreateCamper([FromBody]CamperModel camper)
+        [ProducesResponseType(typeof(AdjustedCamper), 200)]
+        public async Task<ActionResult<AdjustedCamper>> CreateCamper([FromBody]CamperModel camper)
         {
             if (!ModelState.IsValid)
             {
@@ -55,12 +58,19 @@ namespace CandeeCamp.API.Controllers
 
             Camper newCamper = await _camperRepository.CreateCamper(camper);
 
-            return Ok(newCamper);
+            if (camper.CouponId != null)
+            {
+                await _redeemedCouponRepository.RedeemCoupon(camper.CouponId.Value, newCamper.Id);
+            }
+            
+            AdjustedCamper adjustedCamper = await AdjustCamper(newCamper);
+            
+            return Ok(adjustedCamper);
         }
 
         [HttpPut("{camperId}")]
-        [ProducesResponseType(typeof(Camper), 200)]
-        public async Task<ActionResult<Camper>> UpdateCamper(int camperId, [FromBody]CamperModel camper)
+        [ProducesResponseType(typeof(AdjustedCamper), 200)]
+        public async Task<ActionResult<AdjustedCamper>> UpdateCamper(int camperId, [FromBody]CamperModel camper)
         {
             if (!ModelState.IsValid)
             {
@@ -68,8 +78,19 @@ namespace CandeeCamp.API.Controllers
             }
 
             Camper updatedCamper = await _camperRepository.UpdateCamper(camperId, camper);
+            RedeemedCoupon camperCoupon = await _redeemedCouponRepository.GetCamperCoupon(camperId);
+            
+            if (camper.CouponId != null && (camperCoupon == null || camper.CouponId != camperCoupon.CouponId))
+            {
+                await _redeemedCouponRepository.RedeemCoupon(camper.CouponId.Value, camperId);
+            } else if (camper.CouponId == null && camperCoupon != null)
+            {
+                await _redeemedCouponRepository.RemoveRedeemedCoupon(camperId);
+            }
 
-            return Ok(updatedCamper);
+            AdjustedCamper adjustedCamper = await AdjustCamper(updatedCamper);
+            
+            return Ok(adjustedCamper);
         }
 
         [HttpDelete("{camperId}")]
@@ -80,5 +101,18 @@ namespace CandeeCamp.API.Controllers
 
             return Ok();
         }
+
+        private async Task<AdjustedCamper> AdjustCamper(Camper camper)
+        {
+            RedeemedCoupon camperCoupon = await _redeemedCouponRepository.GetCamperCoupon(camper.Id);
+            AdjustedCamper adjustedCamper = new AdjustedCamper(camper);
+
+            if (camperCoupon != null)
+            {
+                adjustedCamper.CouponId = camperCoupon.CouponId;
+            }
+
+            return adjustedCamper;
+        } 
     }
 } 

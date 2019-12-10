@@ -33,6 +33,8 @@ namespace CandeeCamp.API.Models
         public int? CabinId { get; set; }
         
         public int? CounselorId { get; set; }
+        
+        public int? CouponId { get; set; }
 
         public bool IsMinor => BirthDate > DateTimeOffset.Now.AddYears(-18) && BirthDate < DateTimeOffset.Now;
     }

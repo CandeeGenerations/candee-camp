@@ -140,7 +140,9 @@ const CounselorView = props => {
         title={
           fields.id
             ? `Edit Counselor - ${
-                counselor.results ? counselor.results.firstName : ''
+                counselor.results
+                  ? counselor.results.firstName
+                  : fields.firstName.value
               }`
             : 'Add a New Counselor'
         }

@@ -17,6 +17,7 @@ import {
 } from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
+import {selectSearchFunc} from '@/helpers'
 
 const CamperForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -34,6 +35,7 @@ const CamperForm = Form.create({
       parentLastName,
       medicine,
       allergies,
+      couponId,
       isActive,
     } = props
 
@@ -65,6 +67,10 @@ const CamperForm = Form.create({
       allergies: Form.createFormField({
         ...allergies,
         value: allergies.value,
+      }),
+      couponId: Form.createFormField({
+        ...couponId,
+        value: couponId.value,
       }),
       isActive: Form.createFormField({
         ...isActive,
@@ -139,6 +145,45 @@ const CamperForm = Form.create({
           <Form.Item label="Allergies">
             {getFieldDecorator('allergies')(
               <Select mode="tags" placeholder="e.g. lactose intolerant" />,
+            )}
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item label="Redeemed Coupon">
+            {getFieldDecorator('couponId')(
+              <Select
+                dropdownRender={menu => (
+                  <div>
+                    <div
+                      css={{padding: 8, cursor: 'pointer'}}
+                      onClick={() =>
+                        props.onCreateNewCoupon(page.isCamperAddPage)
+                      }
+                      onMouseDown={e => e.preventDefault()}
+                    >
+                      <Icon type="plus" /> Create New Coupon
+                    </div>
+
+                    <Divider css={{margin: '4px 0'}} />
+
+                    {menu}
+                  </div>
+                )}
+                filterOption={selectSearchFunc}
+                optionFilterProp="children"
+                placeholder="e.g. 20% Off Coupon"
+                allowClear
+                showSearch
+              >
+                {props.couponsList.map(x => (
+                  <Select.Option key={x.id} value={`${x.id}`}>
+                    {x.name} ({x.code})
+                  </Select.Option>
+                ))}
+              </Select>,
             )}
           </Form.Item>
         </Col>

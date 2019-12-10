@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using CandeeCamp.API.DomainObjects.Common;
 
 namespace CandeeCamp.API.DomainObjects
@@ -53,5 +54,22 @@ namespace CandeeCamp.API.DomainObjects
 
         [ForeignKey("Id")]
         public virtual Counselor Counselor { get; set; }
+    }
+
+    public class AdjustedCamper : Camper
+    {
+        public AdjustedCamper(Camper camper)
+        {
+            Camper = camper;
+
+            foreach (PropertyInfo prop in camper.GetType().GetProperties())
+            {
+                GetType().GetProperty(prop.Name)?.SetValue(this, prop.GetValue(camper));
+            }
+        }
+        
+        public Camper Camper { get; set; }
+        
+        public int? CouponId { get; set; }
     }
 }

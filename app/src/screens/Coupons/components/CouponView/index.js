@@ -75,7 +75,7 @@ const CouponView = props => {
       }
     }
 
-    valuesContext.setCounselorValues({
+    valuesContext.setCamperValues({
       ...valuesContext.camperValues,
       ...updates,
     })

@@ -46,8 +46,9 @@ const App = () => {
   const routerContext = useRoute()
   const localStorage = useLocalStorage('cc--debug')
 
-  const [counselorValues, setCounselorValues] = useState(undefined)
+  const [camperValues, setCamperValues] = useState(undefined)
   const [groupValues, setGroupValues] = useState(undefined)
+  const [counselorValues, setCounselorValues] = useState(undefined)
 
   const routeName = routerContext.route.name
   const events = useAsyncLoad(actions.eventActions.loadEvents)
@@ -162,10 +163,12 @@ const App = () => {
         <ErrorBoundary router={routerContext.route}>
           <ValuesContext.Provider
             value={{
-              counselorValues,
+              camperValues,
               groupValues,
-              setCounselorValues,
+              counselorValues,
+              setCamperValues,
               setGroupValues,
+              setCounselorValues,
             }}
           >
             <ObjectsContext.Provider
