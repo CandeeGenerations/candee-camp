@@ -15,6 +15,7 @@ import {
   counselorActions,
   cabinActions,
   userActions,
+  couponActions,
 } from '@/actions'
 
 import {NavItem} from '@/components/Navigation'
@@ -32,6 +33,7 @@ const Dashboard = () => {
   const counselorStats = useAsyncLoad(counselorActions.loadCounselorStats)
   const cabinStats = useAsyncLoad(cabinActions.loadCabinStats)
   const userStats = useAsyncLoad(userActions.loadUserStats)
+  const couponStats = useAsyncLoad(couponActions.loadCouponStats)
 
   useEffect(() => {
     eventStats.load()
@@ -40,6 +42,7 @@ const Dashboard = () => {
     counselorStats.load()
     cabinStats.load()
     userStats.load()
+    couponStats.load()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const statWidths = {
@@ -123,6 +126,18 @@ const Dashboard = () => {
             <Stat title="Users" value={userStats.data}>
               <div css={{textAlign: 'right', marginTop: 5}}>
                 <NavItem routeName={page.usersPage}>View Users ></NavItem>
+              </div>
+            </Stat>
+          </LoaderContext.Provider>
+        </Col>
+
+        <Col {...statWidths}>
+          <LoaderContext.Provider
+            value={{spinning: couponStats.loading, tip: 'Loading...'}}
+          >
+            <Stat title="Coupons" value={couponStats.data}>
+              <div css={{textAlign: 'right', marginTop: 5}}>
+                <NavItem routeName={page.couponsPage}>View Coupons ></NavItem>
               </div>
             </Stat>
           </LoaderContext.Provider>

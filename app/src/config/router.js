@@ -50,6 +50,10 @@ const routes = [
             name: 'edit',
             path: '/edit/:camperId',
           },
+          {
+            name: 'coupon',
+            path: '/coupon',
+          },
         ],
       },
       {
@@ -123,6 +127,20 @@ const routes = [
           {
             name: 'edit',
             path: '/edit/:userId',
+          },
+        ],
+      },
+      {
+        name: 'coupons',
+        path: '/coupons',
+        children: [
+          {
+            name: 'add',
+            path: '/add',
+          },
+          {
+            name: 'edit',
+            path: '/edit/:couponId',
           },
         ],
       },

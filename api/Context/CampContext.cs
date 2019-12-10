@@ -99,6 +99,8 @@ namespace CandeeCamp.API.Context
             modelBuilder.Entity<Counselor>().HasOne(cb => cb.Cabin).WithMany().HasForeignKey(co => co.CabinId);
 
             modelBuilder.Entity<Cabin>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(cb => cb.CreatedBy);
+            
+            modelBuilder.Entity<Coupon>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(cp => cp.CreatedBy);
 
             modelBuilder.Entity<SnackShopPurchase>().HasOne(s => s.SnackShopItem).WithMany()
                 .HasForeignKey(s => s.SnackShopItemId);

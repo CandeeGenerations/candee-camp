@@ -14,7 +14,9 @@ const CamperViewWrapper = props => {
 
       <CamperForm
         {...props.fields}
+        couponsList={props.couponsList}
         onChange={props.onFieldChange}
+        onCreateNewCoupon={props.onCreateNewCoupon}
         onDeleteCamper={props.onDeleteCamper}
       />
     </>
@@ -22,12 +24,14 @@ const CamperViewWrapper = props => {
 }
 
 CamperViewWrapper.propTypes = {
+  couponsList: PropTypes.array.isRequired,
   fields: PropTypes.shape({}).isRequired,
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
   }).isRequired,
 
   // functions
+  onCreateNewCoupon: PropTypes.func.isRequired,
   onDeleteCamper: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
 }

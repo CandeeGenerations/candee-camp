@@ -10,7 +10,7 @@ import {camperActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
-import {ObjectsContext} from '@/screens/App'
+import {ObjectsContext, ValuesContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
@@ -20,6 +20,7 @@ const CamperView = props => {
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const valuesContext = useContext(ValuesContext)
   const camper = useAsyncLoad(actions.loadCamper, props.id)
 
   const [fields, setFields] = useState({
@@ -30,6 +31,7 @@ const CamperView = props => {
     parentLastName: {value: null},
     medicine: {value: []},
     allergies: {value: []},
+    couponId: {value: undefined},
     isActive: {value: true},
   })
 
@@ -50,6 +52,9 @@ const CamperView = props => {
             allergies: response.data.allergies
               ? response.data.allergies.split(',')
               : [],
+            couponId: response.data.couponId
+              ? `${response.data.couponId}`
+              : undefined,
           }),
         )
       }
@@ -59,7 +64,14 @@ const CamperView = props => {
   }
 
   useEffect(() => {
-    if (props.id) {
+    objectsContext.coupons.load()
+
+    if (valuesContext.camperValues && valuesContext.camperValues.valid) {
+      camper.stopLoading()
+
+      setFields(valuesContext.camperValues.fields)
+      valuesContext.setCamperValues(undefined)
+    } else if (props.id) {
       getCamper()
     } else {
       camper.stopLoading()
@@ -102,8 +114,19 @@ const CamperView = props => {
     }
   }
 
+  const handleCreateNewCoupon = adding => {
+    valuesContext.setCamperValues({
+      fields,
+      valid: false,
+      adding,
+    })
+
+    routerContext.router.navigate(page.camperCouponAddPage)
+  }
+
   const submitButtonDisabled =
     camper.loading ||
+    objectsContext.coupons.loading ||
     (!fields.id && !isFormReady(fields)) ||
     (fields.id && !anyTouchedFields(fields)) ||
     (anyTouchedFields(fields) && !isFormReady(fields))
@@ -116,21 +139,30 @@ const CamperView = props => {
         submitButtonDisabled={submitButtonDisabled}
         title={
           fields.id
-            ? `Edit Camper - ${camper.results ? camper.results.firstName : ''}`
+            ? `Edit Camper - ${
+                camper.results
+                  ? camper.results.firstName
+                  : fields.firstName.value
+              }`
             : 'Add a New Camper'
         }
         width={512}
         onSubmit={handleFormSubmit}
       >
         <LoaderContext.Provider
-          value={{spinning: camper.loading, tip: 'Loading camper...'}}
+          value={{
+            spinning: camper.loading || objectsContext.coupons.loading,
+            tip: 'Loading camper...',
+          }}
         >
           <ErrorWrapper
             handleRetry={getCamper}
             hasError={errorWrapper.hasError}
           >
             <CamperViewWrapper
+              couponsList={objectsContext.coupons.results || []}
               fields={fields}
+              onCreateNewCoupon={handleCreateNewCoupon}
               onDeleteCamper={handleDeleteCamperClick}
               onFieldChange={handleFieldChange}
             />

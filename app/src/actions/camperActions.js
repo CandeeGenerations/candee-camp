@@ -52,6 +52,7 @@ export const saveCamper = async camper => {
     body.medicine = body.medicine.length > 0 ? body.medicine.toString() : null
     body.allergies =
       body.allergies.length > 0 ? body.allergies.toString() : null
+    body.couponId = body.couponId ? Number(body.couponId) : null
     body.createdBy = user.id
 
     if (camper.id) {
