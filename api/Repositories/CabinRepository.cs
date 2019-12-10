@@ -72,14 +72,17 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<Cabin> UpdateCabin(int cabinId, CabinModel cabin)
         {
-            IEnumerable<Cabin> existingCabins = await GetCabinsByName(cabin.Name);
-
-            if (existingCabins.Count() > 1)
-            {
-                throw new Exception("This cabin already exists. Please use another name.");
-            }
-            
             Cabin dbCabin = await GetCabinById(cabinId);
+
+            if (!string.Equals(dbCabin.Name, cabin.Name.Trim(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                IEnumerable<Cabin> existingCabins = await GetCabinsByName(cabin.Name);
+
+                if (existingCabins.Any())
+                {
+                    throw new Exception("This cabin already exists. Please use another name.");
+                }
+            }
 
             dbCabin.Name = cabin.Name;
             dbCabin.IsActive = cabin.IsActive;

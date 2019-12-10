@@ -80,14 +80,17 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<Group> UpdateGroup(int groupId, GroupModel group)
         {
-            IEnumerable<Group> existingGroups = await GetGroupsByName(group.Name);
-
-            if (existingGroups.Count() > 1)
-            {
-                throw new Exception("This group already exists. Please use another name.");
-            }
-            
             Group dbGroup = await GetGroupById(groupId);
+
+            if (!string.Equals(dbGroup.Name, group.Name.Trim(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                IEnumerable<Group> existingGroups = await GetGroupsByName(group.Name);
+
+                if (existingGroups.Any())
+                {
+                    throw new Exception("This group already exists. Please use another name.");
+                }
+            }
 
             dbGroup.Name = group.Name.Trim();
             dbGroup.LoginUser = group.LoginUser;
