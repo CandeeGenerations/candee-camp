@@ -2,5 +2,7 @@ FROM node:11-alpine
 
 WORKDIR /usr/src/app
 
+RUN yarn
+
 EXPOSE 3300
 CMD ["yarn", "run", "start"]
