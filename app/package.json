@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.7.130",
+  "version": "0.7.131",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -24,7 +24,7 @@
     "email": "tyler@candeegenerations.com"
   },
   "scripts": {
-    "start": "nodemon -w craco.config.js -w ./src/content/antd.less --exec 'craco start'",
+    "start": "npm rebuild node-sass && nodemon -w craco.config.js -w ./src/content/antd.less --exec 'craco start'",
     "build": "rimraf build && REACT_APP_VERSION=$npm_package_version craco build",
     "test": "craco test",
     "test:ci": "CI=true yarn test"

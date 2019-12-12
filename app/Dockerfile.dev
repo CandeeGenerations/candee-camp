@@ -1,0 +1,6 @@
+FROM node:11-alpine
+
+WORKDIR /usr/src/app
+
+EXPOSE 3300
+CMD ["yarn", "run", "start"]
