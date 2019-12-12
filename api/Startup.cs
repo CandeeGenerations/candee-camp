@@ -96,9 +96,7 @@ namespace CandeeCamp.API
             
             app.UseCors(options =>
             {
-                options.WithOrigins(env.IsDevelopment()
-                    ? "http://localhost:3300"
-                    : _config["FrontFacingUrl"]);
+                options.WithOrigins("http://localhost:3300", _config["FrontFacingUrl"]);
 
                 options.AllowAnyHeader();
                 options.AllowAnyMethod();
