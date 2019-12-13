@@ -22,10 +22,11 @@ const DeleteLink = props => {
       icon={<Icon css={{color: 'red'}} type="question-circle-o" />}
       okText="Delete"
       okType="danger"
+      overlayStyle={{zIndex: 1060}}
       placement="topRight"
       onConfirm={handleConfirm}
     >
-      {loading ? <Icon type="loading" /> : <a>Delete</a>}
+      {loading ? <Icon type="loading" /> : <a style={props.style}>Delete</a>}
     </Popconfirm>
   )
 }
