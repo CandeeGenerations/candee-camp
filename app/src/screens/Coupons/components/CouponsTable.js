@@ -7,6 +7,7 @@ import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
 import {formatDate, formatIsActive} from '@/helpers'
 
+import CodeCopy from '@/components/CodeCopy'
 import {NavItem} from '@/components/Navigation'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
@@ -25,7 +26,12 @@ const CouponsTable = props => {
     >
       <Column key="name" dataIndex="name" title="Name" />
 
-      <Column key="code" dataIndex="code" title="Code" />
+      <Column
+        key="code"
+        dataIndex="code"
+        render={text => <CodeCopy>{text}</CodeCopy>}
+        title="Code"
+      />
 
       <Column
         key="isActive"
