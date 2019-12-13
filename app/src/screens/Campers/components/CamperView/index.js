@@ -31,6 +31,7 @@ const CamperView = props => {
     parentLastName: {value: null},
     medicine: {value: []},
     allergies: {value: []},
+    startingBalance: {value: 0},
     couponId: {value: undefined},
     isActive: {value: true},
   })

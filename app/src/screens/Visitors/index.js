@@ -56,7 +56,7 @@ const CampPage = () => {
             <LoaderContext.Provider
               value={{spinning: stat.data.loading, tip: 'Loading...'}}
             >
-              <Stat title={stats.title} value={stat.data.data}>
+              <Stat title={stat.title} value={stat.data.data}>
                 <div css={{textAlign: 'right', marginTop: 5}}>
                   <NavItem routeName={stat.page}>View {stat.title} ></NavItem>
                 </div>

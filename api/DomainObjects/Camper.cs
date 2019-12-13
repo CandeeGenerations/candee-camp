@@ -27,6 +27,8 @@ namespace CandeeCamp.API.DomainObjects
 
         public string Allergies { get; set; }
 
+        public decimal StartingBalance { get; set; }
+
         public DateTimeOffset CreatedDate { get; set; }
         
         public DateTimeOffset UpdatedDate { get; set; }

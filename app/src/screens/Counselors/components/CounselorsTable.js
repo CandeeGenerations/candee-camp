@@ -28,19 +28,19 @@ const CounselorsTable = props => {
       <Column key="lastName" dataIndex="lastName" title="Last Name" />
 
       <Column
-        key="startingBalance"
-        align="right"
-        dataIndex="startingBalance"
-        render={formatCurrency}
-        title="Starting Balance"
-      />
-
-      <Column
         key="isActive"
         align="center"
         dataIndex="isActive"
         render={formatIsActive}
         title="Is Active"
+      />
+
+      <Column
+        key="startingBalance"
+        align="right"
+        dataIndex="startingBalance"
+        render={formatCurrency}
+        title="Starting Balance"
       />
 
       <Column

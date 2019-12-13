@@ -54,6 +54,7 @@ namespace CandeeCamp.API.Repositories
                 ParentLastName = camper.ParentLastName?.Trim(),
                 Allergies = camper.Allergies?.Trim(),
                 Medicine = camper.Medicine?.Trim(),
+                StartingBalance = camper.StartingBalance,
                 CreatedBy = camper.CreatedBy,
                 CreatedDate = DateTimeOffset.Now,
                 UpdatedDate = DateTimeOffset.Now,
@@ -101,6 +102,7 @@ namespace CandeeCamp.API.Repositories
             dbCamper.ParentLastName = camper.ParentLastName?.Trim();
             dbCamper.Allergies = camper.Allergies?.Trim();
             dbCamper.Medicine = camper.Medicine?.Trim();
+            dbCamper.StartingBalance = camper.StartingBalance;
             dbCamper.IsActive = camper.IsActive;
             dbCamper.UpdatedDate = DateTimeOffset.Now;
             dbCamper.CabinId = camper.CabinId;
