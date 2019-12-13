@@ -46,7 +46,7 @@ const Campers = () => {
       <Global
         styles={css`
           html {
-            min-width: 1160px;
+            min-width: 1300px;
           }
         `}
       />

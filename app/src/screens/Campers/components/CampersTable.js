@@ -5,7 +5,7 @@ import {Divider, Popover, Table} from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
-import {formatDate, formatIsActive} from '@/helpers'
+import {formatDate, formatIsActive, formatCurrency} from '@/helpers'
 
 import {NavItem} from '@/components/Navigation'
 import loader from '@/components/Structure/Loader'
@@ -103,6 +103,14 @@ const CampersTable = props => {
           </Popover>
         )}
         title="Has Allergies"
+      />
+
+      <Column
+        key="startingBalance"
+        align="right"
+        dataIndex="startingBalance"
+        render={formatCurrency}
+        title="Starting Balance"
       />
 
       <Column

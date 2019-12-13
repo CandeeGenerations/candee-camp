@@ -13,7 +13,6 @@ import * as actions from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import {getUser} from '@/helpers/authHelpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
-import useLocalStorage from '@/helpers/hooks/useLocalStorage'
 
 import Users from '@/screens/Users'
 import Signin from '@/screens/Signin'
@@ -45,7 +44,6 @@ const App = () => {
   const page = usePage()
   const user = getUser()
   const routerContext = useRoute()
-  const localStorage = useLocalStorage('cc--debug')
 
   const [camperValues, setCamperValues] = useState(undefined)
   const [groupValues, setGroupValues] = useState(undefined)
@@ -106,7 +104,6 @@ const App = () => {
       ...returnParams,
     })
     const params = simpleCrypto.encrypt(paramsString)
-    localStorage.set(JSON.stringify({paramsString, params}))
 
     routerContext.router.navigate('signin', {p: params})
 

@@ -21,6 +21,8 @@ namespace CandeeCamp.API.Models
 
         public string Allergies { get; set; }
 
+        public decimal StartingBalance { get; set; }
+
         public bool IsActive { get; set; }
 
         [Required]

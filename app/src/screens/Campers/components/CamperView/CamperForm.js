@@ -14,10 +14,15 @@ import {
   Switch,
   Typography,
   Select,
+  InputNumber,
 } from 'antd'
 
+import {
+  selectSearchFunc,
+  inputNumberFormatter,
+  inputNumberParser,
+} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
-import {selectSearchFunc} from '@/helpers'
 
 const CamperForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -35,6 +40,7 @@ const CamperForm = Form.create({
       parentLastName,
       medicine,
       allergies,
+      startingBalance,
       couponId,
       isActive,
     } = props
@@ -67,6 +73,10 @@ const CamperForm = Form.create({
       allergies: Form.createFormField({
         ...allergies,
         value: allergies.value,
+      }),
+      startingBalance: Form.createFormField({
+        ...startingBalance,
+        value: startingBalance.value,
       }),
       couponId: Form.createFormField({
         ...couponId,
@@ -107,9 +117,20 @@ const CamperForm = Form.create({
       </Row>
 
       <Row gutter={16}>
-        <Col span={24}>
+        <Col span={12}>
           <Form.Item label="Birthdate">
             {getFieldDecorator('birthDate')(<DatePicker format="MM/DD/YYYY" />)}
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item label="Starting Balance">
+            {getFieldDecorator('startingBalance')(
+              <InputNumber
+                formatter={inputNumberFormatter}
+                parser={inputNumberParser}
+              />,
+            )}
           </Form.Item>
         </Col>
       </Row>
