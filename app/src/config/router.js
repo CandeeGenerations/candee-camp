@@ -131,6 +131,20 @@ const routes = [
         ],
       },
       {
+        name: 'snackShopItems',
+        path: '/snack-shop-items',
+        children: [
+          {
+            name: 'add',
+            path: '/add',
+          },
+          {
+            name: 'edit',
+            path: '/edit/:snackShopItemId',
+          },
+        ],
+      },
+      {
         name: 'coupons',
         path: '/coupons',
         children: [

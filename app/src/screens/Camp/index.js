@@ -10,6 +10,7 @@ import {
   counselorActions,
   cabinActions,
   userActions,
+  snackShopItemActions,
   couponActions,
 } from '@/actions'
 
@@ -26,12 +27,16 @@ const CampPage = () => {
   const counselorStats = useAsyncLoad(counselorActions.loadCounselorStats)
   const cabinStats = useAsyncLoad(cabinActions.loadCabinStats)
   const userStats = useAsyncLoad(userActions.loadUserStats)
+  const snackShopItemStats = useAsyncLoad(
+    snackShopItemActions.loadSnackShopItemStats,
+  )
   const couponStats = useAsyncLoad(couponActions.loadCouponStats)
 
   useEffect(() => {
     counselorStats.load()
     cabinStats.load()
     userStats.load()
+    snackShopItemStats.load()
     couponStats.load()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -42,60 +47,52 @@ const CampPage = () => {
     sm: 24,
   }
 
+  const stats = [
+    {
+      data: counselorStats,
+      page: page.counselorsPage,
+      title: 'Counselors',
+    },
+    {
+      data: cabinStats,
+      page: page.cabinsPage,
+      title: 'Cabins',
+    },
+    {
+      data: userStats,
+      page: page.usersPage,
+      title: 'Users',
+    },
+    {
+      data: snackShopItemStats,
+      page: page.snackShopItemsPage,
+      title: 'Snack Shop Items',
+    },
+    {
+      data: couponStats,
+      page: page.couponsPage,
+      title: 'Coupons',
+    },
+  ]
+
   return (
     <MainContent>
       <h1>Camp Management</h1>
 
       <Row gutter={16}>
-        <Col {...statWidths}>
-          <LoaderContext.Provider
-            value={{spinning: counselorStats.loading, tip: 'Loading...'}}
-          >
-            <Stat title="Counselors" value={counselorStats.data}>
-              <div css={{textAlign: 'right', marginTop: 5}}>
-                <NavItem routeName={page.counselorsPage}>
-                  View Counselors >
-                </NavItem>
-              </div>
-            </Stat>
-          </LoaderContext.Provider>
-        </Col>
-
-        <Col {...statWidths}>
-          <LoaderContext.Provider
-            value={{spinning: cabinStats.loading, tip: 'Loading...'}}
-          >
-            <Stat title="Cabins" value={cabinStats.data}>
-              <div css={{textAlign: 'right', marginTop: 5}}>
-                <NavItem routeName={page.cabinsPage}>View Cabins ></NavItem>
-              </div>
-            </Stat>
-          </LoaderContext.Provider>
-        </Col>
-
-        <Col {...statWidths}>
-          <LoaderContext.Provider
-            value={{spinning: userStats.loading, tip: 'Loading...'}}
-          >
-            <Stat title="Users" value={userStats.data}>
-              <div css={{textAlign: 'right', marginTop: 5}}>
-                <NavItem routeName={page.usersPage}>View Users ></NavItem>
-              </div>
-            </Stat>
-          </LoaderContext.Provider>
-        </Col>
-
-        <Col {...statWidths}>
-          <LoaderContext.Provider
-            value={{spinning: couponStats.loading, tip: 'Loading...'}}
-          >
-            <Stat title="Coupons" value={couponStats.data}>
-              <div css={{textAlign: 'right', marginTop: 5}}>
-                <NavItem routeName={page.couponsPage}>View Coupons ></NavItem>
-              </div>
-            </Stat>
-          </LoaderContext.Provider>
-        </Col>
+        {stats.map(stat => (
+          <Col {...statWidths}>
+            <LoaderContext.Provider
+              value={{spinning: stat.data.loading, tip: 'Loading...'}}
+            >
+              <Stat title={stat.title} value={stat.data.data}>
+                <div css={{textAlign: 'right', marginTop: 5}}>
+                  <NavItem routeName={stat.page}>View {stat.title} ></NavItem>
+                </div>
+              </Stat>
+            </LoaderContext.Provider>
+          </Col>
+        ))}
       </Row>
     </MainContent>
   )

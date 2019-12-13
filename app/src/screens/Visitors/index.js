@@ -33,34 +33,37 @@ const CampPage = () => {
     sm: 24,
   }
 
+  const stats = [
+    {
+      data: camperStats,
+      page: page.campersPage,
+      title: 'Campers',
+    },
+    {
+      data: groupStats,
+      page: page.groupsPage,
+      title: 'Groups',
+    },
+  ]
+
   return (
     <MainContent>
       <h1>Visitors</h1>
 
       <Row gutter={16}>
-        <Col {...statWidths}>
-          <LoaderContext.Provider
-            value={{spinning: camperStats.loading, tip: 'Loading...'}}
-          >
-            <Stat title="Campers" value={camperStats.data}>
-              <div css={{textAlign: 'right', marginTop: 5}}>
-                <NavItem routeName={page.campersPage}>View Campers ></NavItem>
-              </div>
-            </Stat>
-          </LoaderContext.Provider>
-        </Col>
-
-        <Col {...statWidths}>
-          <LoaderContext.Provider
-            value={{spinning: groupStats.loading, tip: 'Loading...'}}
-          >
-            <Stat title="Groups" value={groupStats.data}>
-              <div css={{textAlign: 'right', marginTop: 5}}>
-                <NavItem routeName={page.groupsPage}>View Groups ></NavItem>
-              </div>
-            </Stat>
-          </LoaderContext.Provider>
-        </Col>
+        {stats.map(stat => (
+          <Col {...statWidths}>
+            <LoaderContext.Provider
+              value={{spinning: stat.data.loading, tip: 'Loading...'}}
+            >
+              <Stat title={stats.title} value={stat.data.data}>
+                <div css={{textAlign: 'right', marginTop: 5}}>
+                  <NavItem routeName={stat.page}>View {stat.title} ></NavItem>
+                </div>
+              </Stat>
+            </LoaderContext.Provider>
+          </Col>
+        ))}
       </Row>
     </MainContent>
   )
