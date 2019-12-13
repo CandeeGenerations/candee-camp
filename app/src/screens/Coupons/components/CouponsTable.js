@@ -29,7 +29,7 @@ const CouponsTable = props => {
       <Column
         key="code"
         dataIndex="code"
-        render={text => <CodeCopy text={text} />}
+        render={text => <CodeCopy>{text}</CodeCopy>}
         title="Code"
       />
 

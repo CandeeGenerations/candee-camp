@@ -1,12 +1,18 @@
-import React from 'react'
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import {Typography} from 'antd'
+import PropTypes from 'prop-types'
 
-const CodeCopy = text => {
+const CodeCopy = props => {
   return (
-    <div>
-      <Typography.Text>{text}</Typography.Text>
-    </div>
+    <Typography.Text code copyable>
+      {props.children}
+    </Typography.Text>
   )
+}
+
+CodeCopy.propTypes = {
+  children: PropTypes.node.isRequired,
 }
 
 export default CodeCopy
