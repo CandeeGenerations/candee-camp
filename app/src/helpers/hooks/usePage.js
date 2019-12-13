@@ -60,6 +60,13 @@ export default () => {
       routeName.includes('camp.users.add') ||
       routeName.includes('camp.users.edit'),
 
+    // snack shop items
+    isSnackShopItemAddPage: routeName.includes('camp.snackShopItems.add'),
+    isSnackShopItemEditPage: routeName.includes('camp.snackShopItems.edit'),
+    isSnackShopItemAddOrEditPage:
+      routeName.includes('camp.snackShopItems.add') ||
+      routeName.includes('camp.snackShopItems.edit'),
+
     // coupons
     isCouponAddPage: routeName.includes('camp.coupons.add'),
     isCouponEditPage: routeName.includes('camp.coupons.edit'),
@@ -109,6 +116,11 @@ export default () => {
     usersPage: 'camp.users',
     userAddPage: 'camp.users.add',
     userEditPage: 'camp.users.edit',
+
+    // snack shop items
+    snackShopItemsPage: 'camp.snackShopItems',
+    snackShopItemAddPage: 'camp.snackShopItems.add',
+    snackShopItemEditPage: 'camp.snackShopItems.edit',
 
     // coupons
     couponsPage: 'camp.coupons',

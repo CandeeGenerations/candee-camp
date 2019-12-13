@@ -46,7 +46,7 @@ namespace CandeeCamp.API.Repositories
             
             Cabin newCabin = new Cabin
             {
-                Name = cabin.Name,
+                Name = cabin.Name.Trim(),
                 CreatedBy = cabin.CreatedBy,
                 CreatedDate = DateTimeOffset.Now,
                 IsActive = true,

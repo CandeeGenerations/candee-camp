@@ -30,6 +30,7 @@ import Dashboard from '@/screens/Dashboard'
 import Counselors from '@/screens/Counselors'
 import VisitorsPage from '@/screens/Visitors'
 import ResetPassword from '@/screens/ResetPassword'
+import SnackShopItems from '@/screens/SnackShopItems'
 import ForgotPassword from '@/screens/ForgotPassword'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import UserView from '@/screens/Users/components/UserView'
@@ -57,6 +58,9 @@ const App = () => {
   const counselors = useAsyncLoad(actions.counselorActions.loadCounselors)
   const cabins = useAsyncLoad(actions.cabinActions.loadCabins)
   const users = useAsyncLoad(actions.userActions.loadUsers)
+  const snackShopItems = useAsyncLoad(
+    actions.snackShopItemActions.loadSnackShopItems,
+  )
   const coupons = useAsyncLoad(actions.couponActions.loadCoupons)
 
   if (user) {
@@ -141,6 +145,8 @@ const App = () => {
     content = <Cabins />
   } else if (routeName.includes(page.usersPage)) {
     content = <Users />
+  } else if (routeName.includes(page.snackShopItemsPage)) {
+    content = <SnackShopItems />
   } else if (routeName.includes(page.couponsPage)) {
     content = <Coupons />
   } else {
@@ -179,6 +185,7 @@ const App = () => {
                 counselors,
                 cabins,
                 users,
+                snackShopItems,
                 coupons,
               }}
             >

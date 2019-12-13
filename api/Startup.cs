@@ -117,6 +117,7 @@ namespace CandeeCamp.API
             services.AddScoped<ICabinRepository, CabinRepository>();
             services.AddScoped<ICouponRepository, CouponRepository>();
             services.AddScoped<IRedeemedCouponRepository, RedeemedCouponRepository>();
+            services.AddScoped<ISnackShopItemRepository, SnackShopItemRepository>();
         }
     }
 }
