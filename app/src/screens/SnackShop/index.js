@@ -6,8 +6,8 @@ import React, {useEffect} from 'react'
 
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
-import {camperActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+import {snackShopPurchaseActions as actions, camperActions} from '@/actions'
 
 import MainContent from '@/components/MainContent'
 import {PageHeader} from '@/components/Structure'
@@ -22,22 +22,27 @@ const SnackShop = () => {
   const camperId =
     (routerContext.route.params && routerContext.route.params.camperId) || null
 
-  const camper = useAsyncLoad(actions.loadCamper, camperId)
+  const camper = useAsyncLoad(camperActions.loadCamper, camperId)
+  const snackShopPurchases = useAsyncLoad(actions.loadSnackShopPurchases, {
+    camperId,
+    source: 1,
+  })
 
   useTitle(
     `Snack Shop${camper.results ? ` - ${camper.results.firstName}` : ''}`,
   )
 
   const getCamper = async () => {
-    try {
-      await camper.load()
-    } catch {
-      errorWrapper.handleCatchError()
-    }
+    await camper.load()
   }
 
   useEffect(() => {
-    getCamper()
+    try {
+      getCamper()
+      snackShopPurchases.load()
+    } catch {
+      errorWrapper.handleCatchError()
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
