@@ -10,6 +10,7 @@ import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
 
 import {NavItem} from '@/components/Navigation'
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
@@ -21,6 +22,8 @@ const EventsTable = props => {
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : props.events.length === 0 ? (
+    <EmptyState title="Event" onCreateNew={props.onCreateEvent} />
   ) : (
     <Table
       dataSource={props.events}
@@ -146,6 +149,7 @@ EventsTable.propTypes = {
 
   // functions
   deleteEvent: PropTypes.func.isRequired,
+  onCreateEvent: PropTypes.func.isRequired,
 }
 
 export default loader(EventsTable)

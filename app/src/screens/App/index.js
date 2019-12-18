@@ -78,12 +78,7 @@ const App = () => {
   }
 
   const testNoNavRoutes = () => {
-    const noNavRoutes = [
-      'signin',
-      'forgotPassword',
-      'resetPassword',
-      'notFound',
-    ]
+    const noNavRoutes = ['signin', 'forgotPassword', 'resetPassword']
     let isNoNav = false
 
     noNavRoutes.forEach(route => {

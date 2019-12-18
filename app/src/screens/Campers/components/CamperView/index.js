@@ -137,17 +137,19 @@ const CamperView = props => {
     <>
       <DrawerView
         extraButtons={
-          <>
-            <Button
-              onClick={() =>
-                routerContext.router.navigate(page.camperSnackShopPage, {
-                  camperId: props.id,
-                })
-              }
-            >
-              Snack Shop
-            </Button>
-          </>
+          props.id && (
+            <>
+              <Button
+                onClick={() =>
+                  routerContext.router.navigate(page.camperSnackShopPage, {
+                    camperId: props.id,
+                  })
+                }
+              >
+                Snack Shop
+              </Button>
+            </>
+          )
         }
         fields={fields}
         parentRoute={page.campersPage}

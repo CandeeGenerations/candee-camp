@@ -40,6 +40,8 @@ const Coupons = () => {
     }
   }
 
+  const coupons = objectsContext.coupons.results
+
   return (
     <>
       <Global
@@ -53,17 +55,21 @@ const Coupons = () => {
       <MainContent>
         <Card>
           <PageHeader
-            actions={[
-              <Button
-                key="add"
-                type="primary"
-                onClick={() =>
-                  routerContext.router.navigate(page.couponAddPage)
-                }
-              >
-                Add Coupon
-              </Button>,
-            ]}
+            actions={
+              coupons && coupons.length > 0
+                ? [
+                    <Button
+                      key="add"
+                      type="primary"
+                      onClick={() =>
+                        routerContext.router.navigate(page.couponAddPage)
+                      }
+                    >
+                      Add Coupon
+                    </Button>,
+                  ]
+                : []
+            }
             routes={[
               {path: '/camp', breadcrumbName: 'Camp Management'},
               {path: '/coupons', breadcrumbName: 'Coupons'},
@@ -83,14 +89,17 @@ const Coupons = () => {
             >
               <CouponsTable
                 coupons={
-                  (objectsContext.coupons.results &&
-                    objectsContext.coupons.results.map(coupon => ({
+                  (coupons &&
+                    coupons.map(coupon => ({
                       ...coupon,
                       key: coupon.id,
                     }))) ||
                   []
                 }
                 deleteCoupon={handleDeleteCouponClick}
+                onCreateCoupon={() =>
+                  routerContext.router.navigate(page.couponAddPage)
+                }
               />
             </ErrorWrapper>
           </LoaderContext.Provider>

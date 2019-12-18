@@ -85,7 +85,7 @@ DrawerView.defaultProps = {
 
 DrawerView.propTypes = {
   children: PropTypes.node.isRequired,
-  extraButtons: PropTypes.node.isRequired,
+  extraButtons: PropTypes.node,
   fields: PropTypes.shape({}),
   parentRoute: PropTypes.string,
   submitButtonDisabled: PropTypes.bool,

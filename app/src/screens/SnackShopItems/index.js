@@ -41,6 +41,8 @@ const SnackShopItems = () => {
     }
   }
 
+  const snackShopItems = objectsContext.snackShopItems.results
+
   return (
     <>
       <Global
@@ -54,17 +56,21 @@ const SnackShopItems = () => {
       <MainContent>
         <Card>
           <PageHeader
-            actions={[
-              <Button
-                key="add"
-                type="primary"
-                onClick={() =>
-                  routerContext.router.navigate(page.snackShopItemAddPage)
-                }
-              >
-                Add Snack Shop Item
-              </Button>,
-            ]}
+            actions={
+              snackShopItems && snackShopItems.length > 0
+                ? [
+                    <Button
+                      key="add"
+                      type="primary"
+                      onClick={() =>
+                        routerContext.router.navigate(page.snackShopItemAddPage)
+                      }
+                    >
+                      Add Snack Shop Item
+                    </Button>,
+                  ]
+                : []
+            }
             routes={[
               {path: '/camp', breadcrumbName: 'Camp Management'},
               {path: '/snack-shop-items', breadcrumbName: 'Snack Shop Items'},
@@ -85,14 +91,15 @@ const SnackShopItems = () => {
               <SnackShopItemsTable
                 deleteSnackShopItem={handleDeleteSnackShopItemClick}
                 snackShopItems={
-                  (objectsContext.snackShopItems.results &&
-                    objectsContext.snackShopItems.results.map(
-                      snackShopItem => ({
-                        ...snackShopItem,
-                        key: snackShopItem.id,
-                      }),
-                    )) ||
+                  (snackShopItems &&
+                    snackShopItems.map(snackShopItem => ({
+                      ...snackShopItem,
+                      key: snackShopItem.id,
+                    }))) ||
                   []
+                }
+                onCreateSnackShopItem={() =>
+                  routerContext.router.navigate(page.snackShopItemAddPage)
                 }
               />
             </ErrorWrapper>

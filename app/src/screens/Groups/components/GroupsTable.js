@@ -8,6 +8,7 @@ import {Constants} from '@/helpers/constants'
 import {formatDate, formatIsActive} from '@/helpers'
 
 import {NavItem} from '@/components/Navigation'
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
@@ -18,6 +19,8 @@ const GroupsTable = props => {
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : props.groups.length === 0 ? (
+    <EmptyState title="Group" onCreateNew={props.onCreateGroup} />
   ) : (
     <Table
       dataSource={props.groups}
@@ -96,6 +99,7 @@ GroupsTable.propTypes = {
 
   // functions
   deleteGroup: PropTypes.func.isRequired,
+  onCreateGroup: PropTypes.func.isRequired,
 }
 
 export default loader(GroupsTable)

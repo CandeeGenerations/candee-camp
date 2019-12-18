@@ -8,6 +8,7 @@ import {Constants} from '@/helpers/constants'
 import {formatDate, formatIsActive, formatCurrency} from '@/helpers'
 
 import {NavItem} from '@/components/Navigation'
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
@@ -18,6 +19,11 @@ const SnackShopItemsTable = props => {
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : props.snackShopItems.length === 0 ? (
+    <EmptyState
+      title="Snack Shop Item"
+      onCreateNew={props.onCreateSnackShopItem}
+    />
   ) : (
     <Table
       dataSource={props.snackShopItems}
@@ -118,6 +124,7 @@ SnackShopItemsTable.propTypes = {
 
   // function
   deleteSnackShopItem: PropTypes.func.isRequired,
+  onCreateSnackShopItem: PropTypes.func.isRequired,
 }
 
 export default loader(SnackShopItemsTable)

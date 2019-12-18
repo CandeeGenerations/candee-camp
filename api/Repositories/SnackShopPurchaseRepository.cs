@@ -20,7 +20,8 @@ namespace CandeeCamp.API.Repositories
             SnackShopPurchaseSource source)
         {
             IQueryable<SnackShopPurchase> snackShopPurchases =
-                Context.SnackShopPurchases.Where(x => !x.IsDeleted && x.IsActive);
+                Context.SnackShopPurchases.Where(x =>
+                    !x.IsDeleted && x.IsActive && x.SnackShopItem.IsActive && !x.SnackShopItem.IsDeleted);
 
             snackShopPurchases = source switch
             {
@@ -36,7 +37,9 @@ namespace CandeeCamp.API.Repositories
             SnackShopPurchaseSource source)
         {
             IQueryable<SnackShopPurchase> snackShopPurchaseQuery =
-                Context.SnackShopPurchases.Where(x => !x.IsDeleted && x.IsActive && x.Id == snackShopPurchaseId);
+                Context.SnackShopPurchases.Where(x =>
+                    !x.IsDeleted && x.IsActive && x.Id == snackShopPurchaseId && x.SnackShopItem.IsActive &&
+                    !x.SnackShopItem.IsDeleted);
 
             snackShopPurchaseQuery = source switch
             {

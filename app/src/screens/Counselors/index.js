@@ -41,6 +41,8 @@ const Counselors = () => {
     }
   }
 
+  const counselors = objectsContext.counselors.results
+
   return (
     <>
       <Global
@@ -54,17 +56,21 @@ const Counselors = () => {
       <MainContent>
         <Card>
           <PageHeader
-            actions={[
-              <Button
-                key="add"
-                type="primary"
-                onClick={() =>
-                  routerContext.router.navigate(page.counselorAddPage)
-                }
-              >
-                Add Counselor
-              </Button>,
-            ]}
+            actions={
+              counselors && counselors.length > 0
+                ? [
+                    <Button
+                      key="add"
+                      type="primary"
+                      onClick={() =>
+                        routerContext.router.navigate(page.counselorAddPage)
+                      }
+                    >
+                      Add Counselor
+                    </Button>,
+                  ]
+                : []
+            }
             routes={[
               {path: '/camp', breadcrumbName: 'Camp Management'},
               {path: '/counselors', breadcrumbName: 'Counselors'},
@@ -84,14 +90,17 @@ const Counselors = () => {
             >
               <CounselorsTable
                 counselors={
-                  (objectsContext.counselors.results &&
-                    objectsContext.counselors.results.map(counselor => ({
+                  (counselors &&
+                    counselors.map(counselor => ({
                       ...counselor,
                       key: counselor.id,
                     }))) ||
                   []
                 }
                 deleteCounselor={handleDeleteCounselorClick}
+                onCreateCounselor={() =>
+                  routerContext.router.navigate(page.counselorAddPage)
+                }
               />
             </ErrorWrapper>
           </LoaderContext.Provider>

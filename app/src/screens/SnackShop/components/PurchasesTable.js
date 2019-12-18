@@ -2,21 +2,26 @@
 import {jsx} from '@emotion/core'
 import moment from 'moment'
 import PropTypes from 'prop-types'
+import {useRouter} from 'react-router5'
 import {Form, Table, Icon, Divider} from 'antd'
 import React, {useEffect, useContext, useState} from 'react'
 
 import PurchaseCell from './PurchaseCell'
 
+import usePage from '@/helpers/hooks/usePage'
 import {formatCurrency, formatDate} from '@/helpers'
 import {snackShopPurchaseActions as actions} from '@/actions'
 
 import {ObjectsContext} from '@/screens/App'
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
 export const EditablePurchasesContext = React.createContext()
 
 const PurchasesTable = props => {
+  const page = usePage()
+  const routerContext = useRouter()
   const objectsContext = useContext(ObjectsContext)
 
   const [loading, setLoading] = useState(false)
@@ -30,7 +35,10 @@ const PurchasesTable = props => {
   })
 
   useEffect(() => {
-    if (objectsContext.snackShopItems.results) {
+    if (
+      objectsContext.snackShopItems.results &&
+      objectsContext.snackShopItems.results.length > 0
+    ) {
       const snackShopItemId = objectsContext.snackShopItems.results[0].id
       const item = objectsContext.snackShopItems.results.find(
         x => x.id === snackShopItemId,
@@ -210,6 +218,12 @@ const PurchasesTable = props => {
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : objectsContext.snackShopItems.results &&
+    objectsContext.snackShopItems.results.length === 0 ? (
+    <EmptyState
+      title="Snack Shop Item"
+      onCreateNew={() => routerContext.navigate(page.snackShopItemAddPage)}
+    />
   ) : (
     <EditablePurchasesContext.Provider value={props.form}>
       <Table
