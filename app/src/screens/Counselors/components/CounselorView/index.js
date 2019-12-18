@@ -13,6 +13,7 @@ import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+import {Button} from 'antd'
 
 const CounselorView = props => {
   const page = usePage()
@@ -134,6 +135,19 @@ const CounselorView = props => {
   return (
     <>
       <DrawerView
+        extraButtons={
+          <>
+            <Button
+              onClick={() =>
+                routerContext.router.navigate(page.counselorSnackShopPage, {
+                  counselorId: props.id,
+                })
+              }
+            >
+              Snack Shop
+            </Button>
+          </>
+        }
         fields={fields}
         parentRoute={page.counselorsPage}
         submitButtonDisabled={submitButtonDisabled}

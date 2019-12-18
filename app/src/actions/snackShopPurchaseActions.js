@@ -5,11 +5,18 @@ import {getUserData} from '@/helpers/authHelpers'
 
 const mainPath = '/snack-shop-purchases'
 
-export const loadSnackShopPurchases = async ({camperId, source}) => {
+export const loadSnackShopPurchases = async ({
+  camperId,
+  counselorId,
+  source,
+}) => {
   try {
-    const response = await request.get(`${mainPath}/${camperId}`, {
-      params: {source},
-    })
+    const response = await request.get(
+      `${mainPath}/${camperId || counselorId}`,
+      {
+        params: {source},
+      },
+    )
 
     return response
   } catch (error) {
@@ -23,12 +30,13 @@ export const loadSnackShopPurchases = async ({camperId, source}) => {
 
 export const loadSnackShopPurchase = async ({
   camperId,
+  counselorId,
   source,
   snackShopPurchaseId,
 }) => {
   try {
     const response = await request.get(
-      `${mainPath}/${camperId}/${snackShopPurchaseId}`,
+      `${mainPath}/${camperId || counselorId}/${snackShopPurchaseId}`,
       {params: {source}},
     )
 
@@ -44,6 +52,7 @@ export const loadSnackShopPurchase = async ({
 
 export const saveSnackShopPurchase = async ({
   camperId,
+  counselorId,
   source,
   snackShopPurchase,
 }) => {
@@ -61,14 +70,18 @@ export const saveSnackShopPurchase = async ({
 
     if (snackShopPurchase.id && snackShopPurchase.id !== 0) {
       response = await request.put(
-        `${mainPath}/${camperId}/${snackShopPurchase.id}`,
+        `${mainPath}/${camperId || counselorId}/${snackShopPurchase.id}`,
         body,
         {params: {source}},
       )
     } else {
-      response = await request.post(`${mainPath}/${camperId}`, body, {
-        params: {source},
-      })
+      response = await request.post(
+        `${mainPath}/${camperId || counselorId}`,
+        body,
+        {
+          params: {source},
+        },
+      )
     }
 
     openNotification(
@@ -90,12 +103,13 @@ export const saveSnackShopPurchase = async ({
 
 export const deleteSnackShopPurchase = async ({
   camperId,
+  counselorId,
   source,
   snackShopPurchaseId,
 }) => {
   try {
     const response = await request.delete(
-      `${mainPath}/${camperId}/${snackShopPurchaseId}`,
+      `${mainPath}/${camperId || counselorId}/${snackShopPurchaseId}`,
       {params: {source}},
     )
 

@@ -97,6 +97,12 @@ const routes = [
           {
             name: 'edit',
             path: '/edit/:counselorId',
+            children: [
+              {
+                name: 'snackShop',
+                path: '/snack-shop',
+              },
+            ],
           },
           {
             name: 'user',

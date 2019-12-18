@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import {jsx} from '@emotion/core'
+import {css, jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {Button, Drawer} from 'antd'
 import {useRouter} from 'react-router5'
@@ -12,6 +12,13 @@ const DrawerView = props => {
 
   const handleClose = () =>
     props.onClose ? props.onClose() : router.navigate(props.parentRoute)
+
+  const extraStyles = props.extraButtons
+    ? css`
+        float: 'left';
+        display: 'table-cell';
+      `
+    : css``
 
   return (
     <Drawer
@@ -36,9 +43,12 @@ const DrawerView = props => {
       >
         {props.extraButtons}
 
-        <div css={{float: 'right'}}>
+        <div css={props.extraButtons ? {float: 'right'} : {textAlign: 'right'}}>
           <Button
-            css={{display: 'table-cell', float: 'left', marginRight: 8}}
+            css={css`
+              ${extraStyles};
+              margin-right: 8px;
+            `}
             onClick={handleClose}
           >
             Cancel
@@ -50,7 +60,7 @@ const DrawerView = props => {
             showProgress={!props.extraButtons}
           >
             <Button
-              css={{display: 'table-cell', float: 'left'}}
+              css={extraStyles}
               disabled={props.submitButtonDisabled}
               type="primary"
               onClick={props.onSubmit}

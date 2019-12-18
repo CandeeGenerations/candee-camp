@@ -47,6 +47,11 @@ export default () => {
     isCounselorUserAddPage: routeName.includes('camp.counselors.user'),
     isCounselorCabinAddPage: routeName.includes('camp.counselors.cabin'),
 
+    // counselor - snack shop
+    isCounselorSnackShopPage: routeName.includes(
+      'camp.counselors.edit.snackShop',
+    ),
+
     // cabins
     isCabinAddPage: routeName.includes('camp.cabins.add'),
     isCabinEditPage: routeName.includes('camp.cabins.edit'),
@@ -114,6 +119,9 @@ export default () => {
     counselorEditPage: 'camp.counselors.edit',
     counselorUserAddPage: 'camp.counselors.user',
     counselorCabinAddPage: 'camp.counselors.cabin',
+
+    // counselor - snack shop
+    counselorSnackShopPage: 'camp.counselors.edit.snackShop',
 
     // cabins
     cabinsPage: 'camp.cabins',

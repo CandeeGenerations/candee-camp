@@ -8,7 +8,11 @@ import PurchasesTable from './components/PurchasesTable'
 
 import useTitle from '@/helpers/hooks/useTitle'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
-import {snackShopPurchaseActions as actions, camperActions} from '@/actions'
+import {
+  snackShopPurchaseActions as actions,
+  camperActions,
+  counselorActions,
+} from '@/actions'
 
 import {ObjectsContext} from '@/screens/App'
 import MainContent from '@/components/MainContent'
@@ -23,24 +27,44 @@ const SnackShop = () => {
 
   const camperId =
     (routerContext.route.params && routerContext.route.params.camperId) || null
+  const counselorId =
+    (routerContext.route.params && routerContext.route.params.counselorId) ||
+    null
 
   const camper = useAsyncLoad(camperActions.loadCamper, camperId)
+  const counselor = useAsyncLoad(counselorActions.loadCounselor, counselorId)
   const snackShopPurchases = useAsyncLoad(actions.loadSnackShopPurchases, {
     camperId,
-    source: 1,
+    counselorId,
+    source: camperId ? 'camper' : 'counselor',
   })
 
   useTitle(
-    `Snack Shop${camper.results ? ` - ${camper.results.firstName}` : ''}`,
+    `Snack Shop${
+      camper.results
+        ? ` - ${camper.results.firstName}`
+        : counselor.results
+        ? ` - ${counselor.results.firstName}`
+        : ''
+    }`,
   )
 
   const getCamper = async () => {
     await camper.load()
   }
 
+  const getCounselor = async () => {
+    await counselor.load()
+  }
+
   useEffect(() => {
     try {
-      getCamper()
+      if (camperId) {
+        getCamper()
+      } else {
+        getCounselor()
+      }
+
       snackShopPurchases.load()
       objectsContext.snackShopItems.load()
     } catch {
@@ -62,26 +86,42 @@ const SnackShop = () => {
         <Card>
           <PageHeader
             routes={[
-              {path: '/visitors', breadcrumbName: 'Visitors'},
-              {path: '/campers', breadcrumbName: 'Campers'},
               {
-                path: `/edit/${camperId}`,
-                breadcrumbName: camper.results ? camper.results.firstName : '',
+                path: camperId ? '/visitors' : '/camp',
+                breadcrumbName: 'Visitors',
+              },
+              {
+                path: camperId ? '/campers' : '/counselors',
+                breadcrumbName: camperId ? 'Campers' : 'Counselors',
+              },
+              {
+                path: `/edit/${camperId || counselorId}`,
+                breadcrumbName: camper.results
+                  ? camper.results.firstName
+                  : counselor.results
+                  ? counselor.results.firstName
+                  : '...',
               },
               {path: '/snack-shop', breadcrumbName: 'Snack Shop'},
             ]}
             title={`Snack Shop${
-              camper.results ? ` - ${camper.results.firstName}` : ''
+              camper.results
+                ? ` - ${camper.results.firstName}`
+                : counselor.results
+                ? ` - ${counselor.results.firstName}`
+                : ''
             }`}
           />
 
           <LoaderContext.Provider
             value={{
               spinning:
-                camper.loading ||
+                (camperId ? camper.loading : counselor.loading) ||
                 snackShopPurchases.loading ||
                 objectsContext.snackShopItems.loading,
-              tip: "Loading camper's snack shop...",
+              tip: `Loading ${
+                camperId ? 'camper' : 'counselor'
+              }'s snack shop...`,
             }}
           >
             <ErrorWrapper
@@ -90,6 +130,7 @@ const SnackShop = () => {
             >
               <PurchasesTable
                 camperId={Number(camperId)}
+                counselorId={Number(counselorId)}
                 items={objectsContext.snackShopItems.results || []}
                 purchases={snackShopPurchases.results || []}
                 refreshTable={snackShopPurchases.load}

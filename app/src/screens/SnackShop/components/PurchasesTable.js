@@ -62,7 +62,8 @@ const PurchasesTable = props => {
 
       const response = await actions.saveSnackShopPurchase({
         camperId: props.camperId,
-        source: 'camper',
+        counselorId: props.counselorId,
+        source: props.camperId ? 'camper' : 'counselor',
         snackShopPurchase: {...row, id},
       })
 
@@ -78,7 +79,8 @@ const PurchasesTable = props => {
   const deletePurchase = async snackShopPurchaseId => {
     const response = await actions.deleteSnackShopPurchase({
       camperId: props.camperId,
-      source: 'camper',
+      counselorId: props.counselorId,
+      source: props.camperId ? 'camper' : 'counselor',
       snackShopPurchaseId,
     })
 
@@ -224,7 +226,8 @@ const PurchasesTable = props => {
 }
 
 PurchasesTable.propTypes = {
-  camperId: PropTypes.number.isRequired,
+  counselorId: PropTypes.number,
+  camperId: PropTypes.number,
   items: PropTypes.arrayOf(PropTypes.shape()).isRequired,
   purchases: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 
