@@ -49,6 +49,12 @@ const routes = [
           {
             name: 'edit',
             path: '/edit/:camperId',
+            children: [
+              {
+                name: 'snackShop',
+                path: '/snack-shop',
+              },
+            ],
           },
           {
             name: 'coupon',

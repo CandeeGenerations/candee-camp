@@ -23,6 +23,11 @@ export default () => {
       routeName.includes('visitors.campers.edit'),
     isCamperCouponAddPage: routeName.includes('visitors.campers.coupon'),
 
+    // camper - snack shop
+    isCamperSnackShopPage: routeName.includes(
+      'visitors.campers.edit.snackShop',
+    ),
+
     // groups
     isGroupAddPage: routeName.includes('visitors.groups.add'),
     isGroupEditPage: routeName.includes('visitors.groups.edit'),
@@ -90,6 +95,9 @@ export default () => {
     camperAddPage: 'visitors.campers.add',
     camperEditPage: 'visitors.campers.edit',
     camperCouponAddPage: 'visitors.campers.coupon',
+
+    // camper - snack shop
+    camperSnackShopPage: 'visitors.campers.edit.snackShop',
 
     // groups
     groupsPage: 'visitors.groups',

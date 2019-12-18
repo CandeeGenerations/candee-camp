@@ -5,6 +5,7 @@ import {Button, Drawer} from 'antd'
 import {useRouter} from 'react-router5'
 
 import DisabledButtonPopup from '@/components/DisabledButtonPopup'
+import ProgressBar from '@/components/DisabledButtonPopup/components/ProgressBar'
 
 const DrawerView = props => {
   const router = useRouter()
@@ -31,22 +32,35 @@ const DrawerView = props => {
           borderTop: '1px solid #e9e9e9',
           padding: '10px 16px',
           background: '#fff',
-          textAlign: 'right',
         }}
       >
-        <Button css={{marginRight: 8}} onClick={handleClose}>
-          Cancel
-        </Button>
+        {props.extraButtons}
 
-        <DisabledButtonPopup fields={props.fields} placement="topRight">
+        <div css={{float: 'right'}}>
           <Button
-            disabled={props.submitButtonDisabled}
-            type="primary"
-            onClick={props.onSubmit}
+            css={{display: 'table-cell', float: 'left', marginRight: 8}}
+            onClick={handleClose}
           >
-            Submit
+            Cancel
           </Button>
-        </DisabledButtonPopup>
+
+          <DisabledButtonPopup
+            fields={props.fields}
+            placement="topRight"
+            showProgress={!props.extraButtons}
+          >
+            <Button
+              css={{display: 'table-cell', float: 'left'}}
+              disabled={props.submitButtonDisabled}
+              type="primary"
+              onClick={props.onSubmit}
+            >
+              Submit
+            </Button>
+          </DisabledButtonPopup>
+        </div>
+
+        {props.extraButtons && <ProgressBar fields={props.fields} />}
       </div>
     </Drawer>
   )
@@ -61,6 +75,7 @@ DrawerView.defaultProps = {
 
 DrawerView.propTypes = {
   children: PropTypes.node.isRequired,
+  extraButtons: PropTypes.node.isRequired,
   fields: PropTypes.shape({}),
   parentRoute: PropTypes.string,
   submitButtonDisabled: PropTypes.bool,

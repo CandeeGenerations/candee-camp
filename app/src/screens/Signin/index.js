@@ -29,7 +29,9 @@ const Signin = () => {
       setLoading(false)
 
       routerContext.router.navigate(
-        routerContext.route.name,
+        routerContext.route.name === 'signin'
+          ? 'dashboard'
+          : routerContext.route.name,
         routerContext.route.params,
       )
     }

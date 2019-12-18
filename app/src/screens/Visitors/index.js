@@ -51,8 +51,8 @@ const CampPage = () => {
       <h1>Visitors</h1>
 
       <Row gutter={16}>
-        {stats.map(stat => (
-          <Col {...statWidths}>
+        {stats.map((stat, index) => (
+          <Col key={index} {...statWidths}>
             <LoaderContext.Provider
               value={{spinning: stat.data.loading, tip: 'Loading...'}}
             >

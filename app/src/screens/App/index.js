@@ -26,6 +26,7 @@ import NavBar from '@/components/NavBar'
 import NotFound from '@/screens/NotFound'
 import Version from '@/components/Version'
 import Dashboard from '@/screens/Dashboard'
+import SnackShop from '@/screens/SnackShop'
 import Counselors from '@/screens/Counselors'
 import VisitorsPage from '@/screens/Visitors'
 import ResetPassword from '@/screens/ResetPassword'
@@ -130,6 +131,8 @@ const App = () => {
     content = <Events />
   } else if (routeName === page.visitorsPage) {
     content = <VisitorsPage />
+  } else if (routeName.includes(page.camperSnackShopPage)) {
+    content = <SnackShop />
   } else if (routeName.includes(page.campersPage)) {
     content = <Campers />
   } else if (routeName.includes(page.groupsPage)) {
