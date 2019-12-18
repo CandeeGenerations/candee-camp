@@ -1,10 +1,12 @@
 /** @jsx jsx */
 import {css, jsx, Global} from '@emotion/core'
-import {Card} from 'antd'
+import _ from 'lodash'
+import {Card, Row, Col} from 'antd'
 import {useRoute} from 'react-router5'
 import React, {useEffect, useContext} from 'react'
 
 import PurchasesTable from './components/PurchasesTable'
+import RemainingBalance from './components/RemainingBalance'
 
 import useTitle from '@/helpers/hooks/useTitle'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
@@ -113,6 +115,38 @@ const SnackShop = () => {
             }`}
           />
 
+          <LoaderContext.Provider
+            value={{
+              spinning:
+                (camperId ? camper.loading : counselor.loading) ||
+                snackShopPurchases.loading,
+              tip: `Loading ${camperId ? 'camper' : 'counselor'}...`,
+            }}
+          >
+            <Row gutter={16}>
+              <Col offset={1} span={11}>
+                <RemainingBalance
+                  startingBalance={
+                    camper.results
+                      ? camper.results.startingBalance
+                      : counselor.results
+                      ? counselor.results.startingBalance
+                      : 0
+                  }
+                  totalPurchasePrice={
+                    snackShopPurchases.results
+                      ? _.sum(
+                          snackShopPurchases.results.map(x => x.purchasedPrice),
+                        )
+                      : 0
+                  }
+                />
+              </Col>
+            </Row>
+          </LoaderContext.Provider>
+        </Card>
+
+        <Card css={{marginTop: 25}}>
           <LoaderContext.Provider
             value={{
               spinning:
