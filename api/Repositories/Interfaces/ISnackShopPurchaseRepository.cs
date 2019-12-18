@@ -13,7 +13,6 @@ namespace CandeeCamp.API.Repositories.Interfaces
         Task<SnackShopPurchase>
             CreateSnackShopPurchase(int sourceId, SnackShopPurchaseSource source,
                 SnackShopPurchaseModel snackShopPurchase);
-
         Task<SnackShopPurchase> UpdateSnackShopPurchase(int sourceId, int snackShopPurchaseId,
             SnackShopPurchaseSource source, SnackShopPurchaseModel snackShopPurchase);
         Task DeleteSnackShopPurchase(int sourceId, int snackShopPurchaseId, SnackShopPurchaseSource source);
