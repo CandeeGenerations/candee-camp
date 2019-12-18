@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
+import {Button} from 'antd'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
@@ -134,6 +135,19 @@ const CounselorView = props => {
   return (
     <>
       <DrawerView
+        extraButtons={
+          <>
+            <Button
+              onClick={() =>
+                routerContext.router.navigate(page.counselorSnackShopPage, {
+                  counselorId: props.id,
+                })
+              }
+            >
+              Snack Shop
+            </Button>
+          </>
+        }
         fields={fields}
         parentRoute={page.counselorsPage}
         submitButtonDisabled={submitButtonDisabled}

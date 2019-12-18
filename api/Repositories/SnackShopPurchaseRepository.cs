@@ -36,7 +36,7 @@ namespace CandeeCamp.API.Repositories
             SnackShopPurchaseSource source)
         {
             IQueryable<SnackShopPurchase> snackShopPurchaseQuery =
-                Context.SnackShopPurchases.Where(x => !x.IsDeleted && x.IsActive);
+                Context.SnackShopPurchases.Where(x => !x.IsDeleted && x.IsActive && x.Id == snackShopPurchaseId);
 
             snackShopPurchaseQuery = source switch
             {

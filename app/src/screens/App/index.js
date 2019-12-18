@@ -131,7 +131,10 @@ const App = () => {
     content = <Events />
   } else if (routeName === page.visitorsPage) {
     content = <VisitorsPage />
-  } else if (routeName.includes(page.camperSnackShopPage)) {
+  } else if (
+    routeName.includes(page.camperSnackShopPage) ||
+    routeName.includes(page.counselorSnackShopPage)
+  ) {
     content = <SnackShop />
   } else if (routeName.includes(page.campersPage)) {
     content = <Campers />
