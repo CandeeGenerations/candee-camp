@@ -9,6 +9,7 @@ import {formatDate, formatIsActive} from '@/helpers'
 
 import CodeCopy from '@/components/CodeCopy'
 import {NavItem} from '@/components/Navigation'
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
@@ -19,6 +20,8 @@ const CouponsTable = props => {
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : props.coupons.length === 0 ? (
+    <EmptyState title="Coupon" onCreateNew={props.onCreateCoupon} />
   ) : (
     <Table
       dataSource={props.coupons}
@@ -116,6 +119,7 @@ CouponsTable.propTypes = {
 
   // function
   deleteCoupon: PropTypes.func.isRequired,
+  onCreateCoupon: PropTypes.func.isRequired,
 }
 
 export default loader(CouponsTable)

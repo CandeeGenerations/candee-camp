@@ -41,28 +41,28 @@ const Groups = () => {
     }
   }
 
+  const groups = objectsContext.groups.results
+
   return (
     <>
-      {/* <Global
-        styles={css`
-          html {
-            min-width: 1160px;
-          }
-        `}
-      /> */}
-
       <MainContent>
         <Card>
           <PageHeader
-            actions={[
-              <Button
-                key="add"
-                type="primary"
-                onClick={() => routerContext.router.navigate(page.groupAddPage)}
-              >
-                Add Group
-              </Button>,
-            ]}
+            actions={
+              groups && groups.length > 0
+                ? [
+                    <Button
+                      key="add"
+                      type="primary"
+                      onClick={() =>
+                        routerContext.router.navigate(page.groupAddPage)
+                      }
+                    >
+                      Add Group
+                    </Button>,
+                  ]
+                : []
+            }
             routes={[
               {path: '/visitors', breadcrumbName: 'Visitors'},
               {path: '/groups', breadcrumbName: 'Groups'},
@@ -83,12 +83,15 @@ const Groups = () => {
               <GroupsTable
                 deleteGroup={handleDeleteGroupClick}
                 groups={
-                  (objectsContext.groups.results &&
-                    objectsContext.groups.results.map(group => ({
+                  (groups &&
+                    groups.map(group => ({
                       ...group,
                       key: group.id,
                     }))) ||
                   []
+                }
+                onCreateGroup={() =>
+                  routerContext.router.navigate(page.groupAddPage)
                 }
               />
             </ErrorWrapper>

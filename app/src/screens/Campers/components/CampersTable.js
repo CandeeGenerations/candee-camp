@@ -9,6 +9,7 @@ import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
 import {formatDate, formatIsActive, formatCurrency} from '@/helpers'
 
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
@@ -40,6 +41,8 @@ const CampersTable = props => {
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : props.campers.length === 0 ? (
+    <EmptyState title="Camper" onCreateNew={props.onCreateCamper} />
   ) : (
     <Table
       dataSource={props.campers}
@@ -229,6 +232,7 @@ CampersTable.propTypes = {
 
   // functions
   deleteCamper: PropTypes.func.isRequired,
+  onCreateCamper: PropTypes.func.isRequired,
 }
 
 export default loader(CampersTable)

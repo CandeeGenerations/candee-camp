@@ -9,6 +9,7 @@ import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
 import {formatDate, formatIsActive, formatCurrency} from '@/helpers'
 
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
@@ -40,6 +41,8 @@ const CounselorsTable = props => {
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : props.counselors.length === 0 ? (
+    <EmptyState title="Counselor" onCreateNew={props.onCreateCounselor} />
   ) : (
     <Table
       dataSource={props.counselors}
@@ -156,6 +159,7 @@ CounselorsTable.propTypes = {
 
   // function
   deleteCounselor: PropTypes.func.isRequired,
+  onCreateCounselor: PropTypes.func.isRequired,
 }
 
 export default loader(CounselorsTable)

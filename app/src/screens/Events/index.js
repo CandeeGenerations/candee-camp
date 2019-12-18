@@ -31,9 +31,12 @@ const Events = () => {
   const loadEvents = async () => {
     try {
       const response = await objectsContext.events.load()
-      const userIds = _.uniq(response.data.map(x => x.createdBy))
 
-      users.load(false, userIds)
+      if (response.data && response.data.length > 0) {
+        const userIds = _.uniq(response.data.map(x => x.createdBy))
+
+        users.load(false, userIds)
+      }
     } catch (error) {
       errorWrapper.handleCatchError()
     }
@@ -66,6 +69,8 @@ const Events = () => {
     return response
   }
 
+  const events = objectsContext.events.results
+
   return (
     <>
       <Global
@@ -79,15 +84,21 @@ const Events = () => {
       <MainContent>
         <Card>
           <PageHeader
-            actions={[
-              <Button
-                key="add"
-                type="primary"
-                onClick={() => routerContext.router.navigate(page.eventAddPage)}
-              >
-                Add Event
-              </Button>,
-            ]}
+            actions={
+              events && events.length > 0
+                ? [
+                    <Button
+                      key="add"
+                      type="primary"
+                      onClick={() =>
+                        routerContext.router.navigate(page.eventAddPage)
+                      }
+                    >
+                      Add Event
+                    </Button>,
+                  ]
+                : []
+            }
             title="Events"
           />
 
@@ -104,14 +115,17 @@ const Events = () => {
               <EventsTable
                 deleteEvent={handleDeleteEvent}
                 events={
-                  (objectsContext.events.results &&
-                    objectsContext.events.results.map(event => ({
+                  (events &&
+                    events.map(event => ({
                       ...event,
                       key: event.id,
                     }))) ||
                   []
                 }
                 users={users}
+                onCreateEvent={() =>
+                  routerContext.router.navigate(page.eventAddPage)
+                }
               />
             </ErrorWrapper>
           </LoaderContext.Provider>

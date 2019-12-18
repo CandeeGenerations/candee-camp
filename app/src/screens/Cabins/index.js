@@ -40,6 +40,8 @@ const Cabins = () => {
     }
   }
 
+  const cabins = objectsContext.cabins.results
+
   return (
     <>
       <Global
@@ -53,15 +55,21 @@ const Cabins = () => {
       <MainContent>
         <Card>
           <PageHeader
-            actions={[
-              <Button
-                key="add"
-                type="primary"
-                onClick={() => routerContext.router.navigate(page.cabinAddPage)}
-              >
-                Add Cabin
-              </Button>,
-            ]}
+            actions={
+              cabins && cabins.length > 0
+                ? [
+                    <Button
+                      key="add"
+                      type="primary"
+                      onClick={() =>
+                        routerContext.router.navigate(page.cabinAddPage)
+                      }
+                    >
+                      Add Cabin
+                    </Button>,
+                  ]
+                : []
+            }
             routes={[
               {path: '/camp', breadcrumbName: 'Camp Management'},
               {path: '/cabins', breadcrumbName: 'Cabins'},
@@ -81,14 +89,17 @@ const Cabins = () => {
             >
               <CabinsTable
                 cabins={
-                  (objectsContext.cabins.results &&
-                    objectsContext.cabins.results.map(cabin => ({
+                  (cabins &&
+                    cabins.map(cabin => ({
                       ...cabin,
                       key: cabin.id,
                     }))) ||
                   []
                 }
                 deleteCabin={handleDeleteCabinClick}
+                onCreateCabin={() =>
+                  routerContext.router.navigate(page.cabinAddPage)
+                }
               />
             </ErrorWrapper>
           </LoaderContext.Provider>

@@ -8,6 +8,7 @@ import {Constants} from '@/helpers/constants'
 import {formatDate, formatIsActive} from '@/helpers'
 
 import {NavItem} from '@/components/Navigation'
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
@@ -18,6 +19,8 @@ const CabinsTable = props => {
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : props.cabins.length === 0 ? (
+    <EmptyState title="Cabin" onCreateNew={props.onCreateCabin} />
   ) : (
     <Table
       dataSource={props.cabins}
@@ -98,6 +101,7 @@ CabinsTable.propTypes = {
 
   // function
   deleteCabin: PropTypes.func.isRequired,
+  onCreateCabin: PropTypes.func.isRequired,
 }
 
 export default loader(CabinsTable)
