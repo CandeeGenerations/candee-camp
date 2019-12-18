@@ -10,7 +10,7 @@ namespace CandeeCamp.API.Models
     
     public class SnackShopPurchaseModel
     {
-        public decimal PurchasePrice { get; set; }
+        public decimal PurchasedPrice { get; set; }
 
         [Required]
         public int SnackShopItemId { get; set; }

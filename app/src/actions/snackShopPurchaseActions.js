@@ -1,5 +1,5 @@
 import request from '../api'
-import {handleError, formDataToBody, openNotification} from '../helpers'
+import {handleError, openNotification} from '../helpers'
 
 import {getUserData} from '@/helpers/authHelpers'
 
@@ -21,23 +21,16 @@ export const loadSnackShopPurchases = async ({camperId, source}) => {
   }
 }
 
-export const loadSnackShopPurchaseStats = async () => {
+export const loadSnackShopPurchase = async ({
+  camperId,
+  source,
+  snackShopPurchaseId,
+}) => {
   try {
-    const response = await request.get(mainPath)
-
-    return response.data.length
-  } catch (error) {
-    handleError(
-      'Unable to load the Snack Shop Purchase Stats. Please try again.',
-      error,
+    const response = await request.get(
+      `${mainPath}/${camperId}/${snackShopPurchaseId}`,
+      {params: {source}},
     )
-    return null
-  }
-}
-
-export const loadSnackShopPurchase = async snackShopPurchaseId => {
-  try {
-    const response = await request.get(`${mainPath}/${snackShopPurchaseId}`)
 
     return response
   } catch (error) {
@@ -49,7 +42,11 @@ export const loadSnackShopPurchase = async snackShopPurchaseId => {
   }
 }
 
-export const saveSnackShopPurchase = async snackShopPurchase => {
+export const saveSnackShopPurchase = async ({
+  camperId,
+  source,
+  snackShopPurchase,
+}) => {
   try {
     let response = null
     const user = getUserData()
@@ -58,17 +55,20 @@ export const saveSnackShopPurchase = async snackShopPurchase => {
       throw new Error('No user.')
     }
 
-    const body = formDataToBody(snackShopPurchase)
+    const body = {...snackShopPurchase}
 
     body.createdBy = user.id
 
-    if (snackShopPurchase.id) {
+    if (snackShopPurchase.id && snackShopPurchase.id !== 0) {
       response = await request.put(
-        `${mainPath}/${snackShopPurchase.id.value}`,
+        `${mainPath}/${camperId}/${snackShopPurchase.id}`,
         body,
+        {params: {source}},
       )
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(`${mainPath}/${camperId}`, body, {
+        params: {source},
+      })
     }
 
     openNotification(
@@ -88,9 +88,16 @@ export const saveSnackShopPurchase = async snackShopPurchase => {
   }
 }
 
-export const deleteSnackShopPurchase = async snackShopPurchaseId => {
+export const deleteSnackShopPurchase = async ({
+  camperId,
+  source,
+  snackShopPurchaseId,
+}) => {
   try {
-    const response = await request.delete(`${mainPath}/${snackShopPurchaseId}`)
+    const response = await request.delete(
+      `${mainPath}/${camperId}/${snackShopPurchaseId}`,
+      {params: {source}},
+    )
 
     openNotification(
       'success',

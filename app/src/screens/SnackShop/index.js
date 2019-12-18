@@ -1,23 +1,25 @@
 /** @jsx jsx */
 import {css, jsx, Global} from '@emotion/core'
-import {Button, Card} from 'antd'
+import {Card} from 'antd'
 import {useRoute} from 'react-router5'
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext} from 'react'
 
-import usePage from '@/helpers/hooks/usePage'
+import PurchasesTable from './components/PurchasesTable'
+
 import useTitle from '@/helpers/hooks/useTitle'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {snackShopPurchaseActions as actions, camperActions} from '@/actions'
 
+import {ObjectsContext} from '@/screens/App'
 import MainContent from '@/components/MainContent'
 import {PageHeader} from '@/components/Structure'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 const SnackShop = () => {
-  const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
+  const objectsContext = useContext(ObjectsContext)
 
   const camperId =
     (routerContext.route.params && routerContext.route.params.camperId) || null
@@ -40,6 +42,7 @@ const SnackShop = () => {
     try {
       getCamper()
       snackShopPurchases.load()
+      objectsContext.snackShopItems.load()
     } catch {
       errorWrapper.handleCatchError()
     }
@@ -58,17 +61,6 @@ const SnackShop = () => {
       <MainContent>
         <Card>
           <PageHeader
-            actions={[
-              <Button
-                key="add"
-                type="primary"
-                onClick={() =>
-                  routerContext.router.navigate(page.snackShopCamperAddPage)
-                }
-              >
-                Purchase Item
-              </Button>,
-            ]}
             routes={[
               {path: '/visitors', breadcrumbName: 'Visitors'},
               {path: '/campers', breadcrumbName: 'Campers'},
@@ -85,7 +77,10 @@ const SnackShop = () => {
 
           <LoaderContext.Provider
             value={{
-              spinning: camper.loading,
+              spinning:
+                camper.loading ||
+                snackShopPurchases.loading ||
+                objectsContext.snackShopItems.loading,
               tip: "Loading camper's snack shop...",
             }}
           >
@@ -93,7 +88,12 @@ const SnackShop = () => {
               handleRetry={camper.load}
               hasError={errorWrapper.hasError}
             >
-              Snack Shop for Camper
+              <PurchasesTable
+                camperId={Number(camperId)}
+                items={objectsContext.snackShopItems.results || []}
+                purchases={snackShopPurchases.results || []}
+                refreshTable={snackShopPurchases.load}
+              />
             </ErrorWrapper>
           </LoaderContext.Provider>
         </Card>

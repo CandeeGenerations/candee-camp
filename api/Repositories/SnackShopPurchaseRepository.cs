@@ -60,7 +60,7 @@ namespace CandeeCamp.API.Repositories
         {
             SnackShopPurchase newSnackShopPurchase = new SnackShopPurchase
             {
-                PurchasedPrice = snackShopPurchase.PurchasePrice,
+                PurchasedPrice = snackShopPurchase.PurchasedPrice,
                 PurchasedDate = DateTimeOffset.Now,
                 IsActive = true,
                 IsDeleted = false,
@@ -95,7 +95,7 @@ namespace CandeeCamp.API.Repositories
                 await GetSnackShopPurchaseById(sourceId, snackShopPurchaseId, source);
 
             dbSnackShopPurchase.PurchasedDate = DateTimeOffset.Now;
-            dbSnackShopPurchase.PurchasedPrice = snackShopPurchase.PurchasePrice;
+            dbSnackShopPurchase.PurchasedPrice = snackShopPurchase.PurchasedPrice;
             dbSnackShopPurchase.SnackShopItemId = snackShopPurchase.SnackShopItemId;
 
             switch (source)

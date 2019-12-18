@@ -53,16 +53,6 @@ const routes = [
               {
                 name: 'snackShop',
                 path: '/snack-shop',
-                children: [
-                  {
-                    name: 'add',
-                    path: '/add',
-                  },
-                  {
-                    name: 'edit',
-                    path: '/edit/:snackShopPurchaseId',
-                  },
-                ],
               },
             ],
           },
