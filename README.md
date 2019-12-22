@@ -8,7 +8,13 @@
 
 <hr />
 
-[![GitHub package.json version](https://img.shields.io/github/package-json/v/CandeeGenerations/candee-camp.svg?style=for-the-badge)](#) [![CircleCI branch](https://img.shields.io/circleci/project/github/CandeeGenerations/candee-camp/master.svg?label=Circle%20CI%20Build&style=for-the-badge)](https://circleci.com/gh/CandeeGenerations/candee-camp) [![Netlify Status](https://api.netlify.com/api/v1/badges/a2fdca8d-d111-473f-b5fc-810b4e84d9ce/deploy-status)](https://app.netlify.com/sites/candee-camp/deploys) [![GitHub](https://img.shields.io/github/license/CandeeGenerations/candee-camp.svg?style=for-the-badge)](https://github.com/CandeeGenerations/candee-camp/blob/master/LICENSE) [![Discord](https://img.shields.io/discord/476475501758775309.svg?style=for-the-badge)](https://discordapp.com/widget?id=476475501758775309&theme=dark)
+## Build Status
+
+### JS Build Status
+[![JS Build Status](https://dev.azure.com/candeegenerations/Candee%20Camp/_apis/build/status/Candee%20Camp%20JS%20Build?branchName=master)](https://dev.azure.com/candeegenerations/Candee%20Camp/_build/latest?definitionId=14&branchName=master)
+
+### API Build Status
+[![API Build Status](https://dev.azure.com/candeegenerations/Candee%20Camp/_apis/build/status/Candee%20Camp%20API%20Build?branchName=master)](https://dev.azure.com/candeegenerations/Candee%20Camp/_build/latest?definitionId=15&branchName=master)
 
 ## Description
 
