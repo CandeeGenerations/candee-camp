@@ -19,6 +19,7 @@ import Signin from '@/screens/Signin'
 import Events from '@/screens/Events'
 import Groups from '@/screens/Groups'
 import Cabins from '@/screens/Cabins'
+import Import from '@/screens/Import'
 import CampPage from '@/screens/Camp'
 import Coupons from '@/screens/Coupons'
 import Campers from '@/screens/Campers'
@@ -147,6 +148,8 @@ const App = () => {
     content = <SnackShopItems />
   } else if (routeName.includes(page.couponsPage)) {
     content = <Coupons />
+  } else if (routeName.includes('import')) {
+    content = <Import />
   } else {
     content = <NotFound />
   }

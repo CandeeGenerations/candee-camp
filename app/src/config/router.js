@@ -170,6 +170,10 @@ const routes = [
           },
         ],
       },
+      {
+        name: 'import',
+        path: '/import',
+      },
     ],
   },
 ]

@@ -94,6 +94,14 @@ const CampPage = () => {
           </Col>
         ))}
       </Row>
+
+      <h1>Other Links</h1>
+
+      <ul>
+        <li>
+          <NavItem routeName="camp.import">Import Data</NavItem>
+        </li>
+      </ul>
     </MainContent>
   )
 }

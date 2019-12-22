@@ -13,4 +13,9 @@ export class Constants {
     Manager: 2,
     ReadOnly: 3,
   }
+
+  static Headers = {
+    1: ['Name'], // cabins
+    2: ['Name', 'Code', 'ExpirationDate'], // coupons
+  }
 }

@@ -10,7 +10,7 @@ export const axiosRequest = axios.create({
   crossDomain: true,
 })
 
-const validateToken = () => {
+export const validateToken = () => {
   const user = getUser()
   const tokenData = jwtDecode(user.access_token)
   const epochTime = new Date(0)
