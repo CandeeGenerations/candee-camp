@@ -68,9 +68,7 @@ const UserView = props => {
     setFields(stateFields => ({...stateFields, ...changedFields}))
 
   const refreshTable = () =>
-    objectsContext[
-      page.isUserAddOrEditPage ? page.usersPage : page.eventsPage
-    ].load()
+    objectsContext[page.isUserAddOrEditPage ? 'users' : page.eventsPage].load()
 
   const navigateToCounselor = userId => {
     const updates = {valid: true}
