@@ -38,42 +38,6 @@ namespace CandeeCamp.API.Context
                 IsActive = true,
                 IsDeleted = false,
             });
-            modelBuilder.Entity<User>().HasData(new User
-            {
-                Id = -2,
-                FirstName = "joe",
-                LastName = "plumber",
-                CreatedDate = DateTimeOffset.Now,
-                UpdatedDate = DateTimeOffset.Now,
-                EmailAddress = "theblackswimmers@gmail.com",
-                Salt = "nqJBdDHXBCGrPiZHRmUBgYMVdgsSCZxaWyjOZnCxAAMrPghUzARqcAcEynPwQNkD",
-                PasswordHash =
-                    "WkZsAKSKmh9C/WoaCfI4xiSOl7nRw8p5i4T90h54+EkMmtfLwcjCRi9kFkIZRMv/RFaGrTP3FzxcWapHnuNdzw==",
-                IsActive = true,
-                IsDeleted = false,
-            });
-
-            modelBuilder.Entity<Event>().HasData(new Event
-            {
-                Id = -1, Name = "Event 1", IsActive = true, IsDeleted = false, CreatedBy = -1
-            });
-
-            modelBuilder.Entity<Camper>().HasData(new Camper
-            {
-                Id = -1,
-                FirstName = "Jocelyn",
-                LastName = "Lacombe",
-                BirthDate = new DateTimeOffset(new DateTime(2010, 5, 25, 0, 0, 0)),
-                Allergies = "Strawberries",
-                Medicine = "Ibuprofen",
-                IsActive = true,
-                IsDeleted = false,
-                ParentFirstName = "John",
-                ParentLastName = "Lacombe",
-                CreatedDate = DateTimeOffset.Now,
-                UpdatedDate = DateTimeOffset.Now,
-                CreatedBy = -1,
-            });
 
             modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);
 
