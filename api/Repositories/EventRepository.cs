@@ -19,6 +19,18 @@ namespace CandeeCamp.API.Repositories
         public async Task<IEnumerable<Event>> GetEvents() =>
             await Context.Events.Where(x => !x.IsDeleted).ToListAsync();
 
+        public async Task<IEnumerable<Event>> GetEventsByIds(IEnumerable<int> eventIds)
+        {
+            int[] eventIdsArray = eventIds as int[] ?? eventIds.ToArray();
+            
+            if (!eventIdsArray.Any())
+            {
+                throw new Exception("No event IDs detected.");
+            }
+            
+            return await Context.Events.Where(e => eventIdsArray.Contains(e.Id)).ToListAsync();
+        }
+
         public async Task<Event> GetEventById(int eventId)
         {
             Event dbEvent = await Context.Events.FirstOrDefaultAsync(x => x.Id == eventId && !x.IsDeleted);

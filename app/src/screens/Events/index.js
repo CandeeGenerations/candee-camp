@@ -4,7 +4,6 @@ import {Card, Button} from 'antd'
 import {useRoute} from 'react-router5'
 import {css, Global} from '@emotion/core'
 
-import EventView from './components/EventView'
 import EventsTable from './components/EventsTable'
 
 import {eventActions as actions, userActions} from '@/actions'
@@ -131,17 +130,6 @@ const Events = () => {
           </LoaderContext.Provider>
         </Card>
       </MainContent>
-
-      {page.isEventAddOrEditPage && (
-        <EventView
-          id={
-            (routerContext.route.params &&
-              routerContext.route.params.eventId) ||
-            null
-          }
-          onDeleteEvent={handleDeleteEvent}
-        />
-      )}
     </>
   )
 }

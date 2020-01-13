@@ -3,7 +3,6 @@ import {Button, Card} from 'antd'
 import {useRoute} from 'react-router5'
 import {css, Global} from '@emotion/core'
 
-import CamperView from './components/CamperView'
 import CampersTable from './components/CampersTable'
 
 import {camperActions as actions} from '@/actions'
@@ -106,17 +105,6 @@ const Campers = () => {
           </LoaderContext.Provider>
         </Card>
       </MainContent>
-
-      {page.isCamperAddOrEditPage && (
-        <CamperView
-          id={
-            (routerContext.route.params &&
-              routerContext.route.params.camperId) ||
-            null
-          }
-          onDeleteCamper={handleDeleteCamperClick}
-        />
-      )}
     </>
   )
 }

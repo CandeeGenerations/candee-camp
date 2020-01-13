@@ -68,9 +68,7 @@ const UserView = props => {
     setFields(stateFields => ({...stateFields, ...changedFields}))
 
   const refreshTable = () =>
-    objectsContext[
-      page.isUserAddOrEditPage ? page.usersPage : page.eventsPage
-    ].load()
+    objectsContext[page.isUserAddOrEditPage ? 'users' : page.eventsPage].load()
 
   const navigateToCounselor = userId => {
     const updates = {valid: true}
@@ -133,7 +131,7 @@ const UserView = props => {
       navigateToGroup()
     } else {
       routerContext.router.navigate(
-        page.isUserAddOrEditPage ? page.usersPage : page.eventsPage,
+        page.isEventUserEditPage ? page.eventsPage : page.usersPage,
       )
     }
   }

@@ -30,13 +30,16 @@ import Dashboard from '@/screens/Dashboard'
 import SnackShop from '@/screens/SnackShop'
 import Counselors from '@/screens/Counselors'
 import VisitorsPage from '@/screens/Visitors'
+import Registrations from '@/screens/Registrations'
 import ResetPassword from '@/screens/ResetPassword'
 import SnackShopItems from '@/screens/SnackShopItems'
 import ForgotPassword from '@/screens/ForgotPassword'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import UserView from '@/screens/Users/components/UserView'
 import CabinView from '@/screens/Cabins/components/CabinView'
+import EventView from '@/screens/Events/components/EventView'
 import CouponView from '@/screens/Coupons/components/CouponView'
+import CamperView from '@/screens/Campers/components/CamperView'
 
 export const ObjectsContext = React.createContext({})
 export const ValuesContext = React.createContext({})
@@ -55,6 +58,9 @@ const App = () => {
   const events = useAsyncLoad(actions.eventActions.loadEvents)
   const campers = useAsyncLoad(actions.camperActions.loadCampers)
   const groups = useAsyncLoad(actions.groupActions.loadGroups)
+  const registrations = useAsyncLoad(
+    actions.registrationActions.loadRegistrations,
+  )
   const counselors = useAsyncLoad(actions.counselorActions.loadCounselors)
   const cabins = useAsyncLoad(actions.cabinActions.loadCabins)
   const users = useAsyncLoad(actions.userActions.loadUsers)
@@ -136,6 +142,8 @@ const App = () => {
     content = <Campers />
   } else if (routeName.includes(page.groupsPage)) {
     content = <Groups />
+  } else if (routeName.includes(page.registrationsPage)) {
+    content = <Registrations />
   } else if (routeName === page.campPage) {
     content = <CampPage />
   } else if (routeName.includes(page.counselorsPage)) {
@@ -183,6 +191,7 @@ const App = () => {
                 events,
                 campers,
                 groups,
+                registrations,
                 counselors,
                 cabins,
                 users,
@@ -197,6 +206,26 @@ const App = () => {
                   id={
                     (routerContext.route.params &&
                       routerContext.route.params.userId) ||
+                    null
+                  }
+                />
+              )}
+
+              {page.isCamperAddOrEditPage && (
+                <CamperView
+                  id={
+                    (routerContext.route.params &&
+                      routerContext.route.params.camperId) ||
+                    null
+                  }
+                />
+              )}
+
+              {page.isEventAddOrEditPage && (
+                <EventView
+                  id={
+                    (routerContext.route.params &&
+                      routerContext.route.params.eventId) ||
                     null
                   }
                 />

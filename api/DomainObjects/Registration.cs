@@ -16,14 +16,14 @@ namespace CandeeCamp.API.DomainObjects
 
         public decimal StartingBalance { get; set; }
 
-        public DateTimeOffset CheckInDate { get; set; }
+        public DateTimeOffset? CheckInDate { get; set; }
 
-        public DateTimeOffset CheckOutDate { get; set; }
+        public DateTimeOffset? CheckOutDate { get; set; }
 
         public int EventId { get; set; }
 
         [ForeignKey("Id")]
-        public virtual User User { get; set; }
+        public virtual Event Event { get; set; }
 
         public int CamperId { get; set; }
 

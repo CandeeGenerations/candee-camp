@@ -96,9 +96,13 @@ const CamperView = props => {
       if (response) {
         refreshTable()
 
-        routerContext.router.navigate(page.camperEditPage, {
-          camperId: response.data.id,
-        })
+        if (page.isRegistrationCamperEditPage) {
+          routerContext.router.navigate(page.registrationsPage)
+        } else {
+          routerContext.router.navigate(page.camperEditPage, {
+            camperId: response.data.id,
+          })
+        }
       }
     }
   }
@@ -112,9 +116,20 @@ const CamperView = props => {
 
     if (response) {
       refreshTable()
-      routerContext.router.navigate(page.campersPage)
+      routerContext.router.navigate(
+        page.isRegistrationCamperEditPage
+          ? page.registrationsPage
+          : page.campersPage,
+      )
     }
   }
+
+  const handleFormClose = () =>
+    routerContext.router.navigate(
+      page.isRegistrationCamperEditPage
+        ? page.registrationsPage
+        : page.campersPage,
+    )
 
   const handleCreateNewCoupon = adding => {
     valuesContext.setCamperValues({
@@ -152,7 +167,6 @@ const CamperView = props => {
           )
         }
         fields={fields}
-        parentRoute={page.campersPage}
         submitButtonDisabled={submitButtonDisabled}
         title={
           fields.id
@@ -164,6 +178,7 @@ const CamperView = props => {
             : 'Add a New Camper'
         }
         width={512}
+        onClose={handleFormClose}
         onSubmit={handleFormSubmit}
       >
         <LoaderContext.Provider
