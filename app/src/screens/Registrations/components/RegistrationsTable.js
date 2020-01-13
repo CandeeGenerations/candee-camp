@@ -6,7 +6,7 @@ import {Table, Divider, Tag, Icon} from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
-import {formatDate, formatIsActive} from '@/helpers'
+import {formatDate, formatIsActive, formatCurrency} from '@/helpers'
 
 import {NavItem} from '@/components/Navigation'
 import EmptyState from '@/components/EmptyState'
@@ -111,6 +111,14 @@ const RegistrationsTable = props => {
       />
 
       <Column
+        key="startingBalance"
+        align="right"
+        dataIndex="startingBalance"
+        render={formatCurrency}
+        title="Starting Balance"
+      />
+
+      <Column
         key="checkInDate"
         align="right"
         dataIndex="checkInDate"
@@ -172,6 +180,7 @@ RegistrationsTable.propTypes = {
       id: PropTypes.number.isRequired,
       isActive: PropTypes.bool.isRequired,
       key: PropTypes.number.isRequired,
+      startingBalance: PropTypes.number,
       registrationDate: PropTypes.string.isRequired,
     }),
   ).isRequired,
