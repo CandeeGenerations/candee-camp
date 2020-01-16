@@ -23,6 +23,7 @@ const EventView = props => {
   const event = useAsyncLoad(actions.loadEvent, props.id)
 
   const [fields, setFields] = useState({
+    cost: {value: 0},
     dateTime: {
       includePercent: true,
       isRequired: true,

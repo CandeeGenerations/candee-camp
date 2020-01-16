@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 import {Divider, Icon, Table, Tag} from 'antd'
 
-import {formatDate} from '@/helpers'
+import {formatDate, formatCurrency} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
 
@@ -30,6 +30,14 @@ const EventsTable = props => {
       pagination={Constants.TableOptions.PaginationOptions}
     >
       <Column key="name" dataIndex="name" title="Name" />
+
+      <Column
+        key="cost"
+        align="right"
+        dataIndex="cost"
+        render={formatCurrency}
+        title="Cost"
+      />
 
       <Column
         key="onGoing"

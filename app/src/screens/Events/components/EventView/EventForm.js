@@ -10,9 +10,11 @@ import {
   Icon,
   Button,
   Typography,
+  InputNumber,
 } from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
+import {inputNumberFormatter, inputNumberParser} from '@/helpers'
 
 const EventForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -28,9 +30,13 @@ const EventForm = Form.create({
   },
 
   mapPropsToFields(props) {
-    const {dateTime, name} = props
+    const {cost, dateTime, name} = props
 
     return {
+      cost: Form.createFormField({
+        ...cost,
+        value: cost.value,
+      }),
       dateTime: Form.createFormField({
         ...dateTime,
         value: dateTime.value,
@@ -78,6 +84,19 @@ const EventForm = Form.create({
                 format="MM/DD/YYYY hh:mm A"
                 placeholder={['Start Time', 'End Time']}
                 showTime={{format: 'hh:mm A'}}
+              />,
+            )}
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item label="Cost" hasFeedback>
+            {getFieldDecorator('cost')(
+              <InputNumber
+                formatter={inputNumberFormatter}
+                parser={inputNumberParser}
               />,
             )}
           </Form.Item>
