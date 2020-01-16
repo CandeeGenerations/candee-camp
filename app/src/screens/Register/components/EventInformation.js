@@ -16,7 +16,7 @@ import {formatDate, formatCurrency} from '@/helpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 
 const EventInformation = props => {
-  const [singleCamper, setSingleCamper] = useState(true)
+  const [singleCamper, setSingleCamper] = useState(false)
   const registerContext = useContext(RegisterContext)
   const routerContext = useRoute()
   const event = useAsyncLoad(
@@ -86,9 +86,14 @@ const EventInformation = props => {
 
           <Row css={{marginBottom: 25, textAlign: 'center'}} gutter={16}>
             <Col
-              css={{fontSize: 18, fontWeight: singleCamper ? 'normal' : 'bold'}}
+              css={{
+                fontSize: 18,
+                cursor: 'pointer',
+                fontWeight: singleCamper ? 'normal' : 'bold',
+              }}
               md={10}
               sm={24}
+              onClick={() => setSingleCamper(false)}
             >
               Group
             </Col>
@@ -101,9 +106,14 @@ const EventInformation = props => {
             </Col>
 
             <Col
-              css={{fontSize: 18, fontWeight: singleCamper ? 'bold' : 'normal'}}
+              css={{
+                fontSize: 18,
+                cursor: 'pointer',
+                fontWeight: singleCamper ? 'bold' : 'normal',
+              }}
               md={10}
               sm={24}
+              onClick={() => setSingleCamper(true)}
             >
               Single Camper
             </Col>

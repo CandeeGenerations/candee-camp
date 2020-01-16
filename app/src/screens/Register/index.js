@@ -14,9 +14,10 @@ export const RegisterContext = React.createContext()
 const Register = () => {
   const [loading, setLoading] = useState(true)
   const [authorized, setAuthorized] = useState(false)
-  const [fields, setFields] = useState({
-    firstName: {includePercent: true, isRequired: true, value: null},
-    lastName: {includePercent: true, isRequired: true, value: null},
+
+  const fieldDeclarations = {
+    firstName: {isRequired: true, value: null},
+    lastName: {isRequired: true, value: null},
     birthDate: {value: null},
     parentFirstName: {value: null},
     parentLastName: {value: null},
@@ -26,7 +27,13 @@ const Register = () => {
     coupon: {value: null},
     couponId: {value: undefined},
     isActive: {value: true},
+  }
+
+  const [fields, setFields] = useState({...fieldDeclarations})
+  const [groupFields, setGroupFields] = useState({
+    name: {isRequired: true, value: null},
   })
+  const [groupCampers, setGroupCampers] = useState([])
 
   const authorize = async () => {
     await actions.authorizeClient()
@@ -47,10 +54,23 @@ const Register = () => {
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))
 
+  const handleGroupFieldChange = changedFields =>
+    setGroupFields(stateFields => ({...stateFields, ...changedFields}))
+
   return (
     <RegisterLayout>
       <RegisterContext.Provider
-        value={{authorized, fields, handleFieldChange, setLoading}}
+        value={{
+          authorized,
+          fields,
+          fieldDeclarations,
+          handleFieldChange,
+          handleGroupFieldChange,
+          groupCampers,
+          groupFields,
+          setGroupCampers,
+          setLoading,
+        }}
       >
         <LoaderContext.Provider value={{spinning: loading, tip: 'Loading...'}}>
           <RegisterContent />
