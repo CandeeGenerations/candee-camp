@@ -34,7 +34,7 @@ export const formatDate = (date, withTime = true) =>
     <em>None</em>
   )
 
-export const formatCurrency = amount => `$${amount}`
+export const formatCurrency = amount => `$${amount || 0}`
 
 export const formatIsActive = isActive => (
   <Icon
