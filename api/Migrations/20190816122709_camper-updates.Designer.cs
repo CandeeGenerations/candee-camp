@@ -208,7 +208,7 @@ namespace CandeeCamp.API.Migrations
 
                     b.Property<DateTimeOffset>("CreatedDate");
 
-                    b.Property<string>("GroupName")
+                    b.Property<string>("Name")
                         .IsRequired();
 
                     b.Property<bool>("IsActive");

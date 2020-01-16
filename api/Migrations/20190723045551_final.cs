@@ -7,7 +7,6 @@ namespace CandeeCamp.API.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("SET storage_engine=INNODB");
             migrationBuilder.DropForeignKey(
                 name: "FK_Groups_Users_Id",
                 table: "Groups");

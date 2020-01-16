@@ -7,11 +7,6 @@ namespace CandeeCamp.API.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "GroupName",
-                table: "Groups",
-                newName: "Name");
-
             migrationBuilder.AddColumn<int>(
                 name: "CreatedBy",
                 table: "Groups",
@@ -83,11 +78,6 @@ namespace CandeeCamp.API.Migrations
             migrationBuilder.DropColumn(
                 name: "UpdatedDate",
                 table: "Groups");
-
-            migrationBuilder.RenameColumn(
-                name: "Name",
-                table: "Groups",
-                newName: "GroupName");
 
             migrationBuilder.UpdateData(
                 table: "Campers",
