@@ -120,8 +120,9 @@ const EventForm = Form.create({
           <Row gutter={16}>
             <Col span={24}>
               <CodeCopy>
-                {Config.appUrl}/register/event/
-                {(props.id && props.id.value) || 0}
+                {`${Config.appUrl}/register/event/${(props.id &&
+                  props.id.value) ||
+                  0}`}
               </CodeCopy>
             </Col>
           </Row>

@@ -91,12 +91,12 @@ const CamperForm = Form.create({
 })(props => {
   const page = usePage()
 
-  const {form} = props
+  const {form, publicForm} = props
   const {getFieldDecorator} = form
 
   return (
     <Form>
-      <Divider orientation="left">Camper Info</Divider>
+      {!publicForm && <Divider orientation="left">Camper Info</Divider>}
 
       <Row gutter={16}>
         <Col span={12}>
@@ -171,48 +171,50 @@ const CamperForm = Form.create({
         </Col>
       </Row>
 
-      <Row gutter={16}>
-        <Col span={24}>
-          <Form.Item label="Redeemed Coupon">
-            {getFieldDecorator('couponId')(
-              <Select
-                dropdownRender={menu =>
-                  page.isRegistrationCamperEditPage ? (
-                    menu
-                  ) : (
-                    <div>
-                      <div
-                        css={{padding: 8, cursor: 'pointer'}}
-                        onClick={() =>
-                          props.onCreateNewCoupon(page.isCamperAddPage)
-                        }
-                        onMouseDown={e => e.preventDefault()}
-                      >
-                        <Icon type="plus" /> Create New Coupon
+      {!publicForm && (
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item label="Redeemed Coupon">
+              {getFieldDecorator('couponId')(
+                <Select
+                  dropdownRender={menu =>
+                    page.isRegistrationCamperEditPage ? (
+                      menu
+                    ) : (
+                      <div>
+                        <div
+                          css={{padding: 8, cursor: 'pointer'}}
+                          onClick={() =>
+                            props.onCreateNewCoupon(page.isCamperAddPage)
+                          }
+                          onMouseDown={e => e.preventDefault()}
+                        >
+                          <Icon type="plus" /> Create New Coupon
+                        </div>
+
+                        <Divider css={{margin: '4px 0'}} />
+
+                        {menu}
                       </div>
-
-                      <Divider css={{margin: '4px 0'}} />
-
-                      {menu}
-                    </div>
-                  )
-                }
-                filterOption={selectSearchFunc}
-                optionFilterProp="children"
-                placeholder="e.g. 20% Off Coupon"
-                allowClear
-                showSearch
-              >
-                {props.couponsList.map(x => (
-                  <Select.Option key={x.id} value={`${x.id}`}>
-                    {x.name} ({x.code})
-                  </Select.Option>
-                ))}
-              </Select>,
-            )}
-          </Form.Item>
-        </Col>
-      </Row>
+                    )
+                  }
+                  filterOption={selectSearchFunc}
+                  optionFilterProp="children"
+                  placeholder="e.g. 20% Off Coupon"
+                  allowClear
+                  showSearch
+                >
+                  {props.couponsList.map(x => (
+                    <Select.Option key={x.id} value={`${x.id}`}>
+                      {x.name} ({x.code})
+                    </Select.Option>
+                  ))}
+                </Select>,
+              )}
+            </Form.Item>
+          </Col>
+        </Row>
+      )}
 
       {page.isCamperEditPage && (
         <>
