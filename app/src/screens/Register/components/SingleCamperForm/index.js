@@ -1,37 +1,38 @@
-import React, {useState} from 'react'
-import PropTypes from 'prop-types'
+import React, {useContext} from 'react'
+import {Row, Col, Form, Input} from 'antd'
+
+import {RegisterContext} from '../..'
 
 import CamperForm from '@/screens/Campers/components/CamperView/CamperForm'
 
 const SingleCamperForm = props => {
-  const [fields, setFields] = useState({
-    firstName: {includePercent: true, isRequired: true, value: null},
-    lastName: {includePercent: true, isRequired: true, value: null},
-    birthDate: {value: null},
-    parentFirstName: {value: null},
-    parentLastName: {value: null},
-    medicine: {value: []},
-    allergies: {value: []},
-    startingBalance: {value: 0},
-    couponId: {value: undefined},
-    isActive: {value: true},
-  })
-
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const registerContext = useContext(RegisterContext)
 
   return (
-    <CamperForm
-      {...fields}
-      couponsList={props.coupons}
-      publicForm
-      onChange={handleFieldChange}
-    />
+    <>
+      <CamperForm
+        {...registerContext.fields}
+        couponsList={props.coupons}
+        clientForm
+        onChange={registerContext.handleFieldChange}
+      />
+
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item label="Coupon">
+            <Input
+              placeholder="e.g. coupon-123"
+              value={registerContext.fields.coupon.value || ''}
+              onChange={e =>
+                registerContext.handleFieldChange({
+                  coupon: {value: e.target.value},
+                })
+              }
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+    </>
   )
 }
-
-SingleCamperForm.propTypes = {
-  coupons: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-}
-
 export default SingleCamperForm

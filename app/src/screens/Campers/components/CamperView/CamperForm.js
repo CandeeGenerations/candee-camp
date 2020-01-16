@@ -91,12 +91,12 @@ const CamperForm = Form.create({
 })(props => {
   const page = usePage()
 
-  const {form, publicForm} = props
+  const {form, clientForm} = props
   const {getFieldDecorator} = form
 
   return (
     <Form>
-      {!publicForm && <Divider orientation="left">Camper Info</Divider>}
+      {!clientForm && <Divider orientation="left">Camper Info</Divider>}
 
       <Row gutter={16}>
         <Col span={12}>
@@ -171,7 +171,7 @@ const CamperForm = Form.create({
         </Col>
       </Row>
 
-      {!publicForm && (
+      {!clientForm && (
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item label="Redeemed Coupon">

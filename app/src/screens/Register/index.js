@@ -14,6 +14,19 @@ export const RegisterContext = React.createContext()
 const Register = () => {
   const [loading, setLoading] = useState(true)
   const [authorized, setAuthorized] = useState(false)
+  const [fields, setFields] = useState({
+    firstName: {includePercent: true, isRequired: true, value: null},
+    lastName: {includePercent: true, isRequired: true, value: null},
+    birthDate: {value: null},
+    parentFirstName: {value: null},
+    parentLastName: {value: null},
+    medicine: {value: []},
+    allergies: {value: []},
+    startingBalance: {value: 0},
+    coupon: {value: null},
+    couponId: {value: undefined},
+    isActive: {value: true},
+  })
 
   const authorize = async () => {
     await actions.authorizeClient()
@@ -31,9 +44,14 @@ const Register = () => {
     authorize()
   }, [])
 
+  const handleFieldChange = changedFields =>
+    setFields(stateFields => ({...stateFields, ...changedFields}))
+
   return (
     <RegisterLayout>
-      <RegisterContext.Provider value={{authorized, setLoading}}>
+      <RegisterContext.Provider
+        value={{authorized, fields, handleFieldChange, setLoading}}
+      >
         <LoaderContext.Provider value={{spinning: loading, tip: 'Loading...'}}>
           <RegisterContent />
         </LoaderContext.Provider>

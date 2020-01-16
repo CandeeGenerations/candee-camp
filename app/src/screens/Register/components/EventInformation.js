@@ -1,8 +1,9 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import React, {useContext, useEffect, useState} from 'react'
+import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
-import {Typography, Divider, Skeleton, Row, Col, Switch} from 'antd'
+import React, {useContext, useEffect, useState} from 'react'
+import {Typography, Divider, Skeleton, Row, Col, Switch, Button} from 'antd'
 
 import GroupForm from './GroupForm'
 import SingleCamperForm from './SingleCamperForm'
@@ -14,7 +15,7 @@ import {eventActions} from '@/actions'
 import {formatDate, formatCurrency} from '@/helpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 
-const EventInformation = () => {
+const EventInformation = props => {
   const [singleCamper, setSingleCamper] = useState(true)
   const registerContext = useContext(RegisterContext)
   const routerContext = useRoute()
@@ -84,7 +85,11 @@ const EventInformation = () => {
           <Divider />
 
           <Row css={{marginBottom: 25, textAlign: 'center'}} gutter={16}>
-            <Col css={{fontSize: 18}} md={10} sm={24}>
+            <Col
+              css={{fontSize: 18, fontWeight: singleCamper ? 'normal' : 'bold'}}
+              md={10}
+              sm={24}
+            >
               Group
             </Col>
 
@@ -95,16 +100,33 @@ const EventInformation = () => {
               />
             </Col>
 
-            <Col css={{fontSize: 18}} md={10} sm={24}>
+            <Col
+              css={{fontSize: 18, fontWeight: singleCamper ? 'bold' : 'normal'}}
+              md={10}
+              sm={24}
+            >
               Single Camper
             </Col>
           </Row>
 
           {singleCamper ? <SingleCamperForm /> : <GroupForm />}
+
+          <Row gutter={16}>
+            <Col span={24} style={{textAlign: 'center'}}>
+              <Button size="large" type="primary" onClick={props.onNext}>
+                Next
+              </Button>
+            </Col>
+          </Row>
         </>
       )}
     </>
   )
+}
+
+EventInformation.propTypes = {
+  // functions
+  onNext: PropTypes.func.isRequired,
 }
 
 export default EventInformation

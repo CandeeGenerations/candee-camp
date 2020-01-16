@@ -8,7 +8,7 @@ import EventInformation from './EventInformation'
 import loader from '@/components/Structure/Loader'
 
 const RegisterContent = () => {
-  const [step] = useState(0)
+  const [step, setStep] = useState(0)
 
   let Component
 
@@ -35,7 +35,10 @@ const RegisterContent = () => {
         <Steps.Step title="Confirmation" />
       </Steps>
 
-      <Component />
+      <Component
+        onNext={() => setStep(step + 1)}
+        onPrevious={() => setStep(step - 1)}
+      />
     </>
   )
 }
