@@ -2,6 +2,7 @@
 const env = process.env
 
 export default {
+  appUrl: env.REACT_APP_URL,
   apiUrl: env.REACT_APP_API_URL,
   cryptoKey: env.REACT_APP_CRYPTO_KEY,
   features: {
