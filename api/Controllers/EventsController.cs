@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CandeeCamp.API.DomainObjects;
@@ -9,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CandeeCamp.API.Controllers
 {
+    [ApiVersion("1.0")]
     [Authorize]
-    [Produces("application/json")]
     [Route("api/[controller]")]
-    [ApiController]
-    public class EventsController : ControllerBase
+    [Produces("application/json")]
+    public class EventsController : Controller
     {
         private readonly IEventRepository _eventRepository;
 
@@ -27,6 +26,24 @@ namespace CandeeCamp.API.Controllers
         public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
         {
             IEnumerable<Event> events = await _eventRepository.GetEvents();
+            
+            return Ok(events);
+        }
+
+        [HttpGet("by-ids")]
+        [ProducesResponseType(typeof(IEnumerable<Event>), 200)]
+        public async Task<ActionResult<IEnumerable<Event>>> GetEventsByIds(IEnumerable<int> eventIds)
+        {
+            IEnumerable<Event> events = await _eventRepository.GetEventsByIds(eventIds);
+
+            return Ok(events);
+        }
+        
+        [HttpGet("for-registration")]
+        [ProducesResponseType(typeof(IEnumerable<Event>), 200)]
+        public async Task<ActionResult<IEnumerable<Event>>> GetEventsForRegistration(int? currentEventId)
+        {
+            IEnumerable<Event> events = await _eventRepository.GetEventsForRegistration(currentEventId);
             
             return Ok(events);
         }

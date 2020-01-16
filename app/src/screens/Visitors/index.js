@@ -5,8 +5,8 @@ import {Row, Col} from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
-import {camperActions, groupActions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+import {camperActions, groupActions, registrationActions} from '@/actions'
 
 import {NavItem} from '@/components/Navigation'
 import MainContent from '@/components/MainContent'
@@ -20,10 +20,14 @@ const CampPage = () => {
 
   const camperStats = useAsyncLoad(camperActions.loadCamperStats)
   const groupStats = useAsyncLoad(groupActions.loadGroupStats)
+  const registrationStats = useAsyncLoad(
+    registrationActions.loadRegistrationStats,
+  )
 
   useEffect(() => {
     camperStats.load()
     groupStats.load()
+    registrationStats.load()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const statWidths = {
@@ -43,6 +47,11 @@ const CampPage = () => {
       data: groupStats,
       page: page.groupsPage,
       title: 'Groups',
+    },
+    {
+      data: registrationStats,
+      page: page.registrationsPage,
+      title: 'Registrations',
     },
   ]
 

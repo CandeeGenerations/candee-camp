@@ -32,6 +32,24 @@ namespace CandeeCamp.API.Controllers
             return Ok(campers);
         }
 
+        [HttpGet("by-ids")]
+        [ProducesResponseType(typeof(IEnumerable<Camper>), 200)]
+        public async Task<ActionResult<IEnumerable<Camper>>> GetCampersByIds(IEnumerable<int> camperIds)
+        {
+            IEnumerable<Camper> campers = await _camperRepository.GetCampersByIds(camperIds);
+
+            return Ok(campers);
+        }
+        
+        [HttpGet("for-registration")]
+        [ProducesResponseType(typeof(IEnumerable<Camper>), 200)]
+        public async Task<ActionResult<IEnumerable<Camper>>> GetEventsForRegistration(int? currentCamperId)
+        {
+            IEnumerable<Camper> campers = await _camperRepository.GetCampersForRegistration(currentCamperId);
+            
+            return Ok(campers);
+        }
+
         [HttpGet("{camperId}")]
         [ProducesResponseType(typeof(AdjustedCamper), 200)]
         public async Task<ActionResult<AdjustedCamper>> GetCamper(int camperId)

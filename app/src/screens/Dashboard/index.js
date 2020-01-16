@@ -12,6 +12,7 @@ import {
   eventActions,
   camperActions,
   groupActions,
+  registrationActions,
   counselorActions,
   cabinActions,
   userActions,
@@ -31,6 +32,9 @@ const Dashboard = () => {
   const eventStats = useAsyncLoad(eventActions.loadEventStats)
   const camperStats = useAsyncLoad(camperActions.loadCamperStats)
   const groupStats = useAsyncLoad(groupActions.loadGroupStats)
+  const registrationStats = useAsyncLoad(
+    registrationActions.loadRegistrationStats,
+  )
   const counselorStats = useAsyncLoad(counselorActions.loadCounselorStats)
   const cabinStats = useAsyncLoad(cabinActions.loadCabinStats)
   const userStats = useAsyncLoad(userActions.loadUserStats)
@@ -43,6 +47,7 @@ const Dashboard = () => {
     eventStats.load()
     camperStats.load()
     groupStats.load()
+    registrationStats.load()
     counselorStats.load()
     cabinStats.load()
     snackShopItemStats.load()
@@ -72,6 +77,11 @@ const Dashboard = () => {
       data: groupStats,
       page: page.groupsPage,
       title: 'Groups',
+    },
+    {
+      data: registrationStats,
+      page: page.registrationsPage,
+      title: 'Registrations',
     },
     {
       data: counselorStats,

@@ -105,7 +105,7 @@ CouponsTable.propTypes = {
     PropTypes.shape({
       code: PropTypes.string.isRequired,
       createdDate: PropTypes.string.isRequired,
-      expirationDate: PropTypes.string.isRequired,
+      expirationDate: PropTypes.string,
       key: PropTypes.number.isRequired,
       id: PropTypes.number.isRequired,
       isActive: PropTypes.bool.isRequired,

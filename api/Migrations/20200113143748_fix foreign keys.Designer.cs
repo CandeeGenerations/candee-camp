@@ -3,14 +3,16 @@ using System;
 using CandeeCamp.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CandeeCamp.API.Migrations
 {
     [DbContext(typeof(CampContext))]
-    partial class CampContextModelSnapshot : ModelSnapshot
+    [Migration("20200113143748_fix foreign keys")]
+    partial class fixforeignkeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,7 +128,7 @@ namespace CandeeCamp.API.Migrations
                             Allergies = "Strawberries",
                             BirthDate = new DateTimeOffset(new DateTime(2010, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
                             CreatedBy = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 395, DateTimeKind.Unspecified).AddTicks(3350), new TimeSpan(0, -5, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 37, 47, 756, DateTimeKind.Unspecified).AddTicks(6920), new TimeSpan(0, -5, 0, 0, 0)),
                             FirstName = "Jocelyn",
                             IsActive = true,
                             IsDeleted = false,
@@ -135,7 +137,7 @@ namespace CandeeCamp.API.Migrations
                             ParentFirstName = "John",
                             ParentLastName = "Lacombe",
                             StartingBalance = 0m,
-                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 395, DateTimeKind.Unspecified).AddTicks(3380), new TimeSpan(0, -5, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 37, 47, 756, DateTimeKind.Unspecified).AddTicks(6950), new TimeSpan(0, -5, 0, 0, 0))
                         });
                 });
 
@@ -268,7 +270,7 @@ namespace CandeeCamp.API.Migrations
                         {
                             Id = -1,
                             CreatedBy = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 14, 47, 26, 394, DateTimeKind.Unspecified).AddTicks(8060), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 14, 37, 47, 756, DateTimeKind.Unspecified).AddTicks(720), new TimeSpan(0, 0, 0, 0, 0)),
                             EndDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             IsActive = true,
                             IsDeleted = false,
@@ -382,10 +384,10 @@ namespace CandeeCamp.API.Migrations
                     b.Property<int>("CamperId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset?>("CheckInDate")
+                    b.Property<DateTimeOffset>("CheckInDate")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTimeOffset?>("CheckOutDate")
+                    b.Property<DateTimeOffset>("CheckOutDate")
                         .HasColumnType("datetime");
 
                     b.Property<int>("EventId")
@@ -553,7 +555,7 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 378, DateTimeKind.Unspecified).AddTicks(7270), new TimeSpan(0, -5, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 37, 47, 741, DateTimeKind.Unspecified).AddTicks(330), new TimeSpan(0, -5, 0, 0, 0)),
                             EmailAddress = "tyler@cgen.com",
                             FirstName = "Tyler",
                             IsActive = true,
@@ -561,12 +563,12 @@ namespace CandeeCamp.API.Migrations
                             LastName = "Candee",
                             PasswordHash = "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
                             Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 393, DateTimeKind.Unspecified).AddTicks(2500), new TimeSpan(0, -5, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 37, 47, 754, DateTimeKind.Unspecified).AddTicks(5710), new TimeSpan(0, -5, 0, 0, 0))
                         },
                         new
                         {
                             Id = -2,
-                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 394, DateTimeKind.Unspecified).AddTicks(6730), new TimeSpan(0, -5, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 37, 47, 755, DateTimeKind.Unspecified).AddTicks(8710), new TimeSpan(0, -5, 0, 0, 0)),
                             EmailAddress = "theblackswimmers@gmail.com",
                             FirstName = "joe",
                             IsActive = true,
@@ -574,7 +576,7 @@ namespace CandeeCamp.API.Migrations
                             LastName = "plumber",
                             PasswordHash = "WkZsAKSKmh9C/WoaCfI4xiSOl7nRw8p5i4T90h54+EkMmtfLwcjCRi9kFkIZRMv/RFaGrTP3FzxcWapHnuNdzw==",
                             Salt = "nqJBdDHXBCGrPiZHRmUBgYMVdgsSCZxaWyjOZnCxAAMrPghUzARqcAcEynPwQNkD",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 394, DateTimeKind.Unspecified).AddTicks(6760), new TimeSpan(0, -5, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 37, 47, 755, DateTimeKind.Unspecified).AddTicks(8720), new TimeSpan(0, -5, 0, 0, 0))
                         });
                 });
 

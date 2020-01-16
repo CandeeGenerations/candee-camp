@@ -176,23 +176,27 @@ const CamperForm = Form.create({
           <Form.Item label="Redeemed Coupon">
             {getFieldDecorator('couponId')(
               <Select
-                dropdownRender={menu => (
-                  <div>
-                    <div
-                      css={{padding: 8, cursor: 'pointer'}}
-                      onClick={() =>
-                        props.onCreateNewCoupon(page.isCamperAddPage)
-                      }
-                      onMouseDown={e => e.preventDefault()}
-                    >
-                      <Icon type="plus" /> Create New Coupon
+                dropdownRender={menu =>
+                  page.isRegistrationCamperEditPage ? (
+                    menu
+                  ) : (
+                    <div>
+                      <div
+                        css={{padding: 8, cursor: 'pointer'}}
+                        onClick={() =>
+                          props.onCreateNewCoupon(page.isCamperAddPage)
+                        }
+                        onMouseDown={e => e.preventDefault()}
+                      >
+                        <Icon type="plus" /> Create New Coupon
+                      </div>
+
+                      <Divider css={{margin: '4px 0'}} />
+
+                      {menu}
                     </div>
-
-                    <Divider css={{margin: '4px 0'}} />
-
-                    {menu}
-                  </div>
-                )}
+                  )
+                }
                 filterOption={selectSearchFunc}
                 optionFilterProp="children"
                 placeholder="e.g. 20% Off Coupon"

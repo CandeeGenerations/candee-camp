@@ -16,6 +16,34 @@ export const loadCampers = async () => {
   }
 }
 
+export const loadCampersForRegistration = async currentCamperId => {
+  try {
+    const response = await request.get(
+      `${mainPath}/for-registration${
+        currentCamperId ? `?currentCamperId=${currentCamperId}` : ''
+      }`,
+    )
+
+    return response
+  } catch (error) {
+    handleError('Unable to load the Camper. Please try again.', error)
+    return null
+  }
+}
+
+export const loadCampersByIds = async camperIds => {
+  try {
+    const response = await request.get(
+      `${mainPath}/by-ids?camperIds=${camperIds.join('&camperIds=')}`,
+    )
+
+    return response
+  } catch (error) {
+    handleError('Unable to load the Campers. Please try again.', error)
+    return null
+  }
+}
+
 export const loadCamperStats = async () => {
   try {
     const response = await request.get(mainPath)

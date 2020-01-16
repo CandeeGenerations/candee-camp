@@ -80,6 +80,28 @@ const routes = [
           },
         ],
       },
+      {
+        name: 'registrations',
+        path: '/registrations',
+        children: [
+          {
+            name: 'add',
+            path: '/add',
+          },
+          {
+            name: 'edit',
+            path: '/edit/:registrationId',
+          },
+          {
+            name: 'camper',
+            path: '/camper/:camperId',
+          },
+          {
+            name: 'event',
+            path: '/event/:eventId',
+          },
+        ],
+      },
     ],
   },
   {

@@ -10,7 +10,9 @@ export default () => {
     isEventAddPage: routeName.includes('events.add'),
     isEventEditPage: routeName.includes('events.edit'),
     isEventAddOrEditPage:
-      routeName.includes('events.add') || routeName.includes('events.edit'),
+      routeName.includes('events.add') ||
+      routeName.includes('events.edit') ||
+      routeName.includes('visitors.registrations.event'),
     isEventUserEditPage: routeName.includes('events.user'),
 
     isVisitorsPages: routeName.includes('visitors'),
@@ -20,7 +22,9 @@ export default () => {
     isCamperEditPage: routeName.includes('visitors.campers.edit'),
     isCamperAddOrEditPage:
       routeName.includes('visitors.campers.add') ||
-      routeName.includes('visitors.campers.edit'),
+      (routeName.includes('visitors.campers.edit') &&
+        !routeName.includes('visitors.campers.edit.snackShop')) ||
+      routeName.includes('visitors.registrations.camper'),
     isCamperCouponAddPage: routeName.includes('visitors.campers.coupon'),
 
     // camper - snack shop
@@ -35,6 +39,19 @@ export default () => {
       routeName.includes('visitors.groups.add') ||
       routeName.includes('visitors.groups.edit'),
     isGroupUserAddPage: routeName.includes('visitors.groups.user'),
+
+    // registrations
+    isRegistrationAddPage: routeName.includes('visitors.registrations.add'),
+    isRegistrationEditPage: routeName.includes('visitors.registrations.edit'),
+    isRegistrationAddOrEditPage:
+      routeName.includes('visitors.registrations.add') ||
+      routeName.includes('visitors.registrations.edit'),
+    isRegistrationCamperEditPage: routeName.includes(
+      'visitors.registrations.camper',
+    ),
+    isRegistrationEventEditPage: routeName.includes(
+      'visitors.registrations.event',
+    ),
 
     isCampPages: routeName.includes('camp'),
 
@@ -64,7 +81,7 @@ export default () => {
     isUserAddPage: routeName.includes('camp.users.add'),
     isUserEditPage: routeName.includes('camp.users.edit'),
     isUserAddOrEditPage:
-      routeName.includes('event.user') ||
+      routeName.includes('events.user') ||
       routeName.includes('visitors.groups.user') ||
       routeName.includes('camp.counselors.user') ||
       routeName.includes('camp.users.add') ||
@@ -109,6 +126,13 @@ export default () => {
     groupAddPage: 'visitors.groups.add',
     groupEditPage: 'visitors.groups.edit',
     groupUserAddPage: 'visitors.groups.user',
+
+    // registrations
+    registrationsPage: 'visitors.registrations',
+    registrationAddPage: 'visitors.registrations.add',
+    registrationEditPage: 'visitors.registrations.edit',
+    registrationCamperEditPage: 'visitors.registrations.camper',
+    registrationEventEditPage: 'visitors.registrations.event',
 
     // camp
     campPage: 'camp',

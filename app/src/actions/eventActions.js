@@ -15,6 +15,34 @@ export const loadEvents = async () => {
   }
 }
 
+export const loadEventsByIds = async eventIds => {
+  try {
+    const response = await request.get(
+      `${mainPath}/by-ids?eventIds=${eventIds.join('&eventIds=')}`,
+    )
+
+    return response
+  } catch (error) {
+    handleError('Unable to load the Events. Please try again.', error)
+    return null
+  }
+}
+
+export const loadEventsForRegistration = async currentEventId => {
+  try {
+    const response = await request.get(
+      `${mainPath}/for-registration${
+        currentEventId ? `?currentEventId=${currentEventId}` : ''
+      }`,
+    )
+
+    return response
+  } catch (error) {
+    handleError('Unable to load the Events. Please try again.', error)
+    return null
+  }
+}
+
 export const loadEventStats = async () => {
   try {
     const response = await request.get(mainPath)

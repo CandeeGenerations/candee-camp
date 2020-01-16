@@ -131,7 +131,7 @@ const UserView = props => {
       navigateToGroup()
     } else {
       routerContext.router.navigate(
-        page.isUserAddOrEditPage ? page.usersPage : page.eventsPage,
+        page.isEventUserEditPage ? page.eventsPage : page.usersPage,
       )
     }
   }

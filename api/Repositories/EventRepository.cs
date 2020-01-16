@@ -19,6 +19,45 @@ namespace CandeeCamp.API.Repositories
         public async Task<IEnumerable<Event>> GetEvents() =>
             await Context.Events.Where(x => !x.IsDeleted).ToListAsync();
 
+        public async Task<IEnumerable<Event>> GetEventsByIds(IEnumerable<int> eventIds)
+        {
+            int[] eventIdsArray = eventIds as int[] ?? eventIds.ToArray();
+            
+            if (!eventIdsArray.Any())
+            {
+                throw new Exception("No event IDs detected.");
+            }
+            
+            return await Context.Events.Where(e => eventIdsArray.Contains(e.Id)).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Event>> GetEventsForRegistration(int? currentEventId)
+        {
+            Event currentEvent = null;
+            
+            if (currentEventId != null)
+            {
+                currentEvent = await Context.Events.Where(e => e.Id == currentEventId.Value).FirstOrDefaultAsync();
+
+                if (currentEvent == null)
+                {
+                    throw new Exception("The current event doesn't exist.");
+                }
+            }
+
+            List<Event> events = await Context.Events
+                .Where(e => e.IsActive && !e.IsDeleted && e.StartDate > DateTimeOffset.Now).ToListAsync();
+
+            if (currentEvent == null)
+            {
+                return events;
+            }
+
+            bool alreadyExists = events.Any(x => x.Id == currentEvent.Id);
+
+            return alreadyExists ? events : new [] {currentEvent}.Concat(events);
+        }
+
         public async Task<Event> GetEventById(int eventId)
         {
             Event dbEvent = await Context.Events.FirstOrDefaultAsync(x => x.Id == eventId && !x.IsDeleted);

@@ -31,7 +31,12 @@ const SnackShopItemsTable = props => {
     >
       <Column key="name" dataIndex="name" title="Name" />
 
-      <Column key="barcode" dataIndex="barcode" title="Barcode" />
+      <Column
+        key="barcode"
+        dataIndex="barcode"
+        render={value => value || <em>None</em>}
+        title="Barcode"
+      />
 
       <Column
         key="isActive"
@@ -108,7 +113,7 @@ SnackShopItemsTable.propTypes = {
   snackShopItems: PropTypes.arrayOf(
     PropTypes.shape({
       amountAvailable: PropTypes.number.isRequired,
-      barcode: PropTypes.string.isRequired,
+      barcode: PropTypes.string,
       createdDate: PropTypes.string.isRequired,
       key: PropTypes.number.isRequired,
       id: PropTypes.number.isRequired,
