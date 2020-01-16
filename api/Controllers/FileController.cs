@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CandeeCamp.API.Common;
 using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,7 @@ namespace CandeeCamp.API.Controllers
 {
     // https://github.com/shahedc/SimpleUpload
     [ApiVersion("1.0")]
-    [Authorize]
+    [Authorize(Policy = CampPolicies.Portal)]
     [Route("api/[controller]")]
     public class FileController : Controller
     {

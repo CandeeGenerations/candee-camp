@@ -1,4 +1,5 @@
 using System;
+using CandeeCamp.API.Common;
 using CandeeCamp.API.DomainObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,7 @@ namespace CandeeCamp.API.Context
         public DbSet<Group> Groups { get; set; }
         public DbSet<SnackShopPurchase> SnackShopPurchases { get; set; }
         public DbSet<SnackShopItem> SnackShopItems { get; set; }
+        public DbSet<AuthClient> AuthClients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +39,15 @@ namespace CandeeCamp.API.Context
                     "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
                 IsActive = true,
                 IsDeleted = false,
+            });
+            
+            modelBuilder.Entity<AuthClient>().HasData(new AuthClient
+            {
+                Id = 1,
+                ClientName = "registrations",
+                ClientUri = "https://candeecamp.azurewebsites.net",
+                ClientSecret = Helpers.CreateUniqueString(30, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER),
+                IsActive = true
             });
 
             modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);

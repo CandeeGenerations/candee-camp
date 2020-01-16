@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CandeeCamp.API.Common;
 using CandeeCamp.API.DomainObjects;
 using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
@@ -22,6 +23,7 @@ namespace CandeeCamp.API.Controllers
         }
         
         [HttpGet]
+        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(IEnumerable<Event>), 200)]
         public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
         {
@@ -31,6 +33,7 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpGet("by-ids")]
+        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(IEnumerable<Event>), 200)]
         public async Task<ActionResult<IEnumerable<Event>>> GetEventsByIds(IEnumerable<int> eventIds)
         {
@@ -40,6 +43,7 @@ namespace CandeeCamp.API.Controllers
         }
         
         [HttpGet("for-registration")]
+        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(IEnumerable<Event>), 200)]
         public async Task<ActionResult<IEnumerable<Event>>> GetEventsForRegistration(int? currentEventId)
         {
@@ -49,6 +53,7 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpGet("{eventId}")]
+        [Authorize(Policy = CampPolicies.PortalOrRegistrations)]
         [ProducesResponseType(typeof(Task<Event>), 200)]
         public async Task<ActionResult<Event>> GetEventById(int eventId)
         {
@@ -58,6 +63,7 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(Task<Event>), 200)]
         public async Task<ActionResult<Event>> CreateEvent([FromBody]EventModel incomingEvent)
         {
@@ -72,6 +78,7 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpPut("{eventId}")]
+        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(Task<Event>), 200)]
         public async Task<ActionResult<Event>> UpdateEvent(int eventId, [FromBody]EventModel incomingEvent)
         {
@@ -86,6 +93,7 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpDelete("{eventId}")]
+        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(200)]
         public async Task<ActionResult<bool>> DeleteEvent(int eventId)
         {
