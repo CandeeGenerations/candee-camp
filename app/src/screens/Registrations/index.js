@@ -43,6 +43,9 @@ const Registrations = () => {
 
         campers.load(false, camperIds)
         events.load(false, eventIds)
+      } else {
+        campers.stopLoading()
+        events.stopLoading()
       }
     } catch (error) {
       errorWrapper.handleCatchError()
@@ -136,10 +139,28 @@ const Registrations = () => {
                 events={events}
                 registrations={
                   (registrations &&
-                    registrations.map(registration => ({
-                      ...registration,
-                      key: registration.id,
-                    }))) ||
+                    registrations.map(registration => {
+                      const camper =
+                        campers.results &&
+                        campers.results.filter(
+                          x => x.id === registration.camperId,
+                        )[0]
+                      const event =
+                        events.results &&
+                        events.results.filter(
+                          x => x.id === registration.eventId,
+                        )[0]
+
+                      return {
+                        ...registration,
+                        key: registration.id,
+                        status:
+                          (camper && camper.isDeleted) ||
+                          (event && event.isDeleted)
+                            ? 'inactive'
+                            : 'active',
+                      }
+                    })) ||
                   []
                 }
                 onCreateRegistration={() =>
@@ -158,6 +179,7 @@ const Registrations = () => {
               routerContext.route.params.registrationId) ||
             null
           }
+          onSubmit={loadRegistrations}
         />
       )}
     </>

@@ -21,6 +21,32 @@ namespace CandeeCamp.API.Repositories
 
         public async Task<IEnumerable<Camper>> GetCampersByGroup(int groupId) =>
             await Context.Campers.Where(x => !x.IsDeleted && x.GroupId == groupId).ToListAsync();
+        
+        public async Task<IEnumerable<Camper>> GetCampersForRegistration(int? currentCamperId)
+        {
+            Camper currentCamper = null;
+            
+            if (currentCamperId != null)
+            {
+                currentCamper = await Context.Campers.Where(x => x.Id == currentCamperId.Value).FirstOrDefaultAsync();
+
+                if (currentCamper == null)
+                {
+                    throw new Exception("The current camper doesn't exist.");
+                }
+            }
+
+            List<Camper> campers = await Context.Campers.Where(x => x.IsActive && !x.IsDeleted).ToListAsync();
+
+            if (currentCamper == null)
+            {
+                return campers;
+            }
+
+            bool alreadyExists = campers.Any(x => x.Id == currentCamper.Id);
+
+            return alreadyExists ? campers : new [] {currentCamper}.Concat(campers);
+        }
 
         public async Task<IEnumerable<Camper>> GetCampersByIds(IEnumerable<int> camperIds)
         {

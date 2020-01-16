@@ -38,6 +38,15 @@ namespace CandeeCamp.API.Controllers
 
             return Ok(events);
         }
+        
+        [HttpGet("for-registration")]
+        [ProducesResponseType(typeof(IEnumerable<Event>), 200)]
+        public async Task<ActionResult<IEnumerable<Event>>> GetEventsForRegistration(int? currentEventId)
+        {
+            IEnumerable<Event> events = await _eventRepository.GetEventsForRegistration(currentEventId);
+            
+            return Ok(events);
+        }
 
         [HttpGet("{eventId}")]
         [ProducesResponseType(typeof(Task<Event>), 200)]

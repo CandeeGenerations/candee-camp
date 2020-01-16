@@ -9,6 +9,7 @@ namespace CandeeCamp.API.Repositories.Interfaces
     {
         Task<IEnumerable<Camper>> GetCampers();
         Task<IEnumerable<Camper>> GetCampersByIds(IEnumerable<int> userIds);
+        Task<IEnumerable<Camper>> GetCampersForRegistration(int? currentCamperId);
         Task<IEnumerable<Camper>> GetCampersByGroup(int groupId);
         Task<Camper> GetCamperById(int camperId);
         Task<Camper> CreateCamper(CamperModel camper);

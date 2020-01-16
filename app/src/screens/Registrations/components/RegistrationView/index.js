@@ -7,7 +7,11 @@ import RegistrationViewWrapper from './RegistrationViewWrapper'
 
 import usePage from '@/helpers/hooks/usePage'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
-import {registrationActions as actions} from '@/actions'
+import {
+  registrationActions as actions,
+  eventActions,
+  camperActions,
+} from '@/actions'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
 import {ObjectsContext} from '@/screens/App'
@@ -21,6 +25,8 @@ const RegistrationView = props => {
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
   const registration = useAsyncLoad(actions.loadRegistration, props.id)
+  const events = useAsyncLoad(eventActions.loadEventsForRegistration)
+  const campers = useAsyncLoad(camperActions.loadCampersForRegistration)
 
   const [fields, setFields] = useState({
     eventId: {includePercent: true, isRequired: true, value: undefined},
@@ -53,6 +59,15 @@ const RegistrationView = props => {
               : null,
           }),
         )
+
+        events.load(false, response.data.eventId ? response.data.eventId : null)
+        campers.load(
+          false,
+          response.data.camperId ? response.data.camperId : null,
+        )
+      } else {
+        events.load()
+        campers.load()
       }
     } catch {
       errorWrapper.handleCatchError()
@@ -60,13 +75,12 @@ const RegistrationView = props => {
   }
 
   useEffect(() => {
-    objectsContext.campers.load()
-    objectsContext.events.load()
-
     if (props.id) {
       getRegistration()
     } else {
       registration.stopLoading()
+      events.load()
+      campers.load()
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -84,7 +98,7 @@ const RegistrationView = props => {
       registration.stopLoading()
 
       if (response) {
-        refreshTable()
+        props.onSubmit()
 
         routerContext.router.navigate(page.registrationEditPage, {
           registrationId: response.data.id,
@@ -108,8 +122,8 @@ const RegistrationView = props => {
 
   const submitButtonDisabled =
     registration.loading ||
-    objectsContext.events.loading ||
-    objectsContext.campers.loading ||
+    events.loading ||
+    campers.loading ||
     (!fields.id && !isFormReady(fields)) ||
     (fields.id && !anyTouchedFields(fields)) ||
     (anyTouchedFields(fields) && !isFormReady(fields))
@@ -126,10 +140,7 @@ const RegistrationView = props => {
       >
         <LoaderContext.Provider
           value={{
-            spinning:
-              registration.loading ||
-              objectsContext.events.loading ||
-              objectsContext.campers.loading,
+            spinning: registration.loading || events.loading || campers.loading,
             tip: 'Loading registration...',
           }}
         >
@@ -138,8 +149,8 @@ const RegistrationView = props => {
             hasError={errorWrapper.hasError}
           >
             <RegistrationViewWrapper
-              campersList={objectsContext.campers.results || []}
-              eventsList={objectsContext.events.results || []}
+              campersList={campers.results || []}
+              eventsList={events.results || []}
               fields={fields}
               onDeleteRegistration={handleDeleteRegistrationClick}
               onFieldChange={handleFieldChange}
@@ -157,6 +168,9 @@ RegistrationView.defaultProps = {
 
 RegistrationView.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+  // functions
+  onSubmit: PropTypes.func.isRequired,
 }
 
 export default RegistrationView

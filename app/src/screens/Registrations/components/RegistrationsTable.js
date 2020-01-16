@@ -41,19 +41,23 @@ const RegistrationsTable = props => {
           return props.events.loading ? (
             <Icon type="loading" />
           ) : event ? (
-            <Tag
-              color="blue"
-              css={{cursor: 'pointer'}}
-              onClick={() =>
-                router.navigate(
-                  page.registrationEventEditPage,
-                  {eventId: event.id},
-                  {},
-                )
-              }
-            >
-              {event.name}
-            </Tag>
+            event.isDeleted ? (
+              <Tag>{event.name}</Tag>
+            ) : (
+              <Tag
+                color="blue"
+                css={{cursor: 'pointer'}}
+                onClick={() =>
+                  router.navigate(
+                    page.registrationEventEditPage,
+                    {eventId: event.id},
+                    {},
+                  )
+                }
+              >
+                {event.name}
+              </Tag>
+            )
           ) : (
             <em>None</em>
           )
@@ -74,19 +78,25 @@ const RegistrationsTable = props => {
           return props.campers.loading ? (
             <Icon type="loading" />
           ) : camper ? (
-            <Tag
-              color="blue"
-              css={{cursor: 'pointer'}}
-              onClick={() =>
-                router.navigate(
-                  page.registrationCamperEditPage,
-                  {camperId: camper.id},
-                  {},
-                )
-              }
-            >
-              {camper.firstName} {camper.lastName}
-            </Tag>
+            camper.isDeleted ? (
+              <Tag>
+                {camper.firstName} {camper.lastName}
+              </Tag>
+            ) : (
+              <Tag
+                color="blue"
+                css={{cursor: 'pointer'}}
+                onClick={() =>
+                  router.navigate(
+                    page.registrationCamperEditPage,
+                    {camperId: camper.id},
+                    {},
+                  )
+                }
+              >
+                {camper.firstName} {camper.lastName}
+              </Tag>
+            )
           ) : (
             <em>None</em>
           )
@@ -100,6 +110,18 @@ const RegistrationsTable = props => {
         dataIndex="isActive"
         render={formatIsActive}
         title="Is Active"
+      />
+
+      <Column
+        key="status"
+        align="center"
+        dataIndex="status"
+        render={status => (
+          <Tag color={status === 'inactive' ? 'red' : 'blue'}>
+            {status === 'inactive' ? 'Inactive' : 'Active'}
+          </Tag>
+        )}
+        title="Status"
       />
 
       <Column
@@ -167,6 +189,7 @@ const RegistrationsTable = props => {
 }
 
 RegistrationsTable.propTypes = {
+  campers: PropTypes.shape().isRequired,
   events: PropTypes.shape().isRequired,
   loader: PropTypes.shape({
     spinning: PropTypes.bool.isRequired,
@@ -184,7 +207,6 @@ RegistrationsTable.propTypes = {
       registrationDate: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  users: PropTypes.shape().isRequired,
 
   // functions
   deleteRegistration: PropTypes.func.isRequired,
