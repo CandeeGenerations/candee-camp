@@ -17,6 +17,39 @@ namespace CandeeCamp.API.Migrations
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("CandeeCamp.API.DomainObjects.AuthClient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClientName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("ClientSecret")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("ClientUri")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuthClients");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClientName = "registrations",
+                            ClientSecret = "8bqsu5AMQwbOYSlnZHkw2tCdyhPTyW",
+                            ClientUri = "https://candeecamp.azurewebsites.net",
+                            IsActive = true
+                        });
+                });
+
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.Cabin", b =>
                 {
                     b.Property<int>("Id")
@@ -118,25 +151,6 @@ namespace CandeeCamp.API.Migrations
                     b.HasIndex("LoginUser");
 
                     b.ToTable("Campers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            Allergies = "Strawberries",
-                            BirthDate = new DateTimeOffset(new DateTime(2010, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, -4, 0, 0, 0)),
-                            CreatedBy = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 395, DateTimeKind.Unspecified).AddTicks(3350), new TimeSpan(0, -5, 0, 0, 0)),
-                            FirstName = "Jocelyn",
-                            IsActive = true,
-                            IsDeleted = false,
-                            LastName = "Lacombe",
-                            Medicine = "Ibuprofen",
-                            ParentFirstName = "John",
-                            ParentLastName = "Lacombe",
-                            StartingBalance = 0m,
-                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 395, DateTimeKind.Unspecified).AddTicks(3380), new TimeSpan(0, -5, 0, 0, 0))
-                        });
                 });
 
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.Counselor", b =>
@@ -262,19 +276,6 @@ namespace CandeeCamp.API.Migrations
                     b.HasIndex("CreatedBy");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            CreatedBy = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 14, 47, 26, 394, DateTimeKind.Unspecified).AddTicks(8060), new TimeSpan(0, 0, 0, 0, 0)),
-                            EndDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Event 1",
-                            StartDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
-                        });
                 });
 
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.Group", b =>
@@ -283,7 +284,7 @@ namespace CandeeCamp.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("CreatedDate")
@@ -295,7 +296,7 @@ namespace CandeeCamp.API.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("LoginUser")
+                    b.Property<int?>("LoginUser")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -314,13 +315,44 @@ namespace CandeeCamp.API.Migrations
                     b.ToTable("Groups");
                 });
 
+            modelBuilder.Entity("CandeeCamp.API.DomainObjects.PayPal_Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreateDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("PayPalId")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("PayerId")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int?>("PaymentDonationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentDonationId");
+
+                    b.ToTable("PayPal_Payments");
+                });
+
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.Payment_Donation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Amount")
+                    b.Property<decimal>("Amount")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<DateTimeOffset>("CreatedDate")
@@ -335,16 +367,17 @@ namespace CandeeCamp.API.Migrations
                     b.Property<string>("Processor")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int?>("RegistrationId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Payments_Donations");
                 });
@@ -410,6 +443,69 @@ namespace CandeeCamp.API.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("Registrations");
+                });
+
+            modelBuilder.Entity("CandeeCamp.API.DomainObjects.RegistrationPayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentDonationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RegistrationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentDonationId");
+
+                    b.HasIndex("RegistrationId");
+
+                    b.ToTable("RegistrationPayments");
+                });
+
+            modelBuilder.Entity("CandeeCamp.API.DomainObjects.Setting", b =>
+                {
+                    b.Property<string>("Key")
+                        .HasColumnType("varchar(95) CHARACTER SET utf8mb4");
+
+                    b.Property<bool>("Sensitive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
+                    b.HasKey("Key");
+
+                    b.ToTable("Settings");
+
+                    b.HasData(
+                        new
+                        {
+                            Key = "Name",
+                            Sensitive = false,
+                            Value = "Candee Camp",
+                            Version = 1
+                        },
+                        new
+                        {
+                            Key = "PayPalClientId",
+                            Sensitive = true,
+                            Value = "AR93BgQN5Jk6SwjY6n31ND6HFN2tBqM_XW3uCnKNFsjS5aCiqr-kR6dRPYK2JFb7bzeoCiy8i99rwe7y",
+                            Version = 1
+                        },
+                        new
+                        {
+                            Key = "PayPalClientSecret",
+                            Sensitive = true,
+                            Value = "EGarmHyK5GrKdeZuHXw3LV8wUgm2byGV4xUJoHh9XUvnazS_HbaMY-L7z3Dw9_VyIkf0huCe2T-OS_Io",
+                            Version = 1
+                        });
                 });
 
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.SnackShopItem", b =>
@@ -553,7 +649,7 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 378, DateTimeKind.Unspecified).AddTicks(7270), new TimeSpan(0, -5, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 17, 13, 10, 21, 80, DateTimeKind.Unspecified).AddTicks(6400), new TimeSpan(0, -5, 0, 0, 0)),
                             EmailAddress = "tyler@cgen.com",
                             FirstName = "Tyler",
                             IsActive = true,
@@ -561,21 +657,29 @@ namespace CandeeCamp.API.Migrations
                             LastName = "Candee",
                             PasswordHash = "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
                             Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 393, DateTimeKind.Unspecified).AddTicks(2500), new TimeSpan(0, -5, 0, 0, 0))
-                        },
-                        new
-                        {
-                            Id = -2,
-                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 394, DateTimeKind.Unspecified).AddTicks(6730), new TimeSpan(0, -5, 0, 0, 0)),
-                            EmailAddress = "theblackswimmers@gmail.com",
-                            FirstName = "joe",
-                            IsActive = true,
-                            IsDeleted = false,
-                            LastName = "plumber",
-                            PasswordHash = "WkZsAKSKmh9C/WoaCfI4xiSOl7nRw8p5i4T90h54+EkMmtfLwcjCRi9kFkIZRMv/RFaGrTP3FzxcWapHnuNdzw==",
-                            Salt = "nqJBdDHXBCGrPiZHRmUBgYMVdgsSCZxaWyjOZnCxAAMrPghUzARqcAcEynPwQNkD",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 13, 9, 47, 26, 394, DateTimeKind.Unspecified).AddTicks(6760), new TimeSpan(0, -5, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 17, 13, 10, 21, 95, DateTimeKind.Unspecified).AddTicks(7350), new TimeSpan(0, -5, 0, 0, 0))
                         });
+                });
+
+            modelBuilder.Entity("CandeeCamp.API.DomainObjects.UserPayment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentDonationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentDonationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserPayments");
                 });
 
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.Cabin", b =>
@@ -649,22 +753,31 @@ namespace CandeeCamp.API.Migrations
                 {
                     b.HasOne("CandeeCamp.API.DomainObjects.User", "CreatedByUser")
                         .WithMany()
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CreatedBy");
 
                     b.HasOne("CandeeCamp.API.DomainObjects.User", "User")
                         .WithMany()
-                        .HasForeignKey("LoginUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LoginUser");
+                });
+
+            modelBuilder.Entity("CandeeCamp.API.DomainObjects.PayPal_Payment", b =>
+                {
+                    b.HasOne("CandeeCamp.API.DomainObjects.Payment_Donation", "PaymentDonation")
+                        .WithMany()
+                        .HasForeignKey("PaymentDonationId");
                 });
 
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.Payment_Donation", b =>
                 {
+                    b.HasOne("CandeeCamp.API.DomainObjects.Registration", "Registration")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CandeeCamp.API.DomainObjects.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -699,6 +812,21 @@ namespace CandeeCamp.API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CandeeCamp.API.DomainObjects.RegistrationPayment", b =>
+                {
+                    b.HasOne("CandeeCamp.API.DomainObjects.Payment_Donation", "PaymentDonation")
+                        .WithMany()
+                        .HasForeignKey("PaymentDonationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CandeeCamp.API.DomainObjects.Registration", "Registration")
+                        .WithMany()
+                        .HasForeignKey("RegistrationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.SnackShopItem", b =>
                 {
                     b.HasOne("CandeeCamp.API.DomainObjects.User", "CreatedByUser")
@@ -727,6 +855,21 @@ namespace CandeeCamp.API.Migrations
                     b.HasOne("CandeeCamp.API.DomainObjects.SnackShopItem", "SnackShopItem")
                         .WithMany()
                         .HasForeignKey("SnackShopItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CandeeCamp.API.DomainObjects.UserPayment", b =>
+                {
+                    b.HasOne("CandeeCamp.API.DomainObjects.Payment_Donation", "PaymentDonation")
+                        .WithMany()
+                        .HasForeignKey("PaymentDonationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CandeeCamp.API.DomainObjects.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

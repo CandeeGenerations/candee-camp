@@ -18,18 +18,23 @@ const Version = props => {
     position: absolute;
   `
 
+  const version = `v ${Config.version}`
+
   return (
     <div css={props.light ? [versionStyle, lightStyle] : versionStyle}>
-      v {Config.version} &copy; {moment().format('YYYY')} Candee Generations
+      {!props.hideVersion && `${version} `}&copy; {moment().format('YYYY')}{' '}
+      Candee Generations
     </div>
   )
 }
 
 Version.defaultProps = {
+  hideVersion: false,
   light: false,
 }
 
 Version.propTypes = {
+  hideVersion: PropTypes.bool,
   light: PropTypes.bool,
 }
 

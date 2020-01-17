@@ -25,6 +25,8 @@ import Coupons from '@/screens/Coupons'
 import Campers from '@/screens/Campers'
 import NavBar from '@/components/NavBar'
 import NotFound from '@/screens/NotFound'
+import Register from '@/screens/Register'
+import Settings from '@/screens/Settings'
 import Version from '@/components/Version'
 import Dashboard from '@/screens/Dashboard'
 import SnackShop from '@/screens/SnackShop'
@@ -95,6 +97,10 @@ const App = () => {
     return isNoNav
   }
 
+  if (routeName.includes('register')) {
+    return <Register />
+  }
+
   const isUnauthenticatedRoute = testUnauthenticatedRoutes()
 
   if (!user && !isUnauthenticatedRoute) {
@@ -158,6 +164,8 @@ const App = () => {
     content = <Coupons />
   } else if (routeName.includes('import')) {
     content = <Import />
+  } else if (routeName.includes('settings')) {
+    content = <Settings />
   } else {
     content = <NotFound />
   }

@@ -19,12 +19,12 @@ namespace CandeeCamp.API.DomainObjects
         
         public DateTimeOffset UpdatedDate { get; set; }
 
-        public int LoginUser { get; set; }
+        public int? LoginUser { get; set; }
         
         [ForeignKey("Id")]
         public virtual User User { get; set; }
         
-        public int CreatedBy { get; set; }
+        public int? CreatedBy { get; set; }
         
         [ForeignKey("CreatedBy")]
         public virtual User CreatedByUser { get; set; }

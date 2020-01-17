@@ -61,8 +61,8 @@ const Import = () => {
     <MainContent>
       <PageHeader
         routes={[
-          {path: '/camp', breadcrumbName: 'Camp Management'},
-          {path: '/import', breadcrumbName: 'Import Data'},
+          {path: 'camp', breadcrumbName: 'Camp Management'},
+          {path: 'camp.import', breadcrumbName: 'Import Data'},
         ]}
         title="Import Data"
       />

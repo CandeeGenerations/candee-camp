@@ -101,6 +101,9 @@ const CampPage = () => {
         <li>
           <NavItem routeName="camp.import">Import Data</NavItem>
         </li>
+        <li>
+          <NavItem routeName="camp.settings">Settings</NavItem>
+        </li>
       </ul>
     </MainContent>
   )

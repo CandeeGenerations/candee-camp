@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using CandeeCamp.API.Common;
 using CandeeCamp.API.DomainObjects;
 using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CandeeCamp.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Authorize]
+    [Authorize(Policy = CampPolicies.Portal)]
     [Route("api/snack-shop-items")]
     [Produces("application/json")]
     public class SnackShopItemsController : Controller

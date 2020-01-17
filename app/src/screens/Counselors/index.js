@@ -72,8 +72,8 @@ const Counselors = () => {
                 : []
             }
             routes={[
-              {path: '/camp', breadcrumbName: 'Camp Management'},
-              {path: '/counselors', breadcrumbName: 'Counselors'},
+              {path: 'camp', breadcrumbName: 'Camp Management'},
+              {path: 'camp.counselors', breadcrumbName: 'Counselors'},
             ]}
             title="Counselors"
           />

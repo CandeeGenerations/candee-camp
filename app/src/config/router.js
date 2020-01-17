@@ -196,6 +196,20 @@ const routes = [
         name: 'import',
         path: '/import',
       },
+      {
+        name: 'settings',
+        path: '/settings',
+      },
+    ],
+  },
+  {
+    name: 'register',
+    path: '/register',
+    children: [
+      {
+        name: 'event',
+        path: '/event/:eventId',
+      },
     ],
   },
 ]
@@ -206,7 +220,7 @@ const router = createRouter(routes, {
   queryParamsMode: 'loose',
 })
 
-router.usePlugin(browserPlugin({useHash: true}))
+router.usePlugin(browserPlugin())
 router.start()
 
 export default router

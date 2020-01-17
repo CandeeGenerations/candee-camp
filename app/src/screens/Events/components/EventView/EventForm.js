@@ -13,8 +13,11 @@ import {
   InputNumber,
 } from 'antd'
 
+import Config from '@/config'
 import usePage from '@/helpers/hooks/usePage'
 import {inputNumberFormatter, inputNumberParser} from '@/helpers'
+
+import CodeCopy from '@/components/CodeCopy'
 
 const EventForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -105,6 +108,25 @@ const EventForm = Form.create({
 
       {page.isEventEditPage && (
         <>
+          <Divider css={{marginTop: 40}} orientation="left">
+            <Typography.Text>Share</Typography.Text>
+          </Divider>
+
+          <p>
+            You can send this link to anyone that you would like to sign up for
+            your event.
+          </p>
+
+          <Row gutter={16}>
+            <Col span={24}>
+              <CodeCopy>
+                {`${Config.appUrl}/register/event/${(props.id &&
+                  props.id.value) ||
+                  0}`}
+              </CodeCopy>
+            </Col>
+          </Row>
+
           <Divider css={{marginTop: 40}} orientation="left">
             <Typography.Text type="danger">Danger Zone</Typography.Text>
           </Divider>

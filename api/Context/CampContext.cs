@@ -1,5 +1,7 @@
 using System;
+using CandeeCamp.API.Common;
 using CandeeCamp.API.DomainObjects;
+using CandeeCamp.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CandeeCamp.API.Context
@@ -13,6 +15,9 @@ namespace CandeeCamp.API.Context
         public DbSet<Event> Events { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Payment_Donation> Payments_Donations { get; set; }
+        public DbSet<PayPal_Payment> PayPal_Payments { get; set; }
+        public DbSet<RegistrationPayment> RegistrationPayments { get; set; }
+        public DbSet<UserPayment> UserPayments { get; set; }
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<Camper> Campers { get; set; }
         public DbSet<Counselor> Counselors { get; set; }
@@ -21,6 +26,8 @@ namespace CandeeCamp.API.Context
         public DbSet<Group> Groups { get; set; }
         public DbSet<SnackShopPurchase> SnackShopPurchases { get; set; }
         public DbSet<SnackShopItem> SnackShopItems { get; set; }
+        public DbSet<AuthClient> AuthClients { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,10 +45,41 @@ namespace CandeeCamp.API.Context
                 IsActive = true,
                 IsDeleted = false,
             });
+            
+            modelBuilder.Entity<AuthClient>().HasData(new AuthClient
+            {
+                Id = 1,
+                ClientName = "registrations",
+                ClientUri = "https://candeecamp.azurewebsites.net",
+                ClientSecret = Helpers.CreateUniqueString(30, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER),
+                IsActive = true
+            });
+
+            modelBuilder.Entity<Setting>().HasData(new Setting
+            {
+                Key = Enum.GetName(typeof(SettingKey), SettingKey.Name),
+                Value = "Candee Camp",
+                Version = 1,
+                Sensitive = false,
+            });
+            
+            modelBuilder.Entity<Setting>().HasData(new Setting
+            {
+                Key = Enum.GetName(typeof(SettingKey), SettingKey.PayPalClientId),
+                Value = "AR93BgQN5Jk6SwjY6n31ND6HFN2tBqM_XW3uCnKNFsjS5aCiqr-kR6dRPYK2JFb7bzeoCiy8i99rwe7y",
+                Version = 1,
+                Sensitive = true,
+            });
 
             modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);
 
-            modelBuilder.Entity<Payment_Donation>().HasOne(u => u.User).WithMany().HasForeignKey(pd => pd.UserId);
+            modelBuilder.Entity<RegistrationPayment>().HasOne(r => r.Registration).WithMany().HasForeignKey(rp => rp.RegistrationId);
+            modelBuilder.Entity<RegistrationPayment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(rp => rp.PaymentDonationId);
+            
+            modelBuilder.Entity<UserPayment>().HasOne(u => u.User).WithMany().HasForeignKey(up => up.UserId);
+            modelBuilder.Entity<UserPayment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(up => up.PaymentDonationId);
+            
+            modelBuilder.Entity<PayPal_Payment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(ppp => ppp.PaymentDonationId);
 
             modelBuilder.Entity<Registration>().HasOne(e => e.Event).WithMany().HasForeignKey(r => r.EventId);
             modelBuilder.Entity<Registration>().HasOne(ca => ca.Camper).WithMany().HasForeignKey(r => r.CamperId);

@@ -1,5 +1,6 @@
 import qs from 'qs'
 
+import Config from '@/config'
 import {axiosRequest} from '@/api'
 import {setUser} from '@/helpers/authHelpers'
 import {handleError, openNotification} from '@/helpers'
@@ -20,6 +21,27 @@ export const signin = async fields => {
 
     setUser(response.data)
     localStorage.removeItem('cc-unauthorized')
+  } catch (error) {
+    handleError('Unable to Sign in. Please try again.', error)
+  }
+}
+
+export const authorizeClient = async () => {
+  try {
+    const response = await axiosRequest.post(
+      '/token',
+      qs.stringify({
+        grant_type: 'auth_client', // eslint-disable-line babel/camelcase
+        client_name: Config.authClient.name, // eslint-disable-line babel/camelcase
+        client_secret: Config.authClient.secret, // eslint-disable-line babel/camelcase
+        client_uri: Config.appUrl, // eslint-disable-line babel/camelcase
+      }),
+      {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      },
+    )
+
+    setUser(response.data)
   } catch (error) {
     handleError('Unable to Sign in. Please try again.', error)
   }

@@ -72,8 +72,11 @@ const SnackShopItems = () => {
                 : []
             }
             routes={[
-              {path: '/camp', breadcrumbName: 'Camp Management'},
-              {path: '/snack-shop-items', breadcrumbName: 'Snack Shop Items'},
+              {path: 'camp', breadcrumbName: 'Camp Management'},
+              {
+                path: 'camp.snackShopItems',
+                breadcrumbName: 'Snack Shop Items',
+              },
             ]}
             title="Snack Shop Items"
           />

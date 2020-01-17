@@ -102,6 +102,10 @@ export default () => {
       routeName.includes('camp.coupons.edit') ||
       routeName.includes('visitors.campers.coupon'),
 
+    // register
+    // event
+    isEventRegisterPage: routeName.includes('register.event'),
+
     // values : return string
     // events
     eventsPage: 'events',
@@ -166,5 +170,9 @@ export default () => {
     couponsPage: 'camp.coupons',
     couponAddPage: 'camp.coupons.add',
     couponEditPage: 'camp.coupons.edit',
+
+    // register
+    // events
+    eventRegisterPage: 'register.event',
   }
 }

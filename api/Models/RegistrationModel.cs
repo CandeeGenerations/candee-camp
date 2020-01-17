@@ -5,7 +5,7 @@ namespace CandeeCamp.API.Models
 {
     public class RegistrationModel
     {
-        public int StartingBalance { get; set; }
+        public decimal StartingBalance { get; set; }
 
         public DateTimeOffset? CheckInDate { get; set; }
 

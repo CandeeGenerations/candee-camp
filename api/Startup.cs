@@ -1,6 +1,8 @@
 using System;
 using System.Text;
+using CandeeCamp.API.Common;
 using CandeeCamp.API.Context;
+using CandeeCamp.API.DomainObjects;
 using CandeeCamp.API.ExceptionHandling;
 using CandeeCamp.API.Repositories;
 using CandeeCamp.API.Repositories.Interfaces;
@@ -80,6 +82,15 @@ namespace CandeeCamp.API
                                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]))
                         };
                     });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(CampPolicies.Portal, policy => policy.RequireClaim("Portal"));
+                options.AddPolicy(CampPolicies.Registrations, policy => policy.RequireClaim("Registrations"));
+                options.AddPolicy(CampPolicies.PortalOrRegistrations,
+                    policy => policy.RequireAssertion(context =>
+                        context.User.HasClaim(c => (c.Type == "Portal" || c.Type == "Registrations"))));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostEnvironment env)
@@ -120,6 +131,10 @@ namespace CandeeCamp.API
             services.AddScoped<ISnackShopItemRepository, SnackShopItemRepository>();
             services.AddScoped<ISnackShopPurchaseRepository, SnackShopPurchaseRepository>();
             services.AddScoped<IRegistrationRepository, RegistrationRepository>();
+            services.AddScoped<IAuthClientRepository, AuthClientRepository>();
+            services.AddScoped<IPaymentDonationRepository, PaymentDonationRepository>();
+            services.AddScoped<IPayPalPaymentRepository, PayPalPaymentRepository>();
+            services.AddScoped<ISettingRepository, SettingRepository>();
         }
     }
 }
