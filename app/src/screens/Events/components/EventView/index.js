@@ -46,16 +46,17 @@ const EventView = props => {
     try {
       const response = await event.load()
 
-      setFields(stateFields =>
-        mergeFormData(stateFields, {
-          id: response.data.id,
-          name: response.data.name,
-          dateTime: [
-            moment(response.data.startDate),
-            moment(response.data.endDate),
-          ],
-        }),
-      )
+      if (response) {
+        setFields(stateFields =>
+          mergeFormData(stateFields, {
+            ...response.data,
+            dateTime: [
+              moment(response.data.startDate),
+              moment(response.data.endDate),
+            ],
+          }),
+        )
+      }
     } catch (error) {
       errorWrapper.handleCatchError()
     }
