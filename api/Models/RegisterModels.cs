@@ -5,6 +5,8 @@ namespace CandeeCamp.API.Models
     public class CamperOverrideModel : CamperModel
     {
         public string Coupon { get; set; }
+
+        public int? PaymentId { get; set; }
     }
 
     public class RegisterGroupModel
@@ -12,5 +14,7 @@ namespace CandeeCamp.API.Models
         public string GroupName { get; set; }
 
         public IEnumerable<CamperOverrideModel> Campers { get; set; }
+
+        public int? PaymentId { get; set; }
     }
 }

@@ -131,6 +131,8 @@ namespace CandeeCamp.API
             services.AddScoped<ISnackShopPurchaseRepository, SnackShopPurchaseRepository>();
             services.AddScoped<IRegistrationRepository, RegistrationRepository>();
             services.AddScoped<IAuthClientRepository, AuthClientRepository>();
+            services.AddScoped<IPaymentDonationRepository, PaymentDonationRepository>();
+            services.AddScoped<IPayPalPaymentRepository, PayPalPaymentRepository>();
         }
     }
 }

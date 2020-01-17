@@ -7,6 +7,7 @@ import {Row, Col, Button, Typography, Divider} from 'antd'
 import {RegisterContext} from '../..'
 
 import Free from './components/Free'
+import PayNow from './components/PayNow'
 
 import {registerActions as actions} from '@/actions'
 
@@ -14,7 +15,9 @@ const Payment = props => {
   const [loading, setLoading] = useState(false)
   const registerContext = useContext(RegisterContext)
 
-  const handleRegister = async () => {
+  const isPaidEvent = registerContext.event.cost > 0
+
+  const handleRegister = async paymentId => {
     setLoading(true)
 
     await actions.registerForEvent({
@@ -23,6 +26,7 @@ const Payment = props => {
       camper: registerContext.fields,
       group: registerContext.groupFields,
       groupCampers: registerContext.groupCampers,
+      paymentId,
     })
 
     setLoading(false)
@@ -36,7 +40,7 @@ const Payment = props => {
 
       <Divider />
 
-      {registerContext.cost > 0 ? 'coming soon' : <Free />}
+      {isPaidEvent ? <PayNow onRegister={handleRegister} /> : <Free />}
 
       <Divider />
 
@@ -51,14 +55,16 @@ const Payment = props => {
             Back
           </Button>
 
-          <Button
-            loading={loading}
-            size="large"
-            type="primary"
-            onClick={handleRegister}
-          >
-            Confirm Registration
-          </Button>
+          {!isPaidEvent && (
+            <Button
+              loading={loading}
+              size="large"
+              type="primary"
+              onClick={handleRegister}
+            >
+              Confirm Registration
+            </Button>
+          )}
         </Col>
       </Row>
     </>

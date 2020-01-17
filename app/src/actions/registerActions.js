@@ -11,6 +11,7 @@ export const registerForEvent = async ({
   camper,
   group,
   groupCampers,
+  paymentId,
 }) => {
   try {
     let response = null
@@ -26,6 +27,7 @@ export const registerForEvent = async ({
       body.medicine = body.medicine.length > 0 ? body.medicine.toString() : null
       body.allergies =
         body.allergies.length > 0 ? body.allergies.toString() : null
+      body.paymentId = paymentId
 
       response = await request.post(`${mainPath}/${eventId}/camper`, body)
     } else {
@@ -38,6 +40,7 @@ export const registerForEvent = async ({
             data.medicine.length > 0 ? data.medicine.toString() : null
           data.allergies =
             data.allergies.length > 0 ? data.allergies.toString() : null
+          data.paymentId = paymentId
 
           return data
         }),

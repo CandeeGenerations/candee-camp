@@ -1,6 +1,7 @@
 using System;
 using CandeeCamp.API.Common;
 using CandeeCamp.API.DomainObjects;
+using CandeeCamp.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CandeeCamp.API.Context
@@ -14,6 +15,9 @@ namespace CandeeCamp.API.Context
         public DbSet<Event> Events { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Payment_Donation> Payments_Donations { get; set; }
+        public DbSet<PayPal_Payment> PayPal_Payments { get; set; }
+        public DbSet<RegistrationPayment> RegistrationPayments { get; set; }
+        public DbSet<UserPayment> UserPayments { get; set; }
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<Camper> Campers { get; set; }
         public DbSet<Counselor> Counselors { get; set; }
@@ -52,7 +56,13 @@ namespace CandeeCamp.API.Context
 
             modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);
 
-            modelBuilder.Entity<Payment_Donation>().HasOne(u => u.User).WithMany().HasForeignKey(pd => pd.UserId);
+            modelBuilder.Entity<RegistrationPayment>().HasOne(r => r.Registration).WithMany().HasForeignKey(rp => rp.RegistrationId);
+            modelBuilder.Entity<RegistrationPayment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(rp => rp.PaymentDonationId);
+            
+            modelBuilder.Entity<UserPayment>().HasOne(u => u.User).WithMany().HasForeignKey(up => up.UserId);
+            modelBuilder.Entity<UserPayment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(up => up.PaymentDonationId);
+            
+            modelBuilder.Entity<PayPal_Payment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(ppp => ppp.PaymentDonationId);
 
             modelBuilder.Entity<Registration>().HasOne(e => e.Event).WithMany().HasForeignKey(r => r.EventId);
             modelBuilder.Entity<Registration>().HasOne(ca => ca.Camper).WithMany().HasForeignKey(r => r.CamperId);

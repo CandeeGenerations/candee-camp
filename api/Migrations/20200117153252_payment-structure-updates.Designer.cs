@@ -3,14 +3,16 @@ using System;
 using CandeeCamp.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CandeeCamp.API.Migrations
 {
     [DbContext(typeof(CampContext))]
-    partial class CampContextModelSnapshot : ModelSnapshot
+    [Migration("20200117153252_payment-structure-updates")]
+    partial class paymentstructureupdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +46,7 @@ namespace CandeeCamp.API.Migrations
                         {
                             Id = 1,
                             ClientName = "registrations",
-                            ClientSecret = "UELRCv0gUwlAoVdjYvC1taYgiBlSIU",
+                            ClientSecret = "iWk6AXR5x1nnkO59X9sRdOCPXLqHyR",
                             ClientUri = "https://candeecamp.azurewebsites.net",
                             IsActive = true
                         });
@@ -459,8 +461,6 @@ namespace CandeeCamp.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PaymentDonationId");
-
                     b.HasIndex("RegistrationId");
 
                     b.ToTable("RegistrationPayments");
@@ -607,7 +607,7 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 17, 10, 52, 57, 767, DateTimeKind.Unspecified).AddTicks(4100), new TimeSpan(0, -5, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 17, 10, 32, 51, 848, DateTimeKind.Unspecified).AddTicks(1550), new TimeSpan(0, -5, 0, 0, 0)),
                             EmailAddress = "tyler@cgen.com",
                             FirstName = "Tyler",
                             IsActive = true,
@@ -615,7 +615,7 @@ namespace CandeeCamp.API.Migrations
                             LastName = "Candee",
                             PasswordHash = "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
                             Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 17, 10, 52, 57, 790, DateTimeKind.Unspecified).AddTicks(3100), new TimeSpan(0, -5, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 17, 10, 32, 51, 864, DateTimeKind.Unspecified).AddTicks(1810), new TimeSpan(0, -5, 0, 0, 0))
                         });
                 });
 
@@ -632,8 +632,6 @@ namespace CandeeCamp.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PaymentDonationId");
 
                     b.HasIndex("UserId");
 
@@ -774,7 +772,7 @@ namespace CandeeCamp.API.Migrations
                 {
                     b.HasOne("CandeeCamp.API.DomainObjects.Payment_Donation", "PaymentDonation")
                         .WithMany()
-                        .HasForeignKey("PaymentDonationId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -821,7 +819,7 @@ namespace CandeeCamp.API.Migrations
                 {
                     b.HasOne("CandeeCamp.API.DomainObjects.Payment_Donation", "PaymentDonation")
                         .WithMany()
-                        .HasForeignKey("PaymentDonationId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

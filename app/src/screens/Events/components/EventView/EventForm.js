@@ -35,8 +35,6 @@ const EventForm = Form.create({
   mapPropsToFields(props) {
     const {cost, dateTime, name} = props
 
-    console.log('cost :', cost)
-
     return {
       cost: Form.createFormField({
         ...cost,

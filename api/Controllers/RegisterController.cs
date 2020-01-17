@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,10 +23,12 @@ namespace CandeeCamp.API.Controllers
         private readonly ICouponRepository _couponRepository;
         private readonly IRegistrationRepository _registrationRepository;
         private readonly IRedeemedCouponRepository _redeemedCouponRepository;
+        private readonly IPaymentDonationRepository _paymentDonationRepository;
 
         public RegisterController(IGroupRepository groupRepository, IEventRepository eventRepository,
             ICamperRepository camperRepository, ICouponRepository couponRepository,
-            IRegistrationRepository registrationRepository, IRedeemedCouponRepository redeemedCouponRepository)
+            IRegistrationRepository registrationRepository, IRedeemedCouponRepository redeemedCouponRepository,
+            IPaymentDonationRepository paymentDonationRepository)
         {
             _groupRepository = groupRepository;
             _eventRepository = eventRepository;
@@ -33,19 +36,20 @@ namespace CandeeCamp.API.Controllers
             _couponRepository = couponRepository;
             _registrationRepository = registrationRepository;
             _redeemedCouponRepository = redeemedCouponRepository;
+            _paymentDonationRepository = paymentDonationRepository;
         }
 
         [HttpPost("{eventId}/camper")]
         [ProducesResponseType(typeof(Registration), 200)]
-        public async Task<ActionResult<Registration>> RegisterCamper(int eventId, [FromBody]CamperOverrideModel camper)
+        public async Task<ActionResult<Registration>> RegisterCamper(int eventId, [FromBody] CamperOverrideModel camper)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
+
             Event dbEvent = await _eventRepository.GetEventById(eventId);
-            Registration dbRegistration = await Register(camper, dbEvent);
+            Registration dbRegistration = await Register(camper, dbEvent, camper.PaymentId);
 
             return Ok(dbRegistration);
         }
@@ -72,7 +76,7 @@ namespace CandeeCamp.API.Controllers
             {
                 camper.GroupId = dbGroup.Id;
                 
-                Registration registration = await Register(camper, dbEvent);
+                Registration registration = await Register(camper, dbEvent, model.PaymentId);
                 
                 registrations.Add(registration);
             }
@@ -80,7 +84,7 @@ namespace CandeeCamp.API.Controllers
             return Ok(registrations);
         }
 
-        private async Task<Registration> Register(CamperOverrideModel camper, Event dbEvent)
+        private async Task<Registration> Register(CamperOverrideModel camper, Event dbEvent, int? paymentId)
         {
             Camper dbCamper = await _camperRepository.CreateCamper(camper);
             
@@ -104,7 +108,14 @@ namespace CandeeCamp.API.Controllers
                 StartingBalance = camper.StartingBalance,
             };
             
-            return await _registrationRepository.CreateRegistration(registrationModel);
+            Registration registration = await _registrationRepository.CreateRegistration(registrationModel);
+            
+            if (paymentId != null)
+            {
+                await _paymentDonationRepository.AddRegistrationPayment(paymentId.Value, registration.Id);
+            }
+
+            return registration;
         }
     }
 }
