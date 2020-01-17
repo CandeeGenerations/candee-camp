@@ -11,7 +11,6 @@ namespace CandeeCamp.API.Repositories.Interfaces
         Task<Payment_Donation> CreatePaymentDonation(PaymentDonationModel paymentDonation);
         Task<Payment_Donation> UpdatePaymentDonation(int paymentDonationId, PaymentDonationModel paymentDonation);
         Task AddRegistrationPayment(int paymentDonationId, int registrationId);
-
         Task AddUserPayment(int paymentDonationId, int userId);
     }
 }

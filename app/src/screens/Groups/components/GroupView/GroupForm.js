@@ -70,14 +70,7 @@ const GroupForm = Form.create({
       <Row gutter={16}>
         <Col span={24}>
           <Form.Item label="Login User Account">
-            {getFieldDecorator('loginUser', {
-              rules: [
-                {
-                  required: true,
-                  message: 'The login user account is required.',
-                },
-              ],
-            })(
+            {getFieldDecorator('loginUser')(
               <Select
                 dropdownRender={menu => (
                   <div>

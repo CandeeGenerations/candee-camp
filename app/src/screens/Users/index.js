@@ -62,8 +62,8 @@ const Users = () => {
               </Button>,
             ]}
             routes={[
-              {path: '/camp', breadcrumbName: 'Camp Management'},
-              {path: '/users', breadcrumbName: 'Users'},
+              {path: 'camp', breadcrumbName: 'Camp Management'},
+              {path: 'camp.users', breadcrumbName: 'Users'},
             ]}
             title="Users"
           />

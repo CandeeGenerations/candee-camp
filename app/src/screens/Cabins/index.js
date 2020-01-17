@@ -71,8 +71,8 @@ const Cabins = () => {
                 : []
             }
             routes={[
-              {path: '/camp', breadcrumbName: 'Camp Management'},
-              {path: '/cabins', breadcrumbName: 'Cabins'},
+              {path: 'camp', breadcrumbName: 'Camp Management'},
+              {path: 'camp.cabins', breadcrumbName: 'Cabins'},
             ]}
             title="Cabins"
           />

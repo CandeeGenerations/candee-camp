@@ -89,22 +89,29 @@ const SnackShop = () => {
           <PageHeader
             routes={[
               {
-                path: camperId ? '/visitors' : '/camp',
-                breadcrumbName: 'Visitors',
+                path: camperId ? 'visitors' : 'camp',
+                breadcrumbName: camperId ? 'Visitors' : 'Camp',
               },
               {
-                path: camperId ? '/campers' : '/counselors',
+                path: `visitors.${camperId ? 'campers' : 'counselors'}`,
                 breadcrumbName: camperId ? 'Campers' : 'Counselors',
               },
               {
-                path: `/edit/${camperId || counselorId}`,
+                path: `visitors.${camperId ? 'campers' : 'counselors'}.edit`,
+                params: camperId ? {camperId} : {counselorId},
                 breadcrumbName: camper.results
                   ? camper.results.firstName
                   : counselor.results
                   ? counselor.results.firstName
                   : '...',
               },
-              {path: '/snack-shop', breadcrumbName: 'Snack Shop'},
+              {
+                path: `visitors.${
+                  camperId ? 'campers' : 'counselors'
+                }.edit.snack-shop`,
+                params: camperId ? {camperId} : {counselorId},
+                breadcrumbName: 'Snack Shop',
+              },
             ]}
             title={`Snack Shop${
               camper.results

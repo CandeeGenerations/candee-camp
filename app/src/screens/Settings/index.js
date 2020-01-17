@@ -48,8 +48,8 @@ const Settings = () => {
       <Card>
         <PageHeader
           routes={[
-            {path: '/camp', breadcrumbName: 'Camp Management'},
-            {path: '/settings', breadcrumbName: 'Camp Settings'},
+            {path: 'camp', breadcrumbName: 'Camp Management'},
+            {path: 'camp.settings', breadcrumbName: 'Camp Settings'},
           ]}
           title="Camp Settings"
         />

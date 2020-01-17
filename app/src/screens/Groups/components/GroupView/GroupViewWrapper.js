@@ -33,7 +33,7 @@ GroupViewWrapper.propTypes = {
   usersList: PropTypes.array.isRequired,
 
   // functions
-  onCrateNewAccount: PropTypes.func.isRequired,
+  onCreateNewAccount: PropTypes.func.isRequired,
   onDeleteGroup: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
 }

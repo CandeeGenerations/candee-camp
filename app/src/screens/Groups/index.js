@@ -64,8 +64,8 @@ const Groups = () => {
                 : []
             }
             routes={[
-              {path: '/visitors', breadcrumbName: 'Visitors'},
-              {path: '/groups', breadcrumbName: 'Groups'},
+              {path: 'visitors', breadcrumbName: 'Visitors'},
+              {path: 'visitors.groups', breadcrumbName: 'Groups'},
             ]}
             title="Groups"
           />

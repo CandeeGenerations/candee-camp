@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Divider, PageHeader as APageHeader} from 'antd'
 
+import {NavItem} from '../Navigation'
+
 const PageHeader = props => {
   return (
     <>
@@ -10,6 +12,11 @@ const PageHeader = props => {
           props.routes
             ? {
                 routes: props.routes,
+                itemRender: route => (
+                  <NavItem params={route.params} routeName={route.path}>
+                    {route.breadcrumbName}
+                  </NavItem>
+                ),
               }
             : null
         }

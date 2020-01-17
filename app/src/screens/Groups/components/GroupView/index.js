@@ -26,7 +26,7 @@ const GroupView = props => {
     name: {includePercent: true, isRequired: true, value: null},
     campers: {value: []},
     isActive: {value: true},
-    loginUser: {includePercent: true, isRequired: true, value: null},
+    loginUser: {value: undefined},
   })
 
   const getGroup = async () => {
@@ -38,7 +38,9 @@ const GroupView = props => {
           mergeFormData(stateFields, {
             ...response.data,
             campers: response.data.campers.map(x => `${x}`),
-            loginUser: `${response.data.loginUser}`,
+            loginUser: response.data.loginUser
+              ? `${response.data.loginUser}`
+              : undefined,
           }),
         )
       }
