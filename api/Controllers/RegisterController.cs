@@ -21,16 +21,18 @@ namespace CandeeCamp.API.Controllers
         private readonly ICamperRepository _camperRepository;
         private readonly ICouponRepository _couponRepository;
         private readonly IRegistrationRepository _registrationRepository;
+        private readonly IRedeemedCouponRepository _redeemedCouponRepository;
 
         public RegisterController(IGroupRepository groupRepository, IEventRepository eventRepository,
             ICamperRepository camperRepository, ICouponRepository couponRepository,
-            IRegistrationRepository registrationRepository)
+            IRegistrationRepository registrationRepository, IRedeemedCouponRepository redeemedCouponRepository)
         {
             _groupRepository = groupRepository;
             _eventRepository = eventRepository;
             _camperRepository = camperRepository;
             _couponRepository = couponRepository;
             _registrationRepository = registrationRepository;
+            _redeemedCouponRepository = redeemedCouponRepository;
         }
 
         [HttpPost("{eventId}/camper")]
@@ -80,18 +82,19 @@ namespace CandeeCamp.API.Controllers
 
         private async Task<Registration> Register(CamperOverrideModel camper, Event dbEvent)
         {
+            Camper dbCamper = await _camperRepository.CreateCamper(camper);
+            
             if (!string.IsNullOrEmpty(camper.Coupon))
             {
                 IEnumerable<Coupon> dbCoupons = await _couponRepository.GetCouponsByCode(camper.Coupon);
                 List<Coupon> coupons = dbCoupons.ToList();
-                
+
                 if (coupons.Any())
                 {
-                    camper.CouponId = coupons.First().Id;
+                    await _redeemedCouponRepository.RedeemCoupon(coupons.First().Id, dbCamper.Id);
                 }
             }
             
-            Camper dbCamper = await _camperRepository.CreateCamper(camper);
             RegistrationModel registrationModel = new RegistrationModel
             {
                 Event = dbEvent,

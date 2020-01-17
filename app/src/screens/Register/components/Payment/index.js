@@ -14,12 +14,10 @@ const Payment = props => {
   const [loading, setLoading] = useState(false)
   const registerContext = useContext(RegisterContext)
 
-  console.log('registerContext.event :', registerContext.event)
-
   const handleRegister = async () => {
     setLoading(true)
 
-    const response = await actions.registerForEvent({
+    await actions.registerForEvent({
       eventId: registerContext.event.id,
       singleCamper: registerContext.singleCamper,
       camper: registerContext.fields,
@@ -27,11 +25,9 @@ const Payment = props => {
       groupCampers: registerContext.groupCampers,
     })
 
-    console.log('response :', response)
-
     setLoading(false)
 
-    // props.onNext
+    props.onNext()
   }
 
   return (

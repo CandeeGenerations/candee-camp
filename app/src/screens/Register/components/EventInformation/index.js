@@ -7,12 +7,12 @@ import {Typography, Divider, Skeleton, Row, Col, Switch, Button} from 'antd'
 
 import {RegisterContext} from '../..'
 import GroupForm from './components/GroupForm'
+import EventMetaData from './components/EventMetaData'
 import SingleCamperForm from './components/SingleCamperForm'
 
 import {eventActions} from '@/actions'
-
+import {openNotification} from '@/helpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
-import {formatDate, formatCurrency, openNotification} from '@/helpers'
 
 const EventInformation = props => {
   const registerContext = useContext(RegisterContext)
@@ -78,41 +78,7 @@ const EventInformation = props => {
         <Skeleton />
       ) : (
         <>
-          <Row css={{marginBottom: 15}} gutter={16}>
-            <Col span={24}>
-              Event Name
-              <Typography.Title level={4}>
-                {event.results.name}
-              </Typography.Title>
-            </Col>
-          </Row>
-
-          <Row css={{marginBottom: 15}} gutter={16}>
-            <Col md={12} sm={24}>
-              Event Start Date
-              <Typography.Title level={4}>
-                {formatDate(event.results.startDate)}
-              </Typography.Title>
-            </Col>
-
-            <Col md={12} sm={24}>
-              Event End Date
-              <Typography.Title level={4}>
-                {formatDate(event.results.endDate)}
-              </Typography.Title>
-            </Col>
-          </Row>
-
-          <Row gutter={16}>
-            <Col css={{textAlign: 'center'}} span={24}>
-              Cost
-              <Typography.Title css={{color: '#13bf13 !important'}} level={2}>
-                {event.results.cost && event.results.cost > 0
-                  ? formatCurrency(event.results.cost)
-                  : 'FREE'}
-              </Typography.Title>
-            </Col>
-          </Row>
+          <EventMetaData event={event} />
 
           <Divider />
 

@@ -4,6 +4,7 @@ import {Steps} from 'antd'
 import React, {useState} from 'react'
 
 import Payment from './Payment'
+import Confirmation from './Confirmation'
 import EventInformation from './EventInformation'
 
 import loader from '@/components/Structure/Loader'
@@ -19,7 +20,7 @@ const RegisterContent = () => {
       break
 
     case 2:
-      //Component = MapImportColumns
+      Component = Confirmation
       break
 
     case 0:

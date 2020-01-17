@@ -61,7 +61,7 @@ namespace CandeeCamp.API.Repositories
             await Context.Groups.AddAsync(newGroup);
             await Context.SaveChangesAsync();
 
-            if (group.Campers.Any())
+            if (group.Campers != null && group.Campers.Any())
             {
                 await _camperRepository.UpdateGroups(group.Campers, newGroup.Id);
             }
