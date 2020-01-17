@@ -8,6 +8,8 @@ import {RegisterContext} from '../..'
 import CamperCard from './components/CamperCard'
 import CamperModal from './components/CamperModal'
 
+import {openNotification} from '@/helpers'
+
 const GroupForm = () => {
   const [camper, setCamper] = useState({
     visible: false,
@@ -30,7 +32,24 @@ const GroupForm = () => {
   const handleFieldChange = changedFields =>
     setCamper(c => ({...c, data: {...c.data, ...changedFields}}))
 
+  const handleCancel = () => setCamper(c => ({...c, visible: false}))
+
+  const handleDeleteCamper = id => {
+    setGroupCampers([...groupCampers.filter(x => x.id !== id)])
+    handleCancel()
+  }
+
   const handleSaveCamper = () => {
+    if (!camper.data.firstName.value) {
+      openNotification('error', 'The first name is required.')
+      return
+    }
+
+    if (!camper.data.lastName.value) {
+      openNotification('error', 'The last name is required.')
+      return
+    }
+
     if (camper.data.id) {
       const newCampers = groupCampers.map(x =>
         x.id === camper.data.id ? camper.data : x,
@@ -46,7 +65,7 @@ const GroupForm = () => {
       setGroupCampers(campers => [...campers, {...camper.data, id: nextId}])
     }
 
-    setCamper(c => ({...c, visible: false}))
+    handleCancel()
   }
 
   return (
@@ -87,7 +106,8 @@ const GroupForm = () => {
         data={camper.data}
         title={(camper.data && camper.data.firstName.value) || 'New Camper'}
         visible={camper.visible}
-        onCancel={() => setCamper(c => ({...c, visible: false}))}
+        onCancel={handleCancel}
+        onDelete={handleDeleteCamper}
         onFieldChange={handleFieldChange}
         onSave={handleSaveCamper}
       />

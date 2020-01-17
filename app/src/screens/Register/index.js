@@ -6,8 +6,10 @@ import RegisterContent from './components/RegisterContent'
 import {axiosRequest} from '@/api'
 import {signinActions as actions} from '@/actions'
 
-import {LoaderContext} from '@/components/Structure/Loader'
 import {getUser} from '@/helpers/authHelpers'
+import useTitle from '@/helpers/hooks/useTitle'
+
+import {LoaderContext} from '@/components/Structure/Loader'
 
 export const RegisterContext = React.createContext()
 
@@ -46,6 +48,8 @@ const Register = () => {
 
     setAuthorized(true)
   }
+
+  useTitle('Register for an Event')
 
   useEffect(() => {
     authorize()
