@@ -12,10 +12,6 @@ export default {
   features: {
     loadingBar: env.REACT_APP_LOADING_BAR_ENABLED === 'true',
   },
-  paypal: {
-    scriptUrl: env.REACT_APP_PAYPAL_SCRIPT_URL,
-    clientId: env.REACT_APP_PAYPAL_CLIENT_ID,
-    clientSecret: env.REACT_APP_PAYPAL_CLIENT_SECRET,
-  },
+  paypalScriptUrl: env.REACT_APP_PAYPAL_SCRIPT_URL,
   version: env.REACT_APP_VERSION,
 }

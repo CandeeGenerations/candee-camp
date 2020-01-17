@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using CandeeCamp.API.Common;
 using CandeeCamp.API.Context;
+using CandeeCamp.API.DomainObjects;
 using CandeeCamp.API.ExceptionHandling;
 using CandeeCamp.API.Repositories;
 using CandeeCamp.API.Repositories.Interfaces;
@@ -133,6 +134,7 @@ namespace CandeeCamp.API
             services.AddScoped<IAuthClientRepository, AuthClientRepository>();
             services.AddScoped<IPaymentDonationRepository, PaymentDonationRepository>();
             services.AddScoped<IPayPalPaymentRepository, PayPalPaymentRepository>();
+            services.AddScoped<ISettingRepository, SettingRepository>();
         }
     }
 }

@@ -59,13 +59,13 @@ const PayNow = props => {
           onApprove: handleApprove,
         })
         .render('#paypal-button-container')
-    }, 200)
+    }, 400)
   }, [])
 
   return (
     <IncludeScript
       id="paypal-js"
-      src={`${Config.paypal.scriptUrl}${Config.paypal.clientId}`}
+      src={`${Config.paypalScriptUrl}${registerContext.payPalClientId.value}`}
     >
       <p>
         You can use your PayPal Account or a normal Credit Card here to pay for

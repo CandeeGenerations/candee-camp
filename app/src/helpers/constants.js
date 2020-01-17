@@ -18,4 +18,9 @@ export class Constants {
     1: ['Name'], // cabins
     2: ['Name', 'Code', 'ExpirationDate'], // coupons
   }
+
+  static SettingKeys = {
+    Name: 0,
+    PayPalClientId: 1,
+  }
 }

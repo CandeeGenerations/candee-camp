@@ -4,12 +4,14 @@ import RegisterLayout from './components/RegisterLayout'
 import RegisterContent from './components/RegisterContent'
 
 import {axiosRequest} from '@/api'
-import {signinActions as actions} from '@/actions'
+import {signinActions as actions, settingActions} from '@/actions'
 
 import {getUser} from '@/helpers/authHelpers'
 import useTitle from '@/helpers/hooks/useTitle'
 
 import {LoaderContext} from '@/components/Structure/Loader'
+import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+import {Constants} from '@/helpers/constants'
 
 export const RegisterContext = React.createContext()
 
@@ -18,6 +20,10 @@ const Register = () => {
   const [loading, setLoading] = useState(true)
   const [authorized, setAuthorized] = useState(false)
   const [singleCamper, setSingleCamper] = useState(true)
+  const payPalClientId = useAsyncLoad(
+    settingActions.loadSetting,
+    Constants.SettingKeys.PayPalClientId,
+  )
 
   const fieldDeclarations = {
     firstName: {isRequired: true, value: null},
@@ -57,6 +63,12 @@ const Register = () => {
     authorize()
   }, [])
 
+  useEffect(() => {
+    if (authorized) {
+      payPalClientId.load()
+    }
+  }, [authorized])
+
   const handleFieldChange = changedFields =>
     setFields(stateFields => ({...stateFields, ...changedFields}))
 
@@ -75,6 +87,7 @@ const Register = () => {
           handleGroupFieldChange,
           groupCampers,
           groupFields,
+          payPalClientId: payPalClientId.results,
           setEvent,
           setGroupCampers,
           setLoading,

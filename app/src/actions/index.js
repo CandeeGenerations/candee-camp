@@ -10,6 +10,7 @@ import * as snackShopItemActions from './snackShopItemActions'
 import * as snackShopPurchaseActions from './snackShopPurchaseActions'
 import * as couponActions from './couponActions'
 import * as importActions from './importActions'
+import * as settingActions from './settingActions'
 import * as registerActions from './registerActions'
 import * as payPalPaymentActions from './payPalPaymentActions'
 
@@ -26,6 +27,7 @@ export {
   snackShopPurchaseActions,
   couponActions,
   importActions,
+  settingActions,
   registerActions,
   payPalPaymentActions,
 }

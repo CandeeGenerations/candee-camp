@@ -27,6 +27,7 @@ namespace CandeeCamp.API.Context
         public DbSet<SnackShopPurchase> SnackShopPurchases { get; set; }
         public DbSet<SnackShopItem> SnackShopItems { get; set; }
         public DbSet<AuthClient> AuthClients { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,6 +53,22 @@ namespace CandeeCamp.API.Context
                 ClientUri = "https://candeecamp.azurewebsites.net",
                 ClientSecret = Helpers.CreateUniqueString(30, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER),
                 IsActive = true
+            });
+
+            modelBuilder.Entity<Setting>().HasData(new Setting
+            {
+                Key = Enum.GetName(typeof(SettingKey), SettingKey.Name),
+                Value = "Candee Camp",
+                Version = 1,
+                Sensitive = false,
+            });
+            
+            modelBuilder.Entity<Setting>().HasData(new Setting
+            {
+                Key = Enum.GetName(typeof(SettingKey), SettingKey.PayPalClientId),
+                Value = "AR93BgQN5Jk6SwjY6n31ND6HFN2tBqM_XW3uCnKNFsjS5aCiqr-kR6dRPYK2JFb7bzeoCiy8i99rwe7y",
+                Version = 1,
+                Sensitive = true,
             });
 
             modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);

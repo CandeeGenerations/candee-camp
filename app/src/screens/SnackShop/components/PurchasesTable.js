@@ -9,6 +9,7 @@ import React, {useEffect, useContext, useState} from 'react'
 import PurchaseCell from './PurchaseCell'
 
 import usePage from '@/helpers/hooks/usePage'
+import {Constants} from '@/helpers/constants'
 import {formatCurrency, formatDate} from '@/helpers'
 import {snackShopPurchaseActions as actions} from '@/actions'
 
@@ -231,6 +232,7 @@ const PurchasesTable = props => {
         components={components}
         dataSource={dataSource}
         pagination={{
+          ...Constants.TableOptions.PaginationOptions,
           onChange: cancel,
         }}
         rowClassName="editable-row"

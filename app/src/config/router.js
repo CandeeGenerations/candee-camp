@@ -196,6 +196,10 @@ const routes = [
         name: 'import',
         path: '/import',
       },
+      {
+        name: 'settings',
+        path: '/settings',
+      },
     ],
   },
   {

@@ -3,14 +3,16 @@ using System;
 using CandeeCamp.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CandeeCamp.API.Migrations
 {
     [DbContext(typeof(CampContext))]
-    partial class CampContextModelSnapshot : ModelSnapshot
+    [Migration("20200117165456_settings")]
+    partial class settings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +46,7 @@ namespace CandeeCamp.API.Migrations
                         {
                             Id = 1,
                             ClientName = "registrations",
-                            ClientSecret = "8bqsu5AMQwbOYSlnZHkw2tCdyhPTyW",
+                            ClientSecret = "OnwXfhG0gmohsap3LtvMhh4kNIy23e",
                             ClientUri = "https://candeecamp.azurewebsites.net",
                             IsActive = true
                         });
@@ -471,9 +473,6 @@ namespace CandeeCamp.API.Migrations
                     b.Property<string>("Key")
                         .HasColumnType("varchar(95) CHARACTER SET utf8mb4");
 
-                    b.Property<bool>("Sensitive")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Value")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -483,29 +482,6 @@ namespace CandeeCamp.API.Migrations
                     b.HasKey("Key");
 
                     b.ToTable("Settings");
-
-                    b.HasData(
-                        new
-                        {
-                            Key = "Name",
-                            Sensitive = false,
-                            Value = "Candee Camp",
-                            Version = 1
-                        },
-                        new
-                        {
-                            Key = "PayPalClientId",
-                            Sensitive = true,
-                            Value = "AR93BgQN5Jk6SwjY6n31ND6HFN2tBqM_XW3uCnKNFsjS5aCiqr-kR6dRPYK2JFb7bzeoCiy8i99rwe7y",
-                            Version = 1
-                        },
-                        new
-                        {
-                            Key = "PayPalClientSecret",
-                            Sensitive = true,
-                            Value = "EGarmHyK5GrKdeZuHXw3LV8wUgm2byGV4xUJoHh9XUvnazS_HbaMY-L7z3Dw9_VyIkf0huCe2T-OS_Io",
-                            Version = 1
-                        });
                 });
 
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.SnackShopItem", b =>
@@ -649,7 +625,7 @@ namespace CandeeCamp.API.Migrations
                         new
                         {
                             Id = -1,
-                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 17, 13, 10, 21, 80, DateTimeKind.Unspecified).AddTicks(6400), new TimeSpan(0, -5, 0, 0, 0)),
+                            CreatedDate = new DateTimeOffset(new DateTime(2020, 1, 17, 11, 54, 56, 34, DateTimeKind.Unspecified).AddTicks(7740), new TimeSpan(0, -5, 0, 0, 0)),
                             EmailAddress = "tyler@cgen.com",
                             FirstName = "Tyler",
                             IsActive = true,
@@ -657,7 +633,7 @@ namespace CandeeCamp.API.Migrations
                             LastName = "Candee",
                             PasswordHash = "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
                             Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy",
-                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 17, 13, 10, 21, 95, DateTimeKind.Unspecified).AddTicks(7350), new TimeSpan(0, -5, 0, 0, 0))
+                            UpdatedDate = new DateTimeOffset(new DateTime(2020, 1, 17, 11, 54, 56, 49, DateTimeKind.Unspecified).AddTicks(5340), new TimeSpan(0, -5, 0, 0, 0))
                         });
                 });
 
