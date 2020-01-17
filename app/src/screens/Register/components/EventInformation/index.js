@@ -2,21 +2,19 @@
 import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {Typography, Divider, Skeleton, Row, Col, Switch, Button} from 'antd'
 
-import GroupForm from './GroupForm'
-import SingleCamperForm from './SingleCamperForm'
-
-import {RegisterContext} from '..'
+import {RegisterContext} from '../..'
+import GroupForm from './components/GroupForm'
+import SingleCamperForm from './components/SingleCamperForm'
 
 import {eventActions} from '@/actions'
 
-import {formatDate, formatCurrency} from '@/helpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+import {formatDate, formatCurrency, openNotification} from '@/helpers'
 
 const EventInformation = props => {
-  const [singleCamper, setSingleCamper] = useState(false)
   const registerContext = useContext(RegisterContext)
   const routerContext = useRoute()
   const event = useAsyncLoad(
@@ -25,9 +23,10 @@ const EventInformation = props => {
   )
 
   const loadEvent = async () => {
-    await event.load()
+    const response = await event.load()
 
     registerContext.setLoading(false)
+    registerContext.setEvent(response.data)
   }
 
   useEffect(() => {
@@ -35,6 +34,39 @@ const EventInformation = props => {
       loadEvent()
     }
   }, [registerContext.authorized])
+
+  const handleNextClick = () => {
+    if (
+      registerContext.singleCamper &&
+      !registerContext.fields.firstName.value
+    ) {
+      openNotification('error', 'The first name is required.')
+      return
+    } else if (
+      registerContext.singleCamper &&
+      !registerContext.fields.lastName.value
+    ) {
+      openNotification('error', 'The last name is required.')
+      return
+    } else if (
+      !registerContext.singleCamper &&
+      !registerContext.groupFields.name.value
+    ) {
+      openNotification('error', 'The group name is required.')
+      return
+    } else if (
+      !registerContext.singleCamper &&
+      registerContext.groupCampers.length === 0
+    ) {
+      openNotification(
+        'error',
+        'There has to be at least one camper in your group.',
+      )
+      return
+    }
+
+    props.onNext()
+  }
 
   return (
     <>
@@ -89,19 +121,19 @@ const EventInformation = props => {
               css={{
                 fontSize: 18,
                 cursor: 'pointer',
-                fontWeight: singleCamper ? 'normal' : 'bold',
+                fontWeight: registerContext.singleCamper ? 'normal' : 'bold',
               }}
               md={10}
               sm={24}
-              onClick={() => setSingleCamper(false)}
+              onClick={() => registerContext.setSingleCamper(false)}
             >
               Group
             </Col>
 
             <Col md={4} sm={24}>
               <Switch
-                checked={singleCamper}
-                onChange={checked => setSingleCamper(checked)}
+                checked={registerContext.singleCamper}
+                onChange={checked => registerContext.setSingleCamper(checked)}
               />
             </Col>
 
@@ -109,21 +141,21 @@ const EventInformation = props => {
               css={{
                 fontSize: 18,
                 cursor: 'pointer',
-                fontWeight: singleCamper ? 'bold' : 'normal',
+                fontWeight: registerContext.singleCamper ? 'bold' : 'normal',
               }}
               md={10}
               sm={24}
-              onClick={() => setSingleCamper(true)}
+              onClick={() => registerContext.setSingleCamper(true)}
             >
               Single Camper
             </Col>
           </Row>
 
-          {singleCamper ? <SingleCamperForm /> : <GroupForm />}
+          {registerContext.singleCamper ? <SingleCamperForm /> : <GroupForm />}
 
           <Row gutter={16}>
             <Col span={24} style={{textAlign: 'center'}}>
-              <Button size="large" type="primary" onClick={props.onNext}>
+              <Button size="large" type="primary" onClick={handleNextClick}>
                 Next
               </Button>
             </Col>

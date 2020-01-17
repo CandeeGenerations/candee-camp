@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import {Row, Col, Form, Input} from 'antd'
 
-import {RegisterContext} from '../..'
+import {RegisterContext} from '../../../..'
 
 import CamperForm from '@/screens/Campers/components/CamperView/CamperForm'
 

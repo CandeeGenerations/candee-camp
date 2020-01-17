@@ -14,8 +14,10 @@ import {LoaderContext} from '@/components/Structure/Loader'
 export const RegisterContext = React.createContext()
 
 const Register = () => {
+  const [event, setEvent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [authorized, setAuthorized] = useState(false)
+  const [singleCamper, setSingleCamper] = useState(true)
 
   const fieldDeclarations = {
     firstName: {isRequired: true, value: null},
@@ -66,14 +68,18 @@ const Register = () => {
       <RegisterContext.Provider
         value={{
           authorized,
+          event,
           fields,
           fieldDeclarations,
           handleFieldChange,
           handleGroupFieldChange,
           groupCampers,
           groupFields,
+          setEvent,
           setGroupCampers,
           setLoading,
+          setSingleCamper,
+          singleCamper,
         }}
       >
         <LoaderContext.Provider value={{spinning: loading, tip: 'Loading...'}}>

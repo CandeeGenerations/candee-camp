@@ -3,6 +3,7 @@ import {jsx} from '@emotion/core'
 import {Steps} from 'antd'
 import React, {useState} from 'react'
 
+import Payment from './Payment'
 import EventInformation from './EventInformation'
 
 import loader from '@/components/Structure/Loader'
@@ -14,7 +15,7 @@ const RegisterContent = () => {
 
   switch (step) {
     case 1:
-      //Component = EventInformation
+      Component = Payment
       break
 
     case 2:
