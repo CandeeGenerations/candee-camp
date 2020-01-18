@@ -33,7 +33,7 @@ namespace CandeeCamp.API.Migrations
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "PayPal_Payments",
+                name: "PayPal_Payment",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -47,9 +47,9 @@ namespace CandeeCamp.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PayPal_Payments", x => x.Id);
+                    table.PrimaryKey("PK_PayPal_Payment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PayPal_Payments_Payments_Donations_PaymentDonationId",
+                        name: "FK_PayPal_Payment_Payments_Donations_PaymentDonationId",
                         column: x => x.PaymentDonationId,
                         principalTable: "Payments_Donations",
                         principalColumn: "Id",
@@ -76,8 +76,8 @@ namespace CandeeCamp.API.Migrations
                 column: "RegistrationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PayPal_Payments_PaymentDonationId",
-                table: "PayPal_Payments",
+                name: "IX_PayPal_Payment_PaymentDonationId",
+                table: "PayPal_Payment",
                 column: "PaymentDonationId");
 
             migrationBuilder.AddForeignKey(
@@ -108,7 +108,7 @@ namespace CandeeCamp.API.Migrations
                 table: "Payments_Donations");
 
             migrationBuilder.DropTable(
-                name: "PayPal_Payments");
+                name: "PayPal_Payment");
 
             migrationBuilder.DropIndex(
                 name: "IX_Payments_Donations_RegistrationId",

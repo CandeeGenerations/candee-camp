@@ -31,7 +31,7 @@ namespace CandeeCamp.API.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasData(new User
+            /*modelBuilder.Entity<User>().HasData(new User
             {
                 Id = -1,
                 FirstName = "Tyler",
@@ -50,7 +50,7 @@ namespace CandeeCamp.API.Context
             {
                 Id = 1,
                 ClientName = "registrations",
-                ClientUri = "https://candeecamp.azurewebsites.net",
+                ClientUri = "https://anchorage-cc.azurewebsites.net",
                 ClientSecret = Helpers.CreateUniqueString(30, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER),
                 IsActive = true
             });
@@ -58,7 +58,7 @@ namespace CandeeCamp.API.Context
             modelBuilder.Entity<Setting>().HasData(new Setting
             {
                 Key = Enum.GetName(typeof(SettingKey), SettingKey.Name),
-                Value = "Candee Camp",
+                Value = "The Anchorage Camp",
                 Version = 1,
                 Sensitive = false,
             });
@@ -66,10 +66,10 @@ namespace CandeeCamp.API.Context
             modelBuilder.Entity<Setting>().HasData(new Setting
             {
                 Key = Enum.GetName(typeof(SettingKey), SettingKey.PayPalClientId),
-                Value = "AR93BgQN5Jk6SwjY6n31ND6HFN2tBqM_XW3uCnKNFsjS5aCiqr-kR6dRPYK2JFb7bzeoCiy8i99rwe7y",
+                Value = null,
                 Version = 1,
                 Sensitive = true,
-            });
+            });*/
 
             modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);
 

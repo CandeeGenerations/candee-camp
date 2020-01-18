@@ -21,7 +21,6 @@ namespace CandeeCamp.API.Migrations
                 {
                     { "Name", "Candee Camp", 1 },
                     { "PayPalClientId", "AR93BgQN5Jk6SwjY6n31ND6HFN2tBqM_XW3uCnKNFsjS5aCiqr-kR6dRPYK2JFb7bzeoCiy8i99rwe7y", 1 },
-                    { "PayPalClientSecret", "EGarmHyK5GrKdeZuHXw3LV8wUgm2byGV4xUJoHh9XUvnazS_HbaMY-L7z3Dw9_VyIkf0huCe2T-OS_Io", 1 }
                 });
 
             migrationBuilder.UpdateData(

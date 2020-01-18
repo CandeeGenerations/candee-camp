@@ -11,9 +11,11 @@
 ## Build Status
 
 ### JS Build Status
+
 [![JS Build Status](https://dev.azure.com/candeegenerations/Candee%20Camp/_apis/build/status/Candee%20Camp%20JS%20Build?branchName=master)](https://dev.azure.com/candeegenerations/Candee%20Camp/_build/latest?definitionId=14&branchName=master)
 
 ### API Build Status
+
 [![API Build Status](https://dev.azure.com/candeegenerations/Candee%20Camp/_apis/build/status/Candee%20Camp%20API%20Build?branchName=master)](https://dev.azure.com/candeegenerations/Candee%20Camp/_build/latest?definitionId=15&branchName=master)
 
 ## Description
@@ -47,8 +49,14 @@ PORT=3300
 BROWSER=none
 
 REACT_APP_VERSION=$npm_package_version
+REACT_APP_URL=http://localhost:3300
 REACT_APP_API_URL=http://localhost:5000/api
 REACT_APP_CRYPTO_KEY=a9f3cd176403126642c142605ef08829
+
+REACT_APP_CLIENT_SECRET=7HVtapegk2LM9oXIWEnOvBhcYfCbyJ
+REACT_APP_CLIENT_NAME=registrations_local
+
+REACT_APP_PAYPAL_SCRIPT_URL=https://www.paypal.com/sdk/js?client-id=
 
 REACT_APP_LOADING_BAR_ENABLED=false
 
