@@ -50,7 +50,7 @@ namespace CandeeCamp.API.Context
             {
                 Id = 1,
                 ClientName = "registrations",
-                ClientUri = "https://anchorage-cc.azurewebsites.net",
+                ClientUri = "https://candeecamp.azurewebsites.net",
                 ClientSecret = Helpers.CreateUniqueString(30, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER),
                 IsActive = true
             });
@@ -58,7 +58,7 @@ namespace CandeeCamp.API.Context
             modelBuilder.Entity<Setting>().HasData(new Setting
             {
                 Key = Enum.GetName(typeof(SettingKey), SettingKey.Name),
-                Value = "The Anchorage Camp",
+                Value = "Candee Camp",
                 Version = 1,
                 Sensitive = false,
             });
