@@ -11,9 +11,17 @@ namespace CandeeCamp.API.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_PayPal_Payment_Payments_Donations_PaymentDonationId",
                 table: "PayPal_Payment");
+            
+            migrationBuilder.DropForeignKey(
+                name: "FK_Payments_Donations_Registrations_RegistrationId",
+                table: "Payments_Donations");
 
             migrationBuilder.DropIndex(
                 name: "IX_Payments_Donations_RegistrationId",
+                table: "Payments_Donations");
+            
+            migrationBuilder.DropForeignKey(
+                name: "FK_Payments_Donations_Users_UserId",
                 table: "Payments_Donations");
 
             migrationBuilder.DropIndex(
