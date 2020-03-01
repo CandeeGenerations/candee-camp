@@ -21,10 +21,17 @@ module.exports = {
   },
   babel: {
     plugins: [
-      ...whenDev(() => [['emotion', {sourceMap: true}]], []),
+      ...whenDev(
+        () => [
+          ['emotion', {sourceMap: true}],
+          '@babel/plugin-proposal-optional-chaining',
+        ],
+        [],
+      ),
       ...whenProd(
         () => [
           'emotion',
+          '@babel/plugin-proposal-optional-chaining',
           [
             'transform-react-remove-prop-types',
             {

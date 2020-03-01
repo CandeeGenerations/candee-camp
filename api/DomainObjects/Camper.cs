@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -64,6 +65,7 @@ namespace CandeeCamp.API.DomainObjects
         public AdjustedCamper(Camper camper)
         {
             Camper = camper;
+            CustomFields = new List<CamperCustomField>();
 
             foreach (PropertyInfo prop in camper.GetType().GetProperties())
             {
@@ -75,5 +77,7 @@ namespace CandeeCamp.API.DomainObjects
         public Camper Camper { get; set; }
         
         public int? CouponId { get; set; }
+        
+        public IEnumerable<CamperCustomField> CustomFields { get; set; }
     }
 }

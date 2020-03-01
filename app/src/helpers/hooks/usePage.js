@@ -23,8 +23,7 @@ export default () => {
     isCamperAddOrEditPage:
       routeName.includes('visitors.campers.add') ||
       (routeName.includes('visitors.campers.edit') &&
-        !routeName.includes('visitors.campers.edit.snackShop')) ||
-      routeName.includes('visitors.registrations.camper'),
+        !routeName.includes('visitors.campers.edit.snackShop')),
     isCamperCouponAddPage: routeName.includes('visitors.campers.coupon'),
 
     // camper - snack shop
@@ -46,9 +45,6 @@ export default () => {
     isRegistrationAddOrEditPage:
       routeName.includes('visitors.registrations.add') ||
       routeName.includes('visitors.registrations.edit'),
-    isRegistrationCamperEditPage: routeName.includes(
-      'visitors.registrations.camper',
-    ),
     isRegistrationEventEditPage: routeName.includes(
       'visitors.registrations.event',
     ),
@@ -135,7 +131,6 @@ export default () => {
     registrationsPage: 'visitors.registrations',
     registrationAddPage: 'visitors.registrations.add',
     registrationEditPage: 'visitors.registrations.edit',
-    registrationCamperEditPage: 'visitors.registrations.camper',
     registrationEventEditPage: 'visitors.registrations.event',
 
     // camp

@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.19.169",
+  "version": "0.19.170",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -81,6 +81,7 @@
     "use-deep-compare-effect": "^1.3.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "@testing-library/jest-dom": "^4.2.4",

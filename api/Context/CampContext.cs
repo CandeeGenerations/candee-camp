@@ -28,49 +28,11 @@ namespace CandeeCamp.API.Context
         public DbSet<SnackShopItem> SnackShopItems { get; set; }
         public DbSet<AuthClient> AuthClients { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<CustomField> CustomFields { get; set; }
+        public DbSet<CamperCustomField> CamperCustomFields { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*modelBuilder.Entity<User>().HasData(new User
-            {
-                Id = -1,
-                FirstName = "Tyler",
-                LastName = "Candee",
-                CreatedDate = DateTimeOffset.Now,
-                UpdatedDate = DateTimeOffset.Now,
-                EmailAddress = "tyler@cgen.com",
-                Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy",
-                PasswordHash =
-                    "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
-                IsActive = true,
-                IsDeleted = false,
-            });
-            
-            modelBuilder.Entity<AuthClient>().HasData(new AuthClient
-            {
-                Id = 1,
-                ClientName = "registrations",
-                ClientUri = "https://candeecamp.azurewebsites.net",
-                ClientSecret = Helpers.CreateUniqueString(30, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER),
-                IsActive = true
-            });
-
-            modelBuilder.Entity<Setting>().HasData(new Setting
-            {
-                Key = Enum.GetName(typeof(SettingKey), SettingKey.Name),
-                Value = "Candee Camp",
-                Version = 1,
-                Sensitive = false,
-            });
-            
-            modelBuilder.Entity<Setting>().HasData(new Setting
-            {
-                Key = Enum.GetName(typeof(SettingKey), SettingKey.PayPalClientId),
-                Value = null,
-                Version = 1,
-                Sensitive = true,
-            });*/
-
             modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);
 
             modelBuilder.Entity<RegistrationPayment>().HasOne(r => r.Registration).WithMany().HasForeignKey(rp => rp.RegistrationId);
@@ -111,6 +73,13 @@ namespace CandeeCamp.API.Context
             modelBuilder.Entity<SnackShopPurchase>().HasOne(cb => cb.Counselor).WithMany()
                 .HasForeignKey(co => co.CounselorId);
 
+            modelBuilder.Entity<CustomField>().HasOne(u => u.CreatedByUser).WithMany()
+                .HasForeignKey(cf => cf.CreatedBy);
+
+            modelBuilder.Entity<CamperCustomField>().HasOne(cf => cf.CustomField).WithMany()
+                .HasForeignKey(ccf => ccf.CustomFieldId);
+            modelBuilder.Entity<CamperCustomField>().HasOne(c => c.Camper).WithMany()
+                .HasForeignKey(ccf => ccf.CamperId);
 
             base.OnModelCreating(modelBuilder);
         }

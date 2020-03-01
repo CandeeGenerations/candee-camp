@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CandeeCamp.API.Common;
 using CandeeCamp.API.DomainObjects;
@@ -6,6 +8,7 @@ using CandeeCamp.API.Models;
 using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CandeeCamp.API.Controllers
 {
@@ -16,39 +19,62 @@ namespace CandeeCamp.API.Controllers
     public class CampersController : Controller
     {
         private readonly ICamperRepository _camperRepository;
+        private readonly ICustomFieldRepository _customFieldRepository;
         private readonly IRedeemedCouponRepository _redeemedCouponRepository;
+        private readonly ICamperCustomFieldRepository _camperCustomFieldRepository;
 
-        public CampersController(ICamperRepository camperRepository, IRedeemedCouponRepository redeemedCouponRepository)
+        public CampersController(ICamperRepository camperRepository, IRedeemedCouponRepository redeemedCouponRepository,
+            ICustomFieldRepository customFieldRepository, ICamperCustomFieldRepository camperCustomFieldRepository)
         {
             _camperRepository = camperRepository;
+            _customFieldRepository = customFieldRepository;
             _redeemedCouponRepository = redeemedCouponRepository;
+            _camperCustomFieldRepository = camperCustomFieldRepository;
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Camper>), 200)]
-        public async Task<ActionResult<IEnumerable<Camper>>> GetCampers()
+        public async Task<ActionResult<IEnumerable<AdjustedCamper>>> GetCampers()
         {
             IEnumerable<Camper> campers = await _camperRepository.GetCampers();
+            List<AdjustedCamper> adjustedCampers = new List<AdjustedCamper>();
 
-            return Ok(campers);
+            foreach (Camper camper in campers)
+            {
+                adjustedCampers.Add(await AdjustCamper(camper));
+            }
+
+            return Ok(adjustedCampers);
         }
 
         [HttpGet("by-ids")]
         [ProducesResponseType(typeof(IEnumerable<Camper>), 200)]
-        public async Task<ActionResult<IEnumerable<Camper>>> GetCampersByIds(IEnumerable<int> camperIds)
+        public async Task<ActionResult<IEnumerable<AdjustedCamper>>> GetCampersByIds(IEnumerable<int> camperIds)
         {
             IEnumerable<Camper> campers = await _camperRepository.GetCampersByIds(camperIds);
+            List<AdjustedCamper> adjustedCampers = new List<AdjustedCamper>();
 
-            return Ok(campers);
+            foreach (Camper camper in campers)
+            {
+                adjustedCampers.Add(await AdjustCamper(camper));
+            }
+            
+            return Ok(adjustedCampers);
         }
         
         [HttpGet("for-registration")]
         [ProducesResponseType(typeof(IEnumerable<Camper>), 200)]
-        public async Task<ActionResult<IEnumerable<Camper>>> GetEventsForRegistration(int? currentCamperId)
+        public async Task<ActionResult<IEnumerable<AdjustedCamper>>> GetEventsForRegistration(int? currentCamperId)
         {
             IEnumerable<Camper> campers = await _camperRepository.GetCampersForRegistration(currentCamperId);
+            List<AdjustedCamper> adjustedCampers = new List<AdjustedCamper>();
+
+            foreach (Camper camper in campers)
+            {
+                adjustedCampers.Add(await AdjustCamper(camper));
+            }
             
-            return Ok(campers);
+            return Ok(adjustedCampers);
         }
 
         [HttpGet("{camperId}")]
@@ -75,12 +101,23 @@ namespace CandeeCamp.API.Controllers
                 return BadRequest(ModelState);
             }
 
+            try
+            {
+                await ValidateCustomFields(camper.CustomFields);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             Camper newCamper = await _camperRepository.CreateCamper(camper);
 
             if (camper.CouponId != null)
             {
                 await _redeemedCouponRepository.RedeemCoupon(camper.CouponId.Value, newCamper.Id);
             }
+
+            await SaveCustomFields(newCamper.Id, camper.CustomFields);
             
             AdjustedCamper adjustedCamper = await AdjustCamper(newCamper);
             
@@ -96,6 +133,15 @@ namespace CandeeCamp.API.Controllers
                 return BadRequest(ModelState);
             }
 
+            try
+            {
+                await ValidateCustomFields(camper.CustomFields);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             Camper updatedCamper = await _camperRepository.UpdateCamper(camperId, camper);
             RedeemedCoupon camperCoupon = await _redeemedCouponRepository.GetCamperCoupon(camperId);
             
@@ -106,6 +152,8 @@ namespace CandeeCamp.API.Controllers
             {
                 await _redeemedCouponRepository.RemoveRedeemedCoupon(camperId);
             }
+
+            await SaveCustomFields(camperId, camper.CustomFields);
 
             AdjustedCamper adjustedCamper = await AdjustCamper(updatedCamper);
             
@@ -131,7 +179,39 @@ namespace CandeeCamp.API.Controllers
                 adjustedCamper.CouponId = camperCoupon.CouponId;
             }
 
+            IEnumerable<CamperCustomField> camperCustomFields =
+                await _camperCustomFieldRepository.GetCamperCustomFields(camper.Id);
+
+            adjustedCamper.CustomFields = camperCustomFields;
+
             return adjustedCamper;
+        }
+
+        private async Task ValidateCustomFields(IEnumerable<CamperCustomFieldModel> camperCustomFields)
+        {
+            foreach (CamperCustomFieldModel camperCustomField in camperCustomFields.Where(x =>
+                string.IsNullOrEmpty(x.Value)))
+            {
+                CustomField customField =
+                    await _customFieldRepository.GetCustomFieldById(camperCustomField.CustomFieldId);
+
+                if (customField.Required)
+                {
+                    throw new Exception($"The field {customField.Name} is required.");
+                }
+            }
+        }
+
+        private async Task SaveCustomFields(int camperId, List<CamperCustomFieldModel> camperCustomFields)
+        {
+            if (camperCustomFields.Any())
+            {
+                foreach (CamperCustomFieldModel camperCustomField in camperCustomFields)
+                {
+                    await _camperCustomFieldRepository.SaveCamperCustomField(camperId, camperCustomField.CustomFieldId,
+                        camperCustomField.Value);
+                }
+            }
         }
     }
 } 

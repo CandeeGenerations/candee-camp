@@ -88,7 +88,7 @@ const RegistrationsTable = props => {
                 css={{cursor: 'pointer'}}
                 onClick={() =>
                   router.navigate(
-                    page.registrationCamperEditPage,
+                    page.camperEditPage,
                     {camperId: camper.id},
                     {},
                   )

@@ -3,6 +3,7 @@ import {Button, Card} from 'antd'
 import {useRoute} from 'react-router5'
 import {css, Global} from '@emotion/core'
 
+import CamperView from './components/CamperView'
 import CampersTable from './components/CampersTable'
 
 import {camperActions as actions} from '@/actions'
@@ -52,59 +53,69 @@ const Campers = () => {
         `}
       />
 
-      <MainContent>
-        <Card>
-          <PageHeader
-            actions={
-              campers && campers.length > 0
-                ? [
-                    <Button
-                      key="add"
-                      type="primary"
-                      onClick={() =>
-                        routerContext.router.navigate(page.camperAddPage)
-                      }
-                    >
-                      Add Camper
-                    </Button>,
-                  ]
-                : []
-            }
-            routes={[
-              {path: 'visitors', breadcrumbName: 'Visitors'},
-              {path: 'visitors.campers', breadcrumbName: 'Campers'},
-            ]}
-            title="Campers"
-          />
+      {page.isCamperAddOrEditPage ? (
+        <CamperView
+          id={
+            (routerContext.route.params &&
+              routerContext.route.params.camperId) ||
+            null
+          }
+        />
+      ) : (
+        <MainContent>
+          <Card>
+            <PageHeader
+              actions={
+                campers && campers.length > 0
+                  ? [
+                      <Button
+                        key="add"
+                        type="primary"
+                        onClick={() =>
+                          routerContext.router.navigate(page.camperAddPage)
+                        }
+                      >
+                        Add Camper
+                      </Button>,
+                    ]
+                  : []
+              }
+              routes={[
+                {path: 'visitors', breadcrumbName: 'Visitors'},
+                {path: 'visitors.campers', breadcrumbName: 'Campers'},
+              ]}
+              title="Campers"
+            />
 
-          <LoaderContext.Provider
-            value={{
-              spinning: objectsContext.campers.loading,
-              tip: 'Loading campers...',
-            }}
-          >
-            <ErrorWrapper
-              handleRetry={objectsContext.campers.load}
-              hasError={errorWrapper.hasError}
+            <LoaderContext.Provider
+              value={{
+                spinning: objectsContext.campers.loading,
+                tip: 'Loading campers...',
+              }}
             >
-              <CampersTable
-                campers={
-                  (campers &&
-                    campers.map(camper => ({
-                      ...camper,
-                      key: camper.id,
-                    }))) ||
-                  []
-                }
-                deleteCamper={handleDeleteCamperClick}
-                onCreateCamper={() =>
-                  routerContext.router.navigate(page.camperAddPage)
-                }
-              />
-            </ErrorWrapper>
-          </LoaderContext.Provider>
-        </Card>
-      </MainContent>
+              <ErrorWrapper
+                handleRetry={objectsContext.campers.load}
+                hasError={errorWrapper.hasError}
+              >
+                <CampersTable
+                  campers={
+                    (campers &&
+                      campers.map(camper => ({
+                        ...camper,
+                        key: camper.id,
+                      }))) ||
+                    []
+                  }
+                  deleteCamper={handleDeleteCamperClick}
+                  onCreateCamper={() =>
+                    routerContext.router.navigate(page.camperAddPage)
+                  }
+                />
+              </ErrorWrapper>
+            </LoaderContext.Provider>
+          </Card>
+        </MainContent>
+      )}
     </>
   )
 }

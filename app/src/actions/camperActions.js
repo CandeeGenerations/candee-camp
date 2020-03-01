@@ -66,7 +66,7 @@ export const loadCamper = async camperId => {
   }
 }
 
-export const saveCamper = async camper => {
+export const saveCamper = async (camper, customFields) => {
   try {
     let response = null
     const user = getUserData()
@@ -82,6 +82,7 @@ export const saveCamper = async camper => {
       body.allergies.length > 0 ? body.allergies.toString() : null
     body.couponId = body.couponId ? Number(body.couponId) : null
     body.createdBy = user.id
+    body.customFields = customFields
 
     if (camper.id) {
       response = await request.put(`${mainPath}/${camper.id.value}`, body)

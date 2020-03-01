@@ -3,14 +3,16 @@ using System;
 using CandeeCamp.API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CandeeCamp.API.Migrations
 {
     [DbContext(typeof(CampContext))]
-    partial class CampContextModelSnapshot : ModelSnapshot
+    [Migration("20200202013326_custom-fields")]
+    partial class customfields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,20 +259,8 @@ namespace CandeeCamp.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetime");
-
                     b.Property<string>("FieldType")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -278,15 +268,7 @@ namespace CandeeCamp.API.Migrations
                     b.Property<bool>("Required")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("datetime");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
 
                     b.ToTable("CustomFields");
                 });
@@ -765,15 +747,6 @@ namespace CandeeCamp.API.Migrations
                 });
 
             modelBuilder.Entity("CandeeCamp.API.DomainObjects.Coupon", b =>
-                {
-                    b.HasOne("CandeeCamp.API.DomainObjects.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CandeeCamp.API.DomainObjects.CustomField", b =>
                 {
                     b.HasOne("CandeeCamp.API.DomainObjects.User", "CreatedByUser")
                         .WithMany()
