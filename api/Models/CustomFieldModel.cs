@@ -21,8 +21,7 @@ namespace CandeeCamp.API.Models
         [Required]
         public bool Required { get; set; }
         
-        [Required]
-        public int SortOrder { get; set; }
+        public int? SortOrder { get; set; }
 
         public bool IsActive { get; set; }
         

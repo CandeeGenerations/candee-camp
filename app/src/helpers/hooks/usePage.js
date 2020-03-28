@@ -98,6 +98,13 @@ export default () => {
       routeName.includes('camp.coupons.edit') ||
       routeName.includes('visitors.campers.coupon'),
 
+    // custom fields
+    isCustomFieldAddPage: routeName.includes('camp.customFields.add'),
+    isCustomFieldEditPage: routeName.includes('camp.customFields.edit'),
+    isCustomFieldAddOrEditPage:
+      routeName.includes('camp.customFields.add') ||
+      routeName.includes('camp.customFields.edit'),
+
     // register
     // event
     isEventRegisterPage: routeName.includes('register.event'),
@@ -165,6 +172,11 @@ export default () => {
     couponsPage: 'camp.coupons',
     couponAddPage: 'camp.coupons.add',
     couponEditPage: 'camp.coupons.edit',
+
+    // custom fields
+    customFieldsPage: 'camp.customFields',
+    customFieldAddPage: 'camp.customFields.add',
+    customFieldEditPage: 'camp.customFields.edit',
 
     // register
     // events

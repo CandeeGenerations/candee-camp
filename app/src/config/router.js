@@ -189,6 +189,20 @@ const routes = [
         ],
       },
       {
+        name: 'customFields',
+        path: '/custom-fields',
+        children: [
+          {
+            name: 'add',
+            path: '/add',
+          },
+          {
+            name: 'edit',
+            path: '/edit/:customFieldId',
+          },
+        ],
+      },
+      {
         name: 'import',
         path: '/import',
       },

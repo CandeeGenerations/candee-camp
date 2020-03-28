@@ -12,6 +12,7 @@ import {
   userActions,
   snackShopItemActions,
   couponActions,
+  customFieldActions,
 } from '@/actions'
 
 import {NavItem} from '@/components/Navigation'
@@ -31,6 +32,7 @@ const CampPage = () => {
     snackShopItemActions.loadSnackShopItemStats,
   )
   const couponStats = useAsyncLoad(couponActions.loadCouponStats)
+  const customFieldStats = useAsyncLoad(customFieldActions.loadCustomFieldStats)
 
   useEffect(() => {
     counselorStats.load()
@@ -38,6 +40,7 @@ const CampPage = () => {
     userStats.load()
     snackShopItemStats.load()
     couponStats.load()
+    customFieldStats.load()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const statWidths = {
@@ -72,6 +75,11 @@ const CampPage = () => {
       data: couponStats,
       page: page.couponsPage,
       title: 'Coupons',
+    },
+    {
+      data: customFieldStats,
+      page: page.customFieldsPage,
+      title: 'Custom Fields',
     },
   ]
 

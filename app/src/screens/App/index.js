@@ -32,6 +32,7 @@ import Dashboard from '@/screens/Dashboard'
 import SnackShop from '@/screens/SnackShop'
 import Counselors from '@/screens/Counselors'
 import VisitorsPage from '@/screens/Visitors'
+import CustomFields from '@/screens/CustomFields'
 import Registrations from '@/screens/Registrations'
 import ResetPassword from '@/screens/ResetPassword'
 import SnackShopItems from '@/screens/SnackShopItems'
@@ -162,6 +163,8 @@ const App = () => {
     content = <SnackShopItems />
   } else if (routeName.includes(page.couponsPage)) {
     content = <Coupons />
+  } else if (routeName.includes(page.customFieldsPage)) {
+    content = <CustomFields />
   } else if (routeName.includes('import')) {
     content = <Import />
   } else if (routeName.includes('settings')) {

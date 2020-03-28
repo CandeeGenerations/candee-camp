@@ -46,12 +46,20 @@ namespace CandeeCamp.API.Repositories
                 throw new Exception("This custom field already exists. Please use another name.");
             }
 
+            int sortOrder = customField.SortOrder ?? 0;
+
+            if (!customField.SortOrder.HasValue)
+            {
+                IEnumerable<CustomField> customFields = await GetCustomFields();
+                sortOrder = customFields.Last().SortOrder + 10;
+            }
+
             CustomField newCustomField = new CustomField
             {
                 Name = customField.Name.Trim(),
                 FieldType = Enum.GetName(typeof(CustomFieldType), customField.Type),
                 Required = customField.Required,
-                SortOrder = customField.SortOrder,
+                SortOrder = sortOrder,
                 CreatedBy = customField.CreatedBy,
                 CreatedDate = DateTimeOffset.Now,
                 UpdatedDate = DateTimeOffset.Now,
@@ -89,10 +97,18 @@ namespace CandeeCamp.API.Repositories
                 }
             }
 
+            int sortOrder = customField.SortOrder ?? 0;
+
+            if (!customField.SortOrder.HasValue)
+            {
+                IEnumerable<CustomField> customFields = await GetCustomFields();
+                sortOrder = customFields.Last().SortOrder + 10;
+            }
+
             dbCustomField.Name = customField.Name.Trim();
             dbCustomField.FieldType = Enum.GetName(typeof(CustomFieldType), customField.Type);
             dbCustomField.Required = customField.Required;
-            dbCustomField.SortOrder = customField.SortOrder;
+            dbCustomField.SortOrder = sortOrder;
             dbCustomField.IsActive = customField.IsActive;
             dbCustomField.UpdatedDate = DateTimeOffset.Now;
 

@@ -18,6 +18,7 @@ import {
   userActions,
   snackShopItemActions,
   couponActions,
+  customFieldActions,
 } from '@/actions'
 
 import {NavItem} from '@/components/Navigation'
@@ -42,6 +43,7 @@ const Dashboard = () => {
     snackShopItemActions.loadSnackShopItemStats,
   )
   const couponStats = useAsyncLoad(couponActions.loadCouponStats)
+  const customFieldStats = useAsyncLoad(customFieldActions.loadCustomFieldStats)
 
   useEffect(() => {
     eventStats.load()
@@ -53,6 +55,7 @@ const Dashboard = () => {
     snackShopItemStats.load()
     userStats.load()
     couponStats.load()
+    customFieldStats.load()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const statWidths = {
@@ -107,6 +110,11 @@ const Dashboard = () => {
       data: couponStats,
       page: page.couponsPage,
       title: 'Coupons',
+    },
+    {
+      data: customFieldStats,
+      page: page.customFieldsPage,
+      title: 'Custom Fields',
     },
   ]
 
