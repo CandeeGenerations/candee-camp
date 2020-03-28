@@ -86,5 +86,15 @@ namespace CandeeCamp.API.Controllers
 
             return Ok();
         }
+
+        [HttpPost("reorder")]
+        [Authorize(Policy = CampPolicies.Portal)]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult> ReorderCustomFields(int sourceId, int targetId)
+        {
+            await _customFieldRepository.ReorderCustomFields(sourceId, targetId);
+
+            return Ok();
+        }
     }
 }

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react'
-import {Button, Card} from 'antd'
+import {Button, Card, Tag} from 'antd'
 import {useRoute} from 'react-router5'
 import {css, Global} from '@emotion/core'
 
@@ -38,6 +38,18 @@ const CustomFields = () => {
 
     if (response) {
       objectsContext.customFields.load()
+    }
+  }
+
+  const handleReorderCustomFields = async (sourceId, targetId) => {
+    objectsContext.customFields.startLoading()
+
+    const response = await actions.reorderCustomFields(sourceId, targetId)
+
+    if (response) {
+      objectsContext.customFields.load()
+    } else {
+      objectsContext.customFields.stopLoading()
     }
   }
 
@@ -81,6 +93,11 @@ const CustomFields = () => {
             title="Custom Fields"
           />
 
+          <p>
+            <Tag color="blue">Tip!</Tag>You can drag and drop the custom fields
+            to reorder them.
+          </p>
+
           <LoaderContext.Provider
             value={{
               spinning: objectsContext.customFields.loading,
@@ -104,6 +121,7 @@ const CustomFields = () => {
                 onCreateCustomField={() =>
                   routerContext.router.navigate(page.customFieldAddPage)
                 }
+                onReorderCustomFields={handleReorderCustomFields}
               />
             </ErrorWrapper>
           </LoaderContext.Provider>

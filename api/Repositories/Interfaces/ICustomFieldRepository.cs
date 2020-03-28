@@ -13,5 +13,6 @@ namespace CandeeCamp.API.Repositories.Interfaces
         Task<CustomField> CreateCustomField(CustomFieldModel customField);
         Task DeleteCustomField(int customFieldId);
         Task<CustomField> UpdateCustomField(int customFieldId, CustomFieldModel customField);
+        Task ReorderCustomFields(int sourceId, int targetId);
     }
 }

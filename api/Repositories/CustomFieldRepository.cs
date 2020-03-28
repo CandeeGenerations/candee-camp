@@ -116,5 +116,24 @@ namespace CandeeCamp.API.Repositories
 
             return dbCustomField;
         }
+
+        public async Task ReorderCustomFields(int sourceId, int targetId)
+        {
+            CustomField source = await GetCustomFieldById(sourceId);
+            CustomField target = await GetCustomFieldById(targetId);
+            bool movingUp = source.SortOrder > target.SortOrder;
+            List<CustomField> customFields = await Context.CustomFields.Where(x => !x.IsDeleted && movingUp
+                ? x.SortOrder >= target.SortOrder && x.SortOrder < source.SortOrder
+                : x.SortOrder <= target.SortOrder && x.SortOrder > source.SortOrder).ToListAsync();
+
+            source.SortOrder = target.SortOrder;
+
+            foreach (CustomField customField in customFields)
+            {
+                customField.SortOrder = movingUp ? customField.SortOrder + 10 : customField.SortOrder - 10;
+            }
+
+            await Context.SaveChangesAsync();
+        }
     }
 }

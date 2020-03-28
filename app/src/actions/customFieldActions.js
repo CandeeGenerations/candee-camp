@@ -89,3 +89,21 @@ export const deleteCustomField = async (customFieldId) => {
     return null
   }
 }
+
+export const reorderCustomFields = async (sourceId, targetId) => {
+  try {
+    const response = await request.post(
+      `${mainPath}/reorder?sourceId=${sourceId}&targetId=${targetId}`,
+    )
+
+    openNotification(
+      'success',
+      'The Custom Fields have been reordered successfully.',
+    )
+
+    return response
+  } catch (error) {
+    handleError('Unable to reorder the Custom Fields. Please try again.', error)
+    return null
+  }
+}

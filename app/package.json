@@ -1,6 +1,6 @@
 {
   "name": "candee-camp-fe",
-  "version": "0.19.173",
+  "version": "0.19.174",
   "description": "Candee Camp Software Front End",
   "keywords": [
     "candee",
@@ -69,6 +69,8 @@
     "qs": "^6.9.3",
     "react": "^16.12.0",
     "react-app-rewired": "^2.1.5",
+    "react-dnd": "^10.0.2",
+    "react-dnd-html5-backend": "^10.0.2",
     "react-dom": "^16.12.0",
     "react-router5": "^7.1.0",
     "react-scripts": "3.2.0",
