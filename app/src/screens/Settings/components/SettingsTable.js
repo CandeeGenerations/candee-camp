@@ -13,8 +13,8 @@ import {settingActions as actions} from '@/actions'
 
 import loader from '@/components/Structure/Loader'
 
-const SettingsTable = props => {
-  const handleSave = async row => {
+const SettingsTable = (props) => {
+  const handleSave = async (row) => {
     const response = await actions.saveSetting(row.key, row.value)
 
     if (response) {
@@ -26,7 +26,7 @@ const SettingsTable = props => {
     {
       title: 'Key',
       dataIndex: 'key',
-      render: text => splitCamelCase(text),
+      render: (text) => splitCamelCase(text),
     },
     {
       title: 'Value',
@@ -43,14 +43,14 @@ const SettingsTable = props => {
     },
   }
 
-  const tableColumns = columns.map(col => {
+  const tableColumns = columns.map((col) => {
     if (!col.editable) {
       return col
     }
 
     return {
       ...col,
-      onCell: record => ({
+      onCell: (record) => ({
         record,
         editable: col.editable,
         dataIndex: col.dataIndex,

@@ -16,7 +16,7 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const EventsTable = props => {
+const EventsTable = (props) => {
   const page = usePage()
   const router = useRouter()
 
@@ -72,11 +72,11 @@ const EventsTable = props => {
       <Column
         key="createdBy"
         dataIndex="createdBy"
-        render={userId => {
+        render={(userId) => {
           let user = null
 
           if (!props.users.loading && props.users.results) {
-            user = props.users.results.find(u => u.id === userId)
+            user = props.users.results.find((u) => u.id === userId)
           }
 
           return props.users.loading ? (

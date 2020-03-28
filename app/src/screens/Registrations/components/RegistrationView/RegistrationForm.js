@@ -67,7 +67,7 @@ const RegistrationForm = Form.create({
       }),
     }
   },
-})(props => {
+})((props) => {
   const page = usePage()
 
   const {form} = props
@@ -86,7 +86,7 @@ const RegistrationForm = Form.create({
                 placeholder="e.g. Summer Camp"
                 allowClear
               >
-                {props.eventsList.map(x => (
+                {props.eventsList.map((x) => (
                   <Select.Option key={x.id} value={`${x.id}`}>
                     {x.name}
                   </Select.Option>
@@ -104,7 +104,7 @@ const RegistrationForm = Form.create({
                 placeholder="e.g. John Doe"
                 allowClear
               >
-                {props.campersList.map(x => (
+                {props.campersList.map((x) => (
                   <Select.Option key={x.id} value={`${x.id}`}>
                     {x.firstName} {x.lastName}
                   </Select.Option>

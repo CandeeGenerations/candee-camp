@@ -1,6 +1,8 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React, {useContext, useEffect, useState} from 'react'
 import moment from 'moment'
-import {Button} from 'antd'
+import {Card, Button, Popconfirm, Icon} from 'antd'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
@@ -9,19 +11,21 @@ import CamperViewWrapper from './CamperViewWrapper'
 import usePage from '@/helpers/hooks/usePage'
 import {camperActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
-import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
+import {isFormReady, mergeFormData, openNotification} from '@/helpers'
 
-import {ObjectsContext, ValuesContext} from '@/screens/App'
-import DrawerView from '@/components/Structure/DrawerView'
+import MainContent from '@/components/MainContent'
+import {PageHeader} from '@/components/Structure'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const CamperView = props => {
+const CamperView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
   const valuesContext = useContext(ValuesContext)
+  const [customFieldsState, setCustomFieldsState] = useState([])
   const camper = useAsyncLoad(actions.loadCamper, props.id)
 
   const [fields, setFields] = useState({
@@ -42,7 +46,7 @@ const CamperView = props => {
       const response = await camper.load()
 
       if (response) {
-        setFields(stateFields =>
+        setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
             birthDate: response.data.birthDate
@@ -59,6 +63,7 @@ const CamperView = props => {
               : undefined,
           }),
         )
+        setCustomFieldsState(response.data.customFields)
       }
     } catch {
       errorWrapper.handleCatchError()
@@ -67,6 +72,7 @@ const CamperView = props => {
 
   useEffect(() => {
     objectsContext.coupons.load()
+    objectsContext.customFields.load()
 
     if (valuesContext.camperValues && valuesContext.camperValues.valid) {
       camper.stopLoading()
@@ -80,29 +86,52 @@ const CamperView = props => {
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.campers.load()
 
+  const handleCustomFieldsUpdate = (customField) =>
+    setCustomFieldsState((state) => [
+      ...state.filter((x) => x.customFieldId !== customField.customFieldId),
+      customField,
+    ])
+
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
+      let customError = false
+
+      objectsContext.customFields.results
+        .filter((x) => x.required)
+        .some((customField) => {
+          const field = customFieldsState.find(
+            (x) => x.customFieldId === customField.id,
+          )
+
+          if (!field || !field.value) {
+            customError = true
+            openNotification(
+              'error',
+              `The field "${customField.name}" is required.`,
+            )
+            return true
+          }
+
+          return false
+        })
+
+      if (customError) {
+        return
+      }
+
       camper.startLoading()
 
-      const response = await actions.saveCamper(fields)
+      const response = await actions.saveCamper(fields, customFieldsState)
 
       camper.stopLoading()
 
       if (response) {
         refreshTable()
-
-        if (page.isRegistrationCamperEditPage) {
-          routerContext.router.navigate(page.registrationsPage)
-        } else {
-          routerContext.router.navigate(page.camperEditPage, {
-            camperId: response.data.id,
-          })
-        }
       }
     }
   }
@@ -126,12 +155,10 @@ const CamperView = props => {
 
   const handleFormClose = () =>
     routerContext.router.navigate(
-      page.isRegistrationCamperEditPage
-        ? page.registrationsPage
-        : page.campersPage,
+      routerContext.previousRoute?.name || page.campersPage,
     )
 
-  const handleCreateNewCoupon = adding => {
+  const handleCreateNewCoupon = (adding) => {
     valuesContext.setCamperValues({
       fields,
       valid: false,
@@ -141,20 +168,64 @@ const CamperView = props => {
     routerContext.router.navigate(page.camperCouponAddPage)
   }
 
-  const submitButtonDisabled =
-    camper.loading ||
-    objectsContext.coupons.loading ||
-    (!fields.id && !isFormReady(fields)) ||
-    (fields.id && !anyTouchedFields(fields)) ||
-    (anyTouchedFields(fields) && !isFormReady(fields))
+  const loading = camper.loading || objectsContext.coupons.loading
+
+  const submitButtonDisabled = camper.loading || objectsContext.coupons.loading
 
   return (
     <>
-      <DrawerView
-        extraButtons={
-          props.id && (
-            <>
+      <MainContent>
+        <Card>
+          <PageHeader
+            routes={[
+              {path: 'visitors', breadcrumbName: 'Visitors'},
+              {path: 'visitors.campers', breadcrumbName: 'Campers'},
+              {
+                path: `visitors.campers.${fields.id ? 'edit' : 'add'}`,
+                params: fields.id ? {camperId: props.id} : {},
+                breadcrumbName: loading
+                  ? '...'
+                  : fields.id
+                  ? camper.results
+                    ? camper.results.firstName
+                    : fields.firstName.value
+                  : 'New Camper',
+              },
+            ]}
+            title={
+              loading
+                ? 'Loading...'
+                : fields.id
+                ? `Edit Camper - ${
+                    camper.results
+                      ? camper.results.firstName
+                      : fields.firstName.value
+                  }`
+                : 'Add a New Camper'
+            }
+          />
+          <LoaderContext.Provider
+            value={{
+              spinning: loading,
+              tip: 'Loading camper...',
+            }}
+          >
+            <ErrorWrapper
+              handleRetry={getCamper}
+              hasError={errorWrapper.hasError}
+            >
+              <CamperViewWrapper
+                camperCustomFields={customFieldsState}
+                couponsList={objectsContext.coupons.results || []}
+                customFields={objectsContext.customFields.results || []}
+                fields={fields}
+                onCreateNewCoupon={handleCreateNewCoupon}
+                onCustomFieldsUpdate={handleCustomFieldsUpdate}
+                onFieldChange={handleFieldChange}
+              />
+
               <Button
+                css={{float: 'left', marginRight: 8}}
                 onClick={() =>
                   routerContext.router.navigate(page.camperSnackShopPage, {
                     camperId: props.id,
@@ -163,44 +234,44 @@ const CamperView = props => {
               >
                 Snack Shop
               </Button>
-            </>
-          )
-        }
-        fields={fields}
-        submitButtonDisabled={submitButtonDisabled}
-        title={
-          fields.id
-            ? `Edit Camper - ${
-                camper.results
-                  ? camper.results.firstName
-                  : fields.firstName.value
-              }`
-            : 'Add a New Camper'
-        }
-        width={512}
-        onClose={handleFormClose}
-        onSubmit={handleFormSubmit}
-      >
-        <LoaderContext.Provider
-          value={{
-            spinning: camper.loading || objectsContext.coupons.loading,
-            tip: 'Loading camper...',
-          }}
-        >
-          <ErrorWrapper
-            handleRetry={getCamper}
-            hasError={errorWrapper.hasError}
-          >
-            <CamperViewWrapper
-              couponsList={objectsContext.coupons.results || []}
-              fields={fields}
-              onCreateNewCoupon={handleCreateNewCoupon}
-              onDeleteCamper={handleDeleteCamperClick}
-              onFieldChange={handleFieldChange}
-            />
-          </ErrorWrapper>
-        </LoaderContext.Provider>
-      </DrawerView>
+
+              <Popconfirm
+                cancelText="Cancel"
+                icon={<Icon css={{color: 'red'}} type="question-circle-o" />}
+                okText="Delete"
+                okType="danger"
+                placement="topRight"
+                title={
+                  <p>
+                    Are you sure you want
+                    <br />
+                    to delete this camper?
+                  </p>
+                }
+                onConfirm={handleDeleteCamperClick}
+              >
+                <Button css={{float: 'left'}} type="danger">
+                  Delete Camper
+                </Button>
+              </Popconfirm>
+
+              <div css={{textAlign: 'right'}}>
+                <Button css={{marginRight: 8}} onClick={handleFormClose}>
+                  Cancel
+                </Button>
+
+                <Button
+                  disabled={submitButtonDisabled}
+                  type="primary"
+                  onClick={handleFormSubmit}
+                >
+                  Submit
+                </Button>
+              </div>
+            </ErrorWrapper>
+          </LoaderContext.Provider>
+        </Card>
+      </MainContent>
     </>
   )
 }

@@ -4,7 +4,7 @@ import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import Version from '@/components/Version'
 
-const SigninLayout = props => {
+const SigninLayout = (props) => {
   return (
     <>
       <div
@@ -14,7 +14,7 @@ const SigninLayout = props => {
           paddingBottom: 50,
           textAlign: 'center',
           position: 'relative',
-          backgroundSize: 'cover',
+          backgroundSize: 'cover !important',
           background: "url('/img/signin-background-1.jpg') top right no-repeat",
 
           '&:before': {

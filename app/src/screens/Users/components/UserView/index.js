@@ -16,7 +16,7 @@ import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ResetPasswordForm from '@/screens/ResetPassword/components/ResetPasswordForm'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const UserView = props => {
+const UserView = (props) => {
   const passwordFieldsInitialState = {
     confirmPassword: {includePercent: true, isRequired: true, value: ''},
     newPassword: {includePercent: true, isRequired: true, value: ''},
@@ -49,7 +49,7 @@ const UserView = props => {
       const response = await user.load()
 
       if (response) {
-        setFields(stateFields => mergeFormData(stateFields, response.data))
+        setFields((stateFields) => mergeFormData(stateFields, response.data))
       }
     } catch {
       errorWrapper.handleCatchError()
@@ -64,13 +64,13 @@ const UserView = props => {
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () =>
     objectsContext[page.isUserAddOrEditPage ? 'users' : page.eventsPage].load()
 
-  const navigateToCounselor = userId => {
+  const navigateToCounselor = (userId) => {
     const updates = {valid: true}
 
     if (userId) {
@@ -98,7 +98,7 @@ const UserView = props => {
     )
   }
 
-  const navigateToGroup = userId => {
+  const navigateToGroup = (userId) => {
     const updates = {valid: true}
 
     if (userId) {
@@ -187,8 +187,11 @@ const UserView = props => {
       <ResetPasswordForm
         {...passwordFields}
         valid={validPasswordForm}
-        onChange={changedFields =>
-          setPasswordFields(stateFields => ({...stateFields, ...changedFields}))
+        onChange={(changedFields) =>
+          setPasswordFields((stateFields) => ({
+            ...stateFields,
+            ...changedFields,
+          }))
         }
         onSubmit={async () => {
           changePasswordModal.startLoading()

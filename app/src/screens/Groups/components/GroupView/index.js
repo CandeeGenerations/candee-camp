@@ -14,7 +14,7 @@ import {LoaderContext} from '@/components/Structure/Loader'
 import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const GroupView = props => {
+const GroupView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
@@ -34,10 +34,10 @@ const GroupView = props => {
       const response = await group.load()
 
       if (response) {
-        setFields(stateFields =>
+        setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
-            campers: response.data.campers.map(x => `${x}`),
+            campers: response.data.campers.map((x) => `${x}`),
             loginUser: response.data.loginUser
               ? `${response.data.loginUser}`
               : undefined,
@@ -65,8 +65,8 @@ const GroupView = props => {
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.groups.load()
 
@@ -101,7 +101,7 @@ const GroupView = props => {
     }
   }
 
-  const handleCreateNewAccount = adding => {
+  const handleCreateNewAccount = (adding) => {
     valuesContext.setGroupValues({
       fields,
       valid: false,

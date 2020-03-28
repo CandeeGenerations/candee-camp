@@ -38,7 +38,7 @@ const SelectImportType = () => {
       <Select
         css={{width: '100%'}}
         value={importState.type}
-        onChange={type => setImportState({type})}
+        onChange={(type) => setImportState({type})}
       >
         <Select.Option value={1}>Cabins</Select.Option>
         <Select.Option value={2}>Coupons</Select.Option>
@@ -49,7 +49,7 @@ const SelectImportType = () => {
           <Collapse bordered={false}>
             <Collapse.Panel header="Available Column Headers">
               <ul>
-                {headers.map(header => (
+                {headers.map((header) => (
                   <li key={header}>{header}</li>
                 ))}
               </ul>

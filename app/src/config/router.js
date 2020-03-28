@@ -93,10 +93,6 @@ const routes = [
             path: '/edit/:registrationId',
           },
           {
-            name: 'camper',
-            path: '/camper/:camperId',
-          },
-          {
             name: 'event',
             path: '/event/:eventId',
           },
@@ -189,6 +185,20 @@ const routes = [
           {
             name: 'edit',
             path: '/edit/:couponId',
+          },
+        ],
+      },
+      {
+        name: 'customFields',
+        path: '/custom-fields',
+        children: [
+          {
+            name: 'add',
+            path: '/add',
+          },
+          {
+            name: 'edit',
+            path: '/edit/:customFieldId',
           },
         ],
       },

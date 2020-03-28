@@ -33,7 +33,7 @@ const SnackShopItems = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDeleteSnackShopItemClick = async snackShopItemId => {
+  const handleDeleteSnackShopItemClick = async (snackShopItemId) => {
     const response = await actions.deleteSnackShopItem(snackShopItemId)
 
     if (response) {
@@ -95,7 +95,7 @@ const SnackShopItems = () => {
                 deleteSnackShopItem={handleDeleteSnackShopItemClick}
                 snackShopItems={
                   (snackShopItems &&
-                    snackShopItems.map(snackShopItem => ({
+                    snackShopItems.map((snackShopItem) => ({
                       ...snackShopItem,
                       key: snackShopItem.id,
                     }))) ||

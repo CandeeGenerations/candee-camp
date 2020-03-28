@@ -5,7 +5,7 @@ import CouponForm from './CouponForm'
 
 import loader from '@/components/Structure/Loader'
 
-const CouponViewWrapper = props => {
+const CouponViewWrapper = (props) => {
   return props.loader.spinning ? null : (
     <>
       <p>

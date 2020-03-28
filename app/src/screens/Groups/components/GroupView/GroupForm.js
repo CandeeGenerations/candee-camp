@@ -47,7 +47,7 @@ const GroupForm = Form.create({
       }),
     }
   },
-})(props => {
+})((props) => {
   const page = usePage()
 
   const {form} = props
@@ -72,14 +72,14 @@ const GroupForm = Form.create({
           <Form.Item label="Login User Account">
             {getFieldDecorator('loginUser')(
               <Select
-                dropdownRender={menu => (
+                dropdownRender={(menu) => (
                   <div>
                     <div
                       css={{padding: 8, cursor: 'pointer'}}
                       onClick={() =>
                         props.onCreateNewAccount(page.isGroupAddPage)
                       }
-                      onMouseDown={e => e.preventDefault()}
+                      onMouseDown={(e) => e.preventDefault()}
                     >
                       <Icon type="plus" /> Create New User
                     </div>
@@ -95,7 +95,7 @@ const GroupForm = Form.create({
                 allowClear
                 showSearch
               >
-                {props.usersList.map(x => (
+                {props.usersList.map((x) => (
                   <Select.Option key={x.id} value={`${x.id}`}>
                     {x.firstName} {x.lastName}
                   </Select.Option>
@@ -116,7 +116,7 @@ const GroupForm = Form.create({
                 placeholder="e.g. John Doe"
                 allowClear
               >
-                {props.campersList.map(x => (
+                {props.campersList.map((x) => (
                   <Select.Option key={x.id} value={`${x.id}`}>
                     {x.firstName} {x.lastName}
                   </Select.Option>

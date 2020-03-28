@@ -15,7 +15,7 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const CampersTable = props => {
+const CampersTable = (props) => {
   const page = usePage()
   const router = useRouter()
   const [actionsMenu, setActionMenu] = useState({id: null, visible: false})
@@ -84,7 +84,7 @@ const CampersTable = props => {
         key="medicine"
         align="center"
         dataIndex="medicine"
-        render={medicine => (
+        render={(medicine) => (
           <Popover
             content={
               medicine ? (
@@ -109,7 +109,7 @@ const CampersTable = props => {
         key="allergies"
         align="center"
         dataIndex="allergies"
-        render={allergies => (
+        render={(allergies) => (
           <Popover
             content={
               allergies ? (
@@ -159,7 +159,7 @@ const CampersTable = props => {
         align="right"
         render={(text, record) => {
           const menu = (
-            <Menu onClick={e => clickActionItem(e, record.id)}>
+            <Menu onClick={(e) => clickActionItem(e, record.id)}>
               <Menu.Item key="snackShop" align="right">
                 Snack Shop
               </Menu.Item>
@@ -195,7 +195,7 @@ const CampersTable = props => {
               placement="bottomRight"
               trigger={['click']}
               visible={actionsMenu.id === record.id && actionsMenu.visible}
-              onVisibleChange={flag =>
+              onVisibleChange={(flag) =>
                 setActionMenu({id: record.id, visible: flag})
               }
             >

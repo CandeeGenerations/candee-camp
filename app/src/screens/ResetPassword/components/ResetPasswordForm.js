@@ -22,7 +22,7 @@ const ResetPasswordForm = Form.create({
       }),
     }
   },
-})(props => {
+})((props) => {
   const {form, onSubmit} = props
   const {getFieldDecorator} = form
 
@@ -72,7 +72,7 @@ const ResetPasswordForm = Form.create({
           <Input.Password
             placeholder="e.g. password123!"
             size="large"
-            onKeyUp={e => {
+            onKeyUp={(e) => {
               if (e.keyCode === 13 && props.valid) {
                 onSubmit()
               }

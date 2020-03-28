@@ -5,7 +5,7 @@ import SnackShopItemForm from './SnackShopItemForm'
 
 import loader from '@/components/Structure/Loader'
 
-const SnackShopItemViewWrapper = props => {
+const SnackShopItemViewWrapper = (props) => {
   return props.loader.spinning ? null : (
     <>
       <p>

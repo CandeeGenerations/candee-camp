@@ -9,6 +9,7 @@ import * as userActions from './userActions'
 import * as snackShopItemActions from './snackShopItemActions'
 import * as snackShopPurchaseActions from './snackShopPurchaseActions'
 import * as couponActions from './couponActions'
+import * as customFieldActions from './customFieldActions'
 import * as importActions from './importActions'
 import * as settingActions from './settingActions'
 import * as registerActions from './registerActions'
@@ -26,6 +27,7 @@ export {
   snackShopItemActions,
   snackShopPurchaseActions,
   couponActions,
+  customFieldActions,
   importActions,
   settingActions,
   registerActions,

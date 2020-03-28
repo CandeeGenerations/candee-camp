@@ -15,7 +15,7 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const RegistrationsTable = props => {
+const RegistrationsTable = (props) => {
   const page = usePage()
   const router = useRouter()
 
@@ -31,11 +31,11 @@ const RegistrationsTable = props => {
       <Column
         key="eventId"
         dataIndex="eventId"
-        render={eventId => {
+        render={(eventId) => {
           let event = null
 
           if (!props.events.loading && props.events.results) {
-            event = props.events.results.find(e => e.id === eventId)
+            event = props.events.results.find((e) => e.id === eventId)
           }
 
           return props.events.loading ? (
@@ -68,11 +68,11 @@ const RegistrationsTable = props => {
       <Column
         key="camperId"
         dataIndex="camperId"
-        render={camperId => {
+        render={(camperId) => {
           let camper = null
 
           if (!props.campers.loading && props.campers.results) {
-            camper = props.campers.results.find(c => c.id === camperId)
+            camper = props.campers.results.find((c) => c.id === camperId)
           }
 
           return props.campers.loading ? (
@@ -88,7 +88,7 @@ const RegistrationsTable = props => {
                 css={{cursor: 'pointer'}}
                 onClick={() =>
                   router.navigate(
-                    page.registrationCamperEditPage,
+                    page.camperEditPage,
                     {camperId: camper.id},
                     {},
                   )
@@ -116,7 +116,7 @@ const RegistrationsTable = props => {
         key="status"
         align="center"
         dataIndex="status"
-        render={status => (
+        render={(status) => (
           <Tag color={status === 'inactive' ? 'red' : 'blue'}>
             {status === 'inactive' ? 'Inactive' : 'Active'}
           </Tag>
@@ -144,7 +144,7 @@ const RegistrationsTable = props => {
         key="checkInDate"
         align="right"
         dataIndex="checkInDate"
-        render={date => formatDate(date, false)}
+        render={(date) => formatDate(date, false)}
         title="Check In Date"
       />
 
@@ -152,7 +152,7 @@ const RegistrationsTable = props => {
         key="checkOutDate"
         align="right"
         dataIndex="checkOutDate"
-        render={date => formatDate(date, false)}
+        render={(date) => formatDate(date, false)}
         title="Check Out Date"
       />
 

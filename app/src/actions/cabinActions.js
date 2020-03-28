@@ -27,7 +27,7 @@ export const loadCabinStats = async () => {
   }
 }
 
-export const loadCabin = async cabinId => {
+export const loadCabin = async (cabinId) => {
   try {
     const response = await request.get(`${mainPath}/${cabinId}`)
 
@@ -38,7 +38,7 @@ export const loadCabin = async cabinId => {
   }
 }
 
-export const saveCabin = async cabin => {
+export const saveCabin = async (cabin) => {
   try {
     let response = null
     const user = getUserData()
@@ -69,7 +69,7 @@ export const saveCabin = async cabin => {
   }
 }
 
-export const deleteCabin = async cabinId => {
+export const deleteCabin = async (cabinId) => {
   try {
     const response = await request.delete(`${mainPath}/${cabinId}`)
 

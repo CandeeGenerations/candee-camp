@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 
-const NavItem = props => {
+const NavItem = (props) => {
   const router = useRouter()
   const href = router.buildUrl(props.routeName, props.params)
-  const handleClick = evt => {
+  const handleClick = (evt) => {
     evt.preventDefault()
 
     if (props.onClick) {

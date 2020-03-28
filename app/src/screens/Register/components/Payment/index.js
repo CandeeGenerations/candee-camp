@@ -11,19 +11,20 @@ import PayNow from './components/PayNow'
 
 import {registerActions as actions} from '@/actions'
 
-const Payment = props => {
+const Payment = (props) => {
   const [loading, setLoading] = useState(false)
   const registerContext = useContext(RegisterContext)
 
   const isPaidEvent = registerContext.event.cost > 0
 
-  const handleRegister = async paymentId => {
+  const handleRegister = async (paymentId) => {
     setLoading(true)
 
     await actions.registerForEvent({
       eventId: registerContext.event.id,
       singleCamper: registerContext.singleCamper,
       camper: registerContext.fields,
+      camperCustomFields: registerContext.camperCustomFields,
       group: registerContext.groupFields,
       groupCampers: registerContext.groupCampers,
       paymentId,
@@ -60,7 +61,7 @@ const Payment = props => {
               loading={loading}
               size="large"
               type="primary"
-              onClick={handleRegister}
+              onClick={() => handleRegister(null)}
             >
               Confirm Registration
             </Button>

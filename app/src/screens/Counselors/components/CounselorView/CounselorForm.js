@@ -67,7 +67,7 @@ const CounselorForm = Form.create({
       }),
     }
   },
-})(props => {
+})((props) => {
   const page = usePage()
 
   const {form} = props
@@ -104,14 +104,14 @@ const CounselorForm = Form.create({
               ],
             })(
               <Select
-                dropdownRender={menu => (
+                dropdownRender={(menu) => (
                   <div>
                     <div
                       css={{padding: 8, cursor: 'pointer'}}
                       onClick={() =>
                         props.onCreateNewAccount(page.isCounselorAddPage)
                       }
-                      onMouseDown={e => e.preventDefault()}
+                      onMouseDown={(e) => e.preventDefault()}
                     >
                       <Icon type="plus" /> Create New User
                     </div>
@@ -127,7 +127,7 @@ const CounselorForm = Form.create({
                 allowClear
                 showSearch
               >
-                {props.usersList.map(x => (
+                {props.usersList.map((x) => (
                   <Select.Option key={x.id} value={`${x.id}`}>
                     {x.firstName} {x.lastName}
                   </Select.Option>
@@ -154,14 +154,14 @@ const CounselorForm = Form.create({
           <Form.Item label="Cabin">
             {getFieldDecorator('cabinId')(
               <Select
-                dropdownRender={menu => (
+                dropdownRender={(menu) => (
                   <div>
                     <div
                       css={{padding: 8, cursor: 'pointer'}}
                       onClick={() =>
                         props.onCreateNewCabin(page.isCounselorAddPage)
                       }
-                      onMouseDown={e => e.preventDefault()}
+                      onMouseDown={(e) => e.preventDefault()}
                     >
                       <Icon type="plus" /> Create New Cabin
                     </div>
@@ -177,7 +177,7 @@ const CounselorForm = Form.create({
                 allowClear
                 showSearch
               >
-                {props.cabinsList.map(x => (
+                {props.cabinsList.map((x) => (
                   <Select.Option key={x.id} value={`${x.id}`}>
                     {x.name}
                   </Select.Option>

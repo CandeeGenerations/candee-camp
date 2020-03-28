@@ -5,7 +5,7 @@ import GroupForm from './GroupForm'
 
 import loader from '@/components/Structure/Loader'
 
-const GroupViewWrapper = props => {
+const GroupViewWrapper = (props) => {
   return props.loader.spinning ? null : (
     <>
       <p>

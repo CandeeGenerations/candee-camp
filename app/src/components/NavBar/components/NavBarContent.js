@@ -6,7 +6,7 @@ import {useRoute} from 'react-router5'
 
 import {NavItem} from '@/components/Navigation'
 
-const NavBarContent = props => {
+const NavBarContent = (props) => {
   const routerContext = useRoute()
   const routeName = routerContext.route.name
 
@@ -47,7 +47,7 @@ const NavBarContent = props => {
         selectedKeys={props.selectedItem ? [props.selectedItem.routeName] : []}
         theme="dark"
       >
-        {props.navItems.map(item => {
+        {props.navItems.map((item) => {
           const regex = new RegExp(`${item.routeName}\\W`, 'g')
 
           return (
@@ -122,7 +122,7 @@ const NavBarContent = props => {
               color: '#ea5e5e !important',
             }}
             href="#"
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault()
               props.onSignout()
             }}

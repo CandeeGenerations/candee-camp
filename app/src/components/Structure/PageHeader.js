@@ -4,7 +4,7 @@ import {Divider, PageHeader as APageHeader} from 'antd'
 
 import {NavItem} from '../Navigation'
 
-const PageHeader = props => {
+const PageHeader = (props) => {
   return (
     <>
       <APageHeader
@@ -12,7 +12,7 @@ const PageHeader = props => {
           props.routes
             ? {
                 routes: props.routes,
-                itemRender: route => (
+                itemRender: (route) => (
                   <NavItem params={route.params} routeName={route.path}>
                     {route.breadcrumbName}
                   </NavItem>

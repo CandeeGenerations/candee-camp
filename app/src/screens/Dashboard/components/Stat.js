@@ -6,7 +6,7 @@ import {Card, Statistic} from 'antd'
 
 import loader from '@/components/Structure/Loader'
 
-const Stat = props => (
+const Stat = (props) => (
   <Card css={{marginBottom: 20}}>
     {props.loader.spinning ? (
       <div css={{minHeight: 87}} />

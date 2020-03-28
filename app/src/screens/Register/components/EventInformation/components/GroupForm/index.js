@@ -21,21 +21,38 @@ const GroupForm = () => {
     groupCampers,
     handleGroupFieldChange,
     setGroupCampers,
+    customFields,
   } = registerContext
 
-  const handleClickCamper = data =>
+  const handleClickCamper = (data) =>
     setCamper({
       visible: true,
-      data: data ? {...data} : {...registerContext.fieldDeclarations},
+      data: data
+        ? {...data}
+        : {...registerContext.fieldDeclarations, camperCustomFields: []},
     })
 
-  const handleFieldChange = changedFields =>
-    setCamper(c => ({...c, data: {...c.data, ...changedFields}}))
+  const handleCustomFieldsUpdate = (customField) =>
+    setCamper((c) => ({
+      ...c,
+      data: {
+        ...c.data,
+        camperCustomFields: [
+          ...c.data.camperCustomFields.filter(
+            (x) => x.customFieldId !== customField.customFieldId,
+          ),
+          customField,
+        ],
+      },
+    }))
 
-  const handleCancel = () => setCamper(c => ({...c, visible: false}))
+  const handleFieldChange = (changedFields) =>
+    setCamper((c) => ({...c, data: {...c.data, ...changedFields}}))
 
-  const handleDeleteCamper = id => {
-    setGroupCampers([...groupCampers.filter(x => x.id !== id)])
+  const handleCancel = () => setCamper((c) => ({...c, visible: false}))
+
+  const handleDeleteCamper = (id) => {
+    setGroupCampers([...groupCampers.filter((x) => x.id !== id)])
     handleCancel()
   }
 
@@ -50,8 +67,33 @@ const GroupForm = () => {
       return
     }
 
+    let customError = false
+
+    customFields.results
+      .filter((x) => x.required)
+      .some((customField) => {
+        const field = camper.data.camperCustomFields.find(
+          (x) => x.customFieldId === customField.id,
+        )
+
+        if (!field || !field.value) {
+          customError = true
+          openNotification(
+            'error',
+            `The field "${customField.name}" is required.`,
+          )
+          return true
+        }
+
+        return false
+      })
+
+    if (customError) {
+      return
+    }
+
     if (camper.data.id) {
-      const newCampers = groupCampers.map(x =>
+      const newCampers = groupCampers.map((x) =>
         x.id === camper.data.id ? camper.data : x,
       )
 
@@ -59,10 +101,10 @@ const GroupForm = () => {
     } else {
       const nextId =
         groupCampers.length > 0
-          ? Number(_maxBy(groupCampers, x => Number(x.id)).id) + 1
+          ? Number(_maxBy(groupCampers, (x) => Number(x.id)).id) + 1
           : 1
 
-      setGroupCampers(campers => [...campers, {...camper.data, id: nextId}])
+      setGroupCampers((campers) => [...campers, {...camper.data, id: nextId}])
     }
 
     handleCancel()
@@ -76,7 +118,7 @@ const GroupForm = () => {
             <Input
               placeholder="e.g. Central Baptist Church"
               value={groupFields.name.value || ''}
-              onChange={e =>
+              onChange={(e) =>
                 handleGroupFieldChange({
                   name: {value: e.target.value},
                 })
@@ -90,7 +132,7 @@ const GroupForm = () => {
 
       <Row css={{margin: '10px 0'}} gutter={16}>
         <Col span={24}>
-          {groupCampers.map(x => (
+          {groupCampers.map((x) => (
             <CamperCard
               key={x.id}
               data={x}
@@ -103,10 +145,12 @@ const GroupForm = () => {
       </Row>
 
       <CamperModal
+        customFields={customFields.results || []}
         data={camper.data}
         title={(camper.data && camper.data.firstName.value) || 'New Camper'}
         visible={camper.visible}
         onCancel={handleCancel}
+        onCustomFieldsUpdate={handleCustomFieldsUpdate}
         onDelete={handleDeleteCamper}
         onFieldChange={handleFieldChange}
         onSave={handleSaveCamper}

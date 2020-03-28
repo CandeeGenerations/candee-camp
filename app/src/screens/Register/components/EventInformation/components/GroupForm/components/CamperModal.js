@@ -5,7 +5,7 @@ import {Modal, Row, Col, Form, Input, Button} from 'antd'
 
 import CamperForm from '@/screens/Campers/components/CamperView/CamperForm'
 
-const CamperModal = props => {
+const CamperModal = (props) => {
   return (
     <Modal
       footer={[
@@ -34,8 +34,10 @@ const CamperModal = props => {
       <CamperForm
         {...props.data}
         couponsList={props.coupons}
+        customFields={props.customFields}
         clientForm
         onChange={props.onFieldChange}
+        onCustomFieldsUpdate={props.onCustomFieldsUpdate}
       />
 
       {props.data && (
@@ -45,7 +47,7 @@ const CamperModal = props => {
               <Input
                 placeholder="e.g. coupon-123"
                 value={props.data.coupon.value || ''}
-                onChange={e =>
+                onChange={(e) =>
                   props.onFieldChange({
                     coupon: {value: e.target.value},
                   })
@@ -60,12 +62,14 @@ const CamperModal = props => {
 }
 
 CamperModal.propTypes = {
+  customFields: PropTypes.arrayOf(PropTypes.shape({})),
   data: PropTypes.shape({}),
   title: PropTypes.string.isRequired,
   visible: PropTypes.bool.isRequired,
 
   // functions
   onCancel: PropTypes.func.isRequired,
+  onCustomFieldsUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

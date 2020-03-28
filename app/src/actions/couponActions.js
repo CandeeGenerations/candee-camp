@@ -27,7 +27,7 @@ export const loadCouponStats = async () => {
   }
 }
 
-export const loadCoupon = async couponId => {
+export const loadCoupon = async (couponId) => {
   try {
     const response = await request.get(`${mainPath}/${couponId}`)
 
@@ -38,7 +38,7 @@ export const loadCoupon = async couponId => {
   }
 }
 
-export const saveCoupon = async coupon => {
+export const saveCoupon = async (coupon) => {
   try {
     let response = null
     const user = getUserData()
@@ -69,7 +69,7 @@ export const saveCoupon = async coupon => {
   }
 }
 
-export const deleteCoupon = async couponId => {
+export const deleteCoupon = async (couponId) => {
   try {
     const response = await request.delete(`${mainPath}/${couponId}`)
 

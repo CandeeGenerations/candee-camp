@@ -31,7 +31,7 @@ const Users = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDeleteUserClick = async userId => {
+  const handleDeleteUserClick = async (userId) => {
     const response = await actions.deleteUser(userId)
 
     if (response) {
@@ -82,7 +82,7 @@ const Users = () => {
                 deleteUser={handleDeleteUserClick}
                 users={
                   (objectsContext.users.results &&
-                    objectsContext.users.results.map(user => ({
+                    objectsContext.users.results.map((user) => ({
                       ...user,
                       key: user.id,
                     }))) ||

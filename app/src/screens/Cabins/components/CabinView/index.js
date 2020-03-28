@@ -14,7 +14,7 @@ import {LoaderContext} from '@/components/Structure/Loader'
 import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const CabinView = props => {
+const CabinView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
@@ -32,7 +32,7 @@ const CabinView = props => {
       const response = await cabin.load()
 
       if (response) {
-        setFields(stateFields => mergeFormData(stateFields, response.data))
+        setFields((stateFields) => mergeFormData(stateFields, response.data))
       }
     } catch {
       errorWrapper.handleCatchError()
@@ -47,12 +47,12 @@ const CabinView = props => {
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.cabins.load()
 
-  const navigateToCounselor = cabinId => {
+  const navigateToCounselor = (cabinId) => {
     const updates = {valid: true}
 
     if (cabinId) {

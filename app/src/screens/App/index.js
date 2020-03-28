@@ -32,6 +32,7 @@ import Dashboard from '@/screens/Dashboard'
 import SnackShop from '@/screens/SnackShop'
 import Counselors from '@/screens/Counselors'
 import VisitorsPage from '@/screens/Visitors'
+import CustomFields from '@/screens/CustomFields'
 import Registrations from '@/screens/Registrations'
 import ResetPassword from '@/screens/ResetPassword'
 import SnackShopItems from '@/screens/SnackShopItems'
@@ -41,7 +42,6 @@ import UserView from '@/screens/Users/components/UserView'
 import CabinView from '@/screens/Cabins/components/CabinView'
 import EventView from '@/screens/Events/components/EventView'
 import CouponView from '@/screens/Coupons/components/CouponView'
-import CamperView from '@/screens/Campers/components/CamperView'
 
 export const ObjectsContext = React.createContext({})
 export const ValuesContext = React.createContext({})
@@ -70,6 +70,7 @@ const App = () => {
     actions.snackShopItemActions.loadSnackShopItems,
   )
   const coupons = useAsyncLoad(actions.couponActions.loadCoupons)
+  const customFields = useAsyncLoad(actions.customFieldActions.loadCustomFields)
 
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
@@ -79,7 +80,7 @@ const App = () => {
     const unauthenticatedRoutes = ['signin', 'forgotPassword', 'resetPassword']
     let isUnauthenticated = false
 
-    unauthenticatedRoutes.forEach(route => {
+    unauthenticatedRoutes.forEach((route) => {
       isUnauthenticated = isUnauthenticated || routeName.includes(route)
     })
 
@@ -90,7 +91,7 @@ const App = () => {
     const noNavRoutes = ['signin', 'forgotPassword', 'resetPassword']
     let isNoNav = false
 
-    noNavRoutes.forEach(route => {
+    noNavRoutes.forEach((route) => {
       isNoNav = isNoNav || routeName.includes(route)
     })
 
@@ -98,7 +99,7 @@ const App = () => {
   }
 
   if (routeName.includes('register')) {
-    return <Register />
+    return <Register customFields={customFields} />
   }
 
   const isUnauthenticatedRoute = testUnauthenticatedRoutes()
@@ -162,6 +163,8 @@ const App = () => {
     content = <SnackShopItems />
   } else if (routeName.includes(page.couponsPage)) {
     content = <Coupons />
+  } else if (routeName.includes(page.customFieldsPage)) {
+    content = <CustomFields />
   } else if (routeName.includes('import')) {
     content = <Import />
   } else if (routeName.includes('settings')) {
@@ -205,6 +208,7 @@ const App = () => {
                 users,
                 snackShopItems,
                 coupons,
+                customFields,
               }}
             >
               {content}
@@ -214,16 +218,6 @@ const App = () => {
                   id={
                     (routerContext.route.params &&
                       routerContext.route.params.userId) ||
-                    null
-                  }
-                />
-              )}
-
-              {page.isCamperAddOrEditPage && (
-                <CamperView
-                  id={
-                    (routerContext.route.params &&
-                      routerContext.route.params.camperId) ||
                     null
                   }
                 />

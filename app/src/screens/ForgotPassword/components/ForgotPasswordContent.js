@@ -9,7 +9,7 @@ import {NavItem} from '@/components/Navigation'
 import {Copyright} from '@/components/Structure'
 import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
-const ForgotPasswordContent = props => (
+const ForgotPasswordContent = (props) => (
   <div>
     <h1
       css={{

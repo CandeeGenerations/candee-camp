@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import PropTypes from 'prop-types'
 
 import RegisterLayout from './components/RegisterLayout'
 import RegisterContent from './components/RegisterContent'
@@ -9,17 +10,18 @@ import {signinActions as actions, settingActions} from '@/actions'
 import {getUser} from '@/helpers/authHelpers'
 import useTitle from '@/helpers/hooks/useTitle'
 
-import {LoaderContext} from '@/components/Structure/Loader'
-import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {Constants} from '@/helpers/constants'
+import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+import {LoaderContext} from '@/components/Structure/Loader'
 
 export const RegisterContext = React.createContext()
 
-const Register = () => {
+const Register = (props) => {
   const [event, setEvent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [authorized, setAuthorized] = useState(false)
   const [singleCamper, setSingleCamper] = useState(true)
+  const [customFieldsState, setCustomFieldsState] = useState([])
   const payPalClientId = useAsyncLoad(
     settingActions.loadSetting,
     Constants.SettingKeys.PayPalClientId,
@@ -66,14 +68,21 @@ const Register = () => {
   useEffect(() => {
     if (authorized) {
       payPalClientId.load()
+      props.customFields.load()
     }
   }, [authorized])
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
-  const handleGroupFieldChange = changedFields =>
-    setGroupFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleGroupFieldChange = (changedFields) =>
+    setGroupFields((stateFields) => ({...stateFields, ...changedFields}))
+
+  const handleCustomFieldsUpdate = (customField) =>
+    setCustomFieldsState((state) => [
+      ...state.filter((x) => x.customFieldId !== customField.customFieldId),
+      customField,
+    ])
 
   return (
     <RegisterLayout>
@@ -93,6 +102,9 @@ const Register = () => {
           setLoading,
           setSingleCamper,
           singleCamper,
+          customFields: props.customFields,
+          camperCustomFields: customFieldsState,
+          handleCustomFieldsUpdate,
         }}
       >
         <LoaderContext.Provider value={{spinning: loading, tip: 'Loading...'}}>
@@ -101,6 +113,10 @@ const Register = () => {
       </RegisterContext.Provider>
     </RegisterLayout>
   )
+}
+
+Register.propTypes = {
+  customFields: PropTypes.shape(),
 }
 
 export default Register

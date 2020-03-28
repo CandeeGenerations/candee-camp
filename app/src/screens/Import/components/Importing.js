@@ -11,7 +11,7 @@ import {importActions as actions} from '@/actions'
 
 import loader from '@/components/Structure/Loader'
 
-const Importing = props => {
+const Importing = (props) => {
   const page = usePage()
   const routerContext = useRoute()
   const {importState, setImportState} = useContext(ImportContext)

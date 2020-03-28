@@ -30,7 +30,7 @@ export const loadSnackShopItemStats = async () => {
   }
 }
 
-export const loadSnackShopItem = async snackShopItemId => {
+export const loadSnackShopItem = async (snackShopItemId) => {
   try {
     const response = await request.get(`${mainPath}/${snackShopItemId}`)
 
@@ -41,7 +41,7 @@ export const loadSnackShopItem = async snackShopItemId => {
   }
 }
 
-export const saveSnackShopItem = async snackShopItem => {
+export const saveSnackShopItem = async (snackShopItem) => {
   try {
     let response = null
     const user = getUserData()
@@ -77,7 +77,7 @@ export const saveSnackShopItem = async snackShopItem => {
   }
 }
 
-export const deleteSnackShopItem = async snackShopItemId => {
+export const deleteSnackShopItem = async (snackShopItemId) => {
   try {
     const response = await request.delete(`${mainPath}/${snackShopItemId}`)
 

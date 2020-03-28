@@ -15,7 +15,7 @@ import {LoaderContext} from '@/components/Structure/Loader'
 import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const CounselorView = props => {
+const CounselorView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
@@ -37,7 +37,7 @@ const CounselorView = props => {
       const response = await counselor.load()
 
       if (response) {
-        setFields(stateFields =>
+        setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
             userId: `${response.data.userId}`,
@@ -68,8 +68,8 @@ const CounselorView = props => {
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.counselors.load()
 
@@ -104,7 +104,7 @@ const CounselorView = props => {
     }
   }
 
-  const handleCreateNewAccount = adding => {
+  const handleCreateNewAccount = (adding) => {
     valuesContext.setCounselorValues({
       fields,
       valid: false,
@@ -114,7 +114,7 @@ const CounselorView = props => {
     routerContext.router.navigate(page.counselorUserAddPage)
   }
 
-  const handleCreateNewCabin = adding => {
+  const handleCreateNewCabin = (adding) => {
     valuesContext.setCounselorValues({
       fields,
       valid: false,

@@ -9,6 +9,7 @@ export const registerForEvent = async ({
   eventId,
   singleCamper,
   camper,
+  camperCustomFields,
   group,
   groupCampers,
   paymentId,
@@ -28,12 +29,13 @@ export const registerForEvent = async ({
       body.allergies =
         body.allergies.length > 0 ? body.allergies.toString() : null
       body.paymentId = paymentId
+      body.customFields = camperCustomFields
 
       response = await request.post(`${mainPath}/${eventId}/camper`, body)
     } else {
       const body = {
         groupName: group.name.value,
-        campers: groupCampers.map(x => {
+        campers: groupCampers.map((x) => {
           const data = formDataToBody(x)
 
           data.medicine =
@@ -41,6 +43,7 @@ export const registerForEvent = async ({
           data.allergies =
             data.allergies.length > 0 ? data.allergies.toString() : null
           data.paymentId = paymentId
+          data.customFields = x.camperCustomFields
 
           return data
         }),

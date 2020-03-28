@@ -7,7 +7,7 @@ import {useRouter} from 'react-router5'
 import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 import ProgressBar from '@/components/DisabledButtonPopup/components/ProgressBar'
 
-const DrawerView = props => {
+const DrawerView = (props) => {
   const router = useRouter()
 
   const handleClose = () =>

@@ -24,7 +24,7 @@ const EventForm = Form.create({
     const {onChange} = props
 
     if (changedFields.dateTime) {
-      changedFields.dateTime.value = changedFields.dateTime.value.map(x =>
+      changedFields.dateTime.value = changedFields.dateTime.value.map((x) =>
         x.startOf('minute'),
       )
     }
@@ -50,7 +50,7 @@ const EventForm = Form.create({
       }),
     }
   },
-})(props => {
+})((props) => {
   const page = usePage()
 
   const {form} = props
@@ -120,9 +120,9 @@ const EventForm = Form.create({
           <Row gutter={16}>
             <Col span={24}>
               <CodeCopy>
-                {`${Config.appUrl}/register/event/${(props.id &&
-                  props.id.value) ||
-                  0}`}
+                {`${Config.appUrl}/register/event/${
+                  (props.id && props.id.value) || 0
+                }`}
               </CodeCopy>
             </Col>
           </Row>

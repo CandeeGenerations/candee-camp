@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import {formatCurrency} from '@/helpers'
 import loader from '@/components/Structure/Loader'
 
-const RemainingBalance = props => {
+const RemainingBalance = (props) => {
   const amount = props.startingBalance - props.totalPurchasePrice
 
   return props.loader.spinning ? (

@@ -13,7 +13,7 @@ module.exports = {
     },
   ],
   eslint: {
-    configure: eslintConfig => {
+    configure: (eslintConfig) => {
       eslintConfig.extends = [path.join(__dirname, '.eslintrc')]
 
       return eslintConfig
@@ -21,10 +21,17 @@ module.exports = {
   },
   babel: {
     plugins: [
-      ...whenDev(() => [['emotion', {sourceMap: true}]], []),
+      ...whenDev(
+        () => [
+          ['emotion', {sourceMap: true}],
+          '@babel/plugin-proposal-optional-chaining',
+        ],
+        [],
+      ),
       ...whenProd(
         () => [
           'emotion',
+          '@babel/plugin-proposal-optional-chaining',
           [
             'transform-react-remove-prop-types',
             {

@@ -14,7 +14,7 @@ import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const SnackShopItemView = props => {
+const SnackShopItemView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
@@ -34,7 +34,7 @@ const SnackShopItemView = props => {
       const response = await snackShopItem.load()
 
       if (response) {
-        setFields(stateFields => mergeFormData(stateFields, response.data))
+        setFields((stateFields) => mergeFormData(stateFields, response.data))
       }
     } catch {
       errorWrapper.handleCatchError()
@@ -49,8 +49,8 @@ const SnackShopItemView = props => {
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.snackShopItems.load()
 

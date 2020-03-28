@@ -8,7 +8,7 @@ export const LoaderContext = React.createContext({
 
 export default (Component: React.ReactNode) => (props: {}) => (
   <LoaderContext.Consumer>
-    {loaderContext => (
+    {(loaderContext) => (
       <Spin {...loaderContext}>
         <Component loader={loaderContext} {...props} />
       </Spin>

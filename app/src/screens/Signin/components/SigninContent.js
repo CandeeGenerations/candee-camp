@@ -12,7 +12,7 @@ import {NavItem} from '@/components/Navigation'
 import {Copyright} from '@/components/Structure'
 import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
-const SigninContent = props => {
+const SigninContent = (props) => {
   const unauthorized = useLocalStorage('cc-unauthorized')
 
   return (

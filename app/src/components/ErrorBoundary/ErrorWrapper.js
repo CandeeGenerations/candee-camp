@@ -12,7 +12,7 @@ export const useError = () => {
   return {hasError, handleCatchError}
 }
 
-const ErrorWrapper = props => {
+const ErrorWrapper = (props) => {
   return props.hasError ? (
     <div css={{textAlign: 'center'}}>
       <h1>There was an error.</h1>

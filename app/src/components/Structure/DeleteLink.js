@@ -4,7 +4,7 @@ import {useState} from 'react'
 import PropTypes from 'prop-types'
 import {Icon, Popconfirm} from 'antd'
 
-const DeleteLink = props => {
+const DeleteLink = (props) => {
   const [loading, setLoading] = useState(false)
 
   const handleConfirm = async () => {

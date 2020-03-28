@@ -12,20 +12,17 @@ const errorTrace = (error, response) => {
   return error
 }
 
-export const deepCopy = obj => merge(obj, {})
+export const deepCopy = (obj) => merge(obj, {})
 
 export const selectSearchFunc = (inputValue, option) =>
-  option.props.children.filter(x =>
-    x
-      .trim()
-      .toLowerCase()
-      .includes(inputValue),
+  option.props.children.filter((x) =>
+    x.trim().toLowerCase().includes(inputValue),
   ).length > 0
 
-export const inputNumberFormatter = value =>
+export const inputNumberFormatter = (value) =>
   `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
-export const inputNumberParser = value => value.replace(/\$\s?|(,*)/g, '')
+export const inputNumberParser = (value) => value.replace(/\$\s?|(,*)/g, '')
 
 export const formatDate = (date, withTime = true) =>
   date ? (
@@ -34,9 +31,9 @@ export const formatDate = (date, withTime = true) =>
     <em>None</em>
   )
 
-export const formatCurrency = amount => `$${amount || 0}`
+export const formatCurrency = (amount) => `$${amount || 0}`
 
-export const formatIsActive = isActive => (
+export const formatIsActive = (isActive) => (
   <Icon
     theme="twoTone"
     twoToneColor={isActive ? '#52c41a' : '#eb2f96'}
@@ -44,7 +41,7 @@ export const formatIsActive = isActive => (
   />
 )
 
-export const formatRole = role => {
+export const formatRole = (role) => {
   let color = null
   let name = 'None'
 
@@ -78,12 +75,12 @@ export const formatRole = role => {
   return <Tag color={color}>{name}</Tag>
 }
 
-export const splitCamelCase = str => str.replace(/([A-Z])/g, ' $1').trim()
+export const splitCamelCase = (str) => str.replace(/([A-Z])/g, ' $1').trim()
 
 export const rolesList = () => {
   const roles = []
 
-  _.keys(Constants.Roles).forEach(key => {
+  _.keys(Constants.Roles).forEach((key) => {
     roles.push({text: splitCamelCase(key), value: Constants.Roles[key]})
   })
 
@@ -182,7 +179,7 @@ export const anyTouchedFields = (fields: {}) => {
   return false
 }
 
-export const formDataToBody = fields => {
+export const formDataToBody = (fields) => {
   const returnObject = {}
 
   for (const key in fields) {

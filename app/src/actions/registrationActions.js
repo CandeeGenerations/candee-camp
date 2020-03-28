@@ -28,7 +28,7 @@ export const loadRegistrationStats = async () => {
   }
 }
 
-export const loadRegistration = async registrationId => {
+export const loadRegistration = async (registrationId) => {
   try {
     const response = await request.get(`${mainPath}/${registrationId}`)
 
@@ -39,7 +39,7 @@ export const loadRegistration = async registrationId => {
   }
 }
 
-export const saveRegistration = async registration => {
+export const saveRegistration = async (registration) => {
   try {
     let response = null
     const body = formDataToBody(registration)
@@ -67,7 +67,7 @@ export const saveRegistration = async registration => {
   }
 }
 
-export const deleteRegistration = async registrationId => {
+export const deleteRegistration = async (registrationId) => {
   try {
     const response = await request.delete(`${mainPath}/${registrationId}`)
 

@@ -72,7 +72,7 @@ const Import = () => {
           <Steps
             current={importState.current}
             direction="vertical"
-            onChange={c => setImportState({current: c})}
+            onChange={(c) => setImportState({current: c})}
           >
             <Steps.Step
               description="Select import type."

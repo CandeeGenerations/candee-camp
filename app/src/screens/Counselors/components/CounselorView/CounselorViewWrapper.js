@@ -5,7 +5,7 @@ import CounselorForm from './CounselorForm'
 
 import loader from '@/components/Structure/Loader'
 
-const CounselorViewWrapper = props => {
+const CounselorViewWrapper = (props) => {
   return props.loader.spinning ? null : (
     <>
       <p>

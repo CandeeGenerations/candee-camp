@@ -33,7 +33,7 @@ const NavBar = () => {
     },
   ]
 
-  const selected = navItems.find(item =>
+  const selected = navItems.find((item) =>
     routerContext.route.name.includes(item.routeName),
   )
 

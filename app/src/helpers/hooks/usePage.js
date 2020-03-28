@@ -23,8 +23,7 @@ export default () => {
     isCamperAddOrEditPage:
       routeName.includes('visitors.campers.add') ||
       (routeName.includes('visitors.campers.edit') &&
-        !routeName.includes('visitors.campers.edit.snackShop')) ||
-      routeName.includes('visitors.registrations.camper'),
+        !routeName.includes('visitors.campers.edit.snackShop')),
     isCamperCouponAddPage: routeName.includes('visitors.campers.coupon'),
 
     // camper - snack shop
@@ -46,9 +45,6 @@ export default () => {
     isRegistrationAddOrEditPage:
       routeName.includes('visitors.registrations.add') ||
       routeName.includes('visitors.registrations.edit'),
-    isRegistrationCamperEditPage: routeName.includes(
-      'visitors.registrations.camper',
-    ),
     isRegistrationEventEditPage: routeName.includes(
       'visitors.registrations.event',
     ),
@@ -102,6 +98,13 @@ export default () => {
       routeName.includes('camp.coupons.edit') ||
       routeName.includes('visitors.campers.coupon'),
 
+    // custom fields
+    isCustomFieldAddPage: routeName.includes('camp.customFields.add'),
+    isCustomFieldEditPage: routeName.includes('camp.customFields.edit'),
+    isCustomFieldAddOrEditPage:
+      routeName.includes('camp.customFields.add') ||
+      routeName.includes('camp.customFields.edit'),
+
     // register
     // event
     isEventRegisterPage: routeName.includes('register.event'),
@@ -135,7 +138,6 @@ export default () => {
     registrationsPage: 'visitors.registrations',
     registrationAddPage: 'visitors.registrations.add',
     registrationEditPage: 'visitors.registrations.edit',
-    registrationCamperEditPage: 'visitors.registrations.camper',
     registrationEventEditPage: 'visitors.registrations.event',
 
     // camp
@@ -170,6 +172,11 @@ export default () => {
     couponsPage: 'camp.coupons',
     couponAddPage: 'camp.coupons.add',
     couponEditPage: 'camp.coupons.edit',
+
+    // custom fields
+    customFieldsPage: 'camp.customFields',
+    customFieldAddPage: 'camp.customFields.add',
+    customFieldEditPage: 'camp.customFields.edit',
 
     // register
     // events

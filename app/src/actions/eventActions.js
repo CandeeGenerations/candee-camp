@@ -15,7 +15,7 @@ export const loadEvents = async () => {
   }
 }
 
-export const loadEventsByIds = async eventIds => {
+export const loadEventsByIds = async (eventIds) => {
   try {
     const response = await request.get(
       `${mainPath}/by-ids?eventIds=${eventIds.join('&eventIds=')}`,
@@ -28,7 +28,7 @@ export const loadEventsByIds = async eventIds => {
   }
 }
 
-export const loadEventsForRegistration = async currentEventId => {
+export const loadEventsForRegistration = async (currentEventId) => {
   try {
     const response = await request.get(
       `${mainPath}/for-registration${
@@ -65,7 +65,7 @@ export const loadEvent = async (eventId: number) => {
   }
 }
 
-export const saveEvent = async event => {
+export const saveEvent = async (event) => {
   try {
     let response = null
     const user = getUserData()
@@ -99,7 +99,7 @@ export const saveEvent = async event => {
   }
 }
 
-export const deleteEvent = async eventId => {
+export const deleteEvent = async (eventId) => {
   try {
     const response = await request.delete(`${mainPath}/${eventId}`)
 
