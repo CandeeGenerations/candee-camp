@@ -6,7 +6,7 @@ import React, {useRef, useState} from 'react'
 
 import {EditableSettingsContext} from './EditableSettingRow'
 
-const SettingCell = props => {
+const SettingCell = (props) => {
   const inputEl = useRef(null)
   const [editing, setEditing] = useState(false)
   const [savedForm, setSavedForm] = useState(null)
@@ -21,7 +21,7 @@ const SettingCell = props => {
     }
   }
 
-  const save = e => {
+  const save = (e) => {
     const {record, handleSave} = props
 
     savedForm.validateFields((error, values) => {
@@ -34,7 +34,7 @@ const SettingCell = props => {
     })
   }
 
-  const renderCell = form => {
+  const renderCell = (form) => {
     setSavedForm(form)
 
     const {children, dataIndex, record, title} = props

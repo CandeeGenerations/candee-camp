@@ -19,8 +19,8 @@ const Signin = () => {
 
   useTitle('Sign In')
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {

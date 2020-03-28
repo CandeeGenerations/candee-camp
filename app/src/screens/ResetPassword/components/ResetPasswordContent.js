@@ -9,7 +9,7 @@ import {Copyright} from '@/components/Structure'
 import loader from '@/components/Structure/Loader'
 import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
-const ResetPasswordContent = props =>
+const ResetPasswordContent = (props) =>
   props.loader.spinning ? (
     <div css={{minHeight: 533}} />
   ) : (

@@ -16,9 +16,9 @@ const MapImportColumns = () => {
   useEffect(() => {
     const newHeaders = []
 
-    headers.forEach(header => {
+    headers.forEach((header) => {
       const filteredHeader = importedHeaders.filter(
-        x => x.toLowerCase().trim() === header.toLowerCase(),
+        (x) => x.toLowerCase().trim() === header.toLowerCase(),
       )
 
       newHeaders.push({
@@ -31,7 +31,7 @@ const MapImportColumns = () => {
   }, [])
 
   const handleHeaderChange = (value, header) => {
-    const newHeaders = mappedHeaders.map(x => {
+    const newHeaders = mappedHeaders.map((x) => {
       if (x.header === header) {
         x.value = value
       }
@@ -54,7 +54,7 @@ const MapImportColumns = () => {
               </p>
 
               <ul>
-                {errors.map(error => (
+                {errors.map((error) => (
                   <li>
                     <strong>Line {error.lineNumber}:</strong> {error.message}
                   </li>
@@ -83,7 +83,7 @@ const MapImportColumns = () => {
 
       <Divider />
 
-      {headers.map(header => (
+      {headers.map((header) => (
         <Row
           key={header}
           align="middle"
@@ -105,14 +105,14 @@ const MapImportColumns = () => {
               css={{width: '100%'}}
               value={
                 (mappedHeaders.length > 0 &&
-                  mappedHeaders.find(x => x.header === header).value) ||
+                  mappedHeaders.find((x) => x.header === header).value) ||
                 ''
               }
-              onChange={value => handleHeaderChange(value, header)}
+              onChange={(value) => handleHeaderChange(value, header)}
             >
               <Select.Option value="none">None</Select.Option>
 
-              {importedHeaders.map(iHeader => (
+              {importedHeaders.map((iHeader) => (
                 <Select.Option key={iHeader} value={iHeader}>
                   {iHeader}
                 </Select.Option>

@@ -33,7 +33,7 @@ const Campers = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDeleteCamperClick = async camperId => {
+  const handleDeleteCamperClick = async (camperId) => {
     const response = await actions.deleteCamper(camperId)
 
     if (response) {
@@ -100,7 +100,7 @@ const Campers = () => {
                 <CampersTable
                   campers={
                     (campers &&
-                      campers.map(camper => ({
+                      campers.map((camper) => ({
                         ...camper,
                         key: camper.id,
                       }))) ||

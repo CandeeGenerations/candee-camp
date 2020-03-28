@@ -15,7 +15,7 @@ import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const EventView = props => {
+const EventView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
@@ -28,15 +28,8 @@ const EventView = props => {
       includePercent: true,
       isRequired: true,
       value: [
-        moment()
-          .add(1, 'week')
-          .startOf('week')
-          .hour(8),
-        moment()
-          .add(1, 'week')
-          .endOf('week')
-          .hour(15)
-          .add(1, 'minute'),
+        moment().add(1, 'week').startOf('week').hour(8),
+        moment().add(1, 'week').endOf('week').hour(15).add(1, 'minute'),
       ],
     },
     name: {includePercent: true, isRequired: true, value: ''},
@@ -47,7 +40,7 @@ const EventView = props => {
       const response = await event.load()
 
       if (response) {
-        setFields(stateFields =>
+        setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
             dateTime: [
@@ -70,8 +63,8 @@ const EventView = props => {
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.events.load()
 

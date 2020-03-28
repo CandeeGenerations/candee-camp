@@ -5,7 +5,7 @@ import CabinForm from './CabinForm'
 
 import loader from '@/components/Structure/Loader'
 
-const CabinViewWrapper = props => {
+const CabinViewWrapper = (props) => {
   return props.loader.spinning ? null : (
     <>
       <p>

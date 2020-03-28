@@ -13,7 +13,7 @@ module.exports = {
     },
   ],
   eslint: {
-    configure: eslintConfig => {
+    configure: (eslintConfig) => {
       eslintConfig.extends = [path.join(__dirname, '.eslintrc')]
 
       return eslintConfig

@@ -15,7 +15,7 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const CounselorsTable = props => {
+const CounselorsTable = (props) => {
   const page = usePage()
   const router = useRouter()
   const [actionsMenu, setActionMenu] = useState({id: null, visible: false})
@@ -89,7 +89,7 @@ const CounselorsTable = props => {
         align="right"
         render={(text, record) => {
           const menu = (
-            <Menu onClick={e => clickActionItem(e, record.id)}>
+            <Menu onClick={(e) => clickActionItem(e, record.id)}>
               <Menu.Item key="snackShop" align="right">
                 Snack Shop
               </Menu.Item>
@@ -125,7 +125,7 @@ const CounselorsTable = props => {
               placement="bottomRight"
               trigger={['click']}
               visible={actionsMenu.id === record.id && actionsMenu.visible}
-              onVisibleChange={flag =>
+              onVisibleChange={(flag) =>
                 setActionMenu({id: record.id, visible: flag})
               }
             >

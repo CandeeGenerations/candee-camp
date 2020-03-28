@@ -7,7 +7,7 @@ import {EditablePurchasesContext} from './PurchasesTable'
 
 import {inputNumberFormatter, inputNumberParser} from '@/helpers'
 
-const PurchaseCell = props => {
+const PurchaseCell = (props) => {
   const getInput = (
     id,
     inputType,
@@ -31,9 +31,9 @@ const PurchaseCell = props => {
           optionFilterProp="children"
           filterOption
           showSearch
-          onChange={val => itemSelected(id, val)}
+          onChange={(val) => itemSelected(id, val)}
         >
-          {snackShopItems.map(x => (
+          {snackShopItems.map((x) => (
             <Select.Option key={x.id} value={x.id}>
               {x.name}
             </Select.Option>

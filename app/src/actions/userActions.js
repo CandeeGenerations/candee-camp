@@ -14,7 +14,7 @@ export const loadUsers = async () => {
   }
 }
 
-export const loadUsersByIds = async userIds => {
+export const loadUsersByIds = async (userIds) => {
   try {
     const response = await request.get(
       `${mainPath}/by-ids?userIds=${userIds.join('&userIds=')}`,
@@ -38,7 +38,7 @@ export const loadUserStats = async () => {
   }
 }
 
-export const loadUser = async userId => {
+export const loadUser = async (userId) => {
   try {
     const response = await request.get(`${mainPath}/${userId}`)
 
@@ -49,7 +49,7 @@ export const loadUser = async userId => {
   }
 }
 
-export const saveUser = async user => {
+export const saveUser = async (user) => {
   try {
     let response = null
     const body = formDataToBody(user)
@@ -72,7 +72,7 @@ export const saveUser = async user => {
   }
 }
 
-export const deleteUser = async userId => {
+export const deleteUser = async (userId) => {
   try {
     const response = await request.delete(`${mainPath}/${userId}`)
 

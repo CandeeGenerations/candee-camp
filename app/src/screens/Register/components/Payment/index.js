@@ -11,13 +11,13 @@ import PayNow from './components/PayNow'
 
 import {registerActions as actions} from '@/actions'
 
-const Payment = props => {
+const Payment = (props) => {
   const [loading, setLoading] = useState(false)
   const registerContext = useContext(RegisterContext)
 
   const isPaidEvent = registerContext.event.cost > 0
 
-  const handleRegister = async paymentId => {
+  const handleRegister = async (paymentId) => {
     setLoading(true)
 
     await actions.registerForEvent({

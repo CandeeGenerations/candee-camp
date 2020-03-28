@@ -36,7 +36,7 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
     expect(getByText(/CC/)).toBeTruthy()
 
     // nav links exist
-    navItems.forEach(item =>
+    navItems.forEach((item) =>
       expect(getByText(new RegExp(item.name))).toBeTruthy(),
     )
 

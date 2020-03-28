@@ -35,7 +35,7 @@ export const registerForEvent = async ({
     } else {
       const body = {
         groupName: group.name.value,
-        campers: groupCampers.map(x => {
+        campers: groupCampers.map((x) => {
           const data = formDataToBody(x)
 
           data.medicine =

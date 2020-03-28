@@ -5,7 +5,7 @@ import EventForm from './EventForm'
 
 import loader from '@/components/Structure/Loader'
 
-const EventViewWrapper = props => {
+const EventViewWrapper = (props) => {
   return props.loader.spinning ? null : (
     <>
       <p>

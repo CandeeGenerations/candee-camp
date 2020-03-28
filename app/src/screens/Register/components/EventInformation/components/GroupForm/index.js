@@ -24,7 +24,7 @@ const GroupForm = () => {
     customFields,
   } = registerContext
 
-  const handleClickCamper = data =>
+  const handleClickCamper = (data) =>
     setCamper({
       visible: true,
       data: data
@@ -32,27 +32,27 @@ const GroupForm = () => {
         : {...registerContext.fieldDeclarations, camperCustomFields: []},
     })
 
-  const handleCustomFieldsUpdate = customField =>
-    setCamper(c => ({
+  const handleCustomFieldsUpdate = (customField) =>
+    setCamper((c) => ({
       ...c,
       data: {
         ...c.data,
         camperCustomFields: [
           ...c.data.camperCustomFields.filter(
-            x => x.customFieldId !== customField.customFieldId,
+            (x) => x.customFieldId !== customField.customFieldId,
           ),
           customField,
         ],
       },
     }))
 
-  const handleFieldChange = changedFields =>
-    setCamper(c => ({...c, data: {...c.data, ...changedFields}}))
+  const handleFieldChange = (changedFields) =>
+    setCamper((c) => ({...c, data: {...c.data, ...changedFields}}))
 
-  const handleCancel = () => setCamper(c => ({...c, visible: false}))
+  const handleCancel = () => setCamper((c) => ({...c, visible: false}))
 
-  const handleDeleteCamper = id => {
-    setGroupCampers([...groupCampers.filter(x => x.id !== id)])
+  const handleDeleteCamper = (id) => {
+    setGroupCampers([...groupCampers.filter((x) => x.id !== id)])
     handleCancel()
   }
 
@@ -70,10 +70,10 @@ const GroupForm = () => {
     let customError = false
 
     customFields.results
-      .filter(x => x.required)
-      .some(customField => {
+      .filter((x) => x.required)
+      .some((customField) => {
         const field = camper.data.camperCustomFields.find(
-          x => x.customFieldId === customField.id,
+          (x) => x.customFieldId === customField.id,
         )
 
         if (!field || !field.value) {
@@ -93,7 +93,7 @@ const GroupForm = () => {
     }
 
     if (camper.data.id) {
-      const newCampers = groupCampers.map(x =>
+      const newCampers = groupCampers.map((x) =>
         x.id === camper.data.id ? camper.data : x,
       )
 
@@ -101,10 +101,10 @@ const GroupForm = () => {
     } else {
       const nextId =
         groupCampers.length > 0
-          ? Number(_maxBy(groupCampers, x => Number(x.id)).id) + 1
+          ? Number(_maxBy(groupCampers, (x) => Number(x.id)).id) + 1
           : 1
 
-      setGroupCampers(campers => [...campers, {...camper.data, id: nextId}])
+      setGroupCampers((campers) => [...campers, {...camper.data, id: nextId}])
     }
 
     handleCancel()
@@ -118,7 +118,7 @@ const GroupForm = () => {
             <Input
               placeholder="e.g. Central Baptist Church"
               value={groupFields.name.value || ''}
-              onChange={e =>
+              onChange={(e) =>
                 handleGroupFieldChange({
                   name: {value: e.target.value},
                 })
@@ -132,7 +132,7 @@ const GroupForm = () => {
 
       <Row css={{margin: '10px 0'}} gutter={16}>
         <Col span={24}>
-          {groupCampers.map(x => (
+          {groupCampers.map((x) => (
             <CamperCard
               key={x.id}
               data={x}

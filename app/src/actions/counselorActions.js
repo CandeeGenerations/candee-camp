@@ -27,7 +27,7 @@ export const loadCounselorStats = async () => {
   }
 }
 
-export const loadCounselor = async counselorId => {
+export const loadCounselor = async (counselorId) => {
   try {
     const response = await request.get(`${mainPath}/${counselorId}`)
 
@@ -38,7 +38,7 @@ export const loadCounselor = async counselorId => {
   }
 }
 
-export const saveCounselor = async counselor => {
+export const saveCounselor = async (counselor) => {
   try {
     let response = null
     const user = getUserData()
@@ -73,7 +73,7 @@ export const saveCounselor = async counselor => {
   }
 }
 
-export const deleteCounselor = async counselorId => {
+export const deleteCounselor = async (counselorId) => {
   try {
     const response = await request.delete(`${mainPath}/${counselorId}`)
 

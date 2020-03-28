@@ -14,7 +14,7 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const SnackShopItemsTable = props => {
+const SnackShopItemsTable = (props) => {
   const page = usePage()
 
   return props.loader.spinning ? (
@@ -34,7 +34,7 @@ const SnackShopItemsTable = props => {
       <Column
         key="barcode"
         dataIndex="barcode"
-        render={value => value || <em>None</em>}
+        render={(value) => value || <em>None</em>}
         title="Barcode"
       />
 

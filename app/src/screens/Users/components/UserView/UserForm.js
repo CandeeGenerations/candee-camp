@@ -69,7 +69,7 @@ const UserForm = Form.create({
 
     return fields
   },
-})(props => {
+})((props) => {
   const page = usePage()
 
   const {form} = props

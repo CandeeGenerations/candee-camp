@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import Config from '@/config'
 import {percentComplete} from '@/helpers'
 
-const ProgressBar = props => {
+const ProgressBar = (props) => {
   const percent = percentComplete(props.fields)
 
   return (

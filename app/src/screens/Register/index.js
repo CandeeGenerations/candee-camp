@@ -16,7 +16,7 @@ import {LoaderContext} from '@/components/Structure/Loader'
 
 export const RegisterContext = React.createContext()
 
-const Register = props => {
+const Register = (props) => {
   const [event, setEvent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [authorized, setAuthorized] = useState(false)
@@ -72,15 +72,15 @@ const Register = props => {
     }
   }, [authorized])
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
-  const handleGroupFieldChange = changedFields =>
-    setGroupFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleGroupFieldChange = (changedFields) =>
+    setGroupFields((stateFields) => ({...stateFields, ...changedFields}))
 
-  const handleCustomFieldsUpdate = customField =>
-    setCustomFieldsState(state => [
-      ...state.filter(x => x.customFieldId !== customField.customFieldId),
+  const handleCustomFieldsUpdate = (customField) =>
+    setCustomFieldsState((state) => [
+      ...state.filter((x) => x.customFieldId !== customField.customFieldId),
       customField,
     ])
 

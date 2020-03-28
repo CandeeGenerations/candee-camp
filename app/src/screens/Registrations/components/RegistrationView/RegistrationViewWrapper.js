@@ -5,7 +5,7 @@ import RegistrationForm from './RegistrationForm'
 
 import loader from '@/components/Structure/Loader'
 
-const RegistrationViewWrapper = props => {
+const RegistrationViewWrapper = (props) => {
   return props.loader.spinning ? null : (
     <>
       <p>

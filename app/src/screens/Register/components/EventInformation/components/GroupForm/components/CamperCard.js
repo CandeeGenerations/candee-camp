@@ -3,7 +3,7 @@ import {jsx} from '@emotion/core'
 import {Card, Icon} from 'antd'
 import PropTypes from 'prop-types'
 
-const CamperCard = props => {
+const CamperCard = (props) => {
   return props.new ? (
     <Card
       className="camper"

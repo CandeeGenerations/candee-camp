@@ -6,7 +6,7 @@ import {Row, Col, Typography} from 'antd'
 
 import {formatDate, formatCurrency} from '@/helpers'
 
-const EventMetaData = props => {
+const EventMetaData = (props) => {
   return (
     <>
       <Row css={{marginBottom: 15}} gutter={16}>

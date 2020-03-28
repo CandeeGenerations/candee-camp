@@ -79,7 +79,7 @@ const App = () => {
     const unauthenticatedRoutes = ['signin', 'forgotPassword', 'resetPassword']
     let isUnauthenticated = false
 
-    unauthenticatedRoutes.forEach(route => {
+    unauthenticatedRoutes.forEach((route) => {
       isUnauthenticated = isUnauthenticated || routeName.includes(route)
     })
 
@@ -90,7 +90,7 @@ const App = () => {
     const noNavRoutes = ['signin', 'forgotPassword', 'resetPassword']
     let isNoNav = false
 
-    noNavRoutes.forEach(route => {
+    noNavRoutes.forEach((route) => {
       isNoNav = isNoNav || routeName.includes(route)
     })
 

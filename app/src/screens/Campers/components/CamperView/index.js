@@ -19,7 +19,7 @@ import {LoaderContext} from '@/components/Structure/Loader'
 import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const CamperView = props => {
+const CamperView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
@@ -46,7 +46,7 @@ const CamperView = props => {
       const response = await camper.load()
 
       if (response) {
-        setFields(stateFields =>
+        setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
             birthDate: response.data.birthDate
@@ -86,14 +86,14 @@ const CamperView = props => {
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.campers.load()
 
-  const handleCustomFieldsUpdate = customField =>
-    setCustomFieldsState(state => [
-      ...state.filter(x => x.customFieldId !== customField.customFieldId),
+  const handleCustomFieldsUpdate = (customField) =>
+    setCustomFieldsState((state) => [
+      ...state.filter((x) => x.customFieldId !== customField.customFieldId),
       customField,
     ])
 
@@ -102,10 +102,10 @@ const CamperView = props => {
       let customError = false
 
       objectsContext.customFields.results
-        .filter(x => x.required)
-        .some(customField => {
+        .filter((x) => x.required)
+        .some((customField) => {
           const field = customFieldsState.find(
-            x => x.customFieldId === customField.id,
+            (x) => x.customFieldId === customField.id,
           )
 
           if (!field || !field.value) {
@@ -158,7 +158,7 @@ const CamperView = props => {
       routerContext.previousRoute?.name || page.campersPage,
     )
 
-  const handleCreateNewCoupon = adding => {
+  const handleCreateNewCoupon = (adding) => {
     valuesContext.setCamperValues({
       fields,
       valid: false,

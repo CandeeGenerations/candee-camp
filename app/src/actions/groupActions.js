@@ -27,7 +27,7 @@ export const loadGroupStats = async () => {
   }
 }
 
-export const loadGroup = async groupId => {
+export const loadGroup = async (groupId) => {
   try {
     const response = await request.get(`${mainPath}/${groupId}`)
 
@@ -38,7 +38,7 @@ export const loadGroup = async groupId => {
   }
 }
 
-export const saveGroup = async group => {
+export const saveGroup = async (group) => {
   try {
     let response = null
     const user = getUserData()
@@ -50,7 +50,7 @@ export const saveGroup = async group => {
     const body = formDataToBody(group)
 
     body.createdBy = user.id
-    body.campers = body.campers.map(x => Number(x))
+    body.campers = body.campers.map((x) => Number(x))
     body.loginUser = Number(body.loginUser)
 
     if (group.id) {
@@ -71,7 +71,7 @@ export const saveGroup = async group => {
   }
 }
 
-export const deleteGroup = async groupId => {
+export const deleteGroup = async (groupId) => {
   try {
     const response = await request.delete(`${mainPath}/${groupId}`)
 

@@ -33,7 +33,7 @@ const Counselors = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDeleteCounselorClick = async counselorId => {
+  const handleDeleteCounselorClick = async (counselorId) => {
     const response = await actions.deleteCounselor(counselorId)
 
     if (response) {
@@ -91,7 +91,7 @@ const Counselors = () => {
               <CounselorsTable
                 counselors={
                   (counselors &&
-                    counselors.map(counselor => ({
+                    counselors.map((counselor) => ({
                       ...counselor,
                       key: counselor.id,
                     }))) ||

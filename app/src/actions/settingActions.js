@@ -14,7 +14,7 @@ export const loadSettings = async () => {
   }
 }
 
-export const loadSetting = async key => {
+export const loadSetting = async (key) => {
   try {
     const response = await request.get(`${mainPath}/${key}`)
 
@@ -40,7 +40,7 @@ export const saveSetting = async (key, value) => {
   }
 }
 
-export const saveSettings = async settings => {
+export const saveSettings = async (settings) => {
   try {
     let response = null
 

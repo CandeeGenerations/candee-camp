@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 import Config from '@/config'
 
-const Version = props => {
+const Version = (props) => {
   const versionStyle = css`
     color: #333;
     font-size: 11px;

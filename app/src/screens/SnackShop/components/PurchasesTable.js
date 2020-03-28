@@ -20,7 +20,7 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 export const EditablePurchasesContext = React.createContext()
 
-const PurchasesTable = props => {
+const PurchasesTable = (props) => {
   const page = usePage()
   const routerContext = useRouter()
   const objectsContext = useContext(ObjectsContext)
@@ -42,10 +42,10 @@ const PurchasesTable = props => {
     ) {
       const snackShopItemId = objectsContext.snackShopItems.results[0].id
       const item = objectsContext.snackShopItems.results.find(
-        x => x.id === snackShopItemId,
+        (x) => x.id === snackShopItemId,
       )
 
-      setNewSnackShopPurchase(state => ({
+      setNewSnackShopPurchase((state) => ({
         ...state,
         purchasedPrice: item.price,
         snackShopItemId,
@@ -53,13 +53,13 @@ const PurchasesTable = props => {
     }
   }, [objectsContext.snackShopItems.results])
 
-  const isNewPurchase = record => record.key === 0
+  const isNewPurchase = (record) => record.key === 0
 
-  const isEditing = record => record.key === editingKey
+  const isEditing = (record) => record.key === editingKey
 
   const cancel = () => setEditingKey(0)
 
-  const edit = key => setEditingKey(key)
+  const edit = (key) => setEditingKey(key)
 
   const save = (form, id) => {
     form.validateFields(async (error, row) => {
@@ -85,7 +85,7 @@ const PurchasesTable = props => {
     })
   }
 
-  const deletePurchase = async snackShopPurchaseId => {
+  const deletePurchase = async (snackShopPurchaseId) => {
     const response = await actions.deleteSnackShopPurchase({
       camperId: props.camperId,
       counselorId: props.counselorId,
@@ -104,7 +104,7 @@ const PurchasesTable = props => {
       dataIndex: 'snackShopItemId',
       editable: true,
       render: (text, record) => {
-        const item = props.items.find(x => x.id === record.snackShopItemId)
+        const item = props.items.find((x) => x.id === record.snackShopItemId)
 
         return item ? item.name : ''
       },
@@ -130,7 +130,7 @@ const PurchasesTable = props => {
         isEditing(record) ? (
           <>
             <EditablePurchasesContext.Consumer>
-              {form =>
+              {(form) =>
                 loading ? (
                   <Icon css={{marginRight: 5}} type="loading" />
                 ) : (
@@ -178,14 +178,14 @@ const PurchasesTable = props => {
     },
   }
 
-  const tableColumns = columns.map(col => {
+  const tableColumns = columns.map((col) => {
     if (!col.editable) {
       return col
     }
 
     return {
       ...col,
-      onCell: record => ({
+      onCell: (record) => ({
         record,
         inputType:
           col.dataIndex === 'purchasedPrice'
@@ -200,10 +200,10 @@ const PurchasesTable = props => {
         itemSelected: (id, val) => {
           if (id === 0) {
             const item = objectsContext.snackShopItems.results.find(
-              x => x.id === val,
+              (x) => x.id === val,
             )
 
-            setNewSnackShopPurchase(state => ({
+            setNewSnackShopPurchase((state) => ({
               ...state,
               purchasedPrice: item.price,
             }))
@@ -213,7 +213,7 @@ const PurchasesTable = props => {
     }
   })
 
-  const purchases = props.purchases.map(x => ({...x, key: x.id}))
+  const purchases = props.purchases.map((x) => ({...x, key: x.id}))
   const dataSource =
     editingKey === 0 ? [...purchases, newSnackShopPurchase] : purchases
 

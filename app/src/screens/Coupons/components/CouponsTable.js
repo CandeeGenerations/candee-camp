@@ -15,7 +15,7 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const CouponsTable = props => {
+const CouponsTable = (props) => {
   const page = usePage()
 
   return props.loader.spinning ? (
@@ -32,7 +32,7 @@ const CouponsTable = props => {
       <Column
         key="code"
         dataIndex="code"
-        render={text => <CodeCopy>{text}</CodeCopy>}
+        render={(text) => <CodeCopy>{text}</CodeCopy>}
         title="Code"
       />
 
@@ -48,7 +48,7 @@ const CouponsTable = props => {
         key="expirationDate"
         align="right"
         dataIndex="expirationDate"
-        render={date => formatDate(date, false)}
+        render={(date) => formatDate(date, false)}
         title="Expiration Date"
       />
 

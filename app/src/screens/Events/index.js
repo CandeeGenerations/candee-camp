@@ -32,7 +32,7 @@ const Events = () => {
       const response = await objectsContext.events.load()
 
       if (response.data && response.data.length > 0) {
-        const userIds = _.uniq(response.data.map(x => x.createdBy))
+        const userIds = _.uniq(response.data.map((x) => x.createdBy))
 
         users.load(false, userIds)
       }
@@ -51,14 +51,14 @@ const Events = () => {
       routerContext.previousRoute.name === page.eventUserEditPage
     ) {
       const userIds = _.uniq(
-        objectsContext.events.data.data.map(x => x.createdBy),
+        objectsContext.events.data.data.map((x) => x.createdBy),
       )
 
       users.load(false, userIds)
     }
   }, [routerContext.previousRoute]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDeleteEvent = async eventId => {
+  const handleDeleteEvent = async (eventId) => {
     const response = await actions.deleteEvent(eventId)
 
     if (response) {
@@ -115,7 +115,7 @@ const Events = () => {
                 deleteEvent={handleDeleteEvent}
                 events={
                   (events &&
-                    events.map(event => ({
+                    events.map((event) => ({
                       ...event,
                       key: event.id,
                     }))) ||

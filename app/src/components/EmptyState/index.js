@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Result, Button} from 'antd'
 
-const EmptyState = props => {
+const EmptyState = (props) => {
   return (
     <Result
       extra={

@@ -23,7 +23,7 @@ const SigninForm = Form.create({
       }),
     }
   },
-})(props => {
+})((props) => {
   const {form, onSubmit} = props
   const {getFieldDecorator} = form
 
@@ -50,7 +50,7 @@ const SigninForm = Form.create({
           <Input.Password
             placeholder="e.g. password123!"
             size="large"
-            onKeyUp={e => {
+            onKeyUp={(e) => {
               if (e.keyCode === 13) {
                 onSubmit()
               }

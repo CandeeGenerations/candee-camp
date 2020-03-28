@@ -7,7 +7,7 @@ import CamperForm from './CamperForm'
 
 import loader from '@/components/Structure/Loader'
 
-const CamperViewWrapper = props => {
+const CamperViewWrapper = (props) => {
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
   ) : (

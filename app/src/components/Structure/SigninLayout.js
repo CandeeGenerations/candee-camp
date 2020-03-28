@@ -2,7 +2,7 @@
 import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 
-const SigninLayout = props => {
+const SigninLayout = (props) => {
   return (
     <div
       css={{

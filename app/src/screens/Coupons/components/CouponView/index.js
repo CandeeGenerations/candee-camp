@@ -15,7 +15,7 @@ import {LoaderContext} from '@/components/Structure/Loader'
 import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const CouponView = props => {
+const CouponView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
@@ -35,7 +35,7 @@ const CouponView = props => {
       const response = await coupon.load()
 
       if (response) {
-        setFields(stateFields =>
+        setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
             expirationDate: response.data.expirationDate
@@ -57,12 +57,12 @@ const CouponView = props => {
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.coupons.load()
 
-  const navigateToCamper = couponId => {
+  const navigateToCamper = (couponId) => {
     const updates = {valid: true}
 
     if (couponId) {

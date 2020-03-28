@@ -13,7 +13,7 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const UsersTable = props => {
+const UsersTable = (props) => {
   const page = usePage()
 
   return props.loader.spinning ? (

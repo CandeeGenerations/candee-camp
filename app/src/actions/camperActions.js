@@ -16,7 +16,7 @@ export const loadCampers = async () => {
   }
 }
 
-export const loadCampersForRegistration = async currentCamperId => {
+export const loadCampersForRegistration = async (currentCamperId) => {
   try {
     const response = await request.get(
       `${mainPath}/for-registration${
@@ -31,7 +31,7 @@ export const loadCampersForRegistration = async currentCamperId => {
   }
 }
 
-export const loadCampersByIds = async camperIds => {
+export const loadCampersByIds = async (camperIds) => {
   try {
     const response = await request.get(
       `${mainPath}/by-ids?camperIds=${camperIds.join('&camperIds=')}`,
@@ -55,7 +55,7 @@ export const loadCamperStats = async () => {
   }
 }
 
-export const loadCamper = async camperId => {
+export const loadCamper = async (camperId) => {
   try {
     const response = await request.get(`${mainPath}/${camperId}`)
 
@@ -102,7 +102,7 @@ export const saveCamper = async (camper, customFields) => {
   }
 }
 
-export const deleteCamper = async camperId => {
+export const deleteCamper = async (camperId) => {
   try {
     const response = await request.delete(`${mainPath}/${camperId}`)
 

@@ -5,7 +5,7 @@ import {axiosRequest} from '@/api'
 import {setUser} from '@/helpers/authHelpers'
 import {handleError, openNotification} from '@/helpers'
 
-export const signin = async fields => {
+export const signin = async (fields) => {
   try {
     const response = await axiosRequest.post(
       '/token',
@@ -47,7 +47,7 @@ export const authorizeClient = async () => {
   }
 }
 
-export const forgotPassword = async fields => {
+export const forgotPassword = async (fields) => {
   try {
     await axiosRequest.post(
       `/forgot-password?emailAddress=${fields.email.value}`,

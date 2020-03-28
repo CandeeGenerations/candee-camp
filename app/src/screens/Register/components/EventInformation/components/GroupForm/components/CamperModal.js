@@ -5,7 +5,7 @@ import {Modal, Row, Col, Form, Input, Button} from 'antd'
 
 import CamperForm from '@/screens/Campers/components/CamperView/CamperForm'
 
-const CamperModal = props => {
+const CamperModal = (props) => {
   return (
     <Modal
       footer={[
@@ -47,7 +47,7 @@ const CamperModal = props => {
               <Input
                 placeholder="e.g. coupon-123"
                 value={props.data.coupon.value || ''}
-                onChange={e =>
+                onChange={(e) =>
                   props.onFieldChange({
                     coupon: {value: e.target.value},
                   })

@@ -5,7 +5,7 @@ import UserForm from './UserForm'
 
 import loader from '@/components/Structure/Loader'
 
-const UserViewWrapper = props => {
+const UserViewWrapper = (props) => {
   return props.loader.spinning ? null : (
     <>
       <p>{props.fields.id ? 'Edit this user here.' : 'Add a new user here.'}</p>

@@ -33,7 +33,7 @@ const Groups = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDeleteGroupClick = async groupId => {
+  const handleDeleteGroupClick = async (groupId) => {
     const response = await actions.deleteGroup(groupId)
 
     if (response) {
@@ -84,7 +84,7 @@ const Groups = () => {
                 deleteGroup={handleDeleteGroupClick}
                 groups={
                   (groups &&
-                    groups.map(group => ({
+                    groups.map((group) => ({
                       ...group,
                       key: group.id,
                     }))) ||

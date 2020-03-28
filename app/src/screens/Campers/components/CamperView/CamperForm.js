@@ -86,7 +86,7 @@ const CamperForm = Form.create({
       }),
     }
   },
-})(props => {
+})((props) => {
   const page = usePage()
   const {form, clientForm} = props
   const {getFieldDecorator} = form
@@ -219,7 +219,7 @@ const CamperForm = Form.create({
             <Form.Item label="Redeemed Coupon">
               {getFieldDecorator('couponId')(
                 <Select
-                  dropdownRender={menu =>
+                  dropdownRender={(menu) =>
                     page.isRegistrationCamperEditPage ? (
                       menu
                     ) : (
@@ -229,7 +229,7 @@ const CamperForm = Form.create({
                           onClick={() =>
                             props.onCreateNewCoupon(page.isCamperAddPage)
                           }
-                          onMouseDown={e => e.preventDefault()}
+                          onMouseDown={(e) => e.preventDefault()}
                         >
                           <Icon type="plus" /> Create New Coupon
                         </div>
@@ -246,7 +246,7 @@ const CamperForm = Form.create({
                   allowClear
                   showSearch
                 >
-                  {props.couponsList.map(x => (
+                  {props.couponsList.map((x) => (
                     <Select.Option key={x.id} value={`${x.id}`}>
                       {x.name} ({x.code})
                     </Select.Option>
@@ -261,11 +261,11 @@ const CamperForm = Form.create({
       <Divider orientation="left">Custom Fields</Divider>
 
       <Row gutter={16}>
-        {props.customFields.map(customField => {
+        {props.customFields.map((customField) => {
           let value = ''
           let camperField = null
           const camperFields = props.camperCustomFields.filter(
-            x => x.customFieldId === customField.id,
+            (x) => x.customFieldId === customField.id,
           )
 
           if (camperFields.length > 0) {
@@ -281,7 +281,7 @@ const CamperForm = Form.create({
               >
                 <Input
                   value={value}
-                  onChange={e =>
+                  onChange={(e) =>
                     props.onCustomFieldsUpdate({
                       customFieldId: customField.id,
                       id: camperField?.id || null,

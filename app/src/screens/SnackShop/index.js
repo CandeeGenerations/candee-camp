@@ -143,7 +143,9 @@ const SnackShop = () => {
                   totalPurchasePrice={
                     snackShopPurchases.results
                       ? _.sum(
-                          snackShopPurchases.results.map(x => x.purchasedPrice),
+                          snackShopPurchases.results.map(
+                            (x) => x.purchasedPrice,
+                          ),
                         )
                       : 0
                   }

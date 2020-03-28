@@ -15,7 +15,7 @@ import {openNotification} from '@/helpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {LoaderContext} from '@/components/Structure/Loader'
 
-const EventInformation = props => {
+const EventInformation = (props) => {
   const registerContext = useContext(RegisterContext)
   const routerContext = useRoute()
   const event = useAsyncLoad(
@@ -51,10 +51,10 @@ const EventInformation = props => {
       let customError = false
 
       registerContext.customFields.results
-        .filter(x => x.required)
-        .some(customField => {
+        .filter((x) => x.required)
+        .some((customField) => {
           const field = registerContext.camperCustomFields.find(
-            x => x.customFieldId === customField.id,
+            (x) => x.customFieldId === customField.id,
           )
 
           if (!field || !field.value) {
@@ -123,7 +123,7 @@ const EventInformation = props => {
             <Col md={4} sm={24}>
               <Switch
                 checked={registerContext.singleCamper}
-                onChange={checked => registerContext.setSingleCamper(checked)}
+                onChange={(checked) => registerContext.setSingleCamper(checked)}
               />
             </Col>
 

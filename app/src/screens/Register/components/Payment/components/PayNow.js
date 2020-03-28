@@ -11,7 +11,7 @@ import {RegisterContext} from '@/screens/Register'
 import IncludeScript from '@/components/IncludeScript'
 import {openNotification} from '@/helpers'
 
-const PayNow = props => {
+const PayNow = (props) => {
   const registerContext = useContext(RegisterContext)
 
   const handleApprove = async (data, actions) => {

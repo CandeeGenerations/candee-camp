@@ -8,7 +8,7 @@ import ProgressBar from './components/ProgressBar'
 
 import {formErrors} from '@/helpers'
 
-const DisabledButtonPopup = props => {
+const DisabledButtonPopup = (props) => {
   const errors = formErrors(props.fields)
 
   return (

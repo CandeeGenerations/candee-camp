@@ -19,7 +19,7 @@ import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const RegistrationView = props => {
+const RegistrationView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
@@ -42,7 +42,7 @@ const RegistrationView = props => {
       const response = await registration.load()
 
       if (response) {
-        setFields(stateFields =>
+        setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
             eventId: response.data.eventId
@@ -84,8 +84,8 @@ const RegistrationView = props => {
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.registrations.load()
 

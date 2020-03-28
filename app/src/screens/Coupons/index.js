@@ -32,7 +32,7 @@ const Coupons = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDeleteCouponClick = async couponId => {
+  const handleDeleteCouponClick = async (couponId) => {
     const response = await actions.deleteCoupon(couponId)
 
     if (response) {
@@ -90,7 +90,7 @@ const Coupons = () => {
               <CouponsTable
                 coupons={
                   (coupons &&
-                    coupons.map(coupon => ({
+                    coupons.map((coupon) => ({
                       ...coupon,
                       key: coupon.id,
                     }))) ||
