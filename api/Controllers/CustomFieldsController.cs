@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace CandeeCamp.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Authorize(Policy = CampPolicies.Portal)]
     [Route("api/[controller]")]
     [Produces("application/json")]
     public class CustomFieldsController : Controller
@@ -23,6 +22,7 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = CampPolicies.PortalOrRegistrations)]
         [ProducesResponseType(typeof(IEnumerable<CustomField>), 200)]
         public async Task<ActionResult<IEnumerable<CustomField>>> GetCustomFields()
         {
@@ -32,6 +32,7 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpGet("{customFieldId}")]
+        [Authorize(Policy = CampPolicies.PortalOrRegistrations)]
         [ProducesResponseType(typeof(CustomField), 200)]
         public async Task<ActionResult<CustomField>> GetCustomField(int customFieldId)
         {
@@ -46,6 +47,7 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(CustomField), 200)]
         public async Task<ActionResult<CustomField>> CreateCustomField([FromBody] CustomFieldModel customField)
         {
@@ -60,6 +62,7 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpPut("{customFieldId}")]
+        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(CustomField), 200)]
         public async Task<ActionResult<CustomField>> CreateCustomField(int customFieldId,
             [FromBody] CustomFieldModel customField)
@@ -75,6 +78,7 @@ namespace CandeeCamp.API.Controllers
         }
 
         [HttpDelete("{customFieldId}")]
+        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(200)]
         public async Task<ActionResult> DeleteCustomField(int customFieldId)
         {

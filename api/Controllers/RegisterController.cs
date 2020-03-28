@@ -21,22 +21,27 @@ namespace CandeeCamp.API.Controllers
         private readonly IEventRepository _eventRepository;
         private readonly ICamperRepository _camperRepository;
         private readonly ICouponRepository _couponRepository;
+        private readonly ICustomFieldRepository _customFieldRepository;
         private readonly IRegistrationRepository _registrationRepository;
         private readonly IRedeemedCouponRepository _redeemedCouponRepository;
         private readonly IPaymentDonationRepository _paymentDonationRepository;
-
+        private readonly ICamperCustomFieldRepository _camperCustomFieldRepository;
+        
         public RegisterController(IGroupRepository groupRepository, IEventRepository eventRepository,
             ICamperRepository camperRepository, ICouponRepository couponRepository,
             IRegistrationRepository registrationRepository, IRedeemedCouponRepository redeemedCouponRepository,
-            IPaymentDonationRepository paymentDonationRepository)
+            IPaymentDonationRepository paymentDonationRepository, ICustomFieldRepository customFieldRepository,
+            ICamperCustomFieldRepository camperCustomFieldRepository)
         {
             _groupRepository = groupRepository;
             _eventRepository = eventRepository;
             _camperRepository = camperRepository;
             _couponRepository = couponRepository;
+            _customFieldRepository = customFieldRepository;
             _registrationRepository = registrationRepository;
             _redeemedCouponRepository = redeemedCouponRepository;
             _paymentDonationRepository = paymentDonationRepository;
+            _camperCustomFieldRepository = camperCustomFieldRepository;
         }
 
         [HttpPost("{eventId}/camper")]
@@ -46,6 +51,15 @@ namespace CandeeCamp.API.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+            
+            try
+            {
+                await ValidateCustomFields(camper.CustomFields);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
             Event dbEvent = await _eventRepository.GetEventById(eventId);
@@ -74,6 +88,15 @@ namespace CandeeCamp.API.Controllers
 
             foreach (CamperOverrideModel camper in model.Campers)
             {
+                try
+                {
+                    await ValidateCustomFields(camper.CustomFields);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+                
                 camper.GroupId = dbGroup.Id;
                 
                 Registration registration = await Register(camper, dbEvent, model.PaymentId);
@@ -99,6 +122,8 @@ namespace CandeeCamp.API.Controllers
                 }
             }
             
+            await SaveCustomFields(dbCamper.Id, camper.CustomFields);
+            
             RegistrationModel registrationModel = new RegistrationModel
             {
                 Event = dbEvent,
@@ -116,6 +141,33 @@ namespace CandeeCamp.API.Controllers
             }
 
             return registration;
+        }
+
+        private async Task ValidateCustomFields(IEnumerable<CamperCustomFieldModel> camperCustomFields)
+        {
+            foreach (CamperCustomFieldModel camperCustomField in camperCustomFields.Where(x =>
+                string.IsNullOrEmpty(x.Value)))
+            {
+                CustomField customField =
+                    await _customFieldRepository.GetCustomFieldById(camperCustomField.CustomFieldId);
+
+                if (customField.Required)
+                {
+                    throw new Exception($"The field {customField.Name} is required.");
+                }
+            }
+        }
+        
+        private async Task SaveCustomFields(int camperId, List<CamperCustomFieldModel> camperCustomFields)
+        {
+            if (camperCustomFields.Any())
+            {
+                foreach (CamperCustomFieldModel camperCustomField in camperCustomFields)
+                {
+                    await _camperCustomFieldRepository.SaveCamperCustomField(camperId, camperCustomField.CustomFieldId,
+                        camperCustomField.Value);
+                }
+            }
         }
     }
 }

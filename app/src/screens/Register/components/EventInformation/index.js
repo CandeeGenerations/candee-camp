@@ -13,6 +13,7 @@ import SingleCamperForm from './components/SingleCamperForm'
 import {eventActions} from '@/actions'
 import {openNotification} from '@/helpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+import {LoaderContext} from '@/components/Structure/Loader'
 
 const EventInformation = props => {
   const registerContext = useContext(RegisterContext)
@@ -36,33 +37,56 @@ const EventInformation = props => {
   }, [registerContext.authorized])
 
   const handleNextClick = () => {
-    if (
-      registerContext.singleCamper &&
-      !registerContext.fields.firstName.value
-    ) {
-      openNotification('error', 'The first name is required.')
-      return
-    } else if (
-      registerContext.singleCamper &&
-      !registerContext.fields.lastName.value
-    ) {
-      openNotification('error', 'The last name is required.')
-      return
-    } else if (
-      !registerContext.singleCamper &&
-      !registerContext.groupFields.name.value
-    ) {
-      openNotification('error', 'The group name is required.')
-      return
-    } else if (
-      !registerContext.singleCamper &&
-      registerContext.groupCampers.length === 0
-    ) {
-      openNotification(
-        'error',
-        'There has to be at least one camper in your group.',
-      )
-      return
+    if (registerContext.singleCamper) {
+      if (!registerContext.fields.firstName.value) {
+        openNotification('error', 'The first name is required.')
+        return
+      }
+
+      if (!registerContext.fields.lastName.value) {
+        openNotification('error', 'The last name is required.')
+        return
+      }
+
+      let customError = false
+
+      registerContext.customFields.results
+        .filter(x => x.required)
+        .some(customField => {
+          const field = registerContext.camperCustomFields.find(
+            x => x.customFieldId === customField.id,
+          )
+
+          if (!field || !field.value) {
+            customError = true
+            openNotification(
+              'error',
+              `The field "${customField.name}" is required.`,
+            )
+            return true
+          }
+
+          return false
+        })
+
+      if (customError) {
+        return
+      }
+    }
+
+    if (!registerContext.singleCamper) {
+      if (!registerContext.groupFields.name.value) {
+        openNotification('error', 'The group name is required.')
+        return
+      }
+
+      if (registerContext.groupCampers.length === 0) {
+        openNotification(
+          'error',
+          'There has to be at least one camper in your group.',
+        )
+        return
+      }
     }
 
     props.onNext()
@@ -117,7 +141,18 @@ const EventInformation = props => {
             </Col>
           </Row>
 
-          {registerContext.singleCamper ? <SingleCamperForm /> : <GroupForm />}
+          <LoaderContext.Provider
+            value={{
+              spinning: registerContext.customFields.loading,
+              tip: 'Loading...',
+            }}
+          >
+            {registerContext.singleCamper ? (
+              <SingleCamperForm />
+            ) : (
+              <GroupForm />
+            )}
+          </LoaderContext.Provider>
 
           <Row gutter={16}>
             <Col span={24} style={{textAlign: 'center'}}>

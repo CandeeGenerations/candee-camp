@@ -21,13 +21,30 @@ const GroupForm = () => {
     groupCampers,
     handleGroupFieldChange,
     setGroupCampers,
+    customFields,
   } = registerContext
 
   const handleClickCamper = data =>
     setCamper({
       visible: true,
-      data: data ? {...data} : {...registerContext.fieldDeclarations},
+      data: data
+        ? {...data}
+        : {...registerContext.fieldDeclarations, camperCustomFields: []},
     })
+
+  const handleCustomFieldsUpdate = customField =>
+    setCamper(c => ({
+      ...c,
+      data: {
+        ...c.data,
+        camperCustomFields: [
+          ...c.data.camperCustomFields.filter(
+            x => x.customFieldId !== customField.customFieldId,
+          ),
+          customField,
+        ],
+      },
+    }))
 
   const handleFieldChange = changedFields =>
     setCamper(c => ({...c, data: {...c.data, ...changedFields}}))
@@ -47,6 +64,31 @@ const GroupForm = () => {
 
     if (!camper.data.lastName.value) {
       openNotification('error', 'The last name is required.')
+      return
+    }
+
+    let customError = false
+
+    customFields.results
+      .filter(x => x.required)
+      .some(customField => {
+        const field = camper.data.camperCustomFields.find(
+          x => x.customFieldId === customField.id,
+        )
+
+        if (!field || !field.value) {
+          customError = true
+          openNotification(
+            'error',
+            `The field "${customField.name}" is required.`,
+          )
+          return true
+        }
+
+        return false
+      })
+
+    if (customError) {
       return
     }
 
@@ -103,10 +145,12 @@ const GroupForm = () => {
       </Row>
 
       <CamperModal
+        customFields={customFields.results || []}
         data={camper.data}
         title={(camper.data && camper.data.firstName.value) || 'New Camper'}
         visible={camper.visible}
         onCancel={handleCancel}
+        onCustomFieldsUpdate={handleCustomFieldsUpdate}
         onDelete={handleDeleteCamper}
         onFieldChange={handleFieldChange}
         onSave={handleSaveCamper}

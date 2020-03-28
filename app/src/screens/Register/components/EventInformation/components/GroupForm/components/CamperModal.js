@@ -34,8 +34,10 @@ const CamperModal = props => {
       <CamperForm
         {...props.data}
         couponsList={props.coupons}
+        customFields={props.customFields}
         clientForm
         onChange={props.onFieldChange}
+        onCustomFieldsUpdate={props.onCustomFieldsUpdate}
       />
 
       {props.data && (
@@ -60,12 +62,14 @@ const CamperModal = props => {
 }
 
 CamperModal.propTypes = {
+  customFields: PropTypes.arrayOf(PropTypes.shape({})),
   data: PropTypes.shape({}),
   title: PropTypes.string.isRequired,
   visible: PropTypes.bool.isRequired,
 
   // functions
   onCancel: PropTypes.func.isRequired,
+  onCustomFieldsUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,

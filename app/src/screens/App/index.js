@@ -98,7 +98,7 @@ const App = () => {
   }
 
   if (routeName.includes('register')) {
-    return <Register />
+    return <Register customFields={customFields} />
   }
 
   const isUnauthenticatedRoute = testUnauthenticatedRoutes()

@@ -10,8 +10,8 @@ import CamperViewWrapper from './CamperViewWrapper'
 
 import usePage from '@/helpers/hooks/usePage'
 import {camperActions as actions} from '@/actions'
-import {isFormReady, mergeFormData} from '@/helpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
+import {isFormReady, mergeFormData, openNotification} from '@/helpers'
 
 import MainContent from '@/components/MainContent'
 import {PageHeader} from '@/components/Structure'
@@ -99,6 +99,31 @@ const CamperView = props => {
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
+      let customError = false
+
+      objectsContext.customFields.results
+        .filter(x => x.required)
+        .some(customField => {
+          const field = customFieldsState.find(
+            x => x.customFieldId === customField.id,
+          )
+
+          if (!field || !field.value) {
+            customError = true
+            openNotification(
+              'error',
+              `The field "${customField.name}" is required.`,
+            )
+            return true
+          }
+
+          return false
+        })
+
+      if (customError) {
+        return
+      }
+
       camper.startLoading()
 
       const response = await actions.saveCamper(fields, customFieldsState)

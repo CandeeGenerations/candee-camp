@@ -24,6 +24,7 @@ const Payment = props => {
       eventId: registerContext.event.id,
       singleCamper: registerContext.singleCamper,
       camper: registerContext.fields,
+      camperCustomFields: registerContext.camperCustomFields,
       group: registerContext.groupFields,
       groupCampers: registerContext.groupCampers,
       paymentId,
@@ -60,7 +61,7 @@ const Payment = props => {
               loading={loading}
               size="large"
               type="primary"
-              onClick={handleRegister}
+              onClick={() => handleRegister(null)}
             >
               Confirm Registration
             </Button>

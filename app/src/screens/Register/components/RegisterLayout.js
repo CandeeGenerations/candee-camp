@@ -14,7 +14,7 @@ const SigninLayout = props => {
           paddingBottom: 50,
           textAlign: 'center',
           position: 'relative',
-          backgroundSize: 'cover',
+          backgroundSize: 'cover !important',
           background: "url('/img/signin-background-1.jpg') top right no-repeat",
 
           '&:before': {
