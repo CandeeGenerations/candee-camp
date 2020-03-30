@@ -1,13 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using CandeeCamp.API.Context;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.Models;
-using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Reclaimed.API.Context;
+using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Models;
+using Reclaimed.API.Repositories.Interfaces;
 
-namespace CandeeCamp.API.Repositories
+namespace Reclaimed.API.Repositories
 {
     public class PaymentDonationRepository : BaseRepository, IPaymentDonationRepository
     {

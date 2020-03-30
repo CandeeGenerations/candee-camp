@@ -75,7 +75,7 @@ const ResetPassword = () => {
   }
 
   return (
-    <SigninLayout title="Candee Camp">
+    <SigninLayout title="Reclaimed">
       <LoaderContext.Provider
         value={{
           spinning: loading.resetPasswordValidate,

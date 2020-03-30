@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace CandeeCamp.API.Models
+namespace Reclaimed.API.Models
 {
     public class CamperModel
     {

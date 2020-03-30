@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CandeeCamp.API.Migrations
+namespace Reclaimed.API.Migrations
 {
     public partial class deletablecustomfields : Migration
     {

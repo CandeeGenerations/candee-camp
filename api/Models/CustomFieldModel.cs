@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CandeeCamp.API.Models
+namespace Reclaimed.API.Models
 {
     public enum CustomFieldType
     {

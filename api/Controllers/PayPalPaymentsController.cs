@@ -1,12 +1,12 @@
 using System.Threading.Tasks;
-using CandeeCamp.API.Common;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.Models;
-using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Reclaimed.API.Common;
+using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Models;
+using Reclaimed.API.Repositories.Interfaces;
 
-namespace CandeeCamp.API.Controllers
+namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
     [Authorize(Policy = CampPolicies.Registrations)]

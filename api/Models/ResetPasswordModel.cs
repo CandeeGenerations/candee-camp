@@ -1,4 +1,4 @@
-namespace CandeeCamp.API.Models
+namespace Reclaimed.API.Models
 {
     public class ResetPasswordModel
     {

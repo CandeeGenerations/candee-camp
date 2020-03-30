@@ -38,7 +38,7 @@ const Signin = () => {
   }
 
   return (
-    <SigninLayout title="Candee Camp">
+    <SigninLayout title="Reclaimed">
       <SigninContent
         fields={fields}
         loading={loading}

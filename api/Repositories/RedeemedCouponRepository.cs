@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using CandeeCamp.API.Context;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Reclaimed.API.Context;
+using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Repositories.Interfaces;
 
-namespace CandeeCamp.API.Repositories
+namespace Reclaimed.API.Repositories
 {
     public class RedeemedCouponRepository : BaseRepository, IRedeemedCouponRepository
     {

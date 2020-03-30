@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode'
 
-const key = 'candee-camp-user'
+const key = 'reclaimed-user'
 
 export const setUser = (value) =>
   localStorage.setItem(key, JSON.stringify(value))

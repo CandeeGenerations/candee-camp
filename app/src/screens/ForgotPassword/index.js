@@ -29,7 +29,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <SigninLayout title="Candee Camp">
+    <SigninLayout title="Reclaimed">
       <ForgotPasswordContent
         fields={fields}
         loading={loading}

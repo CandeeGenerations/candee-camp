@@ -1,6 +1,6 @@
 using System;
 
-namespace CandeeCamp.API.ExceptionHandling
+namespace Reclaimed.API.ExceptionHandling
 {
     public static class ExceptionHelper
     {

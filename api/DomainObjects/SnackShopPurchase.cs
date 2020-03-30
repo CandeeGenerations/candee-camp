@@ -1,9 +1,8 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CandeeCamp.API.DomainObjects.Common;
+using Reclaimed.API.DomainObjects.Common;
 
-namespace CandeeCamp.API.DomainObjects
+namespace Reclaimed.API.DomainObjects
 {
     public class SnackShopPurchase : ActiveDeleted
     {

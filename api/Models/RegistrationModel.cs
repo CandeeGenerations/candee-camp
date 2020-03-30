@@ -1,7 +1,7 @@
 using System;
-using CandeeCamp.API.DomainObjects;
+using Reclaimed.API.DomainObjects;
 
-namespace CandeeCamp.API.Models
+namespace Reclaimed.API.Models
 {
     public class RegistrationModel
     {

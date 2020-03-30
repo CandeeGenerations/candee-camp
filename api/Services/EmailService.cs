@@ -6,7 +6,7 @@ using System.Text;
 
 //using EASendMail;
 
-namespace CandeeCamp.API.Services
+namespace Reclaimed.API.Services
 {
     public class EmailService
     {
@@ -15,7 +15,7 @@ namespace CandeeCamp.API.Services
             try
             {
                 string emailTemplate = null;
-                const string path = "..\\CandeeCamp.Core.Api\\EmailTemplates\\test.html";
+                const string path = "..\\Reclaimed.Core.Api\\EmailTemplates\\test.html";
                 
                 if (File.Exists(path))
                 {
