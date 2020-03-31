@@ -36,7 +36,7 @@ describe(testingUtils.formatDescribeName('Signin Content'), () => {
 
     // header displays correctly
     expect(
-      getByText('Welcome back! We are happy you like Candee Camp.'),
+      getByText('Welcome back! We are happy you like Reclaimed.'),
     ).toBeTruthy()
 
     // forgot password displays correctly

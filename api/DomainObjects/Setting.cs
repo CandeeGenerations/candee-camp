@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using CandeeCamp.API.DomainObjects.Common;
 
-namespace CandeeCamp.API.DomainObjects
+namespace Reclaimed.API.DomainObjects
 {
     public class Setting
     {

@@ -1,11 +1,5 @@
 using System;
 using System.Text;
-using CandeeCamp.API.Common;
-using CandeeCamp.API.Context;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.ExceptionHandling;
-using CandeeCamp.API.Repositories;
-using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -17,8 +11,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Reclaimed.API.Common;
+using Reclaimed.API.Context;
+using Reclaimed.API.ExceptionHandling;
+using Reclaimed.API.Repositories;
+using Reclaimed.API.Repositories.Interfaces;
 
-namespace CandeeCamp.API
+namespace Reclaimed.API
 {
     public class Startup
     {

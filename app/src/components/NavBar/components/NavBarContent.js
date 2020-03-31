@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import {Icon, Layout, Menu} from 'antd'
 import {useRoute} from 'react-router5'
 
+import logo from '@/content/images/logo.png'
 import {NavItem} from '@/components/Navigation'
 
 const NavBarContent = (props) => {
@@ -37,7 +38,11 @@ const NavBarContent = (props) => {
           title="Dashboard"
         >
           <NavItem options={{reload: true}} routeName="dashboard">
-            CC
+            <img
+              alt="Reclaimed Logo"
+              css={{marginLeft: -8, maxHeight: 45}}
+              src={logo}
+            />
           </NavItem>
         </Menu.Item>
       </Menu>
@@ -83,7 +88,7 @@ const NavBarContent = (props) => {
                         content: '';
                         height: 19px;
                         position: absolute;
-                        background-color: #2a363e;
+                        background-color: #021802;
                         border-bottom-right-radius: 20px;
                       }
                     `}
@@ -94,9 +99,9 @@ const NavBarContent = (props) => {
                           bottom: -9px;
                           width: 22px;
                           content: '';
-                          height: 19px;
+                          height: 20px;
                           position: absolute;
-                          background-color: #2a363e;
+                          background-color: #021802;
                           border-top-right-radius: 20px;
                         }
                       `}

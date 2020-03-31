@@ -1,6 +1,6 @@
-using CandeeCamp.API.Common;
+using Reclaimed.API.Common;
 
-namespace CandeeCamp.API.Models
+namespace Reclaimed.API.Models
 {
     public class SettingModel
     {

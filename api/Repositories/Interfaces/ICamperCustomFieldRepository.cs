@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CandeeCamp.API.DomainObjects;
+using Reclaimed.API.DomainObjects;
 
-namespace CandeeCamp.API.Repositories.Interfaces
+namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ICamperCustomFieldRepository
     {

@@ -32,9 +32,6 @@ describe(testingUtils.formatDescribeName('Nav Bar Content'), () => {
     )
 
     /* Assertions */
-    // displays correctly
-    expect(getByText(/CC/)).toBeTruthy()
-
     // nav links exist
     navItems.forEach((item) =>
       expect(getByText(new RegExp(item.name))).toBeTruthy(),

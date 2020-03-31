@@ -1,6 +1,6 @@
-using CandeeCamp.API.DomainObjects.Common;
+using Reclaimed.API.DomainObjects.Common;
 
-namespace CandeeCamp.API.DomainObjects
+namespace Reclaimed.API.DomainObjects
 {
     public class AuthClient : PrimaryId
     {

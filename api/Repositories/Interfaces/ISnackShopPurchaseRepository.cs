@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.Models;
+using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Models;
 
-namespace CandeeCamp.API.Repositories.Interfaces
+namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ISnackShopPurchaseRepository
     {

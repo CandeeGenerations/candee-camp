@@ -1,4 +1,4 @@
-namespace CandeeCamp.API.Common
+namespace Reclaimed.API.Common
 {
     public class CampPolicies
     {

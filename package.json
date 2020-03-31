@@ -1,7 +1,7 @@
 {
-  "name": "candee-camp",
+  "name": "reclaimed-app",
   "version": "0.1.0",
-  "description": "Candee Camp Software",
+  "description": "Reclaimed App",
   "keywords": [
     "candee",
     "generations",
@@ -21,14 +21,6 @@
     }
   ],
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/CandeeGenerations/candee-camp"
-  },
-  "bugs": {
-    "url": "https://github.com/CandeeGenerations/candee-camp/issues",
-    "email": "tyler@candeegenerations.com"
-  },
   "scripts": {
     "bootstrap": "yarn install && lerna bootstrap"
   },

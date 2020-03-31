@@ -1,10 +1,7 @@
-using System;
-using CandeeCamp.API.Common;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Reclaimed.API.DomainObjects;
 
-namespace CandeeCamp.API.Context
+namespace Reclaimed.API.Context
 {
     public class CampContext : DbContext
     {

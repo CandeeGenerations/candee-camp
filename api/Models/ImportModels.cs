@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CandeeCamp.API.Models
+namespace Reclaimed.API.Models
 {
     public enum ImportType
     {

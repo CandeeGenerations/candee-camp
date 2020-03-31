@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: app/Dockerfile.dev
-    image: candee_camp_app
+    image: reclaimed_app
     volumes:
       - ./app:/usr/src/app
     ports:
@@ -15,7 +15,7 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
-    image: candee_camp_api
+    image: reclaimed_api
     volumes:
       - ./api:/usr/src/api
     ports:

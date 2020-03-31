@@ -1,6 +1,6 @@
 using System;
 
-namespace CandeeCamp.API.Models
+namespace Reclaimed.API.Models
 {
     public enum PaymentType {
         Payment = 0,

@@ -1,9 +1,9 @@
 <div align="center">
-<h1>Candee Camp</h1>
+<h1>Reclaimed App</h1>
 
-<img src="https://emojipedia-us.s3.amazonaws.com/thumbs/320/apple/129/camping_1f3d5.png" style="max-width: 96px;" />
+<img src="https://candeecamp.blob.core.windows.net/images/logo-colored.png" style="max-width: 300px;" />
 
-<h3>Church camp system.</h3>
+<h3>Personalized Software for your Camp!</h3>
 </div>
 
 <hr />
@@ -20,8 +20,7 @@
 
 ## Description
 
-This system is built to help church camps better manage
-their camps, events, campers, registrations, etc.
+Reclaimed is an app for your camp! Manage everything from events, to campers, to cabins in Reclaimed.
 
 This project is built with React and .NET Core.
 
@@ -61,11 +60,3 @@ REACT_APP_PAYPAL_SCRIPT_URL=https://www.paypal.com/sdk/js?client-id=
 REACT_APP_LOADING_BAR_ENABLED=false
 
 ```
-
-## Contributors
-
-Thanks goes to these people:
-
-| [<img src="https://avatars2.githubusercontent.com/u/39174127" width="100px;"/><br /><sub><b>Tyler Candee</b></sub>](https://candeegenerations.com)<br />[💻](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Code") [📖](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Documentation") [⚠️](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Tests") | [<img src="https://avatars2.githubusercontent.com/u/10689559" width="100px;"/><br /><sub><b>Glenn Stegall</b></sub>](http://github.com/darklordimperatus)<br />[💻](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Code") [📖](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Documentation") [⚠️](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Tests") |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-

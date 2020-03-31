@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace CandeeCamp.API
+namespace Reclaimed.API
 {
     public class Program
     {
