@@ -182,7 +182,7 @@ const App = () => {
       </div>
     </>
   ) : (
-    <Layout css={{backgroundColor: '#2a363e', margin: '0 10px'}}>
+    <Layout css={{backgroundColor: '#021802', margin: '0 10px'}}>
       <NavBar />
 
       <Layout css={{borderRadius: 20, margin: '10px 10px 10px 0'}}>

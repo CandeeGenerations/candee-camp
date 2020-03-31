@@ -60,7 +60,7 @@ const SigninLayout = (props) => {
           zIndex: 0,
           width: '40%',
           position: 'absolute',
-          backgroundColor: '#f0f5f9',
+          backgroundColor: '#E9F1EF',
 
           '@media screen and (max-width: 1095px)': {
             display: 'none',
@@ -75,7 +75,7 @@ const SigninLayout = (props) => {
             fontSize: 80,
             marginTop: -60,
             fontWeight: 700,
-            color: '#9ebedb',
+            color: '#a1cec9',
             position: 'absolute',
             textTransform: 'uppercase',
             transform: 'rotate(-90deg)',

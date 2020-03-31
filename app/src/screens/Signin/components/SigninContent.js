@@ -20,7 +20,7 @@ const SigninContent = (props) => {
       <h1
         css={{
           fontSize: 60,
-          color: '#085eb0',
+          color: '#60dbcc',
           margin: '20px 0',
           textAlign: 'center',
           fontFamily: "'Comfortaa', sans-serif",
