@@ -14,10 +14,11 @@ const ForgotPasswordContent = (props) => (
     <h1
       css={{
         fontSize: 40,
+        fontWeight: 300,
         color: '#60dbcc',
         margin: '20px 0',
         textAlign: 'center',
-        fontFamily: "'Comfortaa', sans-serif",
+        fontFamily: "'Montserrat', sans-serif",
       }}
     >
       Forgot your password?

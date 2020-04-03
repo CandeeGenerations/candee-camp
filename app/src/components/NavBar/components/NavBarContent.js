@@ -28,7 +28,7 @@ const NavBarContent = (props) => {
               marginLeft: -8,
               textTransform: 'uppercase',
               color: '#f3f3f4 !important',
-              fontFamily: "'Comfortaa', sans-serif",
+              fontFamily: "'Montserrat', sans-serif",
 
               '&:focus, &:active': {
                 textDecoration: 'none',
