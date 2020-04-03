@@ -16,12 +16,13 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<SnackShopPurchase>> GetSnackShopPurchases(int sourceId,
+        public async Task<IEnumerable<SnackShopPurchase>> GetSnackShopPurchases(int portalId, int sourceId,
             SnackShopPurchaseSource source)
         {
             IQueryable<SnackShopPurchase> snackShopPurchases =
                 Context.SnackShopPurchases.Where(x =>
-                    !x.IsDeleted && x.IsActive && x.SnackShopItem.IsActive && !x.SnackShopItem.IsDeleted);
+                    x.PortalId == portalId && !x.IsDeleted && x.IsActive && x.SnackShopItem.IsActive &&
+                    !x.SnackShopItem.IsDeleted);
 
             snackShopPurchases = source switch
             {
@@ -33,12 +34,14 @@ namespace Reclaimed.API.Repositories
             return await snackShopPurchases.ToListAsync();
         }
 
-        public async Task<SnackShopPurchase> GetSnackShopPurchaseById(int sourceId, int snackShopPurchaseId,
+        public async Task<SnackShopPurchase> GetSnackShopPurchaseById(int portalId, int sourceId,
+            int snackShopPurchaseId,
             SnackShopPurchaseSource source)
         {
             IQueryable<SnackShopPurchase> snackShopPurchaseQuery =
                 Context.SnackShopPurchases.Where(x =>
-                    !x.IsDeleted && x.IsActive && x.Id == snackShopPurchaseId && x.SnackShopItem.IsActive &&
+                    x.PortalId == portalId && !x.IsDeleted && x.IsActive && x.Id == snackShopPurchaseId &&
+                    x.SnackShopItem.IsActive &&
                     !x.SnackShopItem.IsDeleted);
 
             snackShopPurchaseQuery = source switch
@@ -58,11 +61,13 @@ namespace Reclaimed.API.Repositories
             return snackShopPurchase;
         }
 
-        public async Task<SnackShopPurchase> CreateSnackShopPurchase(int sourceId, SnackShopPurchaseSource source,
+        public async Task<SnackShopPurchase> CreateSnackShopPurchase(int portalId, int sourceId,
+            SnackShopPurchaseSource source,
             SnackShopPurchaseModel snackShopPurchase)
         {
             SnackShopPurchase newSnackShopPurchase = new SnackShopPurchase
             {
+                PortalId = portalId,
                 PurchasedPrice = snackShopPurchase.PurchasedPrice,
                 PurchasedDate = DateTimeOffset.Now,
                 IsActive = true,
@@ -91,11 +96,12 @@ namespace Reclaimed.API.Repositories
             return newSnackShopPurchase;
         }
 
-        public async Task<SnackShopPurchase> UpdateSnackShopPurchase(int sourceId, int snackShopPurchaseId,
+        public async Task<SnackShopPurchase> UpdateSnackShopPurchase(int portalId, int sourceId,
+            int snackShopPurchaseId,
             SnackShopPurchaseSource source, SnackShopPurchaseModel snackShopPurchase)
         {
             SnackShopPurchase dbSnackShopPurchase =
-                await GetSnackShopPurchaseById(sourceId, snackShopPurchaseId, source);
+                await GetSnackShopPurchaseById(portalId, sourceId, snackShopPurchaseId, source);
 
             dbSnackShopPurchase.PurchasedDate = DateTimeOffset.Now;
             dbSnackShopPurchase.PurchasedPrice = snackShopPurchase.PurchasedPrice;
@@ -120,10 +126,11 @@ namespace Reclaimed.API.Repositories
             return dbSnackShopPurchase;
         }
 
-        public async Task DeleteSnackShopPurchase(int sourceId, int snackShopPurchaseId, SnackShopPurchaseSource source)
+        public async Task DeleteSnackShopPurchase(int portalId, int sourceId, int snackShopPurchaseId,
+            SnackShopPurchaseSource source)
         {
             SnackShopPurchase dbSnackShopPurchase =
-                await GetSnackShopPurchaseById(sourceId, snackShopPurchaseId, source);
+                await GetSnackShopPurchaseById(portalId, sourceId, snackShopPurchaseId, source);
 
             dbSnackShopPurchase.IsActive = false;
             dbSnackShopPurchase.IsDeleted = true;

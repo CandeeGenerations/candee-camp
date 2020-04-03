@@ -17,12 +17,12 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<User>> GetUsers() =>
-            await Context.Users.Where(x => !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<User>> GetUsers(int portalId) =>
+            await Context.Users.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
 
         private async Task<User> GetUserByEmail(string emailAddress) =>
             await Context.Users.FirstOrDefaultAsync(x => x.EmailAddress == emailAddress && !x.IsDeleted);
-        
+
         public async Task<User> GetUserById(int userId)
         {
             User dbUser = await Context.Users.FirstOrDefaultAsync(x => x.Id == userId && !x.IsDeleted);
@@ -35,7 +35,20 @@ namespace Reclaimed.API.Repositories
             return dbUser;
         }
 
-        public async Task<User> CreateUser(NewUserModel user)
+        public async Task<User> GetUserByIdPortalId(int portalId, int userId)
+        {
+            User dbUser =
+                await Context.Users.FirstOrDefaultAsync(x => x.PortalId == portalId && x.Id == userId && !x.IsDeleted);
+
+            if (dbUser == null)
+            {
+                throw new Exception("This user does not exist.");
+            }
+
+            return dbUser;
+        }
+
+        public async Task<User> CreateUser(int portalId, NewUserModel user)
         {
             User dbUser = await GetUserByEmail(user.EmailAddress);
 
@@ -43,11 +56,12 @@ namespace Reclaimed.API.Repositories
             {
                 throw new Exception("This user already exists.");
             }
-            
+
             string salt = Helpers.CreateUniqueString(64);
-            
+
             User newUser = new User
             {
+                PortalId = portalId,
                 FirstName = user.FirstName.Trim(),
                 LastName = user.LastName.Trim(),
                 EmailAddress = user.EmailAddress.Trim(),
@@ -80,11 +94,11 @@ namespace Reclaimed.API.Repositories
             {
                 throw new Exception("The email address or password is incorrect.");
             }
-            
+
             dbUser.LastLoggedInDate = DateTimeOffset.Now;
 
             await Context.SaveChangesAsync();
-                
+
             return dbUser;
         }
 
@@ -96,12 +110,12 @@ namespace Reclaimed.API.Repositories
             {
                 return;
             }
-            
+
             string token = Helpers.CreateUniqueString(24, Helpers.CharactersLibrary.ALPHANUMERIC_CAPITAL_LOWER);
 
             dbUser.ResetPasswordToken = token;
             dbUser.ResetPasswordExpirationDate = DateTimeOffset.UtcNow.AddMinutes(10);
-            
+
             // TODO : Send email
 
             await Context.SaveChangesAsync();
@@ -127,7 +141,7 @@ namespace Reclaimed.API.Repositories
             {
                 throw new Exception("This reset password token is invalid or has expired. Please try again later.");
             }
-            
+
             string salt = Helpers.CreateUniqueString(64);
 
             dbUser.UpdatedDate = DateTimeOffset.Now;
@@ -141,14 +155,14 @@ namespace Reclaimed.API.Repositories
             return dbUser;
         }
 
-        public async Task<User> ChangePassword(int userId, string newPassword)
+        public async Task<User> ChangePassword(int portalId, int userId, string newPassword)
         {
             if (string.IsNullOrWhiteSpace(newPassword))
             {
                 throw new Exception("The new password field is required.");
             }
 
-            User dbUser = await GetUserById(userId);
+            User dbUser = await GetUserByIdPortalId(portalId, userId);
             string salt = Helpers.CreateUniqueString(64);
 
             dbUser.UpdatedDate = DateTimeOffset.Now;
@@ -160,9 +174,9 @@ namespace Reclaimed.API.Repositories
             return dbUser;
         }
 
-        public async Task DeleteUser(int userId)
+        public async Task DeleteUser(int portalId, int userId)
         {
-            User dbUser = await GetUserById(userId);
+            User dbUser = await GetUserByIdPortalId(portalId, userId);
 
             dbUser.IsActive = false;
             dbUser.IsDeleted = true;
@@ -170,9 +184,9 @@ namespace Reclaimed.API.Repositories
             await Context.SaveChangesAsync();
         }
 
-        public async Task<User> UpdateUser(int userId, UserModel user)
+        public async Task<User> UpdateUser(int portalId, int userId, UserModel user)
         {
-            User dbUser = await GetUserById(userId);
+            User dbUser = await GetUserByIdPortalId(portalId, userId);
 
             dbUser.FirstName = user.FirstName.Trim();
             dbUser.LastName = user.LastName.Trim();
@@ -185,16 +199,16 @@ namespace Reclaimed.API.Repositories
             return dbUser;
         }
 
-        public async Task<IEnumerable<User>> GetUsersByIds(IEnumerable<int> userIds)
+        public async Task<IEnumerable<User>> GetUsersByIds(int portalId, IEnumerable<int> userIds)
         {
             int[] userIdsArray = userIds as int[] ?? userIds.ToArray();
-            
+
             if (!userIdsArray.Any())
             {
                 throw new Exception("No user IDs detected.");
             }
-            
-            return await Context.Users.Where(u => userIdsArray.Contains(u.Id)).ToListAsync();
+
+            return await Context.Users.Where(u => u.PortalId == portalId && userIdsArray.Contains(u.Id)).ToListAsync();
         }
     }
 }

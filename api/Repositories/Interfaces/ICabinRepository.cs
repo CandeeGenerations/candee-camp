@@ -7,11 +7,11 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ICabinRepository
     {
-        Task<IEnumerable<Cabin>> GetCabins();
-        Task<Cabin> GetCabinById(int cabinId);
-        Task<IEnumerable<Cabin>> GetCabinsByName(string name);
-        Task<Cabin> CreateCabin(CabinModel cabin);
-        Task DeleteCabin(int cabinId);
-        Task<Cabin> UpdateCabin(int cabinId, CabinModel cabin);
+        Task<IEnumerable<Cabin>> GetCabins(int portalId);
+        Task<Cabin> GetCabinById(int portalId, int cabinId);
+        Task<IEnumerable<Cabin>> GetCabinsByName(int portalId, string name);
+        Task<Cabin> CreateCabin(int portalId, CabinModel cabin);
+        Task DeleteCabin(int portalId, int cabinId);
+        Task<Cabin> UpdateCabin(int portalId, int cabinId, CabinModel cabin);
     }
 }

@@ -58,6 +58,11 @@ namespace Reclaimed.API.DomainObjects
 
         [ForeignKey("Id")]
         public virtual Counselor Counselor { get; set; }
+        
+        public int PortalId { get; set; }
+
+        [ForeignKey("Id")]
+        public virtual Portal Portal { get; set; }
     }
 
     public class AdjustedCamper : Camper

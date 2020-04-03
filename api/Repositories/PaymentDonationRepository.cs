@@ -14,10 +14,11 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<Payment_Donation> GetPaymentDonationById(int paymentDonationId)
+        public async Task<Payment_Donation> GetPaymentDonationById(int portalId, int paymentDonationId)
         {
             Payment_Donation dbPaymentDonation =
-                await Context.Payments_Donations.FirstOrDefaultAsync(x => x.Id == paymentDonationId && !x.IsDeleted);
+                await Context.Payments_Donations.FirstOrDefaultAsync(x =>
+                    x.PortalId == portalId && x.Id == paymentDonationId && !x.IsDeleted);
 
             if (dbPaymentDonation == null)
             {
@@ -27,10 +28,11 @@ namespace Reclaimed.API.Repositories
             return dbPaymentDonation;
         }
 
-        public async Task<Payment_Donation> CreatePaymentDonation(PaymentDonationModel paymentDonation)
+        public async Task<Payment_Donation> CreatePaymentDonation(int portalId, PaymentDonationModel paymentDonation)
         {
             Payment_Donation newPaymentDonation = new Payment_Donation
             {
+                PortalId = portalId,
                 Amount = paymentDonation.Amount,
                 Processor = Enum.GetName(typeof(PaymentProcessor), paymentDonation.Processor),
                 Type = Enum.GetName(typeof(PaymentType), paymentDonation.Type),
@@ -45,10 +47,10 @@ namespace Reclaimed.API.Repositories
             return newPaymentDonation;
         }
 
-        public async Task<Payment_Donation> UpdatePaymentDonation(int paymentDonationId,
+        public async Task<Payment_Donation> UpdatePaymentDonation(int portalId, int paymentDonationId,
             PaymentDonationModel paymentDonation)
         {
-            Payment_Donation dbPaymentDonation = await GetPaymentDonationById(paymentDonationId);
+            Payment_Donation dbPaymentDonation = await GetPaymentDonationById(portalId, paymentDonationId);
 
             dbPaymentDonation.Amount = paymentDonation.Amount;
             dbPaymentDonation.Processor = Enum.GetName(typeof(PaymentProcessor), paymentDonation.Processor);

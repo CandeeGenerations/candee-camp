@@ -7,12 +7,12 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ICouponRepository
     {
-        Task<IEnumerable<Coupon>> GetCoupons();
-        Task<Coupon> GetCouponById(int couponId);
-        Task<IEnumerable<Coupon>> GetCouponsByName(string name);
-        Task<IEnumerable<Coupon>> GetCouponsByCode(string code);
-        Task<Coupon> CreateCoupon(CouponModel coupon);
-        Task DeleteCoupon(int couponId);
-        Task<Coupon> UpdateCoupon(int couponId, CouponModel coupon);
+        Task<IEnumerable<Coupon>> GetCoupons(int portalId);
+        Task<Coupon> GetCouponById(int portalId, int couponId);
+        Task<IEnumerable<Coupon>> GetCouponsByName(int portalId, string name);
+        Task<IEnumerable<Coupon>> GetCouponsByCode(int portalId, string code);
+        Task<Coupon> CreateCoupon(int portalId, CouponModel coupon);
+        Task DeleteCoupon(int portalId, int couponId);
+        Task<Coupon> UpdateCoupon(int portalId, int couponId, CouponModel coupon);
     }
 }

@@ -16,28 +16,30 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Event>> GetEvents() =>
-            await Context.Events.Where(x => !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Event>> GetEvents(int portalId) =>
+            await Context.Events.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
 
-        public async Task<IEnumerable<Event>> GetEventsByIds(IEnumerable<int> eventIds)
+        public async Task<IEnumerable<Event>> GetEventsByIds(int portalId, IEnumerable<int> eventIds)
         {
             int[] eventIdsArray = eventIds as int[] ?? eventIds.ToArray();
-            
+
             if (!eventIdsArray.Any())
             {
                 throw new Exception("No event IDs detected.");
             }
-            
-            return await Context.Events.Where(e => eventIdsArray.Contains(e.Id)).ToListAsync();
+
+            return await Context.Events.Where(e => e.PortalId == portalId && eventIdsArray.Contains(e.Id))
+                .ToListAsync();
         }
 
-        public async Task<IEnumerable<Event>> GetEventsForRegistration(int? currentEventId)
+        public async Task<IEnumerable<Event>> GetEventsForRegistration(int portalId, int? currentEventId)
         {
             Event currentEvent = null;
-            
+
             if (currentEventId != null)
             {
-                currentEvent = await Context.Events.Where(e => e.Id == currentEventId.Value).FirstOrDefaultAsync();
+                currentEvent = await Context.Events.Where(e => e.PortalId == portalId && e.Id == currentEventId.Value)
+                    .FirstOrDefaultAsync();
 
                 if (currentEvent == null)
                 {
@@ -46,7 +48,8 @@ namespace Reclaimed.API.Repositories
             }
 
             List<Event> events = await Context.Events
-                .Where(e => e.IsActive && !e.IsDeleted && e.StartDate > DateTimeOffset.Now).ToListAsync();
+                .Where(e => e.PortalId == portalId && e.IsActive && !e.IsDeleted && e.StartDate > DateTimeOffset.Now)
+                .ToListAsync();
 
             if (currentEvent == null)
             {
@@ -55,12 +58,14 @@ namespace Reclaimed.API.Repositories
 
             bool alreadyExists = events.Any(x => x.Id == currentEvent.Id);
 
-            return alreadyExists ? events : new [] {currentEvent}.Concat(events);
+            return alreadyExists ? events : new[] {currentEvent}.Concat(events);
         }
 
-        public async Task<Event> GetEventById(int eventId)
+        public async Task<Event> GetEventById(int portalId, int eventId)
         {
-            Event dbEvent = await Context.Events.FirstOrDefaultAsync(x => x.Id == eventId && !x.IsDeleted);
+            Event dbEvent =
+                await Context.Events.FirstOrDefaultAsync(x =>
+                    x.PortalId == portalId && x.Id == eventId && !x.IsDeleted);
 
             if (dbEvent == null)
             {
@@ -70,7 +75,7 @@ namespace Reclaimed.API.Repositories
             return dbEvent;
         }
 
-        public async Task<Event> CreateEvent(EventModel incomingEvent)
+        public async Task<Event> CreateEvent(int portalId, EventModel incomingEvent)
         {
             if (incomingEvent.StartDate == DateTimeOffset.MinValue || incomingEvent.EndDate == DateTimeOffset.MinValue)
             {
@@ -84,6 +89,7 @@ namespace Reclaimed.API.Repositories
 
             Event newEvent = new Event()
             {
+                PortalId = portalId,
                 Name = incomingEvent.Name.Trim(),
                 Cost = incomingEvent.Cost,
                 CreatedBy = incomingEvent.CreatedBy,
@@ -94,14 +100,14 @@ namespace Reclaimed.API.Repositories
                 StartDate = incomingEvent.StartDate,
                 UpdatedDate = DateTimeOffset.Now
             };
-            
+
             await Context.Events.AddAsync(newEvent);
             await Context.SaveChangesAsync();
-            
+
             return newEvent;
         }
 
-        public async Task<Event> UpdateEvent(int eventId, EventModel incomingEvent)
+        public async Task<Event> UpdateEvent(int portalId, int eventId, EventModel incomingEvent)
         {
             if (incomingEvent.StartDate == DateTimeOffset.MinValue ||
                 incomingEvent.EndDate == DateTimeOffset.MinValue)
@@ -114,26 +120,26 @@ namespace Reclaimed.API.Repositories
                 throw new Exception("The Start Date must occur before the End Date.");
             }
 
-            Event dbEvent = await GetEventById(eventId);
+            Event dbEvent = await GetEventById(portalId, eventId);
 
             dbEvent.Name = incomingEvent.Name.Trim();
             dbEvent.Cost = incomingEvent.Cost;
             dbEvent.StartDate = incomingEvent.StartDate;
             dbEvent.EndDate = incomingEvent.EndDate;
             dbEvent.UpdatedDate = DateTimeOffset.UtcNow;
-            
+
             await Context.SaveChangesAsync();
 
             return dbEvent;
         }
 
-        public async Task DeleteEvent(int eventId)
+        public async Task DeleteEvent(int portalId, int eventId)
         {
-            Event dbEvent = await GetEventById(eventId);
+            Event dbEvent = await GetEventById(portalId, eventId);
 
             dbEvent.IsActive = false;
             dbEvent.IsDeleted = true;
-            
+
             await Context.SaveChangesAsync();
         }
     }

@@ -16,12 +16,14 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Coupon>> GetCoupons() =>
-            await Context.Coupons.Where(x => !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Coupon>> GetCoupons(int portalId) =>
+            await Context.Coupons.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
 
-        public async Task<Coupon> GetCouponById(int couponId)
+        public async Task<Coupon> GetCouponById(int portalId, int couponId)
         {
-            Coupon dbCoupon = await Context.Coupons.FirstOrDefaultAsync(x => x.Id == couponId && !x.IsDeleted);
+            Coupon dbCoupon =
+                await Context.Coupons.FirstOrDefaultAsync(x =>
+                    x.PortalId == portalId && x.Id == couponId && !x.IsDeleted);
 
             if (dbCoupon == null)
             {
@@ -31,24 +33,26 @@ namespace Reclaimed.API.Repositories
             return dbCoupon;
         }
 
-        public async Task<IEnumerable<Coupon>> GetCouponsByName(string name) => await Context.Coupons
-            .Where(x => !x.IsDeleted && string.Equals(x.Name, name.Trim(), StringComparison.CurrentCultureIgnoreCase))
+        public async Task<IEnumerable<Coupon>> GetCouponsByName(int portalId, string name) => await Context.Coupons
+            .Where(x => x.PortalId == portalId && !x.IsDeleted &&
+                        string.Equals(x.Name, name.Trim(), StringComparison.CurrentCultureIgnoreCase))
             .ToListAsync();
 
-        public async Task<IEnumerable<Coupon>> GetCouponsByCode(string code) => await Context.Coupons
-            .Where(x => !x.IsDeleted && string.Equals(x.Code, code.Trim(), StringComparison.CurrentCultureIgnoreCase))
+        public async Task<IEnumerable<Coupon>> GetCouponsByCode(int portalId, string code) => await Context.Coupons
+            .Where(x => x.PortalId == portalId && !x.IsDeleted &&
+                        string.Equals(x.Code, code.Trim(), StringComparison.CurrentCultureIgnoreCase))
             .ToListAsync();
 
-        public async Task<Coupon> CreateCoupon(CouponModel coupon)
+        public async Task<Coupon> CreateCoupon(int portalId, CouponModel coupon)
         {
-            IEnumerable<Coupon> existingCoupons = await GetCouponsByName(coupon.Name);
+            IEnumerable<Coupon> existingCoupons = await GetCouponsByName(portalId, coupon.Name);
 
             if (existingCoupons.Any())
             {
                 throw new Exception("This coupon already exists. Please use another name.");
             }
-            
-            existingCoupons = await GetCouponsByCode(coupon.Code);
+
+            existingCoupons = await GetCouponsByCode(portalId, coupon.Code);
 
             if (existingCoupons.Any())
             {
@@ -57,6 +61,7 @@ namespace Reclaimed.API.Repositories
 
             Coupon newCoupon = new Coupon
             {
+                PortalId = portalId,
                 Name = coupon.Name.Trim(),
                 Code = coupon.Code.Trim(),
                 CreatedBy = coupon.CreatedBy,
@@ -73,9 +78,9 @@ namespace Reclaimed.API.Repositories
             return newCoupon;
         }
 
-        public async Task DeleteCoupon(int couponId)
+        public async Task DeleteCoupon(int portalId, int couponId)
         {
-            Coupon dbCoupon = await GetCouponById(couponId);
+            Coupon dbCoupon = await GetCouponById(portalId, couponId);
 
             dbCoupon.IsActive = false;
             dbCoupon.IsDeleted = true;
@@ -83,13 +88,13 @@ namespace Reclaimed.API.Repositories
             await Context.SaveChangesAsync();
         }
 
-        public async Task<Coupon> UpdateCoupon(int couponId, CouponModel coupon)
+        public async Task<Coupon> UpdateCoupon(int portalId, int couponId, CouponModel coupon)
         {
-            Coupon dbCoupon = await GetCouponById(couponId);
+            Coupon dbCoupon = await GetCouponById(portalId, couponId);
 
             if (!string.Equals(dbCoupon.Name, coupon.Name.Trim(), StringComparison.CurrentCultureIgnoreCase))
             {
-                IEnumerable<Coupon> existingCoupons = await GetCouponsByName(coupon.Name);
+                IEnumerable<Coupon> existingCoupons = await GetCouponsByName(portalId, coupon.Name);
 
                 if (existingCoupons.Any())
                 {
@@ -99,7 +104,7 @@ namespace Reclaimed.API.Repositories
 
             if (!string.Equals(dbCoupon.Code, coupon.Code.Trim(), StringComparison.CurrentCultureIgnoreCase))
             {
-                IEnumerable<Coupon> existingCoupons = await GetCouponsByCode(coupon.Code);
+                IEnumerable<Coupon> existingCoupons = await GetCouponsByCode(portalId, coupon.Code);
 
                 if (existingCoupons.Any())
                 {

@@ -30,5 +30,10 @@ namespace Reclaimed.API.DomainObjects
         
         [ForeignKey("Id")]
         public virtual Registration Registration { get; set; }
+        
+        public int PortalId { get; set; }
+
+        [ForeignKey("Id")]
+        public virtual Portal Portal { get; set; }
     }
 }

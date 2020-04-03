@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Reclaimed.API.DomainObjects.Common;
 
 namespace Reclaimed.API.DomainObjects
@@ -37,5 +38,10 @@ namespace Reclaimed.API.DomainObjects
         public string ResetPasswordToken { get; set; }
 
         public DateTimeOffset? ResetPasswordExpirationDate { get; set; }
+        
+        public int PortalId { get; set; }
+
+        [ForeignKey("Id")]
+        public virtual Portal Portal { get; set; }
     }
 }

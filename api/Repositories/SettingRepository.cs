@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Reclaimed.API.Common;
@@ -16,12 +17,14 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Setting>> GetSettings() => await Context.Settings.ToListAsync();
+        public async Task<IEnumerable<Setting>> GetSettings(int portalId) =>
+            await Context.Settings.Where(x => x.PortalId == portalId).ToListAsync();
 
-        public async Task<Setting> GetSettingByKey(SettingKey key)
+        public async Task<Setting> GetSettingByKey(int portalId, SettingKey key)
         {
             Setting dbSetting =
-                await Context.Settings.FirstOrDefaultAsync(x => x.Key == Enum.GetName(typeof(SettingKey), key));
+                await Context.Settings.FirstOrDefaultAsync(x =>
+                    x.PortalId == portalId && x.Key == Enum.GetName(typeof(SettingKey), key));
 
             if (dbSetting == null)
             {
@@ -31,9 +34,9 @@ namespace Reclaimed.API.Repositories
             return dbSetting;
         }
 
-        public async Task<Setting> UpdateSetting(SettingKey key, string value)
+        public async Task<Setting> UpdateSetting(int portalId, SettingKey key, string value)
         {
-            Setting dbSetting = await GetSettingByKey(key);
+            Setting dbSetting = await GetSettingByKey(portalId, key);
 
             dbSetting.Value = value;
 
@@ -42,14 +45,14 @@ namespace Reclaimed.API.Repositories
             return dbSetting;
         }
 
-        public async Task<IEnumerable<Setting>> UpdateSettings(IEnumerable<SettingModel> settings)
+        public async Task<IEnumerable<Setting>> UpdateSettings(int portalId, IEnumerable<SettingModel> settings)
         {
             List<Setting> updatedSettings = new List<Setting>();
 
             foreach (SettingModel setting in settings)
             {
-                Setting updatedSetting = await UpdateSetting(setting.Key, setting.Value);
-                
+                Setting updatedSetting = await UpdateSetting(portalId, setting.Key, setting.Value);
+
                 updatedSettings.Add(updatedSetting);
             }
 

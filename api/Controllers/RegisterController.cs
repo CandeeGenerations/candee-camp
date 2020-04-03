@@ -12,8 +12,8 @@ using Reclaimed.API.Repositories.Interfaces;
 namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Authorize(Policy = CampPolicies.Registrations)]
-    [Route("api/[controller]")]
+    [Authorize(Policy = CampPolicies.SamePortal)]
+    [Route("api/[controller]/{portalId}")]
     [Produces("application/json")]
     public class RegisterController : Controller
     {
@@ -26,7 +26,7 @@ namespace Reclaimed.API.Controllers
         private readonly IRedeemedCouponRepository _redeemedCouponRepository;
         private readonly IPaymentDonationRepository _paymentDonationRepository;
         private readonly ICamperCustomFieldRepository _camperCustomFieldRepository;
-        
+
         public RegisterController(IGroupRepository groupRepository, IEventRepository eventRepository,
             ICamperRepository camperRepository, ICouponRepository couponRepository,
             IRegistrationRepository registrationRepository, IRedeemedCouponRepository redeemedCouponRepository,
@@ -46,74 +46,77 @@ namespace Reclaimed.API.Controllers
 
         [HttpPost("{eventId}/camper")]
         [ProducesResponseType(typeof(Registration), 200)]
-        public async Task<ActionResult<Registration>> RegisterCamper(int eventId, [FromBody] CamperOverrideModel camper)
+        public async Task<ActionResult<Registration>> RegisterCamper(int portalId, int eventId,
+            [FromBody] CamperOverrideModel camper)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
+
             try
             {
-                await ValidateCustomFields(camper.CustomFields);
+                await ValidateCustomFields(portalId, camper.CustomFields);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            Event dbEvent = await _eventRepository.GetEventById(eventId);
-            Registration dbRegistration = await Register(camper, dbEvent, camper.PaymentId);
+            Event dbEvent = await _eventRepository.GetEventById(portalId, eventId);
+            Registration dbRegistration = await Register(portalId, camper, dbEvent, camper.PaymentId);
 
             return Ok(dbRegistration);
         }
 
         [HttpPost("{eventId}/group")]
         [ProducesResponseType(typeof(IEnumerable<Registration>), 200)]
-        public async Task<ActionResult<IEnumerable<Registration>>> RegisterGroup(int eventId, [FromBody]RegisterGroupModel model)
+        public async Task<ActionResult<IEnumerable<Registration>>> RegisterGroup(int portalId, int eventId,
+            [FromBody] RegisterGroupModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
-            Event dbEvent = await _eventRepository.GetEventById(eventId);
+
+            Event dbEvent = await _eventRepository.GetEventById(portalId, eventId);
             GroupModel groupModel = new GroupModel
             {
                 Name = model.GroupName,
                 IsActive = true
             };
-            Group dbGroup = await _groupRepository.CreateGroup(groupModel);
+            Group dbGroup = await _groupRepository.CreateGroup(portalId, groupModel);
             List<Registration> registrations = new List<Registration>();
 
             foreach (CamperOverrideModel camper in model.Campers)
             {
                 try
                 {
-                    await ValidateCustomFields(camper.CustomFields);
+                    await ValidateCustomFields(portalId, camper.CustomFields);
                 }
                 catch (Exception ex)
                 {
                     return BadRequest(ex.Message);
                 }
-                
+
                 camper.GroupId = dbGroup.Id;
-                
-                Registration registration = await Register(camper, dbEvent, model.PaymentId);
-                
+
+                Registration registration = await Register(portalId, camper, dbEvent, model.PaymentId);
+
                 registrations.Add(registration);
             }
 
             return Ok(registrations);
         }
 
-        private async Task<Registration> Register(CamperOverrideModel camper, Event dbEvent, int? paymentId)
+        private async Task<Registration> Register(int portalId, CamperOverrideModel camper, Event dbEvent,
+            int? paymentId)
         {
-            Camper dbCamper = await _camperRepository.CreateCamper(camper);
-            
+            Camper dbCamper = await _camperRepository.CreateCamper(portalId, camper);
+
             if (!string.IsNullOrEmpty(camper.Coupon))
             {
-                IEnumerable<Coupon> dbCoupons = await _couponRepository.GetCouponsByCode(camper.Coupon);
+                IEnumerable<Coupon> dbCoupons = await _couponRepository.GetCouponsByCode(portalId, camper.Coupon);
                 List<Coupon> coupons = dbCoupons.ToList();
 
                 if (coupons.Any())
@@ -121,9 +124,9 @@ namespace Reclaimed.API.Controllers
                     await _redeemedCouponRepository.RedeemCoupon(coupons.First().Id, dbCamper.Id);
                 }
             }
-            
+
             await SaveCustomFields(dbCamper.Id, camper.CustomFields);
-            
+
             RegistrationModel registrationModel = new RegistrationModel
             {
                 Event = dbEvent,
@@ -132,9 +135,9 @@ namespace Reclaimed.API.Controllers
                 IsActive = true,
                 StartingBalance = camper.StartingBalance,
             };
-            
-            Registration registration = await _registrationRepository.CreateRegistration(registrationModel);
-            
+
+            Registration registration = await _registrationRepository.CreateRegistration(portalId, registrationModel);
+
             if (paymentId != null)
             {
                 await _paymentDonationRepository.AddRegistrationPayment(paymentId.Value, registration.Id);
@@ -143,13 +146,13 @@ namespace Reclaimed.API.Controllers
             return registration;
         }
 
-        private async Task ValidateCustomFields(IEnumerable<CamperCustomFieldModel> camperCustomFields)
+        private async Task ValidateCustomFields(int portalId, IEnumerable<CamperCustomFieldModel> camperCustomFields)
         {
             foreach (CamperCustomFieldModel camperCustomField in camperCustomFields.Where(x =>
                 string.IsNullOrEmpty(x.Value)))
             {
                 CustomField customField =
-                    await _customFieldRepository.GetCustomFieldById(camperCustomField.CustomFieldId);
+                    await _customFieldRepository.GetCustomFieldById(portalId, camperCustomField.CustomFieldId);
 
                 if (customField.Required)
                 {
@@ -157,7 +160,7 @@ namespace Reclaimed.API.Controllers
                 }
             }
         }
-        
+
         private async Task SaveCustomFields(int camperId, List<CamperCustomFieldModel> camperCustomFields)
         {
             if (camperCustomFields.Any())

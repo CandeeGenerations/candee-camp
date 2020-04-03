@@ -16,13 +16,14 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Registration>> GetRegistrations() =>
-            await Context.Registrations.Where(x => !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Registration>> GetRegistrations(int portalId) =>
+            await Context.Registrations.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
 
-        public async Task<Registration> GetRegistrationById(int registrationId)
+        public async Task<Registration> GetRegistrationById(int portalId, int registrationId)
         {
             Registration dbRegistration =
-                await Context.Registrations.FirstOrDefaultAsync(x => x.Id == registrationId && !x.IsDeleted);
+                await Context.Registrations.FirstOrDefaultAsync(x =>
+                    x.PortalId == portalId && x.Id == registrationId && !x.IsDeleted);
 
             if (dbRegistration == null)
             {
@@ -32,13 +33,15 @@ namespace Reclaimed.API.Repositories
             return dbRegistration;
         }
 
-        public async Task<IEnumerable<Registration>> GetRegistrationsByCamperId(int camperId) =>
-            await Context.Registrations.Where(x => !x.IsDeleted && x.CamperId == camperId).ToListAsync();
+        public async Task<IEnumerable<Registration>> GetRegistrationsByCamperId(int portalId, int camperId) =>
+            await Context.Registrations.Where(x => x.PortalId == portalId && !x.IsDeleted && x.CamperId == camperId)
+                .ToListAsync();
 
-        public async Task<IEnumerable<Registration>> GetRegistrationsByEventId(int eventId) => 
-            await Context.Registrations.Where(x => !x.IsDeleted && x.EventId == eventId).ToListAsync();
-        
-        public async Task<Registration> CreateRegistration(RegistrationModel registration)
+        public async Task<IEnumerable<Registration>> GetRegistrationsByEventId(int portalId, int eventId) =>
+            await Context.Registrations.Where(x => x.PortalId == portalId && !x.IsDeleted && x.EventId == eventId)
+                .ToListAsync();
+
+        public async Task<Registration> CreateRegistration(int portalId, RegistrationModel registration)
         {
             if (registration.Event.StartDate < DateTimeOffset.Now)
             {
@@ -53,6 +56,7 @@ namespace Reclaimed.API.Repositories
 
             Registration newRegistration = new Registration
             {
+                PortalId = portalId,
                 RegistrationDate = DateTimeOffset.Now,
                 StartingBalance = registration.StartingBalance,
                 CheckInDate = registration.CheckInDate,
@@ -69,9 +73,9 @@ namespace Reclaimed.API.Repositories
             return newRegistration;
         }
 
-        public async Task DeleteRegistration(int registrationId)
+        public async Task DeleteRegistration(int portalId, int registrationId)
         {
-            Registration dbRegistration = await GetRegistrationById(registrationId);
+            Registration dbRegistration = await GetRegistrationById(portalId, registrationId);
 
             dbRegistration.IsActive = false;
             dbRegistration.IsDeleted = true;
@@ -79,7 +83,8 @@ namespace Reclaimed.API.Repositories
             await Context.SaveChangesAsync();
         }
 
-        public async Task<Registration> UpdateRegistration(int registrationId, RegistrationModel registration)
+        public async Task<Registration> UpdateRegistration(int portalId, int registrationId,
+            RegistrationModel registration)
         {
             if (registration.Event.StartDate < DateTimeOffset.Now)
             {
@@ -92,7 +97,7 @@ namespace Reclaimed.API.Repositories
                 throw new Exception("The Check In date must be before the Check Out date.");
             }
 
-            Registration dbRegistration = await GetRegistrationById(registrationId);
+            Registration dbRegistration = await GetRegistrationById(portalId, registrationId);
 
             dbRegistration.StartingBalance = registration.StartingBalance;
             dbRegistration.CheckInDate = registration.CheckInDate;

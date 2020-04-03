@@ -8,9 +8,9 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ISettingRepository
     {
-        Task<IEnumerable<Setting>> GetSettings();
-        Task<Setting> GetSettingByKey(SettingKey key);
-        Task<Setting> UpdateSetting(SettingKey key, string value);
-        Task<IEnumerable<Setting>> UpdateSettings(IEnumerable<SettingModel> settings);
+        Task<IEnumerable<Setting>> GetSettings(int portalId);
+        Task<Setting> GetSettingByKey(int portalId, SettingKey key);
+        Task<Setting> UpdateSetting(int portalId, SettingKey key, string value);
+        Task<IEnumerable<Setting>> UpdateSettings(int portalId, IEnumerable<SettingModel> settings);
     }
 }

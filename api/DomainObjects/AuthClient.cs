@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Reclaimed.API.DomainObjects.Common;
 
 namespace Reclaimed.API.DomainObjects
@@ -11,5 +12,10 @@ namespace Reclaimed.API.DomainObjects
         public string ClientName { get; set; }
 
         public bool IsActive { get; set; }
+        
+        public int PortalId { get; set; }
+
+        [ForeignKey("Id")]
+        public virtual Portal Portal { get; set; }
     }
 }

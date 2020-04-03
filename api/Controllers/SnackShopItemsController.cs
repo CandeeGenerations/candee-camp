@@ -10,8 +10,8 @@ using Reclaimed.API.Repositories.Interfaces;
 namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Authorize(Policy = CampPolicies.Portal)]
-    [Route("api/snack-shop-items")]
+    [Authorize(Policy = CampPolicies.SamePortal)]
+    [Route("api/snack-shop-items/{portalId}")]
     [Produces("application/json")]
     public class SnackShopItemsController : Controller
     {
@@ -24,44 +24,47 @@ namespace Reclaimed.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<SnackShopItem>), 200)]
-        public async Task<ActionResult<IEnumerable<SnackShopItem>>> GetSnackShopItems()
+        public async Task<ActionResult<IEnumerable<SnackShopItem>>> GetSnackShopItems(int portalId)
         {
-            IEnumerable<SnackShopItem> snackShopItems = await _snackShopItemRepository.GetSnackShopItems();
+            IEnumerable<SnackShopItem> snackShopItems = await _snackShopItemRepository.GetSnackShopItems(portalId);
 
             return Ok(snackShopItems);
         }
 
         [HttpGet("{snackShopItemId}")]
         [ProducesResponseType(typeof(SnackShopItem), 200)]
-        public async Task<ActionResult<SnackShopItem>> GetSnackShopItem(int snackShopItemId)
+        public async Task<ActionResult<SnackShopItem>> GetSnackShopItem(int portalId, int snackShopItemId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            SnackShopItem snackShopItem = await _snackShopItemRepository.GetSnackShopItemById(snackShopItemId);
+            SnackShopItem snackShopItem =
+                await _snackShopItemRepository.GetSnackShopItemById(portalId, snackShopItemId);
 
             return Ok(snackShopItem);
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(SnackShopItem), 200)]
-        public async Task<ActionResult<SnackShopItem>> CreateSnackShopItem([FromBody] SnackShopItemModel snackShopItem)
+        public async Task<ActionResult<SnackShopItem>> CreateSnackShopItem(int portalId,
+            [FromBody] SnackShopItemModel snackShopItem)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            SnackShopItem newSnackShopItem = await _snackShopItemRepository.CreateSnackShopItem(snackShopItem);
+            SnackShopItem newSnackShopItem =
+                await _snackShopItemRepository.CreateSnackShopItem(portalId, snackShopItem);
 
             return Ok(newSnackShopItem);
         }
-        
+
         [HttpPut("{snackShopItemId}")]
         [ProducesResponseType(typeof(SnackShopItem), 200)]
-        public async Task<ActionResult<SnackShopItem>> UpdateSnackShopItem(int snackShopItemId,
+        public async Task<ActionResult<SnackShopItem>> UpdateSnackShopItem(int portalId, int snackShopItemId,
             [FromBody] SnackShopItemModel snackShopItem)
         {
             if (!ModelState.IsValid)
@@ -70,16 +73,16 @@ namespace Reclaimed.API.Controllers
             }
 
             SnackShopItem updatedSnackShopItem =
-                await _snackShopItemRepository.UpdateSnackShopItem(snackShopItemId, snackShopItem);
+                await _snackShopItemRepository.UpdateSnackShopItem(portalId, snackShopItemId, snackShopItem);
 
             return Ok(updatedSnackShopItem);
         }
 
         [HttpDelete("{snackShopItemId}")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult> DeleteSnackShopItem(int snackShopItemId)
+        public async Task<ActionResult> DeleteSnackShopItem(int portalId, int snackShopItemId)
         {
-            await _snackShopItemRepository.DeleteSnackShopItem(snackShopItemId);
+            await _snackShopItemRepository.DeleteSnackShopItem(portalId, snackShopItemId);
 
             return Ok();
         }

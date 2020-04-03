@@ -130,7 +130,7 @@ namespace Reclaimed.API.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.EmailAddress),
-                new Claim(CampPolicies.Portal, "true")
+                new Claim("portal_id", user.PortalId.ToString()),
             };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
 
@@ -142,7 +142,7 @@ namespace Reclaimed.API.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, authClient.ClientName),
-                new Claim(CampPolicies.Registrations, "true")
+                new Claim("portal_id", authClient.PortalId.ToString())
             };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
 

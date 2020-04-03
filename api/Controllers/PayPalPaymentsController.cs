@@ -9,8 +9,8 @@ using Reclaimed.API.Repositories.Interfaces;
 namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Authorize(Policy = CampPolicies.Registrations)]
-    [Route("api/payments/paypal")]
+    [Authorize(Policy = CampPolicies.SamePortal)]
+    [Route("api/payments/{portalId}/paypal")]
     [Produces("application/json")]
     public class PayPalPaymentsController : Controller
     {
@@ -26,7 +26,7 @@ namespace Reclaimed.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(PayPal_Payment), 200)]
-        public async Task<ActionResult<PayPal_Payment>> CreateGroup([FromBody]PayPalPaymentModel payment)
+        public async Task<ActionResult<PayPal_Payment>> CreateGroup(int portalId, [FromBody] PayPalPaymentModel payment)
         {
             if (!ModelState.IsValid)
             {
@@ -41,7 +41,7 @@ namespace Reclaimed.API.Controllers
             };
 
             Payment_Donation paymentDonation =
-                await _paymentDonationRepository.CreatePaymentDonation(newPaymentDonation);
+                await _paymentDonationRepository.CreatePaymentDonation(portalId, newPaymentDonation);
             PayPal_Payment payPayPayment = await _payPalPaymentRepository.CreatePayment(payment, paymentDonation.Id);
 
             return Ok(payPayPayment);

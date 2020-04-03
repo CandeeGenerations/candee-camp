@@ -7,12 +7,12 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ICustomFieldRepository
     {
-        Task<IEnumerable<CustomField>> GetCustomFields();
-        Task<CustomField> GetCustomFieldById(int customFieldId);
-        Task<IEnumerable<CustomField>> GetCustomFieldsByName(string name);
-        Task<CustomField> CreateCustomField(CustomFieldModel customField);
-        Task DeleteCustomField(int customFieldId);
-        Task<CustomField> UpdateCustomField(int customFieldId, CustomFieldModel customField);
-        Task ReorderCustomFields(int sourceId, int targetId);
+        Task<IEnumerable<CustomField>> GetCustomFields(int portalId);
+        Task<CustomField> GetCustomFieldById(int portalId, int customFieldId);
+        Task<IEnumerable<CustomField>> GetCustomFieldsByName(int portalId, string name);
+        Task<CustomField> CreateCustomField(int portalId, CustomFieldModel customField);
+        Task DeleteCustomField(int portalId, int customFieldId);
+        Task<CustomField> UpdateCustomField(int portalId, int customFieldId, CustomFieldModel customField);
+        Task ReorderCustomFields(int portalId, int sourceId, int targetId);
     }
 }

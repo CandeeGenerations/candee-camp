@@ -10,7 +10,8 @@ using Reclaimed.API.Repositories.Interfaces;
 namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Authorize(Policy = CampPolicies.SamePortal)]
+    [Route("api/[controller]/{portalId]")]
     [Produces("application/json")]
     public class SettingsController : Controller
     {
@@ -20,44 +21,40 @@ namespace Reclaimed.API.Controllers
         {
             _settingRepository = settingRepository;
         }
-        
+
         [HttpGet]
-        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(IEnumerable<Setting>), 200)]
-        public async Task<ActionResult<IEnumerable<Setting>>> GetSettings()
+        public async Task<ActionResult<IEnumerable<Setting>>> GetSettings(int portalId)
         {
-            IEnumerable<Setting> settings = await _settingRepository.GetSettings();
+            IEnumerable<Setting> settings = await _settingRepository.GetSettings(portalId);
 
             return Ok(settings);
         }
-        
+
         [HttpGet("{key}")]
-        [Authorize(Policy = CampPolicies.PortalOrRegistrations)]
         [ProducesResponseType(typeof(Setting), 200)]
-        public async Task<ActionResult<Setting>> GetSetting(SettingKey key)
+        public async Task<ActionResult<Setting>> GetSetting(int portalId, SettingKey key)
         {
-            Setting setting = await _settingRepository.GetSettingByKey(key);
+            Setting setting = await _settingRepository.GetSettingByKey(portalId, key);
 
             return Ok(setting);
         }
-        
+
         [HttpPut("{key}")]
-        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(Setting), 200)]
-        public async Task<ActionResult<Setting>> UpdateSetting(SettingKey key, string value)
+        public async Task<ActionResult<Setting>> UpdateSetting(int portalId, SettingKey key, string value)
         {
-            Setting setting = await _settingRepository.UpdateSetting(key, value);
+            Setting setting = await _settingRepository.UpdateSetting(portalId, key, value);
 
             return Ok(setting);
         }
 
         [HttpPut("multiple")]
-        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(IEnumerable<Setting>), 200)]
-        public async Task<ActionResult<IEnumerable<Setting>>> UpdateMultipleSettings(
+        public async Task<ActionResult<IEnumerable<Setting>>> UpdateMultipleSettings(int portalId,
             [FromBody] IEnumerable<SettingModel> settings)
         {
-            IEnumerable<Setting> updatedSettings = await _settingRepository.UpdateSettings(settings);
+            IEnumerable<Setting> updatedSettings = await _settingRepository.UpdateSettings(portalId, settings);
 
             return Ok(updatedSettings);
         }
