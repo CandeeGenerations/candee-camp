@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
+import moment from 'moment'
 import _maxBy from 'lodash/maxBy'
 import {Row, Col, Form, Input} from 'antd'
 import React, {useContext, useState} from 'react'
@@ -64,6 +65,21 @@ const GroupForm = () => {
 
     if (!camper.data.lastName.value) {
       openNotification('error', 'The last name is required.')
+      return
+    }
+    const {birthDate, parentFirstName, parentLastName} = camper.data
+    const currentTime = moment()
+
+    if (
+      birthDate.value &&
+      birthDate.value.isAfter(moment(currentTime).subtract(18, 'years')) &&
+      birthDate.value.isBefore(currentTime) &&
+      (!parentFirstName.value || !parentLastName.value)
+    ) {
+      openNotification(
+        'error',
+        "This parent's information is required for this minor camper.",
+      )
       return
     }
 
