@@ -7,10 +7,10 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ICounselorRepository
     {
-        Task<IEnumerable<Counselor>> GetCounselors();
-        Task<Counselor> GetCounselorById(int counselorId);
-        Task<Counselor> CreateCounselor(CounselorModel counselor);
-        Task DeleteCounselor(int counselorId);
-        Task<Counselor> UpdateCounselor(int counselorId, CounselorModel counselor);
+        Task<IEnumerable<Counselor>> GetCounselors(int portalId);
+        Task<Counselor> GetCounselorById(int portalId, int counselorId);
+        Task<Counselor> CreateCounselor(int portalId, CounselorModel counselor);
+        Task DeleteCounselor(int portalId, int counselorId);
+        Task<Counselor> UpdateCounselor(int portalId, int counselorId, CounselorModel counselor);
     }
 }

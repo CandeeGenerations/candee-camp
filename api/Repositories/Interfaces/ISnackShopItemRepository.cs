@@ -7,11 +7,11 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ISnackShopItemRepository
     {
-        Task<IEnumerable<SnackShopItem>> GetSnackShopItems();
-        Task<SnackShopItem> GetSnackShopItemById(int snackShopItemId);
-        Task<IEnumerable<SnackShopItem>> GetSnackShopItemsByName(string name);
-        Task<SnackShopItem> CreateSnackShopItem(SnackShopItemModel snackShopItem);
-        Task DeleteSnackShopItem(int snackShopItemId);
-        Task<SnackShopItem> UpdateSnackShopItem(int snackShopItemId, SnackShopItemModel snackShopItem);
+        Task<IEnumerable<SnackShopItem>> GetSnackShopItems(int portalId);
+        Task<SnackShopItem> GetSnackShopItemById(int portalId, int snackShopItemId);
+        Task<IEnumerable<SnackShopItem>> GetSnackShopItemsByName(int portalId, string name);
+        Task<SnackShopItem> CreateSnackShopItem(int portalId, SnackShopItemModel snackShopItem);
+        Task DeleteSnackShopItem(int portalId, int snackShopItemId);
+        Task<SnackShopItem> UpdateSnackShopItem(int portalId, int snackShopItemId, SnackShopItemModel snackShopItem);
     }
 }

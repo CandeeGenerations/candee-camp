@@ -8,6 +8,7 @@ namespace Reclaimed.API.Context
         public CampContext(DbContextOptions options) : base (options)
         { }
 
+        public DbSet<Portal> Portals { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
@@ -30,7 +31,14 @@ namespace Reclaimed.API.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AuthClient>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+            
+            modelBuilder.Entity<Setting>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+            
+            modelBuilder.Entity<User>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+            
             modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);
+            modelBuilder.Entity<Event>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
 
             modelBuilder.Entity<RegistrationPayment>().HasOne(r => r.Registration).WithMany().HasForeignKey(rp => rp.RegistrationId);
             modelBuilder.Entity<RegistrationPayment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(rp => rp.PaymentDonationId);
@@ -39,39 +47,51 @@ namespace Reclaimed.API.Context
             modelBuilder.Entity<UserPayment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(up => up.PaymentDonationId);
             
             modelBuilder.Entity<PayPal_Payment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(ppp => ppp.PaymentDonationId);
+            
+            modelBuilder.Entity<Payment_Donation>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
 
             modelBuilder.Entity<Registration>().HasOne(e => e.Event).WithMany().HasForeignKey(r => r.EventId);
             modelBuilder.Entity<Registration>().HasOne(ca => ca.Camper).WithMany().HasForeignKey(r => r.CamperId);
+            modelBuilder.Entity<Registration>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
 
             modelBuilder.Entity<Group>().HasOne(u => u.User).WithMany().HasForeignKey(g => g.LoginUser);
             modelBuilder.Entity<Group>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(g => g.CreatedBy);
-
+            modelBuilder.Entity<Group>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+            
             modelBuilder.Entity<RedeemedCoupon>().HasOne(co => co.Coupon).WithMany().HasForeignKey(rc => rc.CouponId);
             modelBuilder.Entity<RedeemedCoupon>().HasOne(ca => ca.Camper).WithMany().HasForeignKey(rc => rc.CamperId);
-
+            
             modelBuilder.Entity<Camper>().HasOne(u => u.User).WithMany().HasForeignKey(ca => ca.LoginUser);
             modelBuilder.Entity<Camper>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(ca => ca.CreatedBy);
             modelBuilder.Entity<Camper>().HasOne(g => g.Group).WithMany().HasForeignKey(ca => ca.GroupId);
             modelBuilder.Entity<Camper>().HasOne(cb => cb.Cabin).WithMany().HasForeignKey(ca => ca.CabinId);
             modelBuilder.Entity<Camper>().HasOne(co => co.Counselor).WithMany().HasForeignKey(ca => ca.CounselorId);
+            modelBuilder.Entity<Camper>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
 
             modelBuilder.Entity<Counselor>().HasOne(u => u.User).WithMany().HasForeignKey(co => co.UserId);
             modelBuilder.Entity<Counselor>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(co => co.CreatedBy);
             modelBuilder.Entity<Counselor>().HasOne(cb => cb.Cabin).WithMany().HasForeignKey(co => co.CabinId);
+            modelBuilder.Entity<Counselor>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
 
             modelBuilder.Entity<Cabin>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(cb => cb.CreatedBy);
+            modelBuilder.Entity<Cabin>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
             
             modelBuilder.Entity<Coupon>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(cp => cp.CreatedBy);
+            modelBuilder.Entity<Coupon>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
 
+            modelBuilder.Entity<SnackShopItem>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+            
             modelBuilder.Entity<SnackShopPurchase>().HasOne(s => s.SnackShopItem).WithMany()
                 .HasForeignKey(s => s.SnackShopItemId);
             modelBuilder.Entity<SnackShopPurchase>().HasOne(cb => cb.Camper).WithMany()
                 .HasForeignKey(co => co.CamperId);
             modelBuilder.Entity<SnackShopPurchase>().HasOne(cb => cb.Counselor).WithMany()
                 .HasForeignKey(co => co.CounselorId);
+            modelBuilder.Entity<SnackShopPurchase>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
 
             modelBuilder.Entity<CustomField>().HasOne(u => u.CreatedByUser).WithMany()
                 .HasForeignKey(cf => cf.CreatedBy);
+            modelBuilder.Entity<CustomField>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
 
             modelBuilder.Entity<CamperCustomField>().HasOne(cf => cf.CustomField).WithMany()
                 .HasForeignKey(ccf => ccf.CustomFieldId);

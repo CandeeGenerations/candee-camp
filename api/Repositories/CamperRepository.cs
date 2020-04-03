@@ -16,19 +16,21 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Camper>> GetCampers() =>
-            await Context.Campers.Where(x => !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Camper>> GetCampers(int portalId) =>
+            await Context.Campers.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
 
-        public async Task<IEnumerable<Camper>> GetCampersByGroup(int groupId) =>
-            await Context.Campers.Where(x => !x.IsDeleted && x.GroupId == groupId).ToListAsync();
-        
-        public async Task<IEnumerable<Camper>> GetCampersForRegistration(int? currentCamperId)
+        public async Task<IEnumerable<Camper>> GetCampersByGroup(int portalId, int groupId) =>
+            await Context.Campers.Where(x => x.PortalId == portalId && !x.IsDeleted && x.GroupId == groupId)
+                .ToListAsync();
+
+        public async Task<IEnumerable<Camper>> GetCampersForRegistration(int portalId, int? currentCamperId)
         {
             Camper currentCamper = null;
-            
+
             if (currentCamperId != null)
             {
-                currentCamper = await Context.Campers.Where(x => x.Id == currentCamperId.Value).FirstOrDefaultAsync();
+                currentCamper = await Context.Campers
+                    .Where(x => x.PortalId == portalId && x.Id == currentCamperId.Value).FirstOrDefaultAsync();
 
                 if (currentCamper == null)
                 {
@@ -36,7 +38,8 @@ namespace Reclaimed.API.Repositories
                 }
             }
 
-            List<Camper> campers = await Context.Campers.Where(x => x.IsActive && !x.IsDeleted).ToListAsync();
+            List<Camper> campers = await Context.Campers
+                .Where(x => x.PortalId == portalId && x.IsActive && !x.IsDeleted).ToListAsync();
 
             if (currentCamper == null)
             {
@@ -45,24 +48,27 @@ namespace Reclaimed.API.Repositories
 
             bool alreadyExists = campers.Any(x => x.Id == currentCamper.Id);
 
-            return alreadyExists ? campers : new [] {currentCamper}.Concat(campers);
+            return alreadyExists ? campers : new[] {currentCamper}.Concat(campers);
         }
 
-        public async Task<IEnumerable<Camper>> GetCampersByIds(IEnumerable<int> camperIds)
+        public async Task<IEnumerable<Camper>> GetCampersByIds(int portalId, IEnumerable<int> camperIds)
         {
             int[] camperIdsArray = camperIds as int[] ?? camperIds.ToArray();
-            
+
             if (!camperIdsArray.Any())
             {
                 throw new Exception("No camper IDs detected.");
             }
-            
-            return await Context.Campers.Where(c => camperIdsArray.Contains(c.Id)).ToListAsync();
+
+            return await Context.Campers.Where(c => c.PortalId == portalId && camperIdsArray.Contains(c.Id))
+                .ToListAsync();
         }
 
-        public async Task<Camper> GetCamperById(int camperId)
+        public async Task<Camper> GetCamperById(int portalId, int camperId)
         {
-            Camper dbCamper = await Context.Campers.FirstOrDefaultAsync(x => x.Id == camperId && !x.IsDeleted);
+            Camper dbCamper =
+                await Context.Campers.FirstOrDefaultAsync(x =>
+                    x.PortalId == portalId && x.Id == camperId && !x.IsDeleted);
 
             if (dbCamper == null)
             {
@@ -72,7 +78,7 @@ namespace Reclaimed.API.Repositories
             return dbCamper;
         }
 
-        public async Task<Camper> CreateCamper(CamperModel camper)
+        public async Task<Camper> CreateCamper(int portalId, CamperModel camper)
         {
             if (camper.IsMinor && (string.IsNullOrEmpty(camper.ParentFirstName) ||
                                    string.IsNullOrEmpty(camper.ParentLastName)))
@@ -82,6 +88,7 @@ namespace Reclaimed.API.Repositories
 
             Camper newCamper = new Camper
             {
+                PortalId = portalId,
                 FirstName = camper.FirstName.Trim(),
                 LastName = camper.LastName.Trim(),
                 BirthDate = camper.BirthDate != null
@@ -110,9 +117,9 @@ namespace Reclaimed.API.Repositories
             return newCamper;
         }
 
-        public async Task DeleteCamper(int camperId)
+        public async Task DeleteCamper(int portalId, int camperId)
         {
-            Camper dbCamper = await GetCamperById(camperId);
+            Camper dbCamper = await GetCamperById(portalId, camperId);
 
             dbCamper.IsActive = false;
             dbCamper.IsDeleted = true;
@@ -120,15 +127,15 @@ namespace Reclaimed.API.Repositories
             await Context.SaveChangesAsync();
         }
 
-        public async Task<Camper> UpdateCamper(int camperId, CamperModel camper)
+        public async Task<Camper> UpdateCamper(int portalId, int camperId, CamperModel camper)
         {
             if (camper.IsMinor && (string.IsNullOrEmpty(camper.ParentFirstName) ||
                                    string.IsNullOrEmpty(camper.ParentLastName)))
             {
                 throw new Exception("This parent's information is required for this minor camper.");
             }
-            
-            Camper dbCamper = await GetCamperById(camperId);
+
+            Camper dbCamper = await GetCamperById(portalId, camperId);
 
             dbCamper.FirstName = camper.FirstName.Trim();
             dbCamper.LastName = camper.LastName.Trim();
@@ -153,23 +160,25 @@ namespace Reclaimed.API.Repositories
             return dbCamper;
         }
 
-        public async Task UpdateGroups(int[] camperIds, int groupId)
+        public async Task UpdateGroups(int portalId, int[] camperIds, int groupId)
         {
             List<Camper> campers =
-                await Context.Campers.Where(x => camperIds.Contains(x.Id) && !x.IsDeleted).ToListAsync();
+                await Context.Campers.Where(x => x.PortalId == portalId && camperIds.Contains(x.Id) && !x.IsDeleted)
+                    .ToListAsync();
 
             campers.ForEach(x => x.GroupId = groupId);
 
             await Context.SaveChangesAsync();
         }
 
-        public async Task RemoveGroups(int groupId)
+        public async Task RemoveGroups(int portalId, int groupId)
         {
-            List<Camper> campers = await Context.Campers.Where(x => x.GroupId == groupId).ToListAsync();
+            List<Camper> campers = await Context.Campers.Where(x => x.PortalId == portalId && x.GroupId == groupId)
+                .ToListAsync();
 
             campers.ForEach(x => x.GroupId = null);
 
             await Context.SaveChangesAsync();
         }
     }
-} 
+}

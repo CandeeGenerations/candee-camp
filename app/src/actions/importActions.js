@@ -1,6 +1,6 @@
 import request from '@/api'
 import {handleError} from '@/helpers'
-import {getUserData} from '@/helpers/authHelpers'
+import {getUserData, pid} from '@/helpers/authHelpers'
 
 const mainPath = '/file'
 
@@ -25,7 +25,7 @@ export const importFile = async ({
 
     body.createdBy = user.id
 
-    const response = await request.post(`${mainPath}/import`, body)
+    const response = await request.post(pid(`${mainPath}/import`), body)
 
     return response
   } catch (error) {

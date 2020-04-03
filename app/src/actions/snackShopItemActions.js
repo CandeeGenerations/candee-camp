@@ -1,13 +1,13 @@
 import request from '../api'
 import {handleError, formDataToBody, openNotification} from '../helpers'
 
-import {getUserData} from '@/helpers/authHelpers'
+import {getUserData, pid} from '@/helpers/authHelpers'
 
 const mainPath = '/snack-shop-items'
 
 export const loadSnackShopItems = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -18,7 +18,7 @@ export const loadSnackShopItems = async () => {
 
 export const loadSnackShopItemStats = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response.data.length
   } catch (error) {
@@ -32,7 +32,7 @@ export const loadSnackShopItemStats = async () => {
 
 export const loadSnackShopItem = async (snackShopItemId) => {
   try {
-    const response = await request.get(`${mainPath}/${snackShopItemId}`)
+    const response = await request.get(pid(`${mainPath}/${snackShopItemId}`))
 
     return response
   } catch (error) {
@@ -56,11 +56,11 @@ export const saveSnackShopItem = async (snackShopItem) => {
 
     if (snackShopItem.id) {
       response = await request.put(
-        `${mainPath}/${snackShopItem.id.value}`,
+        pid(`${mainPath}/${snackShopItem.id.value}`),
         body,
       )
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(pid(mainPath), body)
     }
 
     openNotification(
@@ -79,7 +79,7 @@ export const saveSnackShopItem = async (snackShopItem) => {
 
 export const deleteSnackShopItem = async (snackShopItemId) => {
   try {
-    const response = await request.delete(`${mainPath}/${snackShopItemId}`)
+    const response = await request.delete(pid(`${mainPath}/${snackShopItemId}`))
 
     openNotification(
       'success',

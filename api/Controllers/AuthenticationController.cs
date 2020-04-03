@@ -88,11 +88,11 @@ namespace Reclaimed.API.Controllers
 
         [HttpPost("reset-password")]
         [ProducesResponseType(typeof(User), 200)]
-        public async Task<ActionResult<bool>> ResetPassword([FromBody]ResetPasswordModel model)
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordModel model)
         {
-            User user = await _userRepository.ResetPassword(model);
+            await _userRepository.ResetPassword(model);
 
-            return Ok(user);
+            return Ok();
         }
 
         [HttpGet("claims")]
@@ -130,7 +130,7 @@ namespace Reclaimed.API.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.EmailAddress),
-                new Claim(CampPolicies.Portal, "true")
+                new Claim("portal_id", user.PortalId.ToString()),
             };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
 
@@ -142,7 +142,7 @@ namespace Reclaimed.API.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, authClient.ClientName),
-                new Claim(CampPolicies.Registrations, "true")
+                new Claim("portal_id", authClient.PortalId.ToString())
             };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
 

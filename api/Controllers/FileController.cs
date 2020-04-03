@@ -17,8 +17,8 @@ namespace Reclaimed.API.Controllers
 {
     // https://github.com/shahedc/SimpleUpload
     [ApiVersion("1.0")]
-    [Authorize(Policy = CampPolicies.Portal)]
-    [Route("api/[controller]")]
+    [Authorize(Policy = CampPolicies.SamePortal)]
+    [Route("api/{portalId}/[controller]")]
     public class FileController : Controller
     {
         private readonly IConfiguration _config;
@@ -35,11 +35,12 @@ namespace Reclaimed.API.Controllers
 
         [HttpPost("upload")]
         [DisableRequestSizeLimit]
-        public async Task<IActionResult> UploadImportFile(IFormFile file, int userId, ImportType importType)
+        public async Task<IActionResult> UploadImportFile(IFormFile file, int portalId, int userId,
+            ImportType importType)
         {
             List<string> headers = new List<string>();
             BlobResponseModel blobResponseModel;
-            
+
             if (file.Length <= 0)
             {
                 return BadRequest("The file is empty.");
@@ -49,7 +50,7 @@ namespace Reclaimed.API.Controllers
             {
                 blobResponseModel =
                     await UploadToBlob(
-                        $"import-{Enum.GetName(typeof(ImportType), importType)?.ToLower()}-{(userId == -1 ? 0 : userId)}-{Guid.NewGuid()}",
+                        $"import-{Enum.GetName(typeof(ImportType), importType)?.ToLower()}-{portalId}-{(userId == -1 ? 0 : userId)}-{Guid.NewGuid()}",
                         file.FileName, stream);
             }
 
@@ -62,7 +63,7 @@ namespace Reclaimed.API.Controllers
             {
                 using StreamReader reader = new StreamReader(stream);
                 string columnHeaders = reader.ReadLine();
-                    
+
                 if (columnHeaders != null)
                 {
                     headers = columnHeaders.Split(',').ToList();
@@ -80,7 +81,7 @@ namespace Reclaimed.API.Controllers
         }
 
         [HttpPost("import")]
-        public async Task<IActionResult> ImportData([FromBody] ImportDataRequestModel model)
+        public async Task<IActionResult> ImportData(int portalId, [FromBody] ImportDataRequestModel model)
         {
             try
             {
@@ -137,8 +138,8 @@ namespace Reclaimed.API.Controllers
                                             IsActive = true
                                         };
 
-                                        await _cabinRepository.CreateCabin(cabinModel);
-                                        
+                                        await _cabinRepository.CreateCabin(portalId, cabinModel);
+
                                         break;
 
                                     case ImportType.Coupons:
@@ -150,7 +151,7 @@ namespace Reclaimed.API.Controllers
                                         {
                                             DateTimeOffset.TryParse(expirationDateValue,
                                                 out DateTimeOffset actualExpirationDate);
-                                            
+
                                             expirationDate = actualExpirationDate;
                                         }
 
@@ -163,8 +164,8 @@ namespace Reclaimed.API.Controllers
                                             IsActive = true
                                         };
 
-                                        await _couponRepository.CreateCoupon(couponModel);
-                                        
+                                        await _couponRepository.CreateCoupon(portalId, couponModel);
+
                                         break;
 
                                     default:
@@ -238,7 +239,7 @@ namespace Reclaimed.API.Controllers
 
                 return responseModel;
             }
-            
+
             try
             {
                 // Create the CloudBlobClient that represents the Blob storage endpoint for the storage account.
@@ -261,7 +262,8 @@ namespace Reclaimed.API.Controllers
                 if (stream != null)
                 {
                     await cloudBlockBlob.UploadFromStreamAsync(stream);
-                } else
+                }
+                else
                 {
                     responseModel.Successful = false;
                     responseModel.Error = "No Stream.";
@@ -279,7 +281,7 @@ namespace Reclaimed.API.Controllers
             {
                 responseModel.Successful = false;
                 responseModel.Error = ex.Message;
-                
+
                 return responseModel;
             }
         }

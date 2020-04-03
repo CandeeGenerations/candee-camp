@@ -84,11 +84,8 @@ namespace Reclaimed.API
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(CampPolicies.Portal, policy => policy.RequireClaim("Portal"));
-                options.AddPolicy(CampPolicies.Registrations, policy => policy.RequireClaim("Registrations"));
-                options.AddPolicy(CampPolicies.PortalOrRegistrations,
-                    policy => policy.RequireAssertion(context =>
-                        context.User.HasClaim(c => (c.Type == "Portal" || c.Type == "Registrations"))));
+                options.AddPolicy(CampPolicies.SamePortal,
+                    policy => policy.Requirements.Add(new PortalRequirement()));
             });
         }
 

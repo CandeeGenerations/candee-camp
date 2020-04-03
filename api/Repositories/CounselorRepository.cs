@@ -16,13 +16,14 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Counselor>> GetCounselors() =>
-            await Context.Counselors.Where(x => !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Counselor>> GetCounselors(int portalId) =>
+            await Context.Counselors.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
 
-        public async Task<Counselor> GetCounselorById(int counselorId)
+        public async Task<Counselor> GetCounselorById(int portalId, int counselorId)
         {
             Counselor dbCounselor =
-                await Context.Counselors.FirstOrDefaultAsync(x => x.Id == counselorId && !x.IsDeleted);
+                await Context.Counselors.FirstOrDefaultAsync(x =>
+                    x.PortalId == portalId && x.Id == counselorId && !x.IsDeleted);
 
             if (dbCounselor == null)
             {
@@ -32,10 +33,11 @@ namespace Reclaimed.API.Repositories
             return dbCounselor;
         }
 
-        public async Task<Counselor> CreateCounselor(CounselorModel counselor)
+        public async Task<Counselor> CreateCounselor(int portalId, CounselorModel counselor)
         {
             Counselor newCounselor = new Counselor
             {
+                PortalId = portalId,
                 FirstName = counselor.FirstName.Trim(),
                 LastName = counselor.LastName.Trim(),
                 StartingBalance = counselor.StartingBalance,
@@ -54,9 +56,9 @@ namespace Reclaimed.API.Repositories
             return newCounselor;
         }
 
-        public async Task DeleteCounselor(int counselorId)
+        public async Task DeleteCounselor(int portalId, int counselorId)
         {
-            Counselor dbCounselor = await GetCounselorById(counselorId);
+            Counselor dbCounselor = await GetCounselorById(portalId, counselorId);
 
             dbCounselor.IsActive = false;
             dbCounselor.IsDeleted = true;
@@ -64,9 +66,9 @@ namespace Reclaimed.API.Repositories
             await Context.SaveChangesAsync();
         }
 
-        public async Task<Counselor> UpdateCounselor(int counselorId, CounselorModel counselor)
+        public async Task<Counselor> UpdateCounselor(int portalId, int counselorId, CounselorModel counselor)
         {
-            Counselor dbCounselor = await GetCounselorById(counselorId);
+            Counselor dbCounselor = await GetCounselorById(portalId, counselorId);
 
             dbCounselor.FirstName = counselor.FirstName.Trim();
             dbCounselor.LastName = counselor.LastName.Trim();

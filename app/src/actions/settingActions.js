@@ -1,11 +1,12 @@
 import request from '../api'
 import {handleError, openNotification} from '../helpers'
+import {pid} from '@/helpers/authHelpers'
 
 const mainPath = '/settings'
 
 export const loadSettings = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -16,7 +17,7 @@ export const loadSettings = async () => {
 
 export const loadSetting = async (key) => {
   try {
-    const response = await request.get(`${mainPath}/${key}`)
+    const response = await request.get(pid(`${mainPath}/${key}`))
 
     return response
   } catch (error) {
@@ -29,7 +30,7 @@ export const saveSetting = async (key, value) => {
   try {
     let response = null
 
-    response = await request.put(`${mainPath}/${key}?value=${value}`)
+    response = await request.put(pid(`${mainPath}/${key}?value=${value}`))
 
     openNotification('success', 'The Setting has been updated successfully.')
 
@@ -44,7 +45,7 @@ export const saveSettings = async (settings) => {
   try {
     let response = null
 
-    response = await request.put(mainPath, settings)
+    response = await request.put(pid(mainPath), settings)
 
     openNotification('success', 'The Settings has been updated successfully.')
 

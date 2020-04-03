@@ -10,8 +10,8 @@ using Reclaimed.API.Repositories.Interfaces;
 namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Authorize(Policy = CampPolicies.Portal)]
-    [Route("api/[controller]")]
+    [Authorize(Policy = CampPolicies.SamePortal)]
+    [Route("api/{portalId}/[controller]")]
     [Produces("application/json")]
     public class CounselorsController : Controller
     {
@@ -21,64 +21,65 @@ namespace Reclaimed.API.Controllers
         {
             _counselorRepository = counselorRepository;
         }
-        
+
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Counselor>), 200)]
 
-        public async Task<ActionResult<IEnumerable<Counselor>>> GetCounselors()
+        public async Task<ActionResult<IEnumerable<Counselor>>> GetCounselors(int portalId)
         {
-            IEnumerable<Counselor> counselors = await _counselorRepository.GetCounselors();
+            IEnumerable<Counselor> counselors = await _counselorRepository.GetCounselors(portalId);
 
             return Ok(counselors);
         }
 
         [HttpGet("{counselorId}")]
         [ProducesResponseType(typeof(Counselor), 200)]
-        public async Task<ActionResult<Counselor>> GetCounselor(int counselorId)
+        public async Task<ActionResult<Counselor>> GetCounselor(int portalId, int counselorId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
-            Counselor counselor = await _counselorRepository.GetCounselorById(counselorId);
+
+            Counselor counselor = await _counselorRepository.GetCounselorById(portalId, counselorId);
 
             return Ok(counselor);
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(Counselor), 200)]
-        public async Task<ActionResult<Counselor>> CreateCounselor([FromBody]CounselorModel counselor)
+        public async Task<ActionResult<Counselor>> CreateCounselor(int portalId, [FromBody] CounselorModel counselor)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Counselor newCounselor = await _counselorRepository.CreateCounselor(counselor);
+            Counselor newCounselor = await _counselorRepository.CreateCounselor(portalId, counselor);
 
             return Ok(newCounselor);
         }
 
         [HttpPut("{counselorId}")]
         [ProducesResponseType(typeof(Counselor), 200)]
-        public async Task<ActionResult<Counselor>> UpdateCounselor(int counselorId, [FromBody]CounselorModel counselor)
+        public async Task<ActionResult<Counselor>> UpdateCounselor(int portalId, int counselorId,
+            [FromBody] CounselorModel counselor)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Counselor updatedCounselor = await _counselorRepository.UpdateCounselor(counselorId, counselor);
+            Counselor updatedCounselor = await _counselorRepository.UpdateCounselor(portalId, counselorId, counselor);
 
             return Ok(updatedCounselor);
         }
 
         [HttpDelete("{counselorId}")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult> DeleteCounselor(int counselorId)
+        public async Task<ActionResult> DeleteCounselor(int portalId, int counselorId)
         {
-            await _counselorRepository.DeleteCounselor(counselorId);
+            await _counselorRepository.DeleteCounselor(portalId, counselorId);
 
             return Ok();
         }

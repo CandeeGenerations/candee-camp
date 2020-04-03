@@ -16,13 +16,14 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<SnackShopItem>> GetSnackShopItems() =>
-            await Context.SnackShopItems.Where(x => !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<SnackShopItem>> GetSnackShopItems(int portalId) =>
+            await Context.SnackShopItems.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
 
-        public async Task<SnackShopItem> GetSnackShopItemById(int snackShopItemId)
+        public async Task<SnackShopItem> GetSnackShopItemById(int portalId, int snackShopItemId)
         {
             SnackShopItem dbSnackShopItem =
-                await Context.SnackShopItems.FirstOrDefaultAsync(x => x.Id == snackShopItemId && !x.IsDeleted);
+                await Context.SnackShopItems.FirstOrDefaultAsync(x =>
+                    x.PortalId == portalId && x.Id == snackShopItemId && !x.IsDeleted);
 
             if (dbSnackShopItem == null)
             {
@@ -32,14 +33,17 @@ namespace Reclaimed.API.Repositories
             return dbSnackShopItem;
         }
 
-        public async Task<IEnumerable<SnackShopItem>> GetSnackShopItemsByName(string name) => await Context
-            .SnackShopItems.Where(x =>
-                !x.IsDeleted && string.Equals(x.Name, name.Trim(), StringComparison.CurrentCultureIgnoreCase))
-            .ToListAsync();
+        public async Task<IEnumerable<SnackShopItem>> GetSnackShopItemsByName(int portalId, string name) =>
+            await Context
+                .SnackShopItems.Where(x =>
+                    x.PortalId == portalId && !x.IsDeleted && string.Equals(x.Name, name.Trim(),
+                        StringComparison.CurrentCultureIgnoreCase))
+                .ToListAsync();
 
-        public async Task<SnackShopItem> CreateSnackShopItem(SnackShopItemModel snackShopItem)
+        public async Task<SnackShopItem> CreateSnackShopItem(int portalId, SnackShopItemModel snackShopItem)
         {
-            IEnumerable<SnackShopItem> existingSnackShopItems = await GetSnackShopItemsByName(snackShopItem.Name);
+            IEnumerable<SnackShopItem> existingSnackShopItems =
+                await GetSnackShopItemsByName(portalId, snackShopItem.Name);
 
             if (existingSnackShopItems.Any())
             {
@@ -48,6 +52,7 @@ namespace Reclaimed.API.Repositories
 
             SnackShopItem newSnackShopItem = new SnackShopItem
             {
+                PortalId = portalId,
                 Name = snackShopItem.Name.Trim(),
                 Barcode = snackShopItem.Barcode?.Trim(),
                 Price = snackShopItem.Price,
@@ -65,9 +70,9 @@ namespace Reclaimed.API.Repositories
             return newSnackShopItem;
         }
 
-        public async Task DeleteSnackShopItem(int snackShopItemId)
+        public async Task DeleteSnackShopItem(int portalId, int snackShopItemId)
         {
-            SnackShopItem dbSnackShopItem = await GetSnackShopItemById(snackShopItemId);
+            SnackShopItem dbSnackShopItem = await GetSnackShopItemById(portalId, snackShopItemId);
 
             dbSnackShopItem.IsActive = false;
             dbSnackShopItem.IsDeleted = true;
@@ -75,14 +80,16 @@ namespace Reclaimed.API.Repositories
             await Context.SaveChangesAsync();
         }
 
-        public async Task<SnackShopItem> UpdateSnackShopItem(int snackShopItemId, SnackShopItemModel snackShopItem)
+        public async Task<SnackShopItem> UpdateSnackShopItem(int portalId, int snackShopItemId,
+            SnackShopItemModel snackShopItem)
         {
-            SnackShopItem dbSnackShopItem = await GetSnackShopItemById(snackShopItemId);
+            SnackShopItem dbSnackShopItem = await GetSnackShopItemById(portalId, snackShopItemId);
 
             if (!string.Equals(dbSnackShopItem.Name, snackShopItem.Name.Trim(),
                 StringComparison.CurrentCultureIgnoreCase))
             {
-                IEnumerable<SnackShopItem> existingSnackShopItems = await GetSnackShopItemsByName(snackShopItem.Name);
+                IEnumerable<SnackShopItem> existingSnackShopItems =
+                    await GetSnackShopItemsByName(portalId, snackShopItem.Name);
 
                 if (existingSnackShopItems.Any())
                 {

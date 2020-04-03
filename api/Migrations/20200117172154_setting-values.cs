@@ -14,15 +14,6 @@ namespace Reclaimed.API.Migrations
                 column: "ClientSecret",
                 value: "xROeQt0riBsMqIOs63sNjpqDJnlIER");
 
-            migrationBuilder.InsertData(
-                table: "Settings",
-                columns: new[] { "Key", "Value", "Version" },
-                values: new object[,]
-                {
-                    { "Name", "Candee Camp", 1 },
-                    { "PayPalClientId", "AR93BgQN5Jk6SwjY6n31ND6HFN2tBqM_XW3uCnKNFsjS5aCiqr-kR6dRPYK2JFb7bzeoCiy8i99rwe7y", 1 },
-                });
-
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",

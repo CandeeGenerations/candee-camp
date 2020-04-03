@@ -224,36 +224,42 @@ const CamperView = (props) => {
                 onFieldChange={handleFieldChange}
               />
 
-              <Button
-                css={{float: 'left', marginRight: 8}}
-                onClick={() =>
-                  routerContext.router.navigate(page.camperSnackShopPage, {
-                    camperId: props.id,
-                  })
-                }
-              >
-                Snack Shop
-              </Button>
+              {page.isCamperEditPage && (
+                <>
+                  <Button
+                    css={{float: 'left', marginRight: 8}}
+                    onClick={() =>
+                      routerContext.router.navigate(page.camperSnackShopPage, {
+                        camperId: props.id,
+                      })
+                    }
+                  >
+                    Snack Shop
+                  </Button>
 
-              <Popconfirm
-                cancelText="Cancel"
-                icon={<Icon css={{color: 'red'}} type="question-circle-o" />}
-                okText="Delete"
-                okType="danger"
-                placement="topRight"
-                title={
-                  <p>
-                    Are you sure you want
-                    <br />
-                    to delete this camper?
-                  </p>
-                }
-                onConfirm={handleDeleteCamperClick}
-              >
-                <Button css={{float: 'left'}} type="danger">
-                  Delete Camper
-                </Button>
-              </Popconfirm>
+                  <Popconfirm
+                    cancelText="Cancel"
+                    icon={
+                      <Icon css={{color: 'red'}} type="question-circle-o" />
+                    }
+                    okText="Delete"
+                    okType="danger"
+                    placement="topRight"
+                    title={
+                      <p>
+                        Are you sure you want
+                        <br />
+                        to delete this camper?
+                      </p>
+                    }
+                    onConfirm={handleDeleteCamperClick}
+                  >
+                    <Button css={{float: 'left'}} type="danger">
+                      Delete Camper
+                    </Button>
+                  </Popconfirm>
+                </>
+              )}
 
               <div css={{textAlign: 'right'}}>
                 <Button css={{marginRight: 8}} onClick={handleFormClose}>

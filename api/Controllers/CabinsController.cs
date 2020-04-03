@@ -10,8 +10,8 @@ using Reclaimed.API.Repositories.Interfaces;
 namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Authorize(Policy = CampPolicies.Portal)]
-    [Route("api/[controller]")]
+    [Authorize(Policy = CampPolicies.SamePortal)]
+    [Route("api/{portalId}/[controller]")]
     [Produces("application/json")]
     public class CabinsController : Controller
     {
@@ -24,60 +24,60 @@ namespace Reclaimed.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Cabin>), 200)]
-        public async Task<ActionResult<IEnumerable<Cabin>>> GetCabins()
+        public async Task<ActionResult<IEnumerable<Cabin>>> GetCabins(int portalId)
         {
-            IEnumerable<Cabin> cabins = await _cabinRepository.GetCabins();
+            IEnumerable<Cabin> cabins = await _cabinRepository.GetCabins(portalId);
 
             return Ok(cabins);
         }
 
         [HttpGet("{cabinId}")]
         [ProducesResponseType(typeof(Cabin), 200)]
-        public async Task<ActionResult<Cabin>> GetCabin(int cabinId)
+        public async Task<ActionResult<Cabin>> GetCabin(int portalId, int cabinId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Cabin cabin = await _cabinRepository.GetCabinById(cabinId);
+            Cabin cabin = await _cabinRepository.GetCabinById(portalId, cabinId);
 
             return Ok(cabin);
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(Cabin), 200)]
-        public async Task<ActionResult<Cabin>> CreateCabin([FromBody] CabinModel cabin)
+        public async Task<ActionResult<Cabin>> CreateCabin(int portalId, [FromBody] CabinModel cabin)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Cabin newCabin = await _cabinRepository.CreateCabin(cabin);
+            Cabin newCabin = await _cabinRepository.CreateCabin(portalId, cabin);
 
             return Ok(newCabin);
         }
 
         [HttpPut("{cabinId}")]
         [ProducesResponseType(typeof(Cabin), 200)]
-        public async Task<ActionResult<Cabin>> UpdateCabin(int cabinId, [FromBody] CabinModel cabin)
+        public async Task<ActionResult<Cabin>> UpdateCabin(int portalId, int cabinId, [FromBody] CabinModel cabin)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Cabin updatedCabin = await _cabinRepository.UpdateCabin(cabinId, cabin);
+            Cabin updatedCabin = await _cabinRepository.UpdateCabin(portalId, cabinId, cabin);
 
             return Ok(updatedCabin);
         }
 
         [HttpDelete("{cabinId}")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult> DeleteCabin(int cabinId)
+        public async Task<ActionResult> DeleteCabin(int portalId, int cabinId)
         {
-            await _cabinRepository.DeleteCabin(cabinId);
+            await _cabinRepository.DeleteCabin(portalId, cabinId);
 
             return Ok();
         }

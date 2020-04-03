@@ -10,7 +10,8 @@ using Reclaimed.API.Repositories.Interfaces;
 namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Route("api/[controller]")]
+    [Authorize(Policy = CampPolicies.SamePortal)]
+    [Route("api/{portalId}/[controller]")]
     [Produces("application/json")]
     public class CustomFieldsController : Controller
     {
@@ -22,49 +23,31 @@ namespace Reclaimed.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = CampPolicies.PortalOrRegistrations)]
         [ProducesResponseType(typeof(IEnumerable<CustomField>), 200)]
-        public async Task<ActionResult<IEnumerable<CustomField>>> GetCustomFields()
+        public async Task<ActionResult<IEnumerable<CustomField>>> GetCustomFields(int portalId)
         {
-            IEnumerable<CustomField> customFields = await _customFieldRepository.GetCustomFields();
+            IEnumerable<CustomField> customFields = await _customFieldRepository.GetCustomFields(portalId);
 
             return Ok(customFields);
         }
 
         [HttpGet("{customFieldId}")]
-        [Authorize(Policy = CampPolicies.PortalOrRegistrations)]
         [ProducesResponseType(typeof(CustomField), 200)]
-        public async Task<ActionResult<CustomField>> GetCustomField(int customFieldId)
+        public async Task<ActionResult<CustomField>> GetCustomField(int portalId, int customFieldId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
-            CustomField customField = await _customFieldRepository.GetCustomFieldById(customFieldId);
+
+            CustomField customField = await _customFieldRepository.GetCustomFieldById(portalId, customFieldId);
 
             return Ok(customField);
         }
 
         [HttpPost]
-        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(typeof(CustomField), 200)]
-        public async Task<ActionResult<CustomField>> CreateCustomField([FromBody] CustomFieldModel customField)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            
-            CustomField newCustomField = await _customFieldRepository.CreateCustomField(customField);
-
-            return Ok(newCustomField);
-        }
-
-        [HttpPut("{customFieldId}")]
-        [Authorize(Policy = CampPolicies.Portal)]
-        [ProducesResponseType(typeof(CustomField), 200)]
-        public async Task<ActionResult<CustomField>> CreateCustomField(int customFieldId,
+        public async Task<ActionResult<CustomField>> CreateCustomField(int portalId,
             [FromBody] CustomFieldModel customField)
         {
             if (!ModelState.IsValid)
@@ -72,27 +55,41 @@ namespace Reclaimed.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            CustomField updatedCustomField = await _customFieldRepository.UpdateCustomField(customFieldId, customField);
+            CustomField newCustomField = await _customFieldRepository.CreateCustomField(portalId, customField);
+
+            return Ok(newCustomField);
+        }
+
+        [HttpPut("{customFieldId}")]
+        [ProducesResponseType(typeof(CustomField), 200)]
+        public async Task<ActionResult<CustomField>> CreateCustomField(int portalId, int customFieldId,
+            [FromBody] CustomFieldModel customField)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            CustomField updatedCustomField =
+                await _customFieldRepository.UpdateCustomField(portalId, customFieldId, customField);
 
             return Ok(updatedCustomField);
         }
 
         [HttpDelete("{customFieldId}")]
-        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(200)]
-        public async Task<ActionResult> DeleteCustomField(int customFieldId)
+        public async Task<ActionResult> DeleteCustomField(int portalId, int customFieldId)
         {
-            await _customFieldRepository.DeleteCustomField(customFieldId);
+            await _customFieldRepository.DeleteCustomField(portalId, customFieldId);
 
             return Ok();
         }
 
         [HttpPost("reorder")]
-        [Authorize(Policy = CampPolicies.Portal)]
         [ProducesResponseType(200)]
-        public async Task<ActionResult> ReorderCustomFields(int sourceId, int targetId)
+        public async Task<ActionResult> ReorderCustomFields(int portalId, int sourceId, int targetId)
         {
-            await _customFieldRepository.ReorderCustomFields(sourceId, targetId);
+            await _customFieldRepository.ReorderCustomFields(portalId, sourceId, targetId);
 
             return Ok();
         }
