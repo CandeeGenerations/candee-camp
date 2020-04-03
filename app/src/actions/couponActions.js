@@ -1,13 +1,13 @@
 import request from '../api'
 import {handleError, formDataToBody, openNotification} from '../helpers'
 
-import {getUserData} from '@/helpers/authHelpers'
+import {getUserData, pid} from '@/helpers/authHelpers'
 
 const mainPath = '/coupons'
 
 export const loadCoupons = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -18,7 +18,7 @@ export const loadCoupons = async () => {
 
 export const loadCouponStats = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response.data.length
   } catch (error) {
@@ -29,7 +29,7 @@ export const loadCouponStats = async () => {
 
 export const loadCoupon = async (couponId) => {
   try {
-    const response = await request.get(`${mainPath}/${couponId}`)
+    const response = await request.get(pid(`${mainPath}/${couponId}`))
 
     return response
   } catch (error) {
@@ -52,9 +52,9 @@ export const saveCoupon = async (coupon) => {
     body.createdBy = user.id
 
     if (coupon.id) {
-      response = await request.put(`${mainPath}/${coupon.id.value}`, body)
+      response = await request.put(pid(`${mainPath}/${coupon.id.value}`), body)
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(pid(mainPath), body)
     }
 
     openNotification(
@@ -71,7 +71,7 @@ export const saveCoupon = async (coupon) => {
 
 export const deleteCoupon = async (couponId) => {
   try {
-    const response = await request.delete(`${mainPath}/${couponId}`)
+    const response = await request.delete(pid(`${mainPath}/${couponId}`))
 
     openNotification('success', 'The Coupon has been delete successfully.')
 

@@ -1,13 +1,13 @@
 import request from '../api'
 import {handleError, openNotification, formDataToBody} from '../helpers'
 
-import {getUserData} from '@/helpers/authHelpers'
+import {getUserData, pid} from '@/helpers/authHelpers'
 
 const mainPath = '/campers'
 
 export const loadCampers = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -19,9 +19,11 @@ export const loadCampers = async () => {
 export const loadCampersForRegistration = async (currentCamperId) => {
   try {
     const response = await request.get(
-      `${mainPath}/for-registration${
-        currentCamperId ? `?currentCamperId=${currentCamperId}` : ''
-      }`,
+      pid(
+        `${mainPath}/for-registration${
+          currentCamperId ? `?currentCamperId=${currentCamperId}` : ''
+        }`,
+      ),
     )
 
     return response
@@ -34,7 +36,7 @@ export const loadCampersForRegistration = async (currentCamperId) => {
 export const loadCampersByIds = async (camperIds) => {
   try {
     const response = await request.get(
-      `${mainPath}/by-ids?camperIds=${camperIds.join('&camperIds=')}`,
+      pid(`${mainPath}/by-ids?camperIds=${camperIds.join('&camperIds=')}`),
     )
 
     return response
@@ -46,7 +48,7 @@ export const loadCampersByIds = async (camperIds) => {
 
 export const loadCamperStats = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response.data.length
   } catch (error) {
@@ -57,7 +59,7 @@ export const loadCamperStats = async () => {
 
 export const loadCamper = async (camperId) => {
   try {
-    const response = await request.get(`${mainPath}/${camperId}`)
+    const response = await request.get(pid(`${mainPath}/${camperId}`))
 
     return response
   } catch (error) {
@@ -85,9 +87,9 @@ export const saveCamper = async (camper, customFields) => {
     body.customFields = customFields
 
     if (camper.id) {
-      response = await request.put(`${mainPath}/${camper.id.value}`, body)
+      response = await request.put(pid(`${mainPath}/${camper.id.value}`), body)
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(pid(mainPath), body)
     }
 
     openNotification(
@@ -104,7 +106,7 @@ export const saveCamper = async (camper, customFields) => {
 
 export const deleteCamper = async (camperId) => {
   try {
-    const response = await request.delete(`${mainPath}/${camperId}`)
+    const response = await request.delete(pid(`${mainPath}/${camperId}`))
 
     openNotification('success', 'The Camper has been delete successfully.')
 

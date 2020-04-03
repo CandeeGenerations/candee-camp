@@ -1,7 +1,7 @@
 import request from '../api'
 import {handleError, formDataToBody} from '../helpers'
 
-import {getUserData} from '@/helpers/authHelpers'
+import {getUserData, pid} from '@/helpers/authHelpers'
 
 const mainPath = '/register'
 
@@ -31,7 +31,7 @@ export const registerForEvent = async ({
       body.paymentId = paymentId
       body.customFields = camperCustomFields
 
-      response = await request.post(`${mainPath}/${eventId}/camper`, body)
+      response = await request.post(pid(`${mainPath}/${eventId}/camper`), body)
     } else {
       const body = {
         groupName: group.name.value,
@@ -49,7 +49,7 @@ export const registerForEvent = async ({
         }),
       }
 
-      response = await request.post(`${mainPath}/${eventId}/group`, body)
+      response = await request.post(pid(`${mainPath}/${eventId}/group`), body)
     }
 
     return response

@@ -11,7 +11,7 @@ namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
     [Authorize(Policy = CampPolicies.SamePortal)]
-    [Route("api/snack-shop-items/{portalId}")]
+    [Route("api/{portalId}/snack-shop-items")]
     [Produces("application/json")]
     public class SnackShopItemsController : Controller
     {
