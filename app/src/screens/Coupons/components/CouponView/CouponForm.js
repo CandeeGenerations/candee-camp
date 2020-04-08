@@ -13,9 +13,17 @@ import {
   Switch,
   Typography,
   DatePicker,
+  InputNumber,
+  Select,
 } from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
+import {
+  inputPercentFormatter,
+  inputPercentParser,
+  inputNumberFormatter,
+  inputNumberParser,
+} from '@/helpers'
 
 const CouponForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -37,7 +45,7 @@ const CouponForm = Form.create({
   },
 
   mapPropsToFields(props) {
-    const {name, code, expirationDate, isActive} = props
+    const {name, code, expirationDate, type, amount, isActive} = props
 
     return {
       name: Form.createFormField({
@@ -51,6 +59,14 @@ const CouponForm = Form.create({
       expirationDate: Form.createFormField({
         ...expirationDate,
         value: expirationDate.value,
+      }),
+      type: Form.createFormField({
+        ...type,
+        value: type.value,
+      }),
+      amount: Form.createFormField({
+        ...amount,
+        value: amount.value,
       }),
       isActive: Form.createFormField({
         ...isActive,
@@ -91,6 +107,40 @@ const CouponForm = Form.create({
           <Form.Item label="Expiration Date">
             {getFieldDecorator('expirationDate')(
               <DatePicker format="MM/DD/YYYY" />,
+            )}
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item label="Type">
+            {getFieldDecorator('type')(
+              <Select>
+                <Select.Option value="1">Dollar</Select.Option>
+                <Select.Option value="2">Percent</Select.Option>
+              </Select>,
+            )}
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item label="Amount" hasFeedback>
+            {getFieldDecorator('amount', {
+              rules: [{required: true, message: 'The amount is required.'}],
+            })(
+              <InputNumber
+                formatter={
+                  props.type.value === '2'
+                    ? inputPercentFormatter
+                    : inputNumberFormatter
+                }
+                parser={
+                  props.type.value === '2'
+                    ? inputPercentParser
+                    : inputNumberParser
+                }
+              />,
             )}
           </Form.Item>
         </Col>

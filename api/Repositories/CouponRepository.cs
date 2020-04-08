@@ -64,6 +64,8 @@ namespace Reclaimed.API.Repositories
                 PortalId = portalId,
                 Name = coupon.Name.Trim(),
                 Code = coupon.Code.Trim(),
+                Type = Enum.GetName(typeof(CouponType), coupon.Type),
+                Amount = coupon.Amount,
                 CreatedBy = coupon.CreatedBy,
                 CreatedDate = DateTimeOffset.Now,
                 UpdatedDate = DateTimeOffset.Now,
@@ -114,6 +116,8 @@ namespace Reclaimed.API.Repositories
 
             dbCoupon.Name = coupon.Name.Trim();
             dbCoupon.Code = coupon.Code.Trim();
+            dbCoupon.Type = Enum.GetName(typeof(CouponType), coupon.Type);
+            dbCoupon.Amount = coupon.Amount;
             dbCoupon.ExpirationDate = coupon.ExpirationDate;
             dbCoupon.IsActive = coupon.IsActive;
             dbCoupon.UpdatedDate = DateTimeOffset.Now;

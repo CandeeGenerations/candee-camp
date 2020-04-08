@@ -15,6 +15,10 @@ namespace Reclaimed.API.DomainObjects
 
         public string Code { get; set; }
 
+        public string Type { get; set; }
+
+        public decimal Amount { get; set; }
+
         public DateTimeOffset CreatedDate { get; set; }
 
         public DateTimeOffset UpdatedDate { get; set; }

@@ -5,7 +5,12 @@ import {Divider, Table} from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
-import {formatDate, formatIsActive} from '@/helpers'
+import {
+  formatDate,
+  formatIsActive,
+  formatCurrency,
+  formatPercent,
+} from '@/helpers'
 
 import CodeCopy from '@/components/CodeCopy'
 import {NavItem} from '@/components/Navigation'
@@ -37,11 +42,15 @@ const CouponsTable = (props) => {
       />
 
       <Column
-        key="isActive"
-        align="center"
-        dataIndex="isActive"
-        render={formatIsActive}
-        title="Is Active"
+        key="amount"
+        align="right"
+        dataIndex="amount"
+        render={(amount, record) =>
+          record.type === 'Percent'
+            ? formatPercent(amount)
+            : formatCurrency(amount)
+        }
+        title="Amount"
       />
 
       <Column
@@ -53,19 +62,11 @@ const CouponsTable = (props) => {
       />
 
       <Column
-        key="createdDate"
-        align="right"
-        dataIndex="createdDate"
-        render={formatDate}
-        title="Created Date"
-      />
-
-      <Column
-        key="updatedDate"
-        align="right"
-        dataIndex="updatedDate"
-        render={formatDate}
-        title="Updated Date"
+        key="isActive"
+        align="center"
+        dataIndex="isActive"
+        render={formatIsActive}
+        title="Is Active"
       />
 
       <Column

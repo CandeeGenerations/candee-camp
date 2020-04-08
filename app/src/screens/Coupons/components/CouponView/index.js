@@ -27,6 +27,8 @@ const CouponView = (props) => {
     name: {includePercent: true, isRequired: true, value: null},
     code: {includePercent: true, isRequired: true, value: null},
     expirationDate: {value: null},
+    type: {value: 'Dollar'},
+    amount: {includePercent: true, isRequired: true, value: null},
     isActive: {value: true},
   })
 
@@ -38,6 +40,11 @@ const CouponView = (props) => {
         setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
+            type: response.data.type === 'Percent' ? '2' : '1',
+            amount:
+              response.data.type === 'Percent'
+                ? response.data.amount * 100
+                : response.data.amount,
             expirationDate: response.data.expirationDate
               ? moment(response.data.expirationDate)
               : null,

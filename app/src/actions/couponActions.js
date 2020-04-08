@@ -50,6 +50,11 @@ export const saveCoupon = async (coupon) => {
     const body = formDataToBody(coupon)
 
     body.createdBy = user.id
+    body.type = Number(body.type)
+
+    if (body.type === 2) {
+      body.amount = body.amount / 100
+    }
 
     if (coupon.id) {
       response = await request.put(pid(`${mainPath}/${coupon.id.value}`), body)
