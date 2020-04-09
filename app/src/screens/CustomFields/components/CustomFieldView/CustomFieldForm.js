@@ -16,6 +16,7 @@ import {
 } from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
+import {formatDate} from '@/helpers'
 
 const CustomFieldForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -129,6 +130,22 @@ const CustomFieldForm = Form.create({
               >
                 <Button type="danger">Delete Custom Field</Button>
               </Popconfirm>
+            </Col>
+          </Row>
+
+          <Row css={{marginTop: 20}} gutter={16}>
+            <Col span={24}>
+              <Typography.Text type="secondary">
+                <small>
+                  Date Created: {formatDate(props.createdDate?.value || null)}
+                </small>
+              </Typography.Text>
+
+              <Typography.Text css={{display: 'block'}} type="secondary">
+                <small>
+                  Date Updated: {formatDate(props.updatedDate?.value || null)}
+                </small>
+              </Typography.Text>
             </Col>
           </Row>
         </>

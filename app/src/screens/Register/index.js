@@ -5,7 +5,11 @@ import RegisterLayout from './components/RegisterLayout'
 import RegisterContent from './components/RegisterContent'
 
 import {axiosRequest} from '@/api'
-import {signinActions as actions, settingActions} from '@/actions'
+import {
+  signinActions as actions,
+  couponActions,
+  settingActions,
+} from '@/actions'
 
 import {getUser} from '@/helpers/authHelpers'
 import useTitle from '@/helpers/hooks/useTitle'
@@ -13,19 +17,26 @@ import useTitle from '@/helpers/hooks/useTitle'
 import {Constants} from '@/helpers/constants'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {openNotification} from '@/helpers'
 
 export const RegisterContext = React.createContext()
 
 const Register = (props) => {
   const [event, setEvent] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [eventCost, setEventCost] = useState(0)
   const [authorized, setAuthorized] = useState(false)
+  const [groupCampers, setGroupCampers] = useState([])
   const [singleCamper, setSingleCamper] = useState(true)
   const [customFieldsState, setCustomFieldsState] = useState([])
+  const [discount, setDiscount] = useState({amount: 0, type: 'Dollar'})
   const payPalClientId = useAsyncLoad(
     settingActions.loadSetting,
     Constants.SettingKeys.PayPalClientId,
   )
+  const [groupFields, setGroupFields] = useState({
+    name: {isRequired: true, value: null},
+  })
 
   const fieldDeclarations = {
     firstName: {isRequired: true, value: null},
@@ -42,10 +53,8 @@ const Register = (props) => {
   }
 
   const [fields, setFields] = useState({...fieldDeclarations})
-  const [groupFields, setGroupFields] = useState({
-    name: {isRequired: true, value: null},
-  })
-  const [groupCampers, setGroupCampers] = useState([])
+
+  const coupon = useAsyncLoad(couponActions.loadCouponByCode)
 
   const authorize = async () => {
     await actions.authorizeClient()
@@ -84,11 +93,29 @@ const Register = (props) => {
       customField,
     ])
 
+  const applyCoupon = async (code) => {
+    const {data} = await coupon.load(false, code)
+
+    if (data) {
+      setDiscount({amount: data.amount, type: data.type})
+    } else {
+      openNotification(
+        'error',
+        "This coupon doesn't exist. Please try another one.",
+      )
+    }
+  }
+
   return (
     <RegisterLayout>
       <RegisterContext.Provider
         value={{
+          applyCoupon,
           authorized,
+          discount,
+          setDiscount,
+          eventCost,
+          setEventCost,
           event,
           fields,
           fieldDeclarations,

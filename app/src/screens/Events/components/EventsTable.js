@@ -99,14 +99,6 @@ const EventsTable = (props) => {
       />
 
       <Column
-        key="createdDate"
-        align="right"
-        dataIndex="createdDate"
-        render={formatDate}
-        title="Created Date"
-      />
-
-      <Column
         key="action"
         align="right"
         render={(text, record) => (

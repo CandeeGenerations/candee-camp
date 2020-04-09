@@ -17,6 +17,7 @@ const NavBarContent = (props) => {
         css={{
           height: '100%',
           position: 'fixed',
+          zIndex: 1,
         }}
         theme="dark"
       >
@@ -48,7 +49,7 @@ const NavBarContent = (props) => {
       </Menu>
 
       <Menu
-        css={{position: 'fixed', top: '50%', marginTop: -190}}
+        css={{position: 'fixed', top: '50%', marginTop: -190, zIndex: 1}}
         selectedKeys={props.selectedItem ? [props.selectedItem.routeName] : []}
         theme="dark"
       >
@@ -96,7 +97,7 @@ const NavBarContent = (props) => {
                     <div
                       css={css`
                         &:after {
-                          bottom: -9px;
+                          bottom: -10px;
                           width: 22px;
                           content: '';
                           height: 20px;
@@ -118,6 +119,7 @@ const NavBarContent = (props) => {
         css={{
           bottom: 10,
           position: 'fixed !important',
+          zIndex: 1,
         }}
         theme="dark"
       >

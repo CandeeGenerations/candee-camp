@@ -2,7 +2,7 @@
 import {jsx} from '@emotion/core'
 import moment from 'moment'
 import _maxBy from 'lodash/maxBy'
-import {Row, Col, Form, Input} from 'antd'
+import {Row, Col, Form, Input, Icon} from 'antd'
 import React, {useContext, useState} from 'react'
 
 import {RegisterContext} from '../../../..'
@@ -18,12 +18,24 @@ const GroupForm = () => {
   })
   const registerContext = useContext(RegisterContext)
   const {
+    discount,
+    event,
     groupFields,
     groupCampers,
     handleGroupFieldChange,
     setGroupCampers,
     customFields,
+    setDiscount,
   } = registerContext
+  const [couponLoading, setCouponLoading] = useState(false)
+
+  const handleApplyCoupon = async (code) => {
+    setCouponLoading(true)
+
+    await registerContext.applyCoupon(code)
+
+    setCouponLoading(false)
+  }
 
   const handleClickCamper = (data) =>
     setCamper({
@@ -57,7 +69,7 @@ const GroupForm = () => {
     handleCancel()
   }
 
-  const handleSaveCamper = () => {
+  const handleSaveCamper = async () => {
     if (!camper.data.firstName.value) {
       openNotification('error', 'The first name is required.')
       return
@@ -113,14 +125,17 @@ const GroupForm = () => {
         x.id === camper.data.id ? camper.data : x,
       )
 
-      setGroupCampers(newCampers)
+      await setGroupCampers(newCampers)
     } else {
       const nextId =
         groupCampers.length > 0
           ? Number(_maxBy(groupCampers, (x) => Number(x.id)).id) + 1
           : 1
 
-      setGroupCampers((campers) => [...campers, {...camper.data, id: nextId}])
+      await setGroupCampers((campers) => [
+        ...campers,
+        {...camper.data, id: nextId},
+      ])
     }
 
     handleCancel()
@@ -159,6 +174,42 @@ const GroupForm = () => {
           <CamperCard new onClick={() => handleClickCamper()} />
         </Col>
       </Row>
+
+      {event.cost > 0 && (
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.Item label="Coupon">
+              <Input.Search
+                enterButton="Apply"
+                loading={couponLoading}
+                placeholder="e.g. coupon-123"
+                value={registerContext.fields.coupon.value || ''}
+                onChange={(e) =>
+                  registerContext.handleFieldChange({
+                    coupon: {value: e.target.value},
+                  })
+                }
+                onSearch={handleApplyCoupon}
+              />
+
+              {discount.amount > 0 && (
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setDiscount({amount: 0, type: 'Dollar'})
+                    registerContext.handleFieldChange({
+                      coupon: {value: null},
+                    })
+                  }}
+                >
+                  <Icon type="close" /> Remove discount
+                </a>
+              )}
+            </Form.Item>
+          </Col>
+        </Row>
+      )}
 
       <CamperModal
         customFields={customFields.results || []}

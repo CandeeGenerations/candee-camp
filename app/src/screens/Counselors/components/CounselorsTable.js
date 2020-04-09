@@ -7,7 +7,7 @@ import {Table, Menu, Icon, Dropdown} from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
-import {formatDate, formatIsActive, formatCurrency} from '@/helpers'
+import {formatIsActive, formatCurrency} from '@/helpers'
 
 import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
@@ -66,22 +66,6 @@ const CounselorsTable = (props) => {
         dataIndex="startingBalance"
         render={formatCurrency}
         title="Starting Balance"
-      />
-
-      <Column
-        key="createdDate"
-        align="right"
-        dataIndex="createdDate"
-        render={formatDate}
-        title="Created Date"
-      />
-
-      <Column
-        key="updatedDate"
-        align="right"
-        dataIndex="updatedDate"
-        render={formatDate}
-        title="Updated Date"
       />
 
       <Column

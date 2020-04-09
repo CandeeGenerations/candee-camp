@@ -5,7 +5,7 @@ import {Divider, Table} from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
-import {formatDate, formatIsActive, formatCurrency} from '@/helpers'
+import {formatIsActive, formatCurrency} from '@/helpers'
 
 import {NavItem} from '@/components/Navigation'
 import EmptyState from '@/components/EmptyState'
@@ -59,22 +59,6 @@ const SnackShopItemsTable = (props) => {
         align="right"
         dataIndex="amountAvailable"
         title="Amount Available"
-      />
-
-      <Column
-        key="createdDate"
-        align="right"
-        dataIndex="createdDate"
-        render={formatDate}
-        title="Created Date"
-      />
-
-      <Column
-        key="updatedDate"
-        align="right"
-        dataIndex="updatedDate"
-        render={formatDate}
-        title="Updated Date"
       />
 
       <Column

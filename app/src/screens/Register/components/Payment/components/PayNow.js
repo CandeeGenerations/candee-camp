@@ -22,7 +22,7 @@ const PayNow = (props) => {
     if (details.status === 'COMPLETED') {
       const payment = await payPalPaymentActions.savePayment({
         type: 0, // payment
-        amount: registerContext.event.cost,
+        amount: registerContext.eventCost,
         processor: 0, // paypal
         payPalId: details.id,
         createdDate: details.create_time,
@@ -51,7 +51,7 @@ const PayNow = (props) => {
               purchase_units: [
                 {
                   amount: {
-                    value: registerContext.event.cost,
+                    value: registerContext.eventCost,
                   },
                 },
               ],
@@ -59,7 +59,7 @@ const PayNow = (props) => {
           onApprove: handleApprove,
         })
         .render('#paypal-button-container')
-    }, 400)
+    }, 700)
   }, [])
 
   return (

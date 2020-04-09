@@ -15,7 +15,7 @@ const Payment = (props) => {
   const [loading, setLoading] = useState(false)
   const registerContext = useContext(RegisterContext)
 
-  const isPaidEvent = registerContext.event.cost > 0
+  const isPaidEvent = registerContext.eventCost > 0
 
   const handleRegister = async (paymentId) => {
     setLoading(true)

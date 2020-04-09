@@ -23,6 +23,7 @@ import {
   inputPercentParser,
   inputNumberFormatter,
   inputNumberParser,
+  formatDate,
 } from '@/helpers'
 
 const CouponForm = Form.create({
@@ -183,6 +184,22 @@ const CouponForm = Form.create({
               >
                 <Button type="danger">Delete Coupon</Button>
               </Popconfirm>
+            </Col>
+          </Row>
+
+          <Row css={{marginTop: 20}} gutter={16}>
+            <Col span={24}>
+              <Typography.Text type="secondary">
+                <small>
+                  Date Created: {formatDate(props.createdDate?.value || null)}
+                </small>
+              </Typography.Text>
+
+              <Typography.Text css={{display: 'block'}} type="secondary">
+                <small>
+                  Date Updated: {formatDate(props.updatedDate?.value || null)}
+                </small>
+              </Typography.Text>
             </Col>
           </Row>
         </>

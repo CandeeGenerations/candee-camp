@@ -34,7 +34,7 @@ CustomFieldViewWrapper.propTypes = {
   }).isRequired,
 
   // functions
-  onDeleteCabin: PropTypes.func.isRequired,
+  onDeleteCustomField: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
 }
 

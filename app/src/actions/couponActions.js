@@ -38,6 +38,17 @@ export const loadCoupon = async (couponId) => {
   }
 }
 
+export const loadCouponByCode = async (code) => {
+  try {
+    const response = await request.get(pid(`${mainPath}/code?code=${code}`))
+
+    return response
+  } catch (error) {
+    handleError('Unable to load the Coupon. Please try again.', error)
+    return null
+  }
+}
+
 export const saveCoupon = async (coupon) => {
   try {
     let response = null

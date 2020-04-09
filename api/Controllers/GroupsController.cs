@@ -35,8 +35,8 @@ namespace Reclaimed.API.Controllers
         }
 
         [HttpGet("{groupId}")]
-        [ProducesResponseType(typeof(GroupModel), 200)]
-        public async Task<ActionResult<GroupModel>> GetGroup(int portalId, int groupId)
+        [ProducesResponseType(typeof(AdjustedGroup), 200)]
+        public async Task<ActionResult<AdjustedGroup>> GetGroup(int portalId, int groupId)
         {
             if (!ModelState.IsValid)
             {
@@ -44,18 +44,9 @@ namespace Reclaimed.API.Controllers
             }
 
             Group group = await _groupRepository.GetGroupById(portalId, groupId);
-            IEnumerable<Camper> campers = await _camperRepository.GetCampersByGroup(portalId, groupId);
+            AdjustedGroup adjustedGroup = await AdjustGroup(group);
 
-            GroupModel model = new GroupModel
-            {
-                Id = group.Id,
-                Name = group.Name,
-                IsActive = group.IsActive,
-                LoginUser = group.LoginUser,
-                Campers = campers.Select(x => x.Id).ToArray()
-            };
-
-            return Ok(model);
+            return Ok(adjustedGroup);
         }
 
         [HttpPost]
@@ -73,8 +64,8 @@ namespace Reclaimed.API.Controllers
         }
 
         [HttpPut("{groupId}")]
-        [ProducesResponseType(typeof(Group), 200)]
-        public async Task<ActionResult<Group>> UpdateGroup(int portalId, int groupId, [FromBody] GroupModel group)
+        [ProducesResponseType(typeof(AdjustedGroup), 200)]
+        public async Task<ActionResult<AdjustedGroup>> UpdateGroup(int portalId, int groupId, [FromBody] GroupModel group)
         {
             if (!ModelState.IsValid)
             {
@@ -82,8 +73,9 @@ namespace Reclaimed.API.Controllers
             }
 
             Group updatedGroup = await _groupRepository.UpdateGroup(portalId, groupId, group);
+            AdjustedGroup adjustedGroup = await AdjustGroup(updatedGroup);
 
-            return Ok(updatedGroup);
+            return Ok(adjustedGroup);
         }
 
         [HttpDelete("{groupId}")]
@@ -93,6 +85,19 @@ namespace Reclaimed.API.Controllers
             await _groupRepository.DeleteGroup(portalId, groupId);
 
             return Ok();
+        }
+        
+        private async Task<AdjustedGroup> AdjustGroup(Group group)
+        {
+            IEnumerable<Camper> campers = await _camperRepository.GetCampersByGroup(group.PortalId, group.Id);
+            AdjustedGroup adjustedGroup = new AdjustedGroup(group);
+
+            if (campers.Any())
+            {
+                adjustedGroup.Campers = campers.Select(x => x.Id).ToArray();
+            }
+
+            return adjustedGroup;
         }
     }
 }

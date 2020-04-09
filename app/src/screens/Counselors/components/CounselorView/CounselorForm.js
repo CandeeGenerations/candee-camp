@@ -21,6 +21,7 @@ import {
   inputNumberFormatter,
   inputNumberParser,
   selectSearchFunc,
+  formatDate,
 } from '@/helpers'
 
 const CounselorForm = Form.create({
@@ -225,6 +226,22 @@ const CounselorForm = Form.create({
               >
                 <Button type="danger">Delete Counselor</Button>
               </Popconfirm>
+            </Col>
+          </Row>
+
+          <Row css={{marginTop: 20}} gutter={16}>
+            <Col span={24}>
+              <Typography.Text type="secondary">
+                <small>
+                  Date Created: {formatDate(props.createdDate?.value || null)}
+                </small>
+              </Typography.Text>
+
+              <Typography.Text css={{display: 'block'}} type="secondary">
+                <small>
+                  Date Updated: {formatDate(props.updatedDate?.value || null)}
+                </small>
+              </Typography.Text>
             </Col>
           </Row>
         </>

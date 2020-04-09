@@ -15,7 +15,7 @@ import {
   Select,
 } from 'antd'
 
-import {selectSearchFunc} from '@/helpers'
+import {selectSearchFunc, formatDate} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
 
 const GroupForm = Form.create({
@@ -164,6 +164,22 @@ const GroupForm = Form.create({
               >
                 <Button type="danger">Delete Group</Button>
               </Popconfirm>
+            </Col>
+          </Row>
+
+          <Row css={{marginTop: 20}} gutter={16}>
+            <Col span={24}>
+              <Typography.Text type="secondary">
+                <small>
+                  Date Created: {formatDate(props.createdDate?.value || null)}
+                </small>
+              </Typography.Text>
+
+              <Typography.Text css={{display: 'block'}} type="secondary">
+                <small>
+                  Date Updated: {formatDate(props.updatedDate?.value || null)}
+                </small>
+              </Typography.Text>
             </Col>
           </Row>
         </>

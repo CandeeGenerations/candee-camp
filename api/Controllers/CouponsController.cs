@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,20 @@ namespace Reclaimed.API.Controllers
             Coupon coupon = await _couponRepository.GetCouponById(portalId, couponId);
 
             return Ok(coupon);
+        }
+
+        [HttpGet("code")]
+        [ProducesResponseType(typeof(Coupon), 200)]
+        public async Task<ActionResult<Coupon>> GetCouponByCode(int portalId, string code)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IEnumerable<Coupon> coupons  = await _couponRepository.GetCouponsByCode(portalId, code);
+
+            return Ok(coupons.FirstOrDefault());
         }
 
         [HttpPost]

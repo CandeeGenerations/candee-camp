@@ -1,12 +1,40 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import React from 'react'
+import React, {useContext, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {Row, Col, Typography} from 'antd'
 
 import {formatDate, formatCurrency} from '@/helpers'
+import {RegisterContext} from '@/screens/Register'
 
 const EventMetaData = (props) => {
+  const registerContext = useContext(RegisterContext)
+  const {
+    discount,
+    eventCost,
+    groupCampers,
+    setEventCost,
+    singleCamper,
+  } = registerContext
+
+  useEffect(() => {
+    let total = props.event.results.cost
+
+    if (!singleCamper) {
+      total = total * groupCampers.length
+    }
+
+    if (discount.amount > 0) {
+      if (discount.type === 'Percent') {
+        total = total - total * discount.amount
+      } else {
+        total = total - discount.amount
+      }
+    }
+
+    setEventCost(total > 0 ? total : 0)
+  }, [props.event.results.cost, singleCamper, groupCampers, discount.amount])
+
   return (
     <>
       <Row css={{marginBottom: 15}} gutter={16}>
@@ -38,8 +66,11 @@ const EventMetaData = (props) => {
         <Col css={{textAlign: 'center'}} span={24}>
           Cost
           <Typography.Title css={{color: '#13bf13 !important'}} level={2}>
-            {props.event.results.cost && props.event.results.cost > 0
-              ? formatCurrency(props.event.results.cost)
+            {(eventCost || 0) > 0 ||
+            (!singleCamper &&
+              groupCampers.length < 1 &&
+              (props.event.results.cost || 0) > 0)
+              ? formatCurrency(eventCost)
               : 'FREE'}
           </Typography.Title>
         </Col>

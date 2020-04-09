@@ -6,9 +6,9 @@ import {Divider, Table} from 'antd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import {DndProvider, DropTarget, DragSource} from 'react-dnd'
 
+import {formatIsActive} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
-import {formatDate, formatIsActive} from '@/helpers'
 
 import {NavItem} from '@/components/Navigation'
 import EmptyState from '@/components/EmptyState'
@@ -140,22 +140,6 @@ const CustomFieldsTable = (props) => {
           dataIndex="isActive"
           render={formatIsActive}
           title="Is Active"
-        />
-
-        <Column
-          key="createdDate"
-          align="right"
-          dataIndex="createdDate"
-          render={formatDate}
-          title="Created Date"
-        />
-
-        <Column
-          key="updatedDate"
-          align="right"
-          dataIndex="updatedDate"
-          render={formatDate}
-          title="Updated Date"
         />
 
         <Column
