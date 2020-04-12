@@ -10,12 +10,18 @@ namespace Reclaimed.API.Services
 {
     public class EmailService
     {
+        string emailTemplate = null;
+        const string path = "..\\Reclaimed.Core.Api\\EmailTemplates\\Miner's Tool.html";
         public EmailService()
+        {
+                
+        }
+
+        public void sendTestEmail()
         {
             try
             {
-                string emailTemplate = null;
-                const string path = "..\\Reclaimed.Core.Api\\EmailTemplates\\test.html";
+                
                 
                 if (File.Exists(path))
                 {
@@ -33,9 +39,9 @@ namespace Reclaimed.API.Services
                 {
                     From = new MailAddress("theblackswimmers@gmail.com"),
                     Subject = "I guess this works",
-                    Body = "yo",
+                    Body = emailTemplate,
                     IsBodyHtml = true
-                    //emailTemplate //"Test email body"
+                     //"Test email body"
                 };
 
                 mail.To.Add(new MailAddress("theblackswimmers@gmail.com "));
