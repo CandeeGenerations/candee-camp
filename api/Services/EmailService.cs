@@ -11,18 +11,17 @@ namespace Reclaimed.API.Services
     public class EmailService
     {
         string emailTemplate = null;
-        const string path = "..\\Reclaimed.Core.Api\\EmailTemplates\\Miner's Tool.html";
+        const string path = "..\\..\\..\\..\\api\\EmailTemplates\\Miner's Tool.html";
         public EmailService()
         {
-                
+
         }
 
-        public void sendTestEmail()
+        public string sendTestEmailTemplate()
         {
             try
             {
-                
-                
+                string tired = System.IO.Directory.GetCurrentDirectory();
                 if (File.Exists(path))
                 {
                     using (StreamReader streamReader = new StreamReader(path, Encoding.UTF8))
@@ -41,7 +40,7 @@ namespace Reclaimed.API.Services
                     Subject = "I guess this works",
                     Body = emailTemplate,
                     IsBodyHtml = true
-                     //"Test email body"
+                    //"Test email body"
                 };
 
                 mail.To.Add(new MailAddress("theblackswimmers@gmail.com "));
@@ -57,20 +56,75 @@ namespace Reclaimed.API.Services
                     Credentials = credentials
                 };
 
-                // Send it...         
+                // Send it...
                 client.Send(mail);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in sending email: " + ex.Message);
-                Console.ReadKey();
-                return;
+                //Console.WriteLine("Error in sending email: " + ex.Message);
+                //Console.ReadKey();
+                return ("Error in sending email: " + ex.Message);
             }
 
-            Console.WriteLine("Email successfully sent");
-            Console.ReadKey();
+            //Console.WriteLine("Email successfully sent");
+            //Console.ReadKey();
+            return ("Email successfully sent");
         }
 
+        public string sendTestEmail()
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    using (StreamReader streamReader = new StreamReader(path, Encoding.UTF8))
+                    {
+                        emailTemplate = streamReader.ReadToEnd();
+                    }
+                }
+
+                // Credentials
+                NetworkCredential credentials = new NetworkCredential("theblackswimmers@gmail.com", "R0salina!");
+
+                // Mail message
+                MailMessage mail = new MailMessage
+                {
+                    From = new MailAddress("theblackswimmers@gmail.com"),
+                    Subject = "I guess this works",
+                    //Body = emailTemplate,
+                    IsBodyHtml = false,
+                    Body = "Test email body"
+                };
+
+                mail.To.Add(new MailAddress("theblackswimmers@gmail.com "));
+
+                // Smtp client
+                SmtpClient client = new SmtpClient()
+                {
+                    Port = 587,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Host = "smtp.gmail.com",
+                    EnableSsl = true,
+                    Credentials = credentials
+                };
+                
+                // Send it...
+                client.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Error in sending email: " + ex.Message);
+                //Console.ReadKey();
+                return ("Error in sending email: " + ex.Message);
+            }
+
+            //Console.WriteLine("Email successfully sent");
+            //Console.ReadKey();
+            return ("Email successfully sent");
+        }
+    }
+}
         //SmtpMail oMail = new SmtpMail("TryIt");
         //SmtpClient oSmtp = new SmtpClient();
 
@@ -115,5 +169,4 @@ namespace Reclaimed.API.Services
         //    Console.WriteLine("failed to send email with the following error:");
         //    Console.WriteLine(ep.Message);
         //}
-    }
-}
+    

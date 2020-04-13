@@ -6,12 +6,13 @@ using Reclaimed.API.Common;
 using Reclaimed.API.DomainObjects;
 using Reclaimed.API.Models;
 using Reclaimed.API.Repositories.Interfaces;
+using Reclaimed.API.Services;
 
 namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Authorize(Policy = CampPolicies.SamePortal)]
-    [Route("api/[controller]/{portalId}")]
+    //[Authorize(Policy = CampPolicies.SamePortal)]
+    [Route("api/[controller]")]///{portalId}
     [Produces("application/json")]
     public class NotificationsController : Controller
     {
@@ -23,12 +24,18 @@ namespace Reclaimed.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Notification>), 200)]
-        public async Task<ActionResult<IEnumerable<Notification>>> GetNotifications(int portalId)
+        [ProducesResponseType(typeof(string), 200)]
+        public string GetNotifications(int portalId)
         {
-            IEnumerable<Notification> notifications = await _notificationRepository.GetNotifications(portalId);
+            //IEnumerable<Notification> notifications = await _notificationRepository.GetNotifications(portalId);
+            EmailService emailService = new EmailService();
+            string response1 = null;
+            
+            string response2 = null;
 
-            return Ok(notifications);
+            //response1 = emailService.sendTestEmail();
+            response2 = emailService.sendTestEmailTemplate();
+            return (response1 + " " + response2);
         }
 
         [HttpGet("{notificationId}")]

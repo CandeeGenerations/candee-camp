@@ -131,6 +131,7 @@ namespace Reclaimed.API
             services.AddScoped<IPaymentDonationRepository, PaymentDonationRepository>();
             services.AddScoped<IPayPalPaymentRepository, PayPalPaymentRepository>();
             services.AddScoped<ISettingRepository, SettingRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ICustomFieldRepository, CustomFieldRepository>();
             services.AddScoped<ICamperCustomFieldRepository, CamperCustomFieldRepository>();
         }
