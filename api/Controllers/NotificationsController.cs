@@ -88,5 +88,21 @@ namespace Reclaimed.API.Controllers
 
             return Ok();
         }
+
+        [HttpGet("GetAllNotifications")]
+        [ProducesResponseType(typeof(Notification), 200)]
+        public async Task<ActionResult<IEnumerable<Notification>>> GetNotifications()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IEnumerable<Notification> notifications = await _notificationRepository.GetNotifications();
+
+
+
+            return Ok(notifications);
+        }
     }
 }

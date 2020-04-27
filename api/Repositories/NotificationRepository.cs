@@ -19,6 +19,9 @@ namespace Reclaimed.API.Repositories
         public async Task<IEnumerable<Notification>> GetNotifications(int portalId) =>
             await Context.Notifications.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
 
+        public async Task<IEnumerable<Notification>> GetNotifications() =>
+            await Context.Notifications.ToListAsync();
+
         public async Task<Notification> GetNotificationById(int portalId, int notificationId)
         {
             Notification dbNotification =

@@ -19,9 +19,9 @@ namespace Reclaimed.API.DomainObjects
 
         public int CreatedBy { get; set; }
 
-        public string Stuff { get; set; }
-        public string Things { get; set; }
-        public string Again { get; set; }
+        public string Schedule { get; set; }
+        public string Descriptor { get; set; }
+        public string Start { get; set; }
         public string Data { get; set; }
 
         [ForeignKey("CreatedBy")]

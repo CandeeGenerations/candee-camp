@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reclaimed.API.Context;
 
 namespace Reclaimed.API.Migrations
 {
     [DbContext(typeof(CampContext))]
-    partial class CampContextModelSnapshot : ModelSnapshot
+    [Migration("20200427003014_alteredNotificationTable")]
+    partial class alteredNotificationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -415,6 +417,9 @@ namespace Reclaimed.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Again")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
@@ -422,9 +427,6 @@ namespace Reclaimed.API.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Data")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Descriptor")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<bool>("IsActive")
@@ -439,10 +441,10 @@ namespace Reclaimed.API.Migrations
                     b.Property<int>("PortalId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Schedule")
+                    b.Property<string>("Stuff")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("Start")
+                    b.Property<string>("Things")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTimeOffset>("UpdatedDate")

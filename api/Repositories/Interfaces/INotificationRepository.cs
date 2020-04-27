@@ -13,5 +13,6 @@ namespace Reclaimed.API.Repositories.Interfaces
         Task<Notification> CreateNotification(int portalId, NotificationModel notification);
         Task DeleteNotification(int portalId, int notificationId);
         Task<Notification> UpdateNotification(int portalId, int NotificationId, NotificationModel notification);
+        Task<IEnumerable<Notification>> GetNotifications();
     }
 }
