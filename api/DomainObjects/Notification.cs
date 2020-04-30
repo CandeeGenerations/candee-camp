@@ -31,13 +31,5 @@ namespace Reclaimed.API.DomainObjects
 
         [ForeignKey("Id")]
         public virtual Portal Portal { get; set; }
-
-        //       [ForeignKey("CreatedBy")]
-        //       public virtual User CreatedByUser { get; set; }
-
-        //        public int PortalId { get; set; }
-
-        //        [ForeignKey("Id")]
-        //        public virtual Portal Portal { get; set; }
     }
 }

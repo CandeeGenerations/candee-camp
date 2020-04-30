@@ -88,7 +88,7 @@ namespace Reclaimed.API
                 options.AddPolicy(CampPolicies.SamePortal,
                     policy => policy.Requirements.Add(new PortalRequirement()));
             });
-            //JobScheduler.Start();
+            //JobScheduler.Start(_config);
             //JobScheduler.Stop();
         }
 
