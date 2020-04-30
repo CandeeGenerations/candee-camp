@@ -123,6 +123,59 @@ namespace Reclaimed.API.Services
             //Console.ReadKey();
             return ("Email successfully sent");
         }
+
+        public string sendTestEmail(string emailAddress)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    using (StreamReader streamReader = new StreamReader(path, Encoding.UTF8))
+                    {
+                        emailTemplate = streamReader.ReadToEnd();
+                    }
+                }
+
+                // Credentials
+                NetworkCredential credentials = new NetworkCredential("theblackswimmers@gmail.com", "R0salina!");
+
+                // Mail message
+                MailMessage mail = new MailMessage
+                {
+                    From = new MailAddress("theblackswimmers@gmail.com"),
+                    Subject = "I guess this works",
+                    //Body = emailTemplate,
+                    IsBodyHtml = false,
+                    Body = "Test email body"
+                };
+
+                mail.To.Add(new MailAddress(emailAddress));
+
+                // Smtp client
+                SmtpClient client = new SmtpClient()
+                {
+                    Port = 587,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Host = "smtp.gmail.com",
+                    EnableSsl = true,
+                    Credentials = credentials
+                };
+
+                // Send it...
+                client.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Error in sending email: " + ex.Message);
+                //Console.ReadKey();
+                return ("Error in sending email: " + ex.Message);
+            }
+
+            //Console.WriteLine("Email successfully sent");
+            //Console.ReadKey();
+            return ("Email successfully sent");
+        }
     }
 }
         //SmtpMail oMail = new SmtpMail("TryIt");

@@ -1,4 +1,7 @@
-﻿using Quartz;
+﻿using Newtonsoft.Json;
+using Quartz;
+using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,16 +14,17 @@ namespace Reclaimed.API.Jobs
     {
         public async Task Execute(IJobExecutionContext context)
         {
-            //using (StreamWriter streamWriter = new StreamWriter(@"D:\IDGLog.txt", true))
-            //{
-            //    streamWriter.WriteLine(DateTime.Now.ToString());
-            //}
-            await Console.Out.WriteLineAsync("HelloJob is executing.");
-        }
+            EmailService emailService = new EmailService();
+            JobDataMap dataMap = context.JobDetail.JobDataMap;
+            List<Notification> deserializedNotificationList = JsonConvert.DeserializeObject<List<Notification>>(dataMap.GetString("Addresses"));
 
-        //Task IJob.Execute(IJobExecutionContext context)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            foreach (var item in deserializedNotificationList)
+            {
+                _ = emailService.sendTestEmail(item.Data);
+            }
+
+            await Console.Out.WriteLineAsync("HelloJob is executing.");
+
+        }
     }
 }

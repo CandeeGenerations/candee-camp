@@ -14,6 +14,7 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
+using Reclaimed.API.Services;
 
 namespace Reclaimed.API.Schedulers
 {
@@ -23,62 +24,37 @@ namespace Reclaimed.API.Schedulers
         public static ISchedulerFactory schedFact = new StdSchedulerFactory();
 
         public static IScheduler scheduler = schedFact.GetScheduler().GetAwaiter().GetResult();
+        public static EmailService emailService = new EmailService();
+
         public async static void Start()
         {
             scheduler.Start();
 
             string notifications = await GetAllNotifications();
 
-            //string notificationList = notifications.ToString();
-
-            //var notification = JObject.Parse(notifications);
-            List<Notification> notification = JsonConvert.DeserializeObject<List<Notification>>(notifications);
             //"[{\"name\":\"fgwef\",\"createdDate\":\"2020-11-28T04:10:31+00:00\",\"updatedDate\":\"2020-11-28T04:10:31+00:00\",\"createdBy\":-1,\"stuff\":null,\"things\":null,\"again\":\"erer\",\"data\":\"33\",\"createdByUser\":null,\"portalId\":1,\"portal\":null,\"isActive\":true,\"isDeleted\":false,\"id\":1}]"
-            //[{"name":"fgwef","createdDate":"2020-11-28T04:10:31+00:00","updatedDate":"2020-11-28T04:10:31+00:00","createdBy":-1,"stuff":null,"things":null,"again":"erer","data":"33","createdByUser":null,"portalId":1,"portal":null,"isActive":true,"isDeleted":false,"id":1},{"name":"tt","createdDate":"2019-11-28T04:10:31+00:00","updatedDate":"2020-11-28T04:10:31+00:00","createdBy":-1,"stuff":null,"things":null,"again":"erer","data":"33","createdByUser":null,"portalId":1,"portal":null,"isActive":true,"isDeleted":false,"id":2}]            List<Notification> test = JsonConvert.DeserializeObject<List<Notification>>(notifications);
 
-            Console.WriteLine(notification);
+            //Console.WriteLine(deserializedNotificationList);
 
             IJobDetail newJob = JobBuilder.Create<DumbJob>().Build();
 
-            foreach (var item in notification)
-            {
+            IJobDetail launchEmails = JobBuilder.Create<HelloJob>()
+                .WithIdentity("myJob", "group1")
+                .UsingJobData("Addresses", notifications)
+                .Build();
 
-            }
-            //IJobDetail job = JobBuilder.Create<DumbJob>()
+            ITrigger trigger = TriggerBuilder.Create()
 
-            //ITrigger trigger = TriggerBuilder.Create()
-
-            //    .WithIdentity("IDGJob", "IDG")
-
-            //    .WithCronSchedule("0 0/1 * 1/1 * ? *")
-
-            //    .StartAt(DateTime.UtcNow)
-
-            //    .WithPriority(1)
-
-            //    .Build();
-
-            //scheduler.ScheduleJob(newJob, trigger);
-
-            //Console.WriteLine("Dumb started.");
-
-            IJobDetail job = JobBuilder.Create<HelloJob>().Build();
-            IJobDetail jobd = JobBuilder.Create<DumbJob>().Build();
-
-            ITrigger trigger2 = TriggerBuilder.Create()
-
-                .WithIdentity("IDGJob", "IDG")
-
-                .WithCronSchedule("0 0/1 * 1/1 * ? *")
-
+                .WithIdentity("IDGTrigger", "TRIGGER")
+                .WithSimpleSchedule(x => x.WithIntervalInSeconds(10))
+                //.WithCronSchedule("0 0/1 * 1/1 * ? *")
                 .StartAt(DateTime.UtcNow)
 
                 .WithPriority(1)
 
                 .Build();
 
-            _ = scheduler.ScheduleJob(job, trigger2);
-            _ = scheduler.ScheduleJob(jobd, trigger2);
+            _ = scheduler.ScheduleJob(launchEmails, trigger);
 
             Console.WriteLine("IDG started.");
 
@@ -96,7 +72,6 @@ namespace Reclaimed.API.Schedulers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                // New code:
                 HttpResponseMessage response = await client.GetAsync("api/Notifications/GetAllNotifications");
                 if (response.IsSuccessStatusCode)
                 {
@@ -104,7 +79,6 @@ namespace Reclaimed.API.Schedulers
                     Console.WriteLine(notificationList);
                 }
             }
-            //{StatusCode: 400, ReasonPhrase: 'Bad Request', Version: 1.1, Content: System.Net.Http.HttpConnectionResponseContent, Headers:{  Date: Sun, 26 Apr 2020 21:33:33 GMT  Server: Kestrel  Transfer-Encoding: chunked  Content-Type: application/json; charset=utf-8}}
             return notificationList;
         }
 
