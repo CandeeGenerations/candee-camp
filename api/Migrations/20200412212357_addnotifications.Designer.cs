@@ -2,19 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reclaimed.API.Context;
 
 namespace Reclaimed.API.Migrations
 {
     [DbContext(typeof(CampContext))]
-    partial class CampContextModelSnapshot : ModelSnapshot
+    [Migration("20200412212357_addnotifications")]
+    partial class addnotifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Reclaimed.API.DomainObjects.AuthClient", b =>
@@ -415,6 +417,9 @@ namespace Reclaimed.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Again")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
@@ -422,9 +427,6 @@ namespace Reclaimed.API.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Data")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Descriptor")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<bool>("IsActive")
@@ -439,10 +441,10 @@ namespace Reclaimed.API.Migrations
                     b.Property<int>("PortalId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Schedule")
+                    b.Property<string>("Stuff")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("Start")
+                    b.Property<string>("Things")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<DateTimeOffset>("UpdatedDate")
