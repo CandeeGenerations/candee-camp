@@ -1,11 +1,12 @@
 import request from '@/api'
 import {handleError, openNotification, formDataToBody} from '@/helpers'
+import {pid} from '@/helpers/authHelpers'
 
 const mainPath = '/users'
 
 export const loadUsers = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -17,7 +18,7 @@ export const loadUsers = async () => {
 export const loadUsersByIds = async (userIds) => {
   try {
     const response = await request.get(
-      `${mainPath}/by-ids?userIds=${userIds.join('&userIds=')}`,
+      pid(`${mainPath}/by-ids?userIds=${userIds.join('&userIds=')}`),
     )
 
     return response
@@ -29,7 +30,7 @@ export const loadUsersByIds = async (userIds) => {
 
 export const loadUserStats = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response.data.length
   } catch (error) {
@@ -40,7 +41,7 @@ export const loadUserStats = async () => {
 
 export const loadUser = async (userId) => {
   try {
-    const response = await request.get(`${mainPath}/${userId}`)
+    const response = await request.get(pid(`${mainPath}/${userId}`))
 
     return response
   } catch (error) {
@@ -55,9 +56,9 @@ export const saveUser = async (user) => {
     const body = formDataToBody(user)
 
     if (user.id) {
-      response = await request.put(`${mainPath}/${user.id.value}`, body)
+      response = await request.put(pid(`${mainPath}/${user.id.value}`), body)
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(pid(mainPath), body)
     }
 
     openNotification(
@@ -74,7 +75,7 @@ export const saveUser = async (user) => {
 
 export const deleteUser = async (userId) => {
   try {
-    const response = await request.delete(`${mainPath}/${userId}`)
+    const response = await request.delete(pid(`${mainPath}/${userId}`))
 
     openNotification('success', 'The User has been delete successfully.')
 
@@ -88,7 +89,7 @@ export const deleteUser = async (userId) => {
 export const changeUserPassword = async (userId, password) => {
   try {
     const response = await request.post(
-      `${mainPath}/${userId}/change-password?password=${password}`,
+      pid(`${mainPath}/${userId}/change-password?password=${password}`),
     )
 
     openNotification(

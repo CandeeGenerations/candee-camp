@@ -13,7 +13,7 @@ namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
     [Authorize(Policy = CampPolicies.SamePortal)]
-    [Route("api/[controller]/{portalId}")]
+    [Route("api/{portalId}/[controller]")]
     [Produces("application/json")]
     public class RegisterController : Controller
     {

@@ -88,11 +88,11 @@ namespace Reclaimed.API.Controllers
 
         [HttpPost("reset-password")]
         [ProducesResponseType(typeof(User), 200)]
-        public async Task<ActionResult<bool>> ResetPassword([FromBody]ResetPasswordModel model)
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordModel model)
         {
-            User user = await _userRepository.ResetPassword(model);
+            await _userRepository.ResetPassword(model);
 
-            return Ok(user);
+            return Ok();
         }
 
         [HttpGet("claims")]

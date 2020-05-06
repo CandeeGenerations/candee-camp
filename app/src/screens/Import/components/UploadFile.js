@@ -18,7 +18,7 @@ const UploadFile = () => {
     name: 'file',
     multiple: false,
     accept: '.csv',
-    action: `${Config.apiUrl}/file/upload`,
+    action: `${Config.apiUrl}/${user.portalId}/file/upload`,
     data: {userId: userData.id, importType: importState.type},
     headers: {Authorization: `Bearer ${user.access_token}`},
     onChange(info) {

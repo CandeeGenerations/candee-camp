@@ -1,7 +1,7 @@
 import request from '../api'
 import {handleError, openNotification} from '../helpers'
 
-import {getUserData} from '@/helpers/authHelpers'
+import {getUserData, pid} from '@/helpers/authHelpers'
 
 const mainPath = '/snack-shop-purchases'
 
@@ -12,7 +12,7 @@ export const loadSnackShopPurchases = async ({
 }) => {
   try {
     const response = await request.get(
-      `${mainPath}/${camperId || counselorId}`,
+      pid(`${mainPath}/${camperId || counselorId}`),
       {
         params: {source},
       },
@@ -36,7 +36,7 @@ export const loadSnackShopPurchase = async ({
 }) => {
   try {
     const response = await request.get(
-      `${mainPath}/${camperId || counselorId}/${snackShopPurchaseId}`,
+      pid(`${mainPath}/${camperId || counselorId}/${snackShopPurchaseId}`),
       {params: {source}},
     )
 
@@ -70,13 +70,13 @@ export const saveSnackShopPurchase = async ({
 
     if (snackShopPurchase.id && snackShopPurchase.id !== 0) {
       response = await request.put(
-        `${mainPath}/${camperId || counselorId}/${snackShopPurchase.id}`,
+        pid(`${mainPath}/${camperId || counselorId}/${snackShopPurchase.id}`),
         body,
         {params: {source}},
       )
     } else {
       response = await request.post(
-        `${mainPath}/${camperId || counselorId}`,
+        pid(`${mainPath}/${camperId || counselorId}`),
         body,
         {
           params: {source},
@@ -109,7 +109,7 @@ export const deleteSnackShopPurchase = async ({
 }) => {
   try {
     const response = await request.delete(
-      `${mainPath}/${camperId || counselorId}/${snackShopPurchaseId}`,
+      pid(`${mainPath}/${camperId || counselorId}/${snackShopPurchaseId}`),
       {params: {source}},
     )
 

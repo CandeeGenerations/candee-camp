@@ -1,13 +1,13 @@
 import request from '../api'
 import {handleError, formDataToBody, openNotification} from '../helpers'
 
-import {getUserData} from '@/helpers/authHelpers'
+import {getUserData, pid} from '@/helpers/authHelpers'
 
 const mainPath = '/customFields'
 
 export const loadCustomFields = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -18,7 +18,7 @@ export const loadCustomFields = async () => {
 
 export const loadCustomFieldStats = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response.data.length
   } catch (error) {
@@ -32,7 +32,7 @@ export const loadCustomFieldStats = async () => {
 
 export const loadCustomField = async (customFieldId) => {
   try {
-    const response = await request.get(`${mainPath}/${customFieldId}`)
+    const response = await request.get(pid(`${mainPath}/${customFieldId}`))
 
     return response
   } catch (error) {
@@ -55,9 +55,12 @@ export const saveCustomField = async (customField) => {
     body.createdBy = user.id
 
     if (customField.id) {
-      response = await request.put(`${mainPath}/${customField.id.value}`, body)
+      response = await request.put(
+        pid(`${mainPath}/${customField.id.value}`),
+        body,
+      )
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(pid(mainPath), body)
     }
 
     openNotification(
@@ -76,7 +79,7 @@ export const saveCustomField = async (customField) => {
 
 export const deleteCustomField = async (customFieldId) => {
   try {
-    const response = await request.delete(`${mainPath}/${customFieldId}`)
+    const response = await request.delete(pid(`${mainPath}/${customFieldId}`))
 
     openNotification(
       'success',
@@ -93,7 +96,7 @@ export const deleteCustomField = async (customFieldId) => {
 export const reorderCustomFields = async (sourceId, targetId) => {
   try {
     const response = await request.post(
-      `${mainPath}/reorder?sourceId=${sourceId}&targetId=${targetId}`,
+      pid(`${mainPath}/reorder?sourceId=${sourceId}&targetId=${targetId}`),
     )
 
     openNotification(

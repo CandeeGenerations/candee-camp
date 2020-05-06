@@ -1,13 +1,13 @@
 import request from '../api'
 import {handleError, formDataToBody, openNotification} from '../helpers'
 
-import {getUserData} from '@/helpers/authHelpers'
+import {getUserData, pid} from '@/helpers/authHelpers'
 
 const mainPath = '/counselors'
 
 export const loadCounselors = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -18,7 +18,7 @@ export const loadCounselors = async () => {
 
 export const loadCounselorStats = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response.data.length
   } catch (error) {
@@ -29,7 +29,7 @@ export const loadCounselorStats = async () => {
 
 export const loadCounselor = async (counselorId) => {
   try {
-    const response = await request.get(`${mainPath}/${counselorId}`)
+    const response = await request.get(pid(`${mainPath}/${counselorId}`))
 
     return response
   } catch (error) {
@@ -54,9 +54,12 @@ export const saveCounselor = async (counselor) => {
     body.createdBy = user.id
 
     if (counselor.id) {
-      response = await request.put(`${mainPath}/${counselor.id.value}`, body)
+      response = await request.put(
+        pid(`${mainPath}/${counselor.id.value}`),
+        body,
+      )
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(pid(mainPath), body)
     }
 
     openNotification(
@@ -75,7 +78,7 @@ export const saveCounselor = async (counselor) => {
 
 export const deleteCounselor = async (counselorId) => {
   try {
-    const response = await request.delete(`${mainPath}/${counselorId}`)
+    const response = await request.delete(pid(`${mainPath}/${counselorId}`))
 
     openNotification('success', 'The Counselor has been delete successfully.')
 

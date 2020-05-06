@@ -1,11 +1,12 @@
 import request from '../api'
 import {handleError, openNotification, formDataToBody} from '../helpers'
+import {pid} from '@/helpers/authHelpers'
 
 const mainPath = '/registrations'
 
 export const loadRegistrations = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -16,7 +17,7 @@ export const loadRegistrations = async () => {
 
 export const loadRegistrationStats = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response.data.length
   } catch (error) {
@@ -30,7 +31,7 @@ export const loadRegistrationStats = async () => {
 
 export const loadRegistration = async (registrationId) => {
   try {
-    const response = await request.get(`${mainPath}/${registrationId}`)
+    const response = await request.get(pid(`${mainPath}/${registrationId}`))
 
     return response
   } catch (error) {
@@ -48,9 +49,12 @@ export const saveRegistration = async (registration) => {
     body.camperId = body.camperId ? Number(body.camperId) : null
 
     if (registration.id) {
-      response = await request.put(`${mainPath}/${registration.id.value}`, body)
+      response = await request.put(
+        pid(`${mainPath}/${registration.id.value}`),
+        body,
+      )
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(pid(mainPath), body)
     }
 
     openNotification(
@@ -69,7 +73,7 @@ export const saveRegistration = async (registration) => {
 
 export const deleteRegistration = async (registrationId) => {
   try {
-    const response = await request.delete(`${mainPath}/${registrationId}`)
+    const response = await request.delete(pid(`${mainPath}/${registrationId}`))
 
     openNotification(
       'success',

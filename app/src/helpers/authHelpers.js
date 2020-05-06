@@ -22,6 +22,7 @@ export const getUserData = () => {
 
   return {
     ...userData,
+    portalId: Number(userData.portal_id),
     id: Number(
       userData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
     ),
@@ -31,5 +32,7 @@ export const getUserData = () => {
       ],
   }
 }
+
+export const pid = (path) => `${getUserData().portalId}${path}`
 
 export const removeUser = () => localStorage.removeItem(key)

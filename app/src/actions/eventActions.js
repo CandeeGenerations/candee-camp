@@ -1,12 +1,12 @@
 import request from '@/api'
-import {getUserData} from '@/helpers/authHelpers'
+import {getUserData, pid} from '@/helpers/authHelpers'
 import {handleError, openNotification, formDataToBody} from '@/helpers'
 
 const mainPath = '/events'
 
 export const loadEvents = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -18,7 +18,7 @@ export const loadEvents = async () => {
 export const loadEventsByIds = async (eventIds) => {
   try {
     const response = await request.get(
-      `${mainPath}/by-ids?eventIds=${eventIds.join('&eventIds=')}`,
+      pid(`${mainPath}/by-ids?eventIds=${eventIds.join('&eventIds=')}`),
     )
 
     return response
@@ -31,9 +31,11 @@ export const loadEventsByIds = async (eventIds) => {
 export const loadEventsForRegistration = async (currentEventId) => {
   try {
     const response = await request.get(
-      `${mainPath}/for-registration${
-        currentEventId ? `?currentEventId=${currentEventId}` : ''
-      }`,
+      pid(
+        `${mainPath}/for-registration${
+          currentEventId ? `?currentEventId=${currentEventId}` : ''
+        }`,
+      ),
     )
 
     return response
@@ -45,7 +47,7 @@ export const loadEventsForRegistration = async (currentEventId) => {
 
 export const loadEventStats = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response.data.length
   } catch (error) {
@@ -56,7 +58,7 @@ export const loadEventStats = async () => {
 
 export const loadEvent = async (eventId: number) => {
   try {
-    const response = await request.get(`${mainPath}/${eventId}`)
+    const response = await request.get(pid(`${mainPath}/${eventId}`))
 
     return response
   } catch (error) {
@@ -82,9 +84,9 @@ export const saveEvent = async (event) => {
     body.createdBy = user.id
 
     if (event.id) {
-      response = await request.put(`${mainPath}/${event.id.value}`, body)
+      response = await request.put(pid(`${mainPath}/${event.id.value}`), body)
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(pid(mainPath), body)
     }
 
     openNotification(
@@ -101,7 +103,7 @@ export const saveEvent = async (event) => {
 
 export const deleteEvent = async (eventId) => {
   try {
-    const response = await request.delete(`${mainPath}/${eventId}`)
+    const response = await request.delete(pid(`${mainPath}/${eventId}`))
 
     openNotification('success', 'The Event has been deleted successfully.')
 

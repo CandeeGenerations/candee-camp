@@ -1,13 +1,13 @@
 import request from '../api'
 import {handleError, formDataToBody, openNotification} from '../helpers'
 
-import {getUserData} from '@/helpers/authHelpers'
+import {getUserData, pid} from '@/helpers/authHelpers'
 
 const mainPath = '/cabins'
 
 export const loadCabins = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -18,7 +18,7 @@ export const loadCabins = async () => {
 
 export const loadCabinStats = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response.data.length
   } catch (error) {
@@ -29,7 +29,7 @@ export const loadCabinStats = async () => {
 
 export const loadCabin = async (cabinId) => {
   try {
-    const response = await request.get(`${mainPath}/${cabinId}`)
+    const response = await request.get(pid(`${mainPath}/${cabinId}`))
 
     return response
   } catch (error) {
@@ -52,9 +52,9 @@ export const saveCabin = async (cabin) => {
     body.createdBy = user.id
 
     if (cabin.id) {
-      response = await request.put(`${mainPath}/${cabin.id.value}`, body)
+      response = await request.put(pid(`${mainPath}/${cabin.id.value}`), body)
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(pid(mainPath), body)
     }
 
     openNotification(
@@ -71,7 +71,7 @@ export const saveCabin = async (cabin) => {
 
 export const deleteCabin = async (cabinId) => {
   try {
-    const response = await request.delete(`${mainPath}/${cabinId}`)
+    const response = await request.delete(pid(`${mainPath}/${cabinId}`))
 
     openNotification('success', 'The Cabin has been delete successfully.')
 

@@ -18,7 +18,7 @@ namespace Reclaimed.API.Controllers
     // https://github.com/shahedc/SimpleUpload
     [ApiVersion("1.0")]
     [Authorize(Policy = CampPolicies.SamePortal)]
-    [Route("api/[controller]")]
+    [Route("api/{portalId}/[controller]")]
     public class FileController : Controller
     {
         private readonly IConfiguration _config;
