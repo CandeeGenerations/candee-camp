@@ -16,6 +16,7 @@ using Reclaimed.API.Context;
 using Reclaimed.API.ExceptionHandling;
 using Reclaimed.API.Repositories;
 using Reclaimed.API.Repositories.Interfaces;
+using Reclaimed.API.Schedulers;
 
 namespace Reclaimed.API
 {
@@ -87,6 +88,8 @@ namespace Reclaimed.API
                 options.AddPolicy(CampPolicies.SamePortal,
                     policy => policy.Requirements.Add(new PortalRequirement()));
             });
+            //JobScheduler.Start(_config);
+            //JobScheduler.Stop();
         }
 
         public void Configure(IApplicationBuilder app, IHostEnvironment env)
@@ -131,6 +134,7 @@ namespace Reclaimed.API
             services.AddScoped<IPaymentDonationRepository, PaymentDonationRepository>();
             services.AddScoped<IPayPalPaymentRepository, PayPalPaymentRepository>();
             services.AddScoped<ISettingRepository, SettingRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ICustomFieldRepository, CustomFieldRepository>();
             services.AddScoped<ICamperCustomFieldRepository, CamperCustomFieldRepository>();
         }

@@ -28,6 +28,7 @@ namespace Reclaimed.API.Context
         public DbSet<Setting> Settings { get; set; }
         public DbSet<CustomField> CustomFields { get; set; }
         public DbSet<CamperCustomField> CamperCustomFields { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -80,7 +81,10 @@ namespace Reclaimed.API.Context
             modelBuilder.Entity<Coupon>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
 
             modelBuilder.Entity<SnackShopItem>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
-            
+
+            modelBuilder.Entity<Notification>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(no => no.CreatedBy);
+            modelBuilder.Entity<Notification>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+
             modelBuilder.Entity<SnackShopPurchase>().HasOne(s => s.SnackShopItem).WithMany()
                 .HasForeignKey(s => s.SnackShopItemId);
             modelBuilder.Entity<SnackShopPurchase>().HasOne(cb => cb.Camper).WithMany()
@@ -97,6 +101,8 @@ namespace Reclaimed.API.Context
                 .HasForeignKey(ccf => ccf.CustomFieldId);
             modelBuilder.Entity<CamperCustomField>().HasOne(c => c.Camper).WithMany()
                 .HasForeignKey(ccf => ccf.CamperId);
+
+
 
             base.OnModelCreating(modelBuilder);
         }
