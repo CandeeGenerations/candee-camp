@@ -1,145 +1,84 @@
 /** @jsx jsx */
-import {css, jsx} from '@emotion/core'
+import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
-import {Icon, Layout, Menu} from 'antd'
 import {useRoute} from 'react-router5'
+import {Layout, Menu, Icon, Affix} from 'antd'
 
-import logo from '@/content/images/logo.png'
 import {NavItem} from '@/components/Navigation'
 
 const NavBarContent = (props) => {
   const routerContext = useRoute()
   const routeName = routerContext.route.name
+  const openKey = props.navItems.find((item) =>
+    routeName.includes(item.routeName),
+  )
 
   return (
-    <Layout.Sider collapsed>
-      <Menu
-        css={{
-          height: '100%',
-          position: 'fixed',
-          zIndex: 1,
-        }}
-        theme="dark"
-      >
-        <Menu.Item
+    <Affix
+      css={{
+        background: '#f0f2f5',
+        height: '100vh',
+      }}
+      offsetTop={75}
+    >
+      <Layout.Sider>
+        <Menu
           css={{
-            a: {
-              fontSize: 21,
-              fontWeight: 700,
-              marginLeft: -8,
-              textTransform: 'uppercase',
-              color: '#f3f3f4 !important',
-              fontFamily: "'Montserrat', sans-serif",
+            borderRight: 0,
+            paddingLeft: 10,
+            background: '#f0f2f5',
 
-              '&:focus, &:active': {
-                textDecoration: 'none',
-              },
+            ul: {
+              background: '#f0f2f5 !important',
+            },
+
+            'li, div.ant-menu-submenu-title': {
+              borderRadius: 20,
             },
           }}
-          title="Dashboard"
+          defaultOpenKeys={openKey ? [openKey.routeName] : []}
+          mode="inline"
+          selectedKeys={[routeName]}
         >
-          <NavItem options={{reload: true}} routeName="dashboard">
-            <img
-              alt="Reclaimed Logo"
-              css={{marginLeft: -8, maxHeight: 45}}
-              src={logo}
-            />
-          </NavItem>
-        </Menu.Item>
-      </Menu>
+          {props.navItems.map((item) => {
+            if (!item.subItems) {
+              return (
+                <Menu.Item key={item.routeName}>
+                  <NavItem options={{reload: true}} routeName={item.routeName}>
+                    <Icon type={item.icon} />
 
-      <Menu
-        css={{position: 'fixed', top: '50%', marginTop: -190, zIndex: 1}}
-        selectedKeys={props.selectedItem ? [props.selectedItem.routeName] : []}
-        theme="dark"
-      >
-        {props.navItems.map((item) => {
-          const regex = new RegExp(`${item.routeName}\\W`, 'g')
+                    <span>{item.name}</span>
+                  </NavItem>
+                </Menu.Item>
+              )
+            }
 
-          return (
-            <Menu.Item
-              key={item.routeName}
-              css={{
-                '&.ant-menu-item-selected > a': {
-                  borderTopLeftRadius: 20,
-                  borderBottomLeftRadius: 20,
-                  backgroundColor: '#f0f2f5 !important',
-                },
-              }}
-            >
-              <NavItem options={{reload: true}} routeName={item.routeName}>
-                <Icon type={item.icon} />
-
-                <span>{item.name}</span>
-
-                {(routeName === item.routeName || routeName.match(regex)) && (
-                  <div
-                    className="navbar-extra"
-                    css={css`
-                      top: 0;
-                      right: 0;
-                      bottom: 0;
-                      width: 20px;
-                      position: absolute;
-                      background-color: #f0f2f5;
-
-                      &:after {
-                        top: -9px;
-                        width: 22px;
-                        content: '';
-                        height: 19px;
-                        position: absolute;
-                        background-color: #021802;
-                        border-bottom-right-radius: 20px;
-                      }
-                    `}
-                  >
-                    <div
-                      css={css`
-                        &:after {
-                          bottom: -10px;
-                          width: 22px;
-                          content: '';
-                          height: 20px;
-                          position: absolute;
-                          background-color: #021802;
-                          border-top-right-radius: 20px;
-                        }
-                      `}
-                    />
-                  </div>
-                )}
-              </NavItem>
-            </Menu.Item>
-          )
-        })}
-      </Menu>
-
-      <Menu
-        css={{
-          bottom: 10,
-          position: 'fixed !important',
-          zIndex: 1,
-        }}
-        theme="dark"
-      >
-        <Menu.Item>
-          <a
-            css={{
-              color: '#ea5e5e !important',
-            }}
-            href="#"
-            onClick={(e) => {
-              e.preventDefault()
-              props.onSignout()
-            }}
-          >
-            <Icon type="logout" />
-            <span>Sign out</span>
-          </a>
-        </Menu.Item>
-      </Menu>
-    </Layout.Sider>
+            return (
+              <Menu.SubMenu
+                key={item.routeName}
+                title={
+                  <span>
+                    <Icon type={item.icon} />
+                    <span>{item.name}</span>
+                  </span>
+                }
+              >
+                {item.subItems.map((subItem) => (
+                  <Menu.Item key={subItem.routeName}>
+                    <NavItem
+                      options={{reload: true}}
+                      routeName={subItem.routeName}
+                    >
+                      {subItem.name}
+                    </NavItem>
+                  </Menu.Item>
+                ))}
+              </Menu.SubMenu>
+            )
+          })}
+        </Menu>
+      </Layout.Sider>
+    </Affix>
   )
 }
 
@@ -160,9 +99,6 @@ NavBarContent.propTypes = {
     name: PropTypes.string.isRequired,
     routeName: PropTypes.string.isRequired,
   }),
-
-  // functions
-  onSignout: PropTypes.func.isRequired,
 }
 
 export default NavBarContent

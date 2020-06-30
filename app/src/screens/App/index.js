@@ -186,7 +186,7 @@ const App = () => {
     <>
       <Header />
 
-      <Layout.Content>
+      <Layout.Content css={{height: '100vh'}}>
         <Layout>
           <NavBar />
 

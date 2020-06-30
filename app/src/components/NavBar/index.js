@@ -1,19 +1,11 @@
 import React from 'react'
-import {useRoute} from 'react-router5'
 
 import usePage from '@/helpers/hooks/usePage'
-import {removeUser} from '@/helpers/authHelpers'
 
-import NavBarContentUpdated from './components/NavBarContent_Updated'
+import NavBarContent from './components/NavBarContent'
 
 const NavBar = () => {
   const page = usePage()
-  const routerContext = useRoute()
-
-  const handleSignout = () => {
-    removeUser()
-    routerContext.router.navigate('signin')
-  }
 
   const navItems = [
     {
@@ -81,7 +73,7 @@ const NavBar = () => {
     },
   ]
 
-  return <NavBarContentUpdated navItems={navItems} onSignout={handleSignout} />
+  return <NavBarContent navItems={navItems} />
 }
 
 export default NavBar
