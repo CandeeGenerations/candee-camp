@@ -21,7 +21,7 @@ const SigninContent = (props) => {
         css={{
           fontSize: 60,
           fontWeight: 300,
-          color: '#60dbcc',
+          color: '#2b6d5a',
           margin: '20px 0',
           textAlign: 'center',
           fontFamily: "'Montserrat', sans-serif",
