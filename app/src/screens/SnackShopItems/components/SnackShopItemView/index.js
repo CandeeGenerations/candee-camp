@@ -2,8 +2,6 @@ import React, {useContext, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
-import SnackShopItemViewWrapper from './SnackShopItemViewWrapper'
-
 import usePage from '@/helpers/hooks/usePage'
 import {snackShopItemActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
@@ -13,6 +11,8 @@ import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import SnackShopItemViewWrapper from './SnackShopItemViewWrapper'
 
 const SnackShopItemView = (props) => {
   const page = usePage()

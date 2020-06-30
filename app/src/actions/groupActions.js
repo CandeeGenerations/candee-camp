@@ -1,7 +1,6 @@
-import request from '../api'
-import {handleError, openNotification, formDataToBody} from '../helpers'
-
+import request from '@/api'
 import {getUserData, pid} from '@/helpers/authHelpers'
+import {handleError, openNotification, formDataToBody} from '@/helpers'
 
 const mainPath = '/groups'
 

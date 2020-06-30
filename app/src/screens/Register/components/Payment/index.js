@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import React, {useContext, useState} from 'react'
 import {Row, Col, Button, Typography, Divider} from 'antd'
 
-import {RegisterContext} from '../..'
-
 import Free from './components/Free'
 import PayNow from './components/PayNow'
 
 import {registerActions as actions} from '@/actions'
+
+import {RegisterContext} from '../..'
 
 const Payment = (props) => {
   const [loading, setLoading] = useState(false)

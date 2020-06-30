@@ -1,10 +1,6 @@
 import React, {useContext, useEffect} from 'react'
 import {Button, Card} from 'antd'
 import {useRoute} from 'react-router5'
-// import {css, Global} from '@emotion/core'
-
-import GroupView from './components/GroupView'
-import GroupsTable from './components/GroupsTable'
 
 import {groupActions as actions} from '@/actions'
 
@@ -16,6 +12,9 @@ import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import GroupView from './components/GroupView'
+import GroupsTable from './components/GroupsTable'
 
 const Groups = () => {
   const page = usePage()

@@ -1,9 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 
-import RegisterLayout from './components/RegisterLayout'
-import RegisterContent from './components/RegisterContent'
-
 import {axiosRequest} from '@/api'
 import {
   signinActions as actions,
@@ -18,6 +15,9 @@ import {Constants} from '@/helpers/constants'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {LoaderContext} from '@/components/Structure/Loader'
 import {openNotification} from '@/helpers'
+
+import RegisterLayout from './components/RegisterLayout'
+import RegisterContent from './components/RegisterContent'
 
 export const RegisterContext = React.createContext()
 

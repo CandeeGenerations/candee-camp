@@ -3,8 +3,6 @@ import {Button, Card} from 'antd'
 import {useRoute} from 'react-router5'
 import {css, Global} from '@emotion/core'
 
-import CouponsTable from './components/CouponsTable'
-
 import {couponActions as actions} from '@/actions'
 
 import usePage from '@/helpers/hooks/usePage'
@@ -15,6 +13,8 @@ import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import CouponsTable from './components/CouponsTable'
 
 const Coupons = () => {
   const page = usePage()

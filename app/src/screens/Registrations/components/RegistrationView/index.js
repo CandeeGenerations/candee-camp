@@ -3,8 +3,6 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
-import RegistrationViewWrapper from './RegistrationViewWrapper'
-
 import usePage from '@/helpers/hooks/usePage'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {
@@ -18,6 +16,8 @@ import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import RegistrationViewWrapper from './RegistrationViewWrapper'
 
 const RegistrationView = (props) => {
   const page = usePage()

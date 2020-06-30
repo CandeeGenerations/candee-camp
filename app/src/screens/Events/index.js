@@ -4,8 +4,6 @@ import {Card, Button} from 'antd'
 import {useRoute} from 'react-router5'
 import {css, Global} from '@emotion/core'
 
-import EventsTable from './components/EventsTable'
-
 import {eventActions as actions, userActions} from '@/actions'
 
 import useTitle from '@/helpers/hooks/useTitle'
@@ -17,6 +15,8 @@ import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 import usePage from '@/helpers/hooks/usePage'
+
+import EventsTable from './components/EventsTable'
 
 const Events = () => {
   const page = usePage()

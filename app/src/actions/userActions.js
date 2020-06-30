@@ -1,6 +1,6 @@
 import request from '@/api'
-import {handleError, openNotification, formDataToBody} from '@/helpers'
 import {pid} from '@/helpers/authHelpers'
+import {handleError, openNotification, formDataToBody} from '@/helpers'
 
 const mainPath = '/users'
 

@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import CouponForm from './CouponForm'
-
 import loader from '@/components/Structure/Loader'
+
+import CouponForm from './CouponForm'
 
 const CouponViewWrapper = (props) => {
   return props.loader.spinning ? null : (

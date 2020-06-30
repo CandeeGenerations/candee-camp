@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import CounselorForm from './CounselorForm'
-
 import loader from '@/components/Structure/Loader'
+
+import CounselorForm from './CounselorForm'
 
 const CounselorViewWrapper = (props) => {
   return props.loader.spinning ? null : (

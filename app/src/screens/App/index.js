@@ -33,6 +33,7 @@ import SnackShop from '@/screens/SnackShop'
 import Counselors from '@/screens/Counselors'
 import VisitorsPage from '@/screens/Visitors'
 import CustomFields from '@/screens/CustomFields'
+import Header from '@/components/Structure/Header'
 import Registrations from '@/screens/Registrations'
 import ResetPassword from '@/screens/ResetPassword'
 import SnackShopItems from '@/screens/SnackShopItems'
@@ -182,83 +183,89 @@ const App = () => {
       </div>
     </>
   ) : (
-    <Layout css={{backgroundColor: '#021802', margin: '0 10px 0 0'}}>
-      <NavBar />
+    <>
+      <Header />
 
-      <Layout css={{borderRadius: 20, margin: '10px 10px 10px 0'}}>
-        <ErrorBoundary router={routerContext.route}>
-          <ValuesContext.Provider
-            value={{
-              camperValues,
-              groupValues,
-              counselorValues,
-              setCamperValues,
-              setGroupValues,
-              setCounselorValues,
-            }}
-          >
-            <ObjectsContext.Provider
+      <Layout.Content>
+        <Layout>
+          <NavBar />
+
+          <ErrorBoundary router={routerContext.route}>
+            <ValuesContext.Provider
               value={{
-                events,
-                campers,
-                groups,
-                registrations,
-                counselors,
-                cabins,
-                users,
-                snackShopItems,
-                coupons,
-                customFields,
+                camperValues,
+                groupValues,
+                counselorValues,
+                setCamperValues,
+                setGroupValues,
+                setCounselorValues,
               }}
             >
-              {content}
+              <ObjectsContext.Provider
+                value={{
+                  events,
+                  campers,
+                  groups,
+                  registrations,
+                  counselors,
+                  cabins,
+                  users,
+                  snackShopItems,
+                  coupons,
+                  customFields,
+                }}
+              >
+                <Layout css={{marginTop: 50}}>
+                  {content}
 
-              {page.isUserAddOrEditPage && (
-                <UserView
-                  id={
-                    (routerContext.route.params &&
-                      routerContext.route.params.userId) ||
-                    null
-                  }
-                />
-              )}
+                  <Version />
+                </Layout>
 
-              {page.isEventAddOrEditPage && (
-                <EventView
-                  id={
-                    (routerContext.route.params &&
-                      routerContext.route.params.eventId) ||
-                    null
-                  }
-                />
-              )}
+                {page.isUserAddOrEditPage && (
+                  <UserView
+                    id={
+                      (routerContext.route.params &&
+                        routerContext.route.params.userId) ||
+                      null
+                    }
+                  />
+                )}
 
-              {page.isCabinAddOrEditPage && (
-                <CabinView
-                  id={
-                    (routerContext.route.params &&
-                      routerContext.route.params.cabinId) ||
-                    null
-                  }
-                />
-              )}
+                {page.isEventAddOrEditPage && (
+                  <EventView
+                    id={
+                      (routerContext.route.params &&
+                        routerContext.route.params.eventId) ||
+                      null
+                    }
+                  />
+                )}
 
-              {page.isCouponAddOrEditPage && (
-                <CouponView
-                  id={
-                    (routerContext.route.params &&
-                      routerContext.route.params.couponId) ||
-                    null
-                  }
-                />
-              )}
-            </ObjectsContext.Provider>
-          </ValuesContext.Provider>
+                {page.isCabinAddOrEditPage && (
+                  <CabinView
+                    id={
+                      (routerContext.route.params &&
+                        routerContext.route.params.cabinId) ||
+                      null
+                    }
+                  />
+                )}
 
-          <Version />
-        </ErrorBoundary>
-      </Layout>
-    </Layout>
+                {page.isCouponAddOrEditPage && (
+                  <CouponView
+                    id={
+                      (routerContext.route.params &&
+                        routerContext.route.params.couponId) ||
+                      null
+                    }
+                  />
+                )}
+              </ObjectsContext.Provider>
+            </ValuesContext.Provider>
+          </ErrorBoundary>
+        </Layout>
+      </Layout.Content>
+    </>
   )
 }
 

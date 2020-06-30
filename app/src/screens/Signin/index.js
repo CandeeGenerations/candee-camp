@@ -1,13 +1,13 @@
 import React, {useState} from 'react'
 import {useRoute} from 'react-router5'
 
-import SigninContent from './components/SigninContent'
-
 import {isFormReady} from '@/helpers'
 import useTitle from '@/helpers/hooks/useTitle'
 import {signinActions as actions} from '@/actions'
 
 import {SigninLayout} from '@/components/Structure'
+
+import SigninContent from './components/SigninContent'
 
 const Signin = () => {
   const routerContext = useRoute()

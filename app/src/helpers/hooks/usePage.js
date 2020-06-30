@@ -178,6 +178,9 @@ export default () => {
     customFieldAddPage: 'camp.customFields.add',
     customFieldEditPage: 'camp.customFields.edit',
 
+    importPage: 'camp.import',
+    settingsPage: 'camp.settings',
+
     // register
     // events
     eventRegisterPage: 'register.event',

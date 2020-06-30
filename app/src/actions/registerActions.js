@@ -1,6 +1,5 @@
-import request from '../api'
-import {handleError, formDataToBody} from '../helpers'
-
+import request from '@/api'
+import {handleError, formDataToBody} from '@/helpers'
 import {getUserData, pid} from '@/helpers/authHelpers'
 
 const mainPath = '/register'

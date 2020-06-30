@@ -3,13 +3,13 @@ import {jsx} from '@emotion/core'
 import {useRoute} from 'react-router5'
 import {useContext, useEffect} from 'react'
 
-import {ImportContext} from '..'
-
 import {openNotification} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
 import {importActions as actions} from '@/actions'
 
 import loader from '@/components/Structure/Loader'
+
+import {ImportContext} from '..'
 
 const Importing = (props) => {
   const page = usePage()

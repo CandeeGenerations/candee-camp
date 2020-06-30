@@ -3,9 +3,9 @@ import {jsx} from '@emotion/core'
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import CamperForm from './CamperForm'
-
 import loader from '@/components/Structure/Loader'
+
+import CamperForm from './CamperForm'
 
 const CamperViewWrapper = (props) => {
   return props.loader.spinning ? (

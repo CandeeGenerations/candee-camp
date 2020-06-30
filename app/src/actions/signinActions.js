@@ -10,7 +10,7 @@ export const signin = async (fields) => {
     const response = await axiosRequest.post(
       '/token',
       qs.stringify({
-        grant_type: 'password', // eslint-disable-line babel/camelcase
+        grant_type: 'password',
         username: fields.email.value,
         password: fields.password.value,
       }),
@@ -31,10 +31,10 @@ export const authorizeClient = async () => {
     const response = await axiosRequest.post(
       '/token',
       qs.stringify({
-        grant_type: 'auth_client', // eslint-disable-line babel/camelcase
-        client_name: Config.authClient.name, // eslint-disable-line babel/camelcase
-        client_secret: Config.authClient.secret, // eslint-disable-line babel/camelcase
-        client_uri: Config.appUrl, // eslint-disable-line babel/camelcase
+        grant_type: 'auth_client',
+        client_name: Config.authClient.name,
+        client_secret: Config.authClient.secret,
+        client_uri: Config.appUrl,
       }),
       {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},

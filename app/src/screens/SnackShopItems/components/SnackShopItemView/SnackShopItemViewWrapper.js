@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import SnackShopItemForm from './SnackShopItemForm'
-
 import loader from '@/components/Structure/Loader'
+
+import SnackShopItemForm from './SnackShopItemForm'
 
 const SnackShopItemViewWrapper = (props) => {
   return props.loader.spinning ? null : (

@@ -1,7 +1,6 @@
-import request from '../api'
-import {handleError, openNotification} from '../helpers'
-
+import request from '@/api'
 import {getUserData, pid} from '@/helpers/authHelpers'
+import {handleError, openNotification} from '@/helpers'
 
 const mainPath = '/snack-shop-purchases'
 

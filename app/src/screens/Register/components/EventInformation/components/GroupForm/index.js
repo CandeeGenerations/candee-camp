@@ -5,11 +5,11 @@ import _maxBy from 'lodash/maxBy'
 import {Row, Col, Form, Input, Icon} from 'antd'
 import React, {useContext, useState} from 'react'
 
+import {openNotification} from '@/helpers'
+
 import {RegisterContext} from '../../../..'
 import CamperCard from './components/CamperCard'
 import CamperModal from './components/CamperModal'
-
-import {openNotification} from '@/helpers'
 
 const GroupForm = () => {
   const [camper, setCamper] = useState({

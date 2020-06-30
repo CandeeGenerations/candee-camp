@@ -3,8 +3,6 @@ import {jsx} from '@emotion/core'
 import {useEffect} from 'react'
 import {Col, Row} from 'antd'
 
-import Stat from './components/Stat'
-
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
@@ -24,6 +22,8 @@ import {
 import {NavItem} from '@/components/Navigation'
 import MainContent from '@/components/MainContent'
 import {LoaderContext} from '@/components/Structure/Loader'
+
+import Stat from './components/Stat'
 
 const Dashboard = () => {
   useTitle('Home')

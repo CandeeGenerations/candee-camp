@@ -3,10 +3,10 @@ import {jsx} from '@emotion/core'
 import React, {useContext, useState} from 'react'
 import {Row, Col, Form, Input, Icon} from 'antd'
 
-import {RegisterContext} from '../../../..'
-
 import loader from '@/components/Structure/Loader'
 import CamperForm from '@/screens/Campers/components/CamperView/CamperForm'
+
+import {RegisterContext} from '../../../..'
 
 const SingleCamperForm = (props) => {
   const registerContext = useContext(RegisterContext)

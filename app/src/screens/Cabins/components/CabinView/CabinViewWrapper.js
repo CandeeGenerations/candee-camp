@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import CabinForm from './CabinForm'
-
 import loader from '@/components/Structure/Loader'
+
+import CabinForm from './CabinForm'
 
 const CabinViewWrapper = (props) => {
   return props.loader.spinning ? null : (

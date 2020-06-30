@@ -1,5 +1,5 @@
-import request from '../api'
-import {handleError} from '../helpers'
+import request from '@/api'
+import {handleError} from '@/helpers'
 import {pid} from '@/helpers/authHelpers'
 
 const mainPath = '/payments/paypal'

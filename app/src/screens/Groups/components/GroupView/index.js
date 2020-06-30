@@ -2,8 +2,6 @@ import React, {useContext, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
-import GroupViewWrapper from './GroupViewWrapper'
-
 import usePage from '@/helpers/hooks/usePage'
 import {groupActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
@@ -13,6 +11,8 @@ import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import GroupViewWrapper from './GroupViewWrapper'
 
 const GroupView = (props) => {
   const page = usePage()

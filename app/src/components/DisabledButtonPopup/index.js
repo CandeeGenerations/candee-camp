@@ -4,9 +4,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Icon, Popover} from 'antd'
 
-import ProgressBar from './components/ProgressBar'
-
 import {formErrors} from '@/helpers'
+
+import ProgressBar from './components/ProgressBar'
 
 const DisabledButtonPopup = (props) => {
   const errors = formErrors(props.fields)

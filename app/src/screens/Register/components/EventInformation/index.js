@@ -6,15 +6,15 @@ import {useRoute} from 'react-router5'
 import React, {useContext, useEffect} from 'react'
 import {Typography, Divider, Skeleton, Row, Col, Switch, Button} from 'antd'
 
-import {RegisterContext} from '../..'
-import GroupForm from './components/GroupForm'
-import EventMetaData from './components/EventMetaData'
-import SingleCamperForm from './components/SingleCamperForm'
-
 import {eventActions} from '@/actions'
 import {openNotification} from '@/helpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {LoaderContext} from '@/components/Structure/Loader'
+
+import {RegisterContext} from '../..'
+import GroupForm from './components/GroupForm'
+import EventMetaData from './components/EventMetaData'
+import SingleCamperForm from './components/SingleCamperForm'
 
 const EventInformation = (props) => {
   const registerContext = useContext(RegisterContext)
