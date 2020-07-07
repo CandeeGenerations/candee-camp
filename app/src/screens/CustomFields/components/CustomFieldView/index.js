@@ -4,8 +4,6 @@ import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 import React, {useContext, useEffect, useState} from 'react'
 
-import CustomFieldViewWrapper from './CustomFieldViewWrapper'
-
 import usePage from '@/helpers/hooks/usePage'
 import {customFieldActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
@@ -15,6 +13,8 @@ import {ObjectsContext} from '@/screens/App'
 import {DrawerView} from '@/components/Structure'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import CustomFieldViewWrapper from './CustomFieldViewWrapper'
 
 const CustomFieldView = (props) => {
   const page = usePage()

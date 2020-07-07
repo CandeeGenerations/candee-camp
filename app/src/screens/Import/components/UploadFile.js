@@ -3,11 +3,11 @@ import {jsx} from '@emotion/core'
 import React, {useContext} from 'react'
 import {Upload, Icon, Divider, Button} from 'antd'
 
-import {ImportContext} from '..'
-
 import Config from '@/config'
 import {handleError} from '@/helpers'
 import {getUser, getUserData} from '@/helpers/authHelpers'
+
+import {ImportContext} from '..'
 
 const UploadFile = () => {
   const userData = getUserData()

@@ -1,7 +1,6 @@
-import request from '../api'
-import {handleError, formDataToBody, openNotification} from '../helpers'
-
+import request from '@/api'
 import {getUserData, pid} from '@/helpers/authHelpers'
+import {handleError, formDataToBody, openNotification} from '@/helpers'
 
 const mainPath = '/coupons'
 
@@ -38,6 +37,17 @@ export const loadCoupon = async (couponId) => {
   }
 }
 
+export const loadCouponByCode = async (code) => {
+  try {
+    const response = await request.get(pid(`${mainPath}/code?code=${code}`))
+
+    return response
+  } catch (error) {
+    handleError('Unable to load the Coupon. Please try again.', error)
+    return null
+  }
+}
+
 export const saveCoupon = async (coupon) => {
   try {
     let response = null
@@ -50,6 +60,11 @@ export const saveCoupon = async (coupon) => {
     const body = formDataToBody(coupon)
 
     body.createdBy = user.id
+    body.type = Number(body.type)
+
+    if (body.type === 2) {
+      body.amount = body.amount / 100
+    }
 
     if (coupon.id) {
       response = await request.put(pid(`${mainPath}/${coupon.id.value}`), body)

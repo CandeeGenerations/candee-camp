@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
 
-import ForgotPasswordContent from './components/ForgotPasswordContent'
-
 import {isFormReady} from '@/helpers'
 import useTitle from '@/helpers/hooks/useTitle'
 import {signinActions as actions} from '@/actions'
 
 import {SigninLayout} from '@/components/Structure'
+
+import ForgotPasswordContent from './components/ForgotPasswordContent'
 
 const ForgotPassword = () => {
   const [fields, setFields] = useState({

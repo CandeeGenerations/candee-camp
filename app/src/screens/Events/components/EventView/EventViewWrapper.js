@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import EventForm from './EventForm'
-
 import loader from '@/components/Structure/Loader'
+
+import EventForm from './EventForm'
 
 const EventViewWrapper = (props) => {
   return props.loader.spinning ? null : (

@@ -6,8 +6,6 @@ import {useRouter} from 'react-router5'
 import {Form, Table, Icon, Divider} from 'antd'
 import React, {useEffect, useContext, useState} from 'react'
 
-import PurchaseCell from './PurchaseCell'
-
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
 import {formatCurrency, formatDate} from '@/helpers'
@@ -17,6 +15,8 @@ import {ObjectsContext} from '@/screens/App'
 import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
+
+import PurchaseCell from './PurchaseCell'
 
 export const EditablePurchasesContext = React.createContext()
 

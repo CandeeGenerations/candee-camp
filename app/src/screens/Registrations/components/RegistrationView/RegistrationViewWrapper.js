@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import RegistrationForm from './RegistrationForm'
-
 import loader from '@/components/Structure/Loader'
+
+import RegistrationForm from './RegistrationForm'
 
 const RegistrationViewWrapper = (props) => {
   return props.loader.spinning ? null : (

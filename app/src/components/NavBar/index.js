@@ -1,19 +1,11 @@
 import React from 'react'
-import {useRoute} from 'react-router5'
+
+import usePage from '@/helpers/hooks/usePage'
 
 import NavBarContent from './components/NavBarContent'
 
-import usePage from '@/helpers/hooks/usePage'
-import {removeUser} from '@/helpers/authHelpers'
-
 const NavBar = () => {
   const page = usePage()
-  const routerContext = useRoute()
-
-  const handleSignout = () => {
-    removeUser()
-    routerContext.router.navigate('signin')
-  }
 
   const navItems = [
     {
@@ -25,25 +17,63 @@ const NavBar = () => {
       icon: 'team',
       name: 'Visitors',
       routeName: page.visitorsPage,
+      subItems: [
+        {
+          name: 'Campers',
+          routeName: page.campersPage,
+        },
+        {
+          name: 'Groups',
+          routeName: page.groupsPage,
+        },
+        {
+          name: 'Registrations',
+          routeName: page.registrationsPage,
+        },
+      ],
     },
     {
       icon: 'appstore',
-      name: 'Camp Management',
+      name: 'Camp',
       routeName: page.campPage,
+      subItems: [
+        {
+          name: 'Counselors',
+          routeName: page.counselorsPage,
+        },
+        {
+          name: 'Cabins',
+          routeName: page.cabinsPage,
+        },
+        {
+          name: 'Users',
+          routeName: page.usersPage,
+        },
+        {
+          name: 'Snack Shop Items',
+          routeName: page.snackShopItemsPage,
+        },
+        {
+          name: 'Coupons',
+          routeName: page.couponsPage,
+        },
+        {
+          name: 'Custom Fields',
+          routeName: page.customFieldsPage,
+        },
+        {
+          name: 'Import Data',
+          routeName: page.importPage,
+        },
+        {
+          name: 'Settings',
+          routeName: page.settingsPage,
+        },
+      ],
     },
   ]
 
-  const selected = navItems.find((item) =>
-    routerContext.route.name.includes(item.routeName),
-  )
-
-  return (
-    <NavBarContent
-      navItems={navItems}
-      selectedItem={selected}
-      onSignout={handleSignout}
-    />
-  )
+  return <NavBarContent navItems={navItems} />
 }
 
 export default NavBar

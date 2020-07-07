@@ -3,9 +3,9 @@ import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {InputNumber, Input, Form, Select} from 'antd'
 
-import {EditablePurchasesContext} from './PurchasesTable'
-
 import {inputNumberFormatter, inputNumberParser} from '@/helpers'
+
+import {EditablePurchasesContext} from './PurchasesTable'
 
 const PurchaseCell = (props) => {
   const getInput = (

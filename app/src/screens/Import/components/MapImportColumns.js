@@ -3,9 +3,9 @@ import {jsx} from '@emotion/core'
 import React, {useContext, useEffect} from 'react'
 import {Divider, Button, Alert, Row, Col, Icon, Select} from 'antd'
 
-import {ImportContext} from '..'
-
 import {Constants} from '@/helpers/constants'
+
+import {ImportContext} from '..'
 
 const MapImportColumns = () => {
   const {importState, setImportState} = useContext(ImportContext)

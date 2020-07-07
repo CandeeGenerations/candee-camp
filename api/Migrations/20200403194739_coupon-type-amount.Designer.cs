@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reclaimed.API.Context;
 
 namespace Reclaimed.API.Migrations
 {
     [DbContext(typeof(CampContext))]
-    partial class CampContextModelSnapshot : ModelSnapshot
+    [Migration("20200403194739_coupon-type-amount")]
+    partial class coupontypeamount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -413,54 +415,6 @@ namespace Reclaimed.API.Migrations
                     b.HasIndex("PortalId");
 
                     b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("Reclaimed.API.DomainObjects.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Data")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Descriptor")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<int>("PortalId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Schedule")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Start")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("PortalId");
-
-                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Reclaimed.API.DomainObjects.PayPal_Payment", b =>
@@ -992,21 +946,6 @@ namespace Reclaimed.API.Migrations
                     b.HasOne("Reclaimed.API.DomainObjects.User", "User")
                         .WithMany()
                         .HasForeignKey("LoginUser");
-
-                    b.HasOne("Reclaimed.API.DomainObjects.Portal", "Portal")
-                        .WithMany()
-                        .HasForeignKey("PortalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Reclaimed.API.DomainObjects.Notification", b =>
-                {
-                    b.HasOne("Reclaimed.API.DomainObjects.User", "CreatedByUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("Reclaimed.API.DomainObjects.Portal", "Portal")
                         .WithMany()

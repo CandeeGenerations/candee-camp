@@ -4,18 +4,18 @@ import PropTypes from 'prop-types'
 import React, {useContext, useState} from 'react'
 import {Row, Col, Button, Typography, Divider} from 'antd'
 
-import {RegisterContext} from '../..'
-
 import Free from './components/Free'
 import PayNow from './components/PayNow'
 
 import {registerActions as actions} from '@/actions'
 
+import {RegisterContext} from '../..'
+
 const Payment = (props) => {
   const [loading, setLoading] = useState(false)
   const registerContext = useContext(RegisterContext)
 
-  const isPaidEvent = registerContext.event.cost > 0
+  const isPaidEvent = registerContext.eventCost > 0
 
   const handleRegister = async (paymentId) => {
     setLoading(true)

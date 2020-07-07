@@ -6,8 +6,6 @@ import {Card, Button, Popconfirm, Icon} from 'antd'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
-import CamperViewWrapper from './CamperViewWrapper'
-
 import usePage from '@/helpers/hooks/usePage'
 import {camperActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
@@ -18,6 +16,8 @@ import {PageHeader} from '@/components/Structure'
 import {LoaderContext} from '@/components/Structure/Loader'
 import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import CamperViewWrapper from './CamperViewWrapper'
 
 const CamperView = (props) => {
   const page = usePage()

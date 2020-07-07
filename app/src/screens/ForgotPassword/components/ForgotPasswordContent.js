@@ -3,21 +3,22 @@ import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {Col, Row, Button} from 'antd'
 
-import ForgotPasswordForm from './ForgotPasswordForm'
-
 import {NavItem} from '@/components/Navigation'
 import {Copyright} from '@/components/Structure'
 import DisabledButtonPopup from '@/components/DisabledButtonPopup'
+
+import ForgotPasswordForm from './ForgotPasswordForm'
 
 const ForgotPasswordContent = (props) => (
   <div>
     <h1
       css={{
         fontSize: 40,
-        color: '#60dbcc',
+        fontWeight: 300,
+        color: '#2b6d5a',
         margin: '20px 0',
         textAlign: 'center',
-        fontFamily: "'Comfortaa', sans-serif",
+        fontFamily: "'Montserrat', sans-serif",
       }}
     >
       Forgot your password?

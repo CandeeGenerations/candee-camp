@@ -2,8 +2,6 @@ import React, {useContext, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
-import CabinViewWrapper from './CabinViewWrapper'
-
 import usePage from '@/helpers/hooks/usePage'
 import {cabinActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
@@ -13,6 +11,8 @@ import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import CabinViewWrapper from './CabinViewWrapper'
 
 const CabinView = (props) => {
   const page = usePage()

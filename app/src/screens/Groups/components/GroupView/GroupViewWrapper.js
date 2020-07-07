@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import GroupForm from './GroupForm'
-
 import loader from '@/components/Structure/Loader'
+
+import GroupForm from './GroupForm'
 
 const GroupViewWrapper = (props) => {
   return props.loader.spinning ? null : (

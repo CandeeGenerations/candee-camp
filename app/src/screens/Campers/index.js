@@ -3,9 +3,6 @@ import {Button, Card} from 'antd'
 import {useRoute} from 'react-router5'
 import {css, Global} from '@emotion/core'
 
-import CamperView from './components/CamperView'
-import CampersTable from './components/CampersTable'
-
 import {camperActions as actions} from '@/actions'
 
 import usePage from '@/helpers/hooks/usePage'
@@ -16,6 +13,9 @@ import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import CamperView from './components/CamperView'
+import CampersTable from './components/CampersTable'
 
 const Campers = () => {
   const page = usePage()

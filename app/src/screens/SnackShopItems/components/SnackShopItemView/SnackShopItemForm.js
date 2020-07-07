@@ -16,7 +16,7 @@ import {
 } from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
-import {inputNumberFormatter, inputNumberParser} from '@/helpers'
+import {inputNumberFormatter, inputNumberParser, formatDate} from '@/helpers'
 
 const SnackShopItemForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -135,6 +135,22 @@ const SnackShopItemForm = Form.create({
               >
                 <Button type="danger">Delete Snack Ship Item</Button>
               </Popconfirm>
+            </Col>
+          </Row>
+
+          <Row css={{marginTop: 20}} gutter={16}>
+            <Col span={24}>
+              <Typography.Text type="secondary">
+                <small>
+                  Date Created: {formatDate(props.createdDate?.value || null)}
+                </small>
+              </Typography.Text>
+
+              <Typography.Text css={{display: 'block'}} type="secondary">
+                <small>
+                  Date Updated: {formatDate(props.updatedDate?.value || null)}
+                </small>
+              </Typography.Text>
             </Col>
           </Row>
         </>

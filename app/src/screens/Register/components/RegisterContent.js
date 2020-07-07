@@ -3,11 +3,11 @@ import {jsx} from '@emotion/core'
 import {Steps} from 'antd'
 import React, {useState} from 'react'
 
+import loader from '@/components/Structure/Loader'
+
 import Payment from './Payment'
 import Confirmation from './Confirmation'
 import EventInformation from './EventInformation'
-
-import loader from '@/components/Structure/Loader'
 
 const RegisterContent = () => {
   const [step, setStep] = useState(0)

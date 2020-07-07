@@ -1,17 +1,17 @@
 import React, {useEffect, useReducer} from 'react'
 import {Row, Col, Steps, Card} from 'antd'
 
-import Importing from './components/Importing'
-import UploadFile from './components/UploadFile'
-import SelectImportType from './components/SelectImportType'
-import MapImportColumns from './components/MapImportColumns'
-
 import {validateToken} from '@/api'
 import useTitle from '@/helpers/hooks/useTitle'
 
 import {PageHeader} from '@/components/Structure'
 import MainContent from '@/components/MainContent'
 import {LoaderContext} from '@/components/Structure/Loader'
+
+import Importing from './components/Importing'
+import UploadFile from './components/UploadFile'
+import SelectImportType from './components/SelectImportType'
+import MapImportColumns from './components/MapImportColumns'
 
 export const ImportContext = React.createContext({})
 

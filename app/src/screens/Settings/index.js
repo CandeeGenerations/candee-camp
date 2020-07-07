@@ -3,8 +3,6 @@ import {css, Global, jsx} from '@emotion/core'
 import {Card} from 'antd'
 import React, {useEffect} from 'react'
 
-import SettingsTable from './components/SettingsTable'
-
 import useTitle from '@/helpers/hooks/useTitle'
 import {settingActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
@@ -13,6 +11,8 @@ import {PageHeader} from '@/components/Structure'
 import MainContent from '@/components/MainContent'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import SettingsTable from './components/SettingsTable'
 
 const Settings = () => {
   const errorWrapper = useError()

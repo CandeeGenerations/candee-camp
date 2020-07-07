@@ -3,8 +3,6 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
-import CouponViewWrapper from './CouponViewWrapper'
-
 import usePage from '@/helpers/hooks/usePage'
 import {couponActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
@@ -14,6 +12,8 @@ import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import CouponViewWrapper from './CouponViewWrapper'
 
 const CouponView = (props) => {
   const page = usePage()
@@ -27,6 +27,8 @@ const CouponView = (props) => {
     name: {includePercent: true, isRequired: true, value: null},
     code: {includePercent: true, isRequired: true, value: null},
     expirationDate: {value: null},
+    type: {value: 'Dollar'},
+    amount: {includePercent: true, isRequired: true, value: null},
     isActive: {value: true},
   })
 
@@ -38,6 +40,11 @@ const CouponView = (props) => {
         setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
+            type: response.data.type === 'Percent' ? '2' : '1',
+            amount:
+              response.data.type === 'Percent'
+                ? response.data.amount * 100
+                : response.data.amount,
             expirationDate: response.data.expirationDate
               ? moment(response.data.expirationDate)
               : null,

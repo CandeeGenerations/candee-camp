@@ -13,9 +13,18 @@ import {
   Switch,
   Typography,
   DatePicker,
+  InputNumber,
+  Select,
 } from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
+import {
+  inputPercentFormatter,
+  inputPercentParser,
+  inputNumberFormatter,
+  inputNumberParser,
+  formatDate,
+} from '@/helpers'
 
 const CouponForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -37,7 +46,7 @@ const CouponForm = Form.create({
   },
 
   mapPropsToFields(props) {
-    const {name, code, expirationDate, isActive} = props
+    const {name, code, expirationDate, type, amount, isActive} = props
 
     return {
       name: Form.createFormField({
@@ -51,6 +60,14 @@ const CouponForm = Form.create({
       expirationDate: Form.createFormField({
         ...expirationDate,
         value: expirationDate.value,
+      }),
+      type: Form.createFormField({
+        ...type,
+        value: type.value,
+      }),
+      amount: Form.createFormField({
+        ...amount,
+        value: amount.value,
       }),
       isActive: Form.createFormField({
         ...isActive,
@@ -96,6 +113,40 @@ const CouponForm = Form.create({
         </Col>
       </Row>
 
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item label="Type">
+            {getFieldDecorator('type')(
+              <Select>
+                <Select.Option value="1">Dollar</Select.Option>
+                <Select.Option value="2">Percent</Select.Option>
+              </Select>,
+            )}
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item label="Amount" hasFeedback>
+            {getFieldDecorator('amount', {
+              rules: [{required: true, message: 'The amount is required.'}],
+            })(
+              <InputNumber
+                formatter={
+                  props.type.value === '2'
+                    ? inputPercentFormatter
+                    : inputNumberFormatter
+                }
+                parser={
+                  props.type.value === '2'
+                    ? inputPercentParser
+                    : inputNumberParser
+                }
+              />,
+            )}
+          </Form.Item>
+        </Col>
+      </Row>
+
       {page.isCouponEditPage && (
         <>
           <Divider css={{marginTop: 40}} orientation="left">
@@ -133,6 +184,22 @@ const CouponForm = Form.create({
               >
                 <Button type="danger">Delete Coupon</Button>
               </Popconfirm>
+            </Col>
+          </Row>
+
+          <Row css={{marginTop: 20}} gutter={16}>
+            <Col span={24}>
+              <Typography.Text type="secondary">
+                <small>
+                  Date Created: {formatDate(props.createdDate?.value || null)}
+                </small>
+              </Typography.Text>
+
+              <Typography.Text css={{display: 'block'}} type="secondary">
+                <small>
+                  Date Updated: {formatDate(props.updatedDate?.value || null)}
+                </small>
+              </Typography.Text>
             </Col>
           </Row>
         </>

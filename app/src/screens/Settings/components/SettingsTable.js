@@ -4,14 +4,14 @@ import {Table} from 'antd'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import SettingCell from './SettingCell'
-import EditableSettingRow from './EditableSettingRow'
-
 import {splitCamelCase} from '@/helpers'
 import {Constants} from '@/helpers/constants'
 import {settingActions as actions} from '@/actions'
 
 import loader from '@/components/Structure/Loader'
+
+import SettingCell from './SettingCell'
+import EditableSettingRow from './EditableSettingRow'
 
 const SettingsTable = (props) => {
   const handleSave = async (row) => {

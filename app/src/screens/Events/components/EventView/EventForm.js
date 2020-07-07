@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React from 'react'
 import {
   DatePicker,
@@ -15,7 +17,7 @@ import {
 
 import Config from '@/config'
 import usePage from '@/helpers/hooks/usePage'
-import {inputNumberFormatter, inputNumberParser} from '@/helpers'
+import {inputNumberFormatter, inputNumberParser, formatDate} from '@/helpers'
 
 import CodeCopy from '@/components/CodeCopy'
 
@@ -150,6 +152,22 @@ const EventForm = Form.create({
               >
                 <Button type="danger">Delete Event</Button>
               </Popconfirm>
+            </Col>
+          </Row>
+
+          <Row css={{marginTop: 20}} gutter={16}>
+            <Col span={24}>
+              <Typography.Text type="secondary">
+                <small>
+                  Date Created: {formatDate(props.createdDate?.value || null)}
+                </small>
+              </Typography.Text>
+
+              <Typography.Text css={{display: 'block'}} type="secondary">
+                <small>
+                  Date Updated: {formatDate(props.updatedDate?.value || null)}
+                </small>
+              </Typography.Text>
             </Col>
           </Row>
         </>

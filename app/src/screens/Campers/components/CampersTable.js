@@ -64,7 +64,7 @@ const CampersTable = (props) => {
         key="birthDate"
         align="right"
         dataIndex="birthDate"
-        render={formatDate}
+        render={(date) => formatDate(date, false)}
         title="Birthdate"
       />
 
@@ -136,22 +136,6 @@ const CampersTable = (props) => {
         dataIndex="startingBalance"
         render={formatCurrency}
         title="Starting Balance"
-      />
-
-      <Column
-        key="createdDate"
-        align="right"
-        dataIndex="createdDate"
-        render={formatDate}
-        title="Created Date"
-      />
-
-      <Column
-        key="updatedDate"
-        align="right"
-        dataIndex="updatedDate"
-        render={formatDate}
-        title="Updated Date"
       />
 
       <Column

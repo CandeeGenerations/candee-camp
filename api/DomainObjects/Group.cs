@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using Reclaimed.API.DomainObjects.Common;
 
 namespace Reclaimed.API.DomainObjects
@@ -33,5 +35,24 @@ namespace Reclaimed.API.DomainObjects
 
         [ForeignKey("Id")]
         public virtual Portal Portal { get; set; }
+    }
+    
+    public class AdjustedGroup : Group
+    {
+        public AdjustedGroup(Group group)
+        {
+            Group = group;
+            Campers = new int[] { };
+
+            foreach (PropertyInfo prop in group.GetType().GetProperties())
+            {
+                GetType().GetProperty(prop.Name)?.SetValue(this, prop.GetValue(group));
+            }
+        }
+        
+        [JsonIgnore]
+        public Group Group { get; set; }
+        
+        public int[] Campers { get; set; }
     }
 }

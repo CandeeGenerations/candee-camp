@@ -14,6 +14,18 @@ const errorTrace = (error, response) => {
 
 export const deepCopy = (obj) => merge(obj, {})
 
+export const toFixed = (num, decimalPlaces = 0) => {
+  const m = Math.pow(10, decimalPlaces)
+  const n = +(decimalPlaces ? num * m : num).toFixed(8) // Avoid rounding errors
+  const i = Math.floor(n)
+  const f = n - i
+  const e = 1e-8 // Allow for rounding errors in f
+  const r =
+    f > 0.5 - e && f < 0.5 + e ? (i % 2 == 0 ? i : i + 1) : Math.round(n)
+
+  return Number(decimalPlaces ? r / m : r).toFixed(decimalPlaces)
+}
+
 export const selectSearchFunc = (inputValue, option) =>
   option.props.children.filter((x) =>
     x.trim().toLowerCase().includes(inputValue),
@@ -22,7 +34,11 @@ export const selectSearchFunc = (inputValue, option) =>
 export const inputNumberFormatter = (value) =>
   `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
+export const inputPercentFormatter = (value) => `${value}%`
+
 export const inputNumberParser = (value) => value.replace(/\$\s?|(,*)/g, '')
+
+export const inputPercentParser = (value) => value.replace('%', '')
 
 export const formatDate = (date, withTime = true) =>
   date ? (
@@ -31,7 +47,14 @@ export const formatDate = (date, withTime = true) =>
     <em>None</em>
   )
 
-export const formatCurrency = (amount) => `$${amount || 0}`
+export const formatCurrency = (amount) => `$${toFixed(amount || 0, 2)}`
+
+export const formatPercent = (number) => {
+  const length = Number(((Math.abs(number) * 100) % 1).toFixed(1))
+  const percent = toFixed(number * 100, length >= 0.6 ? 3 : length > 0 ? 2 : 0)
+
+  return `${percent}%`
+}
 
 export const formatIsActive = (isActive) => (
   <Icon

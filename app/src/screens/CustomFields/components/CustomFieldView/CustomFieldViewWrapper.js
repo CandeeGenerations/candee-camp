@@ -3,9 +3,9 @@ import {jsx} from '@emotion/core'
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import CustomFieldForm from './CustomFieldForm'
-
 import loader from '@/components/Structure/Loader'
+
+import CustomFieldForm from './CustomFieldForm'
 
 const CustomFieldViewWrapper = (props) => {
   return props.loader.spinning ? (
@@ -34,7 +34,7 @@ CustomFieldViewWrapper.propTypes = {
   }).isRequired,
 
   // functions
-  onDeleteCabin: PropTypes.func.isRequired,
+  onDeleteCustomField: PropTypes.func.isRequired,
   onFieldChange: PropTypes.func.isRequired,
 }
 

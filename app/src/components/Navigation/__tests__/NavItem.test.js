@@ -10,7 +10,7 @@ describe(testingUtils.formatDescribeName('Nav Item'), () => {
     /* Constants */
     const children = 'link'
     const className = 'class name'
-    const routeName = 'route'
+    const routeName = 'signin'
 
     const props = {children, className, routeName}
 
@@ -28,7 +28,7 @@ describe(testingUtils.formatDescribeName('Nav Item'), () => {
   test(testingUtils.formatTestName('handles click'), () => {
     /* Constants */
     const children = 'link'
-    const routeName = 'route'
+    const routeName = 'signin'
 
     /* Mock functions */
     const onClick = testingUtils.emptyFunction()

@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
-import {Modal, Row, Col, Form, Input, Button} from 'antd'
+import {Modal, Button} from 'antd'
 
 import CamperForm from '@/screens/Campers/components/CamperView/CamperForm'
 
@@ -27,8 +27,6 @@ const CamperModal = (props) => {
         </Button>,
       ]}
       title={props.title}
-      // onCancel={props.onCancel}
-      // onOk={props.onSave}
       visible={props.visible}
     >
       <CamperForm
@@ -39,24 +37,6 @@ const CamperModal = (props) => {
         onChange={props.onFieldChange}
         onCustomFieldsUpdate={props.onCustomFieldsUpdate}
       />
-
-      {props.data && (
-        <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item label="Coupon">
-              <Input
-                placeholder="e.g. coupon-123"
-                value={props.data.coupon.value || ''}
-                onChange={(e) =>
-                  props.onFieldChange({
-                    coupon: {value: e.target.value},
-                  })
-                }
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-      )}
     </Modal>
   )
 }

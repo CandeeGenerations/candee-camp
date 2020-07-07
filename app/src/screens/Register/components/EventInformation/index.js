@@ -1,19 +1,20 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 import React, {useContext, useEffect} from 'react'
 import {Typography, Divider, Skeleton, Row, Col, Switch, Button} from 'antd'
 
-import {RegisterContext} from '../..'
-import GroupForm from './components/GroupForm'
-import EventMetaData from './components/EventMetaData'
-import SingleCamperForm from './components/SingleCamperForm'
-
 import {eventActions} from '@/actions'
 import {openNotification} from '@/helpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {LoaderContext} from '@/components/Structure/Loader'
+
+import {RegisterContext} from '../..'
+import GroupForm from './components/GroupForm'
+import EventMetaData from './components/EventMetaData'
+import SingleCamperForm from './components/SingleCamperForm'
 
 const EventInformation = (props) => {
   const registerContext = useContext(RegisterContext)
@@ -45,6 +46,26 @@ const EventInformation = (props) => {
 
       if (!registerContext.fields.lastName.value) {
         openNotification('error', 'The last name is required.')
+        return
+      }
+
+      const {
+        birthDate,
+        parentFirstName,
+        parentLastName,
+      } = registerContext.fields
+      const currentDate = moment()
+
+      if (
+        birthDate.value &&
+        birthDate.value.isAfter(moment(currentDate).subtract(18, 'years')) &&
+        birthDate.value.isBefore(currentDate) &&
+        (!parentFirstName.value || !parentLastName.value)
+      ) {
+        openNotification(
+          'error',
+          "This parent's information is required for this minor camper.",
+        )
         return
       }
 

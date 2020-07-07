@@ -5,9 +5,6 @@ import {Card, Row, Col} from 'antd'
 import {useRoute} from 'react-router5'
 import React, {useEffect, useContext} from 'react'
 
-import PurchasesTable from './components/PurchasesTable'
-import RemainingBalance from './components/RemainingBalance'
-
 import useTitle from '@/helpers/hooks/useTitle'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {
@@ -21,6 +18,9 @@ import MainContent from '@/components/MainContent'
 import {PageHeader} from '@/components/Structure'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import PurchasesTable from './components/PurchasesTable'
+import RemainingBalance from './components/RemainingBalance'
 
 const SnackShop = () => {
   const errorWrapper = useError()
