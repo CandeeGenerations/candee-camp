@@ -1,5 +1,3 @@
-/* eslint-disable babel/camelcase */
-/* eslint-disable babel/new-cap */
 import React, {useContext, useEffect} from 'react'
 import {Col, Row} from 'antd'
 import PropTypes from 'prop-types'
