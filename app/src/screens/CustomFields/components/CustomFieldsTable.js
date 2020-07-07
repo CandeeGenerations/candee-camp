@@ -1,4 +1,3 @@
-/* eslint-disable babel/new-cap */
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
