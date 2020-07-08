@@ -7,7 +7,7 @@ import GroupForm from './GroupForm'
 
 const GroupViewWrapper = (props) => {
   return props.loader.spinning ? null : (
-    <>
+    <React.Fragment>
       <p>
         {props.fields.id ? 'Edit this group here.' : 'Add a new group here.'}
       </p>
@@ -20,7 +20,7 @@ const GroupViewWrapper = (props) => {
         onCreateNewAccount={props.onCreateNewAccount}
         onDeleteGroup={props.onDeleteGroup}
       />
-    </>
+    </React.Fragment>
   )
 }
 

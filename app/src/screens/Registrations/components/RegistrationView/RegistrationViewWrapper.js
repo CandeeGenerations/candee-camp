@@ -7,7 +7,7 @@ import RegistrationForm from './RegistrationForm'
 
 const RegistrationViewWrapper = (props) => {
   return props.loader.spinning ? null : (
-    <>
+    <React.Fragment>
       <p>
         {props.fields.id
           ? 'Edit this registration here.'
@@ -21,7 +21,7 @@ const RegistrationViewWrapper = (props) => {
         onChange={props.onFieldChange}
         onDeleteRegistration={props.onDeleteRegistration}
       />
-    </>
+    </React.Fragment>
   )
 }
 

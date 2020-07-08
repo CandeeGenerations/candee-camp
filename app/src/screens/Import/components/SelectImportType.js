@@ -24,7 +24,7 @@ const SelectImportType = () => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <h1>Select Import Type</h1>
 
       <p>
@@ -73,7 +73,7 @@ const SelectImportType = () => {
       >
         Next Step
       </Button>
-    </>
+    </React.Fragment>
   )
 }
 

@@ -19,7 +19,7 @@ const NavBarContent = (props) => {
         background: '#f0f2f5',
         height: '100vh',
       }}
-      offsetTop={75}
+      offsetTop={100}
     >
       <Layout.Sider>
         <Menu
@@ -33,7 +33,7 @@ const NavBarContent = (props) => {
             },
 
             'li, div.ant-menu-submenu-title': {
-              borderRadius: 20,
+              borderRadius: 15,
             },
           }}
           defaultOpenKeys={openKey ? [openKey.routeName] : []}

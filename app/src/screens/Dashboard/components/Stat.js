@@ -11,11 +11,11 @@ const Stat = (props) => (
     {props.loader.spinning ? (
       <div css={{minHeight: 87}} />
     ) : (
-      <>
+      <React.Fragment>
         <Statistic title={props.title} value={props.value} />
 
         {props.children}
-      </>
+      </React.Fragment>
     )}
   </Card>
 )

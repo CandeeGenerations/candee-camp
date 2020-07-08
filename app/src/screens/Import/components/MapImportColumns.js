@@ -43,12 +43,12 @@ const MapImportColumns = () => {
   }
 
   return (
-    <>
+    <React.Fragment>
       {errors && (
         <Alert
           css={{marginBottom: 25, maxHeight: 250, overflowY: 'auto'}}
           description={
-            <>
+            <React.Fragment>
               <p>
                 <strong>The following errors occurred:</strong>
               </p>
@@ -60,7 +60,7 @@ const MapImportColumns = () => {
                   </li>
                 ))}
               </ul>
-            </>
+            </React.Fragment>
           }
           type="error"
         />
@@ -139,7 +139,7 @@ const MapImportColumns = () => {
       >
         Import Data
       </Button>
-    </>
+    </React.Fragment>
   )
 }
 

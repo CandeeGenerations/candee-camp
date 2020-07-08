@@ -6,6 +6,7 @@ import {css, Global} from '@emotion/core'
 
 import {eventActions as actions, userActions} from '@/actions'
 
+import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 
@@ -14,9 +15,9 @@ import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
-import usePage from '@/helpers/hooks/usePage'
 
 import EventsTable from './components/EventsTable'
+import EventFilters from './components/EventFilters'
 
 const Events = () => {
   const page = usePage()
@@ -27,9 +28,9 @@ const Events = () => {
 
   useTitle('Events')
 
-  const loadEvents = async () => {
+  const loadEvents = async (filters = null) => {
     try {
-      const response = await objectsContext.events.load()
+      const response = await objectsContext.events.load(false, filters)
 
       if (response.data && response.data.length > 0) {
         const userIds = _.uniq(response.data.map((x) => x.createdBy))
@@ -71,7 +72,7 @@ const Events = () => {
   const events = objectsContext.events.results
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -99,6 +100,26 @@ const Events = () => {
                 : []
             }
             title="Events"
+          />
+
+          <EventFilters
+            onApplyFilters={(filters) =>
+              loadEvents({
+                name: filters.name,
+                costStart: filters.costStart,
+                costEnd: filters.costEnd,
+                onGoing:
+                  filters.onGoing === 'all' ? null : filters.onGoing === 'true',
+                dateStart:
+                  (filters.dates.length > 0 &&
+                    filters.dates[0].startOf('day').format()) ||
+                  null,
+                dateEnd:
+                  (filters.dates.length > 0 &&
+                    filters.dates[1].endOf('day').format()) ||
+                  null,
+              })
+            }
           />
 
           <LoaderContext.Provider
@@ -130,7 +151,7 @@ const Events = () => {
           </LoaderContext.Provider>
         </Card>
       </MainContent>
-    </>
+    </React.Fragment>
   )
 }
 

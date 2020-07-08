@@ -44,7 +44,7 @@ const SnackShopItems = () => {
   const snackShopItems = objectsContext.snackShopItems.results
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -120,7 +120,7 @@ const SnackShopItems = () => {
           onDeleteSnackShopItem={handleDeleteSnackShopItemClick}
         />
       )}
-    </>
+    </React.Fragment>
   )
 }
 

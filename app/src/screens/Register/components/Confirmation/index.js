@@ -8,7 +8,7 @@ const Confirmation = () => {
   const registerContext = useContext(RegisterContext)
 
   return (
-    <>
+    <React.Fragment>
       <Typography.Title>You are good to go!</Typography.Title>
 
       <p>You have successfully registered for the event below!</p>
@@ -16,7 +16,7 @@ const Confirmation = () => {
       <Divider />
 
       <EventMetaData event={{results: registerContext.event}} />
-    </>
+    </React.Fragment>
   )
 }
 

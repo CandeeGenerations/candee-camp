@@ -119,13 +119,13 @@ const App = () => {
     routerContext.router.navigate('signin', {p: params})
 
     return (
-      <>
+      <React.Fragment>
         <Signin />
 
         <div css={{position: 'relative'}}>
           <Version light />
         </div>
-      </>
+      </React.Fragment>
     )
   }
 
@@ -175,15 +175,15 @@ const App = () => {
   }
 
   return testNoNavRoutes() && !(user && isUnauthenticatedRoute) ? (
-    <>
+    <React.Fragment>
       {content}
 
       <div css={{position: 'relative'}}>
         <Version light={isUnauthenticatedRoute} />
       </div>
-    </>
+    </React.Fragment>
   ) : (
-    <>
+    <React.Fragment>
       <Header />
 
       <Layout.Content css={{height: '100vh'}}>
@@ -265,7 +265,7 @@ const App = () => {
           </ErrorBoundary>
         </Layout>
       </Layout.Content>
-    </>
+    </React.Fragment>
   )
 }
 

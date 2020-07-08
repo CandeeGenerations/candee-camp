@@ -40,7 +40,7 @@ const Users = () => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -93,7 +93,7 @@ const Users = () => {
           </LoaderContext.Provider>
         </Card>
       </MainContent>
-    </>
+    </React.Fragment>
   )
 }
 

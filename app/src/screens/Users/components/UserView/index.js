@@ -219,7 +219,7 @@ const UserView = (props) => {
     (anyTouchedFields(fields) && !isFormReady(fields))
 
   return (
-    <>
+    <React.Fragment>
       <DrawerView
         fields={fields}
         submitButtonDisabled={submitButtonDisabled}
@@ -247,7 +247,7 @@ const UserView = (props) => {
       </DrawerView>
 
       {changePasswordModal.render}
-    </>
+    </React.Fragment>
   )
 }
 

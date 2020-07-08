@@ -115,7 +115,7 @@ const CamperForm = Form.create({
         </Col>
 
         {!clientForm && (
-          <>
+          <React.Fragment>
             <Col span={colSpan}>
               <Form.Item label="Parent First Name">
                 {getFieldDecorator('parentFirstName')(
@@ -131,7 +131,7 @@ const CamperForm = Form.create({
                 )}
               </Form.Item>
             </Col>
-          </>
+          </React.Fragment>
         )}
       </Row>
 
@@ -154,7 +154,7 @@ const CamperForm = Form.create({
         </Col>
 
         {!clientForm && (
-          <>
+          <React.Fragment>
             <Col span={colSpan}>
               <Form.Item label="Medicine">
                 {getFieldDecorator('medicine')(
@@ -170,12 +170,12 @@ const CamperForm = Form.create({
                 )}
               </Form.Item>
             </Col>
-          </>
+          </React.Fragment>
         )}
       </Row>
 
       {clientForm && (
-        <>
+        <React.Fragment>
           <Row gutter={16}>
             <Col span={colSpan}>
               <Form.Item label="Parent First Name">
@@ -211,7 +211,7 @@ const CamperForm = Form.create({
               </Form.Item>
             </Col>
           </Row>
-        </>
+        </React.Fragment>
       )}
 
       {!clientForm && (
@@ -297,7 +297,7 @@ const CamperForm = Form.create({
       </Row>
 
       {page.isCamperEditPage && (
-        <>
+        <React.Fragment>
           <Divider css={{marginTop: 40}} orientation="left">
             <Typography.Text type="danger">Danger Zone</Typography.Text>
           </Divider>
@@ -331,7 +331,7 @@ const CamperForm = Form.create({
               </Typography.Text>
             </Col>
           </Row>
-        </>
+        </React.Fragment>
       )}
     </Form>
   )

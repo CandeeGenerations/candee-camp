@@ -92,7 +92,7 @@ const SnackShopItemView = (props) => {
     (anyTouchedFields(fields) && !isFormReady(fields))
 
   return (
-    <>
+    <React.Fragment>
       <DrawerView
         fields={fields}
         parentRoute={page.snackShopItemsPage}
@@ -125,7 +125,7 @@ const SnackShopItemView = (props) => {
           </ErrorWrapper>
         </LoaderContext.Provider>
       </DrawerView>
-    </>
+    </React.Fragment>
   )
 }
 

@@ -56,7 +56,7 @@ const CustomFields = () => {
   const customFields = objectsContext.customFields.results
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -138,7 +138,7 @@ const CustomFields = () => {
           onDeleteCustomField={handleDeleteCustomFieldClick}
         />
       )}
-    </>
+    </React.Fragment>
   )
 }
 

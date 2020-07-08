@@ -36,7 +36,7 @@ const Payment = (props) => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <Typography.Title>Make a Payment</Typography.Title>
 
       <Divider />
@@ -68,7 +68,7 @@ const Payment = (props) => {
           )}
         </Col>
       </Row>
-    </>
+    </React.Fragment>
   )
 }
 

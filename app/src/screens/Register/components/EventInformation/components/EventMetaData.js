@@ -36,7 +36,7 @@ const EventMetaData = (props) => {
   }, [props.event.results.cost, singleCamper, groupCampers, discount.amount])
 
   return (
-    <>
+    <React.Fragment>
       <Row css={{marginBottom: 15}} gutter={16}>
         <Col span={24}>
           Event Name
@@ -75,7 +75,7 @@ const EventMetaData = (props) => {
           </Typography.Title>
         </Col>
       </Row>
-    </>
+    </React.Fragment>
   )
 }
 

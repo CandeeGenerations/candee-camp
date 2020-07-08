@@ -128,7 +128,7 @@ const PurchasesTable = (props) => {
       dataIndex: 'operation',
       render: (text, record) =>
         isEditing(record) ? (
-          <>
+          <React.Fragment>
             <EditablePurchasesContext.Consumer>
               {(form) =>
                 loading ? (
@@ -142,15 +142,15 @@ const PurchasesTable = (props) => {
             </EditablePurchasesContext.Consumer>
 
             {!isNewPurchase(record) && (
-              <>
+              <React.Fragment>
                 <Divider type="vertical" />
 
                 <a onClick={() => cancel(record.key)}>Cancel</a>
-              </>
+              </React.Fragment>
             )}
-          </>
+          </React.Fragment>
         ) : (
-          <>
+          <React.Fragment>
             <a disabled={editingKey !== 0} onClick={() => edit(record.key)}>
               Edit
             </a>
@@ -167,7 +167,7 @@ const PurchasesTable = (props) => {
               }
               onConfirm={() => deletePurchase(record.key)}
             />
-          </>
+          </React.Fragment>
         ),
     },
   ]

@@ -7,7 +7,7 @@ import CabinForm from './CabinForm'
 
 const CabinViewWrapper = (props) => {
   return props.loader.spinning ? null : (
-    <>
+    <React.Fragment>
       <p>
         {props.fields.id ? 'Edit this cabin here.' : 'Add a new cabin here.'}
       </p>
@@ -17,7 +17,7 @@ const CabinViewWrapper = (props) => {
         onChange={props.onFieldChange}
         onDeleteCabin={props.onDeleteCabin}
       />
-    </>
+    </React.Fragment>
   )
 }
 

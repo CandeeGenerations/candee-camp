@@ -142,7 +142,7 @@ const GroupForm = () => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <Row gutter={16}>
         <Col span={24}>
           <Form.Item label="Group Name" required>
@@ -222,7 +222,7 @@ const GroupForm = () => {
         onFieldChange={handleFieldChange}
         onSave={handleSaveCamper}
       />
-    </>
+    </React.Fragment>
   )
 }
 

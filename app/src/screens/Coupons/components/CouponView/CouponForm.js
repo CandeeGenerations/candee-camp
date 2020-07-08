@@ -148,7 +148,7 @@ const CouponForm = Form.create({
       </Row>
 
       {page.isCouponEditPage && (
-        <>
+        <React.Fragment>
           <Divider css={{marginTop: 40}} orientation="left">
             <Typography.Text type="danger">Danger Zone</Typography.Text>
           </Divider>
@@ -202,7 +202,7 @@ const CouponForm = Form.create({
               </Typography.Text>
             </Col>
           </Row>
-        </>
+        </React.Fragment>
       )}
     </Form>
   )

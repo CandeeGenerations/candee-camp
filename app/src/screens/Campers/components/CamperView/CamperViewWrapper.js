@@ -11,7 +11,7 @@ const CamperViewWrapper = (props) => {
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
   ) : (
-    <>
+    <React.Fragment>
       <p>
         {props.fields.id ? 'Edit this camper here.' : 'Add a new camper here.'}
       </p>
@@ -25,7 +25,7 @@ const CamperViewWrapper = (props) => {
         onCreateNewCoupon={props.onCreateNewCoupon}
         onCustomFieldsUpdate={props.onCustomFieldsUpdate}
       />
-    </>
+    </React.Fragment>
   )
 }
 

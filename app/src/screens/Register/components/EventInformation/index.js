@@ -114,7 +114,7 @@ const EventInformation = (props) => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <Typography.Title>Register for an Event</Typography.Title>
 
       <Divider />
@@ -122,7 +122,7 @@ const EventInformation = (props) => {
       {event.loading ? (
         <Skeleton />
       ) : (
-        <>
+        <React.Fragment>
           <EventMetaData event={event} />
 
           <Divider />
@@ -182,9 +182,9 @@ const EventInformation = (props) => {
               </Button>
             </Col>
           </Row>
-        </>
+        </React.Fragment>
       )}
-    </>
+    </React.Fragment>
   )
 }
 

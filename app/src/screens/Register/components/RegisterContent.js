@@ -30,7 +30,7 @@ const RegisterContent = () => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <Steps css={{marginBottom: 50}} current={step}>
         <Steps.Step title="Event &amp; Campers" />
         <Steps.Step title="Payment" />
@@ -41,7 +41,7 @@ const RegisterContent = () => {
         onNext={() => setStep(step + 1)}
         onPrevious={() => setStep(step - 1)}
       />
-    </>
+    </React.Fragment>
   )
 }
 

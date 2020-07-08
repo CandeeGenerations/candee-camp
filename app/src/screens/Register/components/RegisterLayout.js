@@ -6,7 +6,7 @@ import Version from '@/components/Version'
 
 const SigninLayout = (props) => {
   return (
-    <>
+    <React.Fragment>
       <div
         css={{
           paddingTop: 50,
@@ -68,7 +68,7 @@ const SigninLayout = (props) => {
       <div css={{position: 'relative'}}>
         <Version hideVersion light />
       </div>
-    </>
+    </React.Fragment>
   )
 }
 

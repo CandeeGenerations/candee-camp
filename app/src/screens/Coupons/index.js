@@ -43,7 +43,7 @@ const Coupons = () => {
   const coupons = objectsContext.coupons.results
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -105,7 +105,7 @@ const Coupons = () => {
           </LoaderContext.Provider>
         </Card>
       </MainContent>
-    </>
+    </React.Fragment>
   )
 }
 

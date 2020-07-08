@@ -16,7 +16,7 @@ const SigninContent = (props) => {
   const unauthorized = useLocalStorage('cc-unauthorized')
 
   return (
-    <>
+    <React.Fragment>
       <h1
         css={{
           fontSize: 60,
@@ -75,7 +75,7 @@ const SigninContent = (props) => {
       </Row>
 
       <Copyright />
-    </>
+    </React.Fragment>
   )
 }
 

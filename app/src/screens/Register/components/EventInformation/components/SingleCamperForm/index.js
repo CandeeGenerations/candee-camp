@@ -34,7 +34,7 @@ const SingleCamperForm = (props) => {
   return props.loader.spinning ? (
     <div css={{height: 200}} />
   ) : (
-    <>
+    <React.Fragment>
       <CamperForm
         {...fields}
         camperCustomFields={camperCustomFields}
@@ -80,7 +80,7 @@ const SingleCamperForm = (props) => {
           </Col>
         </Row>
       )}
-    </>
+    </React.Fragment>
   )
 }
 

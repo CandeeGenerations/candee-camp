@@ -129,7 +129,7 @@ const RegistrationView = (props) => {
     (anyTouchedFields(fields) && !isFormReady(fields))
 
   return (
-    <>
+    <React.Fragment>
       <DrawerView
         fields={fields}
         parentRoute={page.registrationsPage}
@@ -158,7 +158,7 @@ const RegistrationView = (props) => {
           </ErrorWrapper>
         </LoaderContext.Provider>
       </DrawerView>
-    </>
+    </React.Fragment>
   )
 }
 
