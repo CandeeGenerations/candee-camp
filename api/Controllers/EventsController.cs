@@ -24,9 +24,9 @@ namespace Reclaimed.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Event>), 200)]
-        public async Task<ActionResult<IEnumerable<Event>>> GetEvents(int portalId)
+        public async Task<ActionResult<IEnumerable<Event>>> GetEvents(int portalId, EventFilterModel filters = null)
         {
-            IEnumerable<Event> events = await _eventRepository.GetEvents(portalId);
+            IEnumerable<Event> events = await _eventRepository.GetEvents(portalId, filters);
 
             return Ok(events);
         }
