@@ -10,10 +10,10 @@ import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 
-import {ObjectsContext} from '@/screens/App'
 import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import EventsTable from './components/EventsTable'
@@ -24,18 +24,21 @@ const Events = () => {
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const {
+    eventFilters: {transformedFilters},
+  } = useContext(FiltersContext)
   const users = useAsyncLoad(userActions.loadUsersByIds)
 
   useTitle('Events')
 
-  const loadEvents = async (filters = null) => {
+  const loadEvents = async () => {
     try {
-      const response = await objectsContext.events.load(false, filters)
+      const response = await objectsContext.events.load(transformedFilters)
 
       if (response.data && response.data.length > 0) {
         const userIds = _.uniq(response.data.map((x) => x.createdBy))
 
-        users.load(false, userIds)
+        users.load(userIds)
       }
     } catch (error) {
       errorWrapper.handleCatchError()
@@ -55,7 +58,7 @@ const Events = () => {
         objectsContext.events.data.data.map((x) => x.createdBy),
       )
 
-      users.load(false, userIds)
+      users.load(userIds)
     }
   }, [routerContext.previousRoute]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -102,25 +105,7 @@ const Events = () => {
             title="Events"
           />
 
-          <EventFilters
-            onApplyFilters={(filters) =>
-              loadEvents({
-                name: filters.name,
-                costStart: filters.costStart,
-                costEnd: filters.costEnd,
-                onGoing:
-                  filters.onGoing === 'all' ? null : filters.onGoing === 'true',
-                dateStart:
-                  (filters.dates.length > 0 &&
-                    filters.dates[0].startOf('day').format()) ||
-                  null,
-                dateEnd:
-                  (filters.dates.length > 0 &&
-                    filters.dates[1].endOf('day').format()) ||
-                  null,
-              })
-            }
-          />
+          <EventFilters onApplyFilters={loadEvents} />
 
           <LoaderContext.Provider
             value={{

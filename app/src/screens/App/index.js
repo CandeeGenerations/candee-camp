@@ -12,6 +12,7 @@ import {axiosRequest} from '@/api'
 import * as actions from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import {getUser} from '@/helpers/authHelpers'
+import useFilters from '@/helpers/hooks/useFilters'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 
 import Users from '@/screens/Users'
@@ -46,6 +47,7 @@ import CouponView from '@/screens/Coupons/components/CouponView'
 
 export const ObjectsContext = React.createContext({})
 export const ValuesContext = React.createContext({})
+export const FiltersContext = React.createContext({})
 
 const App = () => {
   let content = null
@@ -58,14 +60,52 @@ const App = () => {
   const [counselorValues, setCounselorValues] = useState(undefined)
 
   const routeName = routerContext.route.name
+
+  // events
   const events = useAsyncLoad(actions.eventActions.loadEvents)
+  const eventFilters = useFilters(
+    {
+      name: null,
+      costStart: null,
+      costEnd: null,
+      onGoing: 'all',
+      dates: [],
+    },
+    (filters) => ({
+      name: filters.name,
+      costStart: filters.costStart,
+      costEnd: filters.costEnd,
+      onGoing: filters.onGoing === 'all' ? null : filters.onGoing === 'true',
+      dateStart:
+        (filters.dates.length > 0 &&
+          filters.dates[0].startOf('day').format()) ||
+        null,
+      dateEnd:
+        (filters.dates.length > 0 && filters.dates[1].endOf('day').format()) ||
+        null,
+    }),
+  )
+
   const campers = useAsyncLoad(actions.camperActions.loadCampers)
   const groups = useAsyncLoad(actions.groupActions.loadGroups)
   const registrations = useAsyncLoad(
     actions.registrationActions.loadRegistrations,
   )
   const counselors = useAsyncLoad(actions.counselorActions.loadCounselors)
+
+  // cabins
   const cabins = useAsyncLoad(actions.cabinActions.loadCabins)
+  const cabinFilters = useFilters(
+    {
+      name: null,
+      isActive: 'all',
+    },
+    (filters) => ({
+      name: filters.name,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+    }),
+  )
+
   const users = useAsyncLoad(actions.userActions.loadUsers)
   const snackShopItems = useAsyncLoad(
     actions.snackShopItemActions.loadSnackShopItems,
@@ -215,51 +255,53 @@ const App = () => {
                   customFields,
                 }}
               >
-                <Layout css={{marginTop: 50}}>
-                  {content}
+                <FiltersContext.Provider value={{cabinFilters, eventFilters}}>
+                  <Layout css={{marginTop: 50}}>
+                    {content}
 
-                  <Version />
-                </Layout>
+                    <Version />
+                  </Layout>
 
-                {page.isUserAddOrEditPage && (
-                  <UserView
-                    id={
-                      (routerContext.route.params &&
-                        routerContext.route.params.userId) ||
-                      null
-                    }
-                  />
-                )}
+                  {page.isUserAddOrEditPage && (
+                    <UserView
+                      id={
+                        (routerContext.route.params &&
+                          routerContext.route.params.userId) ||
+                        null
+                      }
+                    />
+                  )}
 
-                {page.isEventAddOrEditPage && (
-                  <EventView
-                    id={
-                      (routerContext.route.params &&
-                        routerContext.route.params.eventId) ||
-                      null
-                    }
-                  />
-                )}
+                  {page.isEventAddOrEditPage && (
+                    <EventView
+                      id={
+                        (routerContext.route.params &&
+                          routerContext.route.params.eventId) ||
+                        null
+                      }
+                    />
+                  )}
 
-                {page.isCabinAddOrEditPage && (
-                  <CabinView
-                    id={
-                      (routerContext.route.params &&
-                        routerContext.route.params.cabinId) ||
-                      null
-                    }
-                  />
-                )}
+                  {page.isCabinAddOrEditPage && (
+                    <CabinView
+                      id={
+                        (routerContext.route.params &&
+                          routerContext.route.params.cabinId) ||
+                        null
+                      }
+                    />
+                  )}
 
-                {page.isCouponAddOrEditPage && (
-                  <CouponView
-                    id={
-                      (routerContext.route.params &&
-                        routerContext.route.params.couponId) ||
-                      null
-                    }
-                  />
-                )}
+                  {page.isCouponAddOrEditPage && (
+                    <CouponView
+                      id={
+                        (routerContext.route.params &&
+                          routerContext.route.params.couponId) ||
+                        null
+                      }
+                    />
+                  )}
+                </FiltersContext.Provider>
               </ObjectsContext.Provider>
             </ValuesContext.Provider>
           </ErrorBoundary>

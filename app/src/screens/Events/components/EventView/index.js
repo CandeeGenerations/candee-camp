@@ -8,9 +8,9 @@ import {eventActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
-import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import EventViewWrapper from './EventViewWrapper'
@@ -20,6 +20,9 @@ const EventView = (props) => {
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const {
+    eventFilters: {transformedFilters},
+  } = useContext(FiltersContext)
   const event = useAsyncLoad(actions.loadEvent, props.id)
 
   const [fields, setFields] = useState({
@@ -66,7 +69,7 @@ const EventView = (props) => {
   const handleFieldChange = (changedFields) =>
     setFields((stateFields) => ({...stateFields, ...changedFields}))
 
-  const refreshTable = () => objectsContext.events.load()
+  const refreshTable = () => objectsContext.events.load(transformedFilters)
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {

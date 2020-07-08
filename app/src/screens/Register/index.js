@@ -94,7 +94,7 @@ const Register = (props) => {
     ])
 
   const applyCoupon = async (code) => {
-    const {data} = await coupon.load(false, code)
+    const {data} = await coupon.load(code)
 
     if (data) {
       setDiscount({amount: data.amount, type: data.type})

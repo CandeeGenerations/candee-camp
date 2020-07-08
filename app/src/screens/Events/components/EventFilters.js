@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
-import React, {useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {
   Button,
   Col,
@@ -17,29 +17,32 @@ import {
 
 import {inputNumberFormatter, inputNumberParser} from '@/helpers'
 
+import {FiltersContext} from '@/screens/App'
 import Filters from '@/components/Structure/Filters'
 
 const EventFilters = (props) => {
-  const originalState = {
-    name: null,
-    costStart: null,
-    costEnd: null,
-    onGoing: 'all',
-    dates: [],
-  }
-  const [filters, setFilters] = useState({...originalState})
+  const {
+    eventFilters: {filters, setFilters, resetFilters},
+  } = useContext(FiltersContext)
+
   const [costError, setCostError] = useState(false)
 
-  const handleApplyFilters = (reset) => {
+  useEffect(() => {
+    if (filters.applyFilters) {
+      props.onApplyFilters()
+      setFilters({...filters, applyFilters: false})
+    }
+  }, [filters])
+
+  const handleApplyFilters = () => {
     if (!costError) {
-      props.onApplyFilters(reset ? originalState : filters)
+      setFilters({...filters, applyFilters: true})
     }
   }
 
   const handleResetFilters = () => {
     setCostError(false)
-    setFilters({...originalState})
-    handleApplyFilters(true)
+    resetFilters()
   }
 
   return (

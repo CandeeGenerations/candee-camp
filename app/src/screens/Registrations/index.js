@@ -41,8 +41,8 @@ const Registrations = () => {
         const camperIds = _.uniq(response.data.map((x) => x.camperId))
         const eventIds = _.uniq(response.data.map((x) => x.eventId))
 
-        campers.load(false, camperIds)
-        events.load(false, eventIds)
+        campers.load(camperIds)
+        events.load(eventIds)
       } else {
         campers.stopLoading()
         events.stopLoading()
@@ -65,7 +65,7 @@ const Registrations = () => {
         objectsContext.registrations.data.data.map((x) => x.camperId),
       )
 
-      campers.load(false, camperIds)
+      campers.load(camperIds)
     } else if (
       routerContext.previousRoute &&
       routerContext.previousRoute.name === page.registrationEventEditPage
@@ -74,7 +74,7 @@ const Registrations = () => {
         objectsContext.registrations.data.data.map((x) => x.eventId),
       )
 
-      events.load(false, eventIds)
+      events.load(eventIds)
     }
   }, [routerContext.previousRoute]) // eslint-disable-line react-hooks/exhaustive-deps
 

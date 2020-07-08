@@ -20,32 +20,30 @@ namespace Reclaimed.API.Repositories
         {
             IQueryable<Event> events = Context.Events.Where(x => x.PortalId == portalId && !x.IsDeleted);
 
-            if (filter == null)
+            if (filter == null) return await events.ToListAsync();
             {
-                return await events.ToListAsync();
-            }
-            
-            if (!string.IsNullOrEmpty(filter.Name))
-            {
-                events = events.Where(x => x.Name.ToLower().Contains(filter.Name.Trim().ToLower()));
-            }
+                if (!string.IsNullOrEmpty(filter.Name))
+                {
+                    events = events.Where(x => x.Name.ToLower().Contains(filter.Name.Trim().ToLower()));
+                }
 
-            if (filter.OnGoing != null)
-            {
-                events = filter.OnGoing.Value
-                    ? events.Where(x => x.StartDate < DateTimeOffset.Now && x.EndDate > DateTimeOffset.Now)
-                    : events.Where(x => x.StartDate > DateTimeOffset.Now || x.EndDate < DateTimeOffset.Now);
-            }
+                if (filter.OnGoing != null)
+                {
+                    events = filter.OnGoing.Value
+                        ? events.Where(x => x.StartDate < DateTimeOffset.Now && x.EndDate > DateTimeOffset.Now)
+                        : events.Where(x => x.StartDate > DateTimeOffset.Now || x.EndDate < DateTimeOffset.Now);
+                }
 
-            if (filter.CostEnd != null && filter.CostStart != null)
-            {
-                events = events.Where(x => x.Cost >= filter.CostStart.Value && x.Cost <= filter.CostEnd.Value);
-            }
+                if (filter.CostEnd != null && filter.CostStart != null)
+                {
+                    events = events.Where(x => x.Cost >= filter.CostStart.Value && x.Cost <= filter.CostEnd.Value);
+                }
 
-            if (filter.DateEnd != null && filter.DateStart != null)
-            {
-                events = events.Where(x =>
-                    x.StartDate >= filter.DateStart.Value && x.EndDate <= filter.DateEnd.Value);
+                if (filter.DateEnd != null && filter.DateStart != null)
+                {
+                    events = events.Where(x =>
+                        x.StartDate >= filter.DateStart.Value && x.EndDate <= filter.DateEnd.Value);
+                }
             }
 
             return await events.ToListAsync();

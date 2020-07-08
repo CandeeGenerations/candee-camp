@@ -9,7 +9,7 @@ import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
-import {ObjectsContext, ValuesContext} from '@/screens/App'
+import {ObjectsContext, ValuesContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import CabinViewWrapper from './CabinViewWrapper'
@@ -20,6 +20,9 @@ const CabinView = (props) => {
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
   const valuesContext = useContext(ValuesContext)
+  const {
+    cabinFilters: {transformedFilters},
+  } = useContext(FiltersContext)
   const cabin = useAsyncLoad(actions.loadCabin, props.id)
 
   const [fields, setFields] = useState({
@@ -50,7 +53,7 @@ const CabinView = (props) => {
   const handleFieldChange = (changedFields) =>
     setFields((stateFields) => ({...stateFields, ...changedFields}))
 
-  const refreshTable = () => objectsContext.cabins.load()
+  const refreshTable = () => objectsContext.cabins.load(transformedFilters)
 
   const navigateToCounselor = (cabinId) => {
     const updates = {valid: true}

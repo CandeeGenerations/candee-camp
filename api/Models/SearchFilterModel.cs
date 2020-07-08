@@ -7,6 +7,11 @@ namespace Reclaimed.API.Models
         public string Name { get; set; }
     }
 
+    public class ActiveFilterModel : FilterModel
+    {
+        public bool? IsActive { get; set; }
+    }
+
     public class EventFilterModel : FilterModel
     {
         public int? CostStart { get; set; }
