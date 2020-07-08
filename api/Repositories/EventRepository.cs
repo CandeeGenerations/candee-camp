@@ -16,33 +16,33 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Event>> GetEvents(int portalId, EventFilterModel filter = null)
+        public async Task<IEnumerable<Event>> GetEvents(int portalId, EventFilterModel filters = null)
         {
             IQueryable<Event> events = Context.Events.Where(x => x.PortalId == portalId && !x.IsDeleted);
 
-            if (filter == null) return await events.ToListAsync();
+            if (filters == null) return await events.ToListAsync();
             {
-                if (!string.IsNullOrEmpty(filter.Name))
+                if (!string.IsNullOrEmpty(filters.Name))
                 {
-                    events = events.Where(x => x.Name.ToLower().Contains(filter.Name.Trim().ToLower()));
+                    events = events.Where(x => x.Name.ToLower().Contains(filters.Name.Trim().ToLower()));
                 }
 
-                if (filter.OnGoing != null)
+                if (filters.OnGoing != null)
                 {
-                    events = filter.OnGoing.Value
+                    events = filters.OnGoing.Value
                         ? events.Where(x => x.StartDate < DateTimeOffset.Now && x.EndDate > DateTimeOffset.Now)
                         : events.Where(x => x.StartDate > DateTimeOffset.Now || x.EndDate < DateTimeOffset.Now);
                 }
 
-                if (filter.CostEnd != null && filter.CostStart != null)
+                if (filters.CostEnd != null && filters.CostStart != null)
                 {
-                    events = events.Where(x => x.Cost >= filter.CostStart.Value && x.Cost <= filter.CostEnd.Value);
+                    events = events.Where(x => x.Cost >= filters.CostStart.Value && x.Cost <= filters.CostEnd.Value);
                 }
 
-                if (filter.DateEnd != null && filter.DateStart != null)
+                if (filters.DateEnd != null && filters.DateStart != null)
                 {
                     events = events.Where(x =>
-                        x.StartDate >= filter.DateStart.Value && x.EndDate <= filter.DateEnd.Value);
+                        x.StartDate >= filters.DateStart.Value && x.EndDate <= filters.DateEnd.Value);
                 }
             }
 

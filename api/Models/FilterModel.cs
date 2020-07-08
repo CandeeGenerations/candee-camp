@@ -24,4 +24,25 @@ namespace Reclaimed.API.Models
 
         public DateTimeOffset? DateEnd { get; set; }
     }
+
+    public class CamperFilterModel : ActiveFilterModel
+    {
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public DateTimeOffset? BirthdateStart { get; set; }
+        
+        public DateTimeOffset? BirthdateEnd { get; set; }
+
+        public string ParentsName { get; set; }
+
+        public bool? HasMedication { get; set; }
+
+        public bool? HasAllergies { get; set; }
+
+        public int? BalanceStart { get; set; }
+
+        public int? BalanceEnd { get; set; }
+    }
 }

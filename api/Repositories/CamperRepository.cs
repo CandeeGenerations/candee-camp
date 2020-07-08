@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Reclaimed.API.Context;
 using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Migrations;
 using Reclaimed.API.Models;
 using Reclaimed.API.Repositories.Interfaces;
 
@@ -16,8 +17,64 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Camper>> GetCampers(int portalId) =>
-            await Context.Campers.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Camper>> GetCampers(int portalId, CamperFilterModel filters)
+        {
+            IQueryable<Camper> campers = Context.Campers.Where(x => x.PortalId == portalId && !x.IsDeleted);
+
+            if (filters == null) return await campers.ToListAsync();
+            {
+                if (!string.IsNullOrEmpty(filters.FirstName))
+                {
+                    campers = campers.Where(x => x.FirstName.ToLower().Contains(filters.FirstName.Trim().ToLower()));
+                }
+
+                if (!string.IsNullOrEmpty(filters.LastName))
+                {
+                    campers = campers.Where(x => x.LastName.ToLower().Contains(filters.LastName.Trim().ToLower()));
+                }
+
+                if (filters.IsActive != null)
+                {
+                    campers = campers.Where(x => x.IsActive == filters.IsActive.Value);
+                }
+
+                if (filters.BirthdateEnd != null && filters.BirthdateStart != null)
+                {
+                    campers = campers.Where(x =>
+                        x.BirthDate >= filters.BirthdateStart.Value && x.BirthDate <= filters.BirthdateEnd.Value);
+                }
+
+                if (!string.IsNullOrEmpty(filters.ParentsName))
+                {
+                    campers = campers.Where(x =>
+                        x.ParentFirstName.ToLower().Contains(filters.ParentsName.Trim().ToLower()) ||
+                        x.ParentLastName.ToLower().Contains(filters.ParentsName.Trim().ToLower()));
+                }
+
+                if (filters.HasMedication != null)
+                {
+                    campers = filters.HasMedication.Value
+                        ? campers.Where(x => !string.IsNullOrEmpty(x.Medicine))
+                        : campers.Where(x => string.IsNullOrEmpty(x.Medicine));
+                }
+
+                if (filters.HasAllergies != null)
+                {
+                    campers = filters.HasAllergies.Value
+                        ? campers.Where(x => !string.IsNullOrEmpty(x.Allergies))
+                        : campers.Where(x => string.IsNullOrEmpty(x.Allergies));
+                }
+
+                if (filters.BalanceStart != null && filters.BalanceEnd != null)
+                {
+                    campers = campers.Where(x =>
+                        x.StartingBalance >= filters.BalanceStart.Value &&
+                        x.StartingBalance <= filters.BalanceEnd.Value);
+                }
+            }
+
+            return await campers.ToListAsync();
+        }
 
         public async Task<IEnumerable<Camper>> GetCampersByGroup(int portalId, int groupId) =>
             await Context.Campers.Where(x => x.PortalId == portalId && !x.IsDeleted && x.GroupId == groupId)

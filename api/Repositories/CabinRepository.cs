@@ -29,7 +29,7 @@ namespace Reclaimed.API.Repositories
 
                 if (filters.IsActive != null)
                 {
-                    cabins = cabins.Where(x => x.IsActive == filters.IsActive);
+                    cabins = cabins.Where(x => x.IsActive == filters.IsActive.Value);
                 }
             }
 

@@ -86,7 +86,44 @@ const App = () => {
     }),
   )
 
+  // campers
   const campers = useAsyncLoad(actions.camperActions.loadCampers)
+  const camperFilters = useFilters(
+    {
+      firstName: null,
+      lastName: null,
+      isActive: 'all',
+      birthdates: [],
+      parentsName: null,
+      hasMedication: 'all',
+      hasAllergies: 'all',
+      balanceStart: null,
+      balanceEnd: null,
+    },
+    (filters) => ({
+      firstName: filters.firstName,
+      lastName: filters.lastName,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+      birthdateStart:
+        (filters.birthdates.length > 0 &&
+          filters.birthdates[0].startOf('day').format()) ||
+        null,
+      birthdateEnd:
+        (filters.birthdates.length > 0 &&
+          filters.birthdates[1].endOf('day').format()) ||
+        null,
+      parentsName: filters.parentsName,
+      hasMedication:
+        filters.hasMedication === 'all'
+          ? null
+          : filters.hasMedication === 'true',
+      hasAllergies:
+        filters.hasAllergies === 'all' ? null : filters.hasAllergies === 'true',
+      balanceStart: filters.balanceStart,
+      balanceEnd: filters.balanceEnd,
+    }),
+  )
+
   const groups = useAsyncLoad(actions.groupActions.loadGroups)
   const registrations = useAsyncLoad(
     actions.registrationActions.loadRegistrations,
@@ -255,7 +292,9 @@ const App = () => {
                   customFields,
                 }}
               >
-                <FiltersContext.Provider value={{cabinFilters, eventFilters}}>
+                <FiltersContext.Provider
+                  value={{cabinFilters, eventFilters, camperFilters}}
+                >
                   <Layout css={{marginTop: 50}}>
                     {content}
 
