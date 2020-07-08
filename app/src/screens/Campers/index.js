@@ -44,7 +44,7 @@ const Campers = () => {
   const campers = objectsContext.campers.results
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -116,7 +116,7 @@ const Campers = () => {
           </Card>
         </MainContent>
       )}
-    </>
+    </React.Fragment>
   )
 }
 

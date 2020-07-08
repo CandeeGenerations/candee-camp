@@ -11,7 +11,7 @@ const CustomFieldViewWrapper = (props) => {
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
   ) : (
-    <>
+    <React.Fragment>
       <p>
         {props.fields.id
           ? 'Edit this custom field here.'
@@ -23,7 +23,7 @@ const CustomFieldViewWrapper = (props) => {
         onChange={props.onFieldChange}
         onDeleteCustomField={props.onDeleteCustomField}
       />
-    </>
+    </React.Fragment>
   )
 }
 

@@ -33,7 +33,7 @@ const UploadFile = () => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <h1>Upload Import File</h1>
 
       <p>
@@ -63,7 +63,7 @@ const UploadFile = () => {
       >
         Previous Step
       </Button>
-    </>
+    </React.Fragment>
   )
 }
 

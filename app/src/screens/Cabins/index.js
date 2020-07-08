@@ -43,7 +43,7 @@ const Cabins = () => {
   const cabins = objectsContext.cabins.results
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -105,7 +105,7 @@ const Cabins = () => {
           </LoaderContext.Provider>
         </Card>
       </MainContent>
-    </>
+    </React.Fragment>
   )
 }
 

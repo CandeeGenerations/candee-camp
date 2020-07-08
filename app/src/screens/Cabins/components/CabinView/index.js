@@ -130,7 +130,7 @@ const CabinView = (props) => {
     (anyTouchedFields(fields) && !isFormReady(fields))
 
   return (
-    <>
+    <React.Fragment>
       <DrawerView
         fields={fields}
         submitButtonDisabled={submitButtonDisabled}
@@ -158,7 +158,7 @@ const CabinView = (props) => {
           </ErrorWrapper>
         </LoaderContext.Provider>
       </DrawerView>
-    </>
+    </React.Fragment>
   )
 }
 

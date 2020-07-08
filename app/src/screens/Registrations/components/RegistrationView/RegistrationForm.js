@@ -147,7 +147,7 @@ const RegistrationForm = Form.create({
       </Row>
 
       {page.isRegistrationEditPage && (
-        <>
+        <React.Fragment>
           <Divider css={{marginTop: 40}} orientation="left">
             <Typography.Text type="danger">Danger Zone</Typography.Text>
           </Divider>
@@ -185,7 +185,7 @@ const RegistrationForm = Form.create({
               </Popconfirm>
             </Col>
           </Row>
-        </>
+        </React.Fragment>
       )}
     </Form>
   )

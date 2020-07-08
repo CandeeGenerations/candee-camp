@@ -89,7 +89,7 @@ const Registrations = () => {
   const registrations = objectsContext.registrations.results
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -182,7 +182,7 @@ const Registrations = () => {
           onSubmit={loadRegistrations}
         />
       )}
-    </>
+    </React.Fragment>
   )
 }
 

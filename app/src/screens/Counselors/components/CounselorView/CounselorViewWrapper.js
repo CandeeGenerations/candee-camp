@@ -7,7 +7,7 @@ import CounselorForm from './CounselorForm'
 
 const CounselorViewWrapper = (props) => {
   return props.loader.spinning ? null : (
-    <>
+    <React.Fragment>
       <p>
         {props.fields.id
           ? 'Edit this counselor here.'
@@ -23,7 +23,7 @@ const CounselorViewWrapper = (props) => {
         onCreateNewCabin={props.onCreateNewCabin}
         onDeleteCounselor={props.onDeleteCounselor}
       />
-    </>
+    </React.Fragment>
   )
 }
 

@@ -93,7 +93,7 @@ const CustomFieldView = (props) => {
     (anyTouchedFields(fields) && !isFormReady(fields))
 
   return (
-    <>
+    <React.Fragment>
       <DrawerView
         fields={fields}
         parentRoute={page.customFieldsPage}
@@ -126,7 +126,7 @@ const CustomFieldView = (props) => {
           </ErrorWrapper>
         </LoaderContext.Provider>
       </DrawerView>
-    </>
+    </React.Fragment>
   )
 }
 

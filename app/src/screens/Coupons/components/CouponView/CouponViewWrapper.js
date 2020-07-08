@@ -7,7 +7,7 @@ import CouponForm from './CouponForm'
 
 const CouponViewWrapper = (props) => {
   return props.loader.spinning ? null : (
-    <>
+    <React.Fragment>
       <p>
         {props.fields.id ? 'Edit this coupon here.' : 'Add a new coupon here.'}
       </p>
@@ -17,7 +17,7 @@ const CouponViewWrapper = (props) => {
         onChange={props.onFieldChange}
         onDeleteCoupon={props.onDeleteCoupon}
       />
-    </>
+    </React.Fragment>
   )
 }
 

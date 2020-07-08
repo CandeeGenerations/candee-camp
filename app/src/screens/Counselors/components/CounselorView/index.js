@@ -133,11 +133,11 @@ const CounselorView = (props) => {
     (anyTouchedFields(fields) && !isFormReady(fields))
 
   return (
-    <>
+    <React.Fragment>
       <DrawerView
         extraButtons={
           props.id && (
-            <>
+            <React.Fragment>
               <Button
                 onClick={() =>
                   routerContext.router.navigate(page.counselorSnackShopPage, {
@@ -147,7 +147,7 @@ const CounselorView = (props) => {
               >
                 Snack Shop
               </Button>
-            </>
+            </React.Fragment>
           )
         }
         fields={fields}
@@ -190,7 +190,7 @@ const CounselorView = (props) => {
           </ErrorWrapper>
         </LoaderContext.Provider>
       </DrawerView>
-    </>
+    </React.Fragment>
   )
 }
 

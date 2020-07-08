@@ -7,7 +7,7 @@ import SnackShopItemForm from './SnackShopItemForm'
 
 const SnackShopItemViewWrapper = (props) => {
   return props.loader.spinning ? null : (
-    <>
+    <React.Fragment>
       <p>
         {props.fields.id
           ? 'Edit this snack shop item here.'
@@ -19,7 +19,7 @@ const SnackShopItemViewWrapper = (props) => {
         onChange={props.onFieldChange}
         onDeleteSnackShopItem={props.onDeleteSnackShopItem}
       />
-    </>
+    </React.Fragment>
   )
 }
 

@@ -44,7 +44,7 @@ const Counselors = () => {
   const counselors = objectsContext.counselors.results
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -117,7 +117,7 @@ const Counselors = () => {
           onDeleteCounselor={handleDeleteCounselorClick}
         />
       )}
-    </>
+    </React.Fragment>
   )
 }
 

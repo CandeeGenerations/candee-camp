@@ -173,7 +173,7 @@ const CamperView = (props) => {
   const submitButtonDisabled = camper.loading || objectsContext.coupons.loading
 
   return (
-    <>
+    <React.Fragment>
       <MainContent>
         <Card>
           <PageHeader
@@ -225,7 +225,7 @@ const CamperView = (props) => {
               />
 
               {page.isCamperEditPage && (
-                <>
+                <React.Fragment>
                   <Button
                     css={{float: 'left', marginRight: 8}}
                     onClick={() =>
@@ -258,7 +258,7 @@ const CamperView = (props) => {
                       Delete Camper
                     </Button>
                   </Popconfirm>
-                </>
+                </React.Fragment>
               )}
 
               <div css={{textAlign: 'right'}}>
@@ -278,7 +278,7 @@ const CamperView = (props) => {
           </LoaderContext.Provider>
         </Card>
       </MainContent>
-    </>
+    </React.Fragment>
   )
 }
 

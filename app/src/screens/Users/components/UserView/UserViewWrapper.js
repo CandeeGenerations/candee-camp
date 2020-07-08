@@ -7,7 +7,7 @@ import UserForm from './UserForm'
 
 const UserViewWrapper = (props) => {
   return props.loader.spinning ? null : (
-    <>
+    <React.Fragment>
       <p>{props.fields.id ? 'Edit this user here.' : 'Add a new user here.'}</p>
 
       <UserForm
@@ -16,7 +16,7 @@ const UserViewWrapper = (props) => {
         onDeleteUser={props.onDeleteUser}
         onPasswordChange={props.onPasswordChange}
       />
-    </>
+    </React.Fragment>
   )
 }
 

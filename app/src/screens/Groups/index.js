@@ -43,7 +43,7 @@ const Groups = () => {
   const groups = objectsContext.groups.results
 
   return (
-    <>
+    <React.Fragment>
       <MainContent>
         <Card>
           <PageHeader
@@ -108,7 +108,7 @@ const Groups = () => {
           onDeleteGroup={handleDeleteGroupClick}
         />
       )}
-    </>
+    </React.Fragment>
   )
 }
 

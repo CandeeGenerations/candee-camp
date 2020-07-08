@@ -127,11 +127,11 @@ const UserForm = Form.create({
       </Row>
 
       {page.isUserAddOrEditPage && (
-        <>
+        <React.Fragment>
           <Divider orientation="left">Security</Divider>
 
           {props.id ? (
-            <>
+            <React.Fragment>
               <Row gutter={16}>
                 <Col span={24}>
                   <Button type="primary" onClick={props.onPasswordChange}>
@@ -204,7 +204,7 @@ const UserForm = Form.create({
                   </Typography.Text>
                 </Col>
               </Row>
-            </>
+            </React.Fragment>
           ) : (
             <Row gutter={16}>
               <Col span={12}>
@@ -234,7 +234,7 @@ const UserForm = Form.create({
               </Col>
             </Row>
           )}
-        </>
+        </React.Fragment>
       )}
     </Form>
   )

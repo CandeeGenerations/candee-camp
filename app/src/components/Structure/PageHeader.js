@@ -6,7 +6,7 @@ import {NavItem} from '../Navigation'
 
 const PageHeader = (props) => {
   return (
-    <>
+    <React.Fragment>
       <APageHeader
         breadcrumb={
           props.routes
@@ -25,7 +25,7 @@ const PageHeader = (props) => {
       />
 
       <Divider />
-    </>
+    </React.Fragment>
   )
 }
 

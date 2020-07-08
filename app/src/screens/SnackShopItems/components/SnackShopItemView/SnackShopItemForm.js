@@ -99,7 +99,7 @@ const SnackShopItemForm = Form.create({
       </Row>
 
       {page.isSnackShopItemEditPage && (
-        <>
+        <React.Fragment>
           <Divider css={{marginTop: 40}} orientation="left">
             <Typography.Text type="danger">Danger Zone</Typography.Text>
           </Divider>
@@ -153,7 +153,7 @@ const SnackShopItemForm = Form.create({
               </Typography.Text>
             </Col>
           </Row>
-        </>
+        </React.Fragment>
       )}
     </Form>
   )

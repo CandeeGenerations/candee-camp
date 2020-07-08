@@ -58,9 +58,9 @@ const SettingCell = (props) => {
         onClick={toggleEdit}
       >
         {record.sensitive ? (
-          <>
+          <React.Fragment>
             &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
-          </>
+          </React.Fragment>
         ) : (
           children
         )}

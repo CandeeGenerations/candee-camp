@@ -75,7 +75,7 @@ const SnackShop = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -182,7 +182,7 @@ const SnackShop = () => {
           </LoaderContext.Provider>
         </Card>
       </MainContent>
-    </>
+    </React.Fragment>
   )
 }
 

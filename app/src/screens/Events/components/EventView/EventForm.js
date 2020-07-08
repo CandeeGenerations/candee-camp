@@ -109,7 +109,7 @@ const EventForm = Form.create({
       </Row>
 
       {page.isEventEditPage && (
-        <>
+        <React.Fragment>
           <Divider css={{marginTop: 40}} orientation="left">
             <Typography.Text>Share</Typography.Text>
           </Divider>
@@ -170,7 +170,7 @@ const EventForm = Form.create({
               </Typography.Text>
             </Col>
           </Row>
-        </>
+        </React.Fragment>
       )}
     </Form>
   )

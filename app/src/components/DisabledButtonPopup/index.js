@@ -12,11 +12,11 @@ const DisabledButtonPopup = (props) => {
   const errors = formErrors(props.fields)
 
   return (
-    <>
+    <React.Fragment>
       {errors.length > 0 ? (
         <Popover
           content={
-            <>
+            <React.Fragment>
               {errors.map((error, index) => (
                 <p
                   key={index}
@@ -40,7 +40,7 @@ const DisabledButtonPopup = (props) => {
                   {error.message}
                 </p>
               ))}
-            </>
+            </React.Fragment>
           }
           placement={props.placement}
           title="Form Errors"
@@ -52,7 +52,7 @@ const DisabledButtonPopup = (props) => {
       )}
 
       {props.showProgress && <ProgressBar fields={props.fields} />}
-    </>
+    </React.Fragment>
   )
 }
 
