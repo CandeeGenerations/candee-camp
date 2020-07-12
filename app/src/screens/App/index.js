@@ -128,7 +128,25 @@ const App = () => {
   const registrations = useAsyncLoad(
     actions.registrationActions.loadRegistrations,
   )
+
+  // counselors
   const counselors = useAsyncLoad(actions.counselorActions.loadCounselors)
+  const counselorFilters = useFilters(
+    {
+      firstName: null,
+      lastName: null,
+      isActive: 'all',
+      balanceStart: null,
+      balanceEnd: null,
+    },
+    (filters) => ({
+      firstName: filters.firstName,
+      lastName: filters.lastName,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+      balanceStart: filters.balanceStart,
+      balanceEnd: filters.balanceEnd,
+    }),
+  )
 
   // cabins
   const cabins = useAsyncLoad(actions.cabinActions.loadCabins)
@@ -293,7 +311,12 @@ const App = () => {
                 }}
               >
                 <FiltersContext.Provider
-                  value={{cabinFilters, eventFilters, camperFilters}}
+                  value={{
+                    cabinFilters,
+                    eventFilters,
+                    camperFilters,
+                    counselorFilters,
+                  }}
                 >
                   <Layout css={{marginTop: 50}}>
                     {content}

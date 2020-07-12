@@ -45,4 +45,15 @@ namespace Reclaimed.API.Models
 
         public int? BalanceEnd { get; set; }
     }
+
+    public class CounselorFilterModel : ActiveFilterModel
+    {
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public int? BalanceStart { get; set; }
+
+        public int? BalanceEnd { get; set; }
+    }
 }
