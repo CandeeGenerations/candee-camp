@@ -124,7 +124,19 @@ const App = () => {
     }),
   )
 
+  // groups
   const groups = useAsyncLoad(actions.groupActions.loadGroups)
+  const groupFilters = useFilters(
+    {
+      name: null,
+      isActive: 'all',
+    },
+    (filters) => ({
+      name: filters.name,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+    }),
+  )
+
   const registrations = useAsyncLoad(
     actions.registrationActions.loadRegistrations,
   )
@@ -347,6 +359,7 @@ const App = () => {
                     camperFilters,
                     counselorFilters,
                     couponFilters,
+                    groupFilters,
                   }}
                 >
                   <Layout css={{marginTop: 50}}>

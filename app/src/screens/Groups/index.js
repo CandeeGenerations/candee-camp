@@ -7,36 +7,44 @@ import {groupActions as actions} from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 
-import {ObjectsContext} from '@/screens/App'
 import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import GroupView from './components/GroupView'
 import GroupsTable from './components/GroupsTable'
+import GroupFilters from './components/GroupFilters'
 
 const Groups = () => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const {
+    groupFilters: {transformedFilters},
+  } = useContext(FiltersContext)
 
   useTitle('Groups')
 
-  useEffect(() => {
+  const loadGroups = async () => {
     try {
-      objectsContext.groups.load()
+      objectsContext.groups.load(transformedFilters)
     } catch (error) {
       errorWrapper.handleCatchError()
     }
+  }
+
+  useEffect(() => {
+    loadGroups()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteGroupClick = async (groupId) => {
     const response = await actions.deleteGroup(groupId)
 
     if (response) {
-      objectsContext.groups.load()
+      loadGroups()
     }
   }
 
@@ -68,6 +76,8 @@ const Groups = () => {
             ]}
             title="Groups"
           />
+
+          <GroupFilters onApplyFilters={loadGroups} />
 
           <LoaderContext.Provider
             value={{
