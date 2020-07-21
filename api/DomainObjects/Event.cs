@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CandeeCamp.API.DomainObjects.Common;
+using Reclaimed.API.DomainObjects.Common;
 
-namespace CandeeCamp.API.DomainObjects
+namespace Reclaimed.API.DomainObjects
 {
     public class Event : ActiveDeleted
     {
@@ -29,5 +29,10 @@ namespace CandeeCamp.API.DomainObjects
         
         [ForeignKey("Id")]
         public virtual User User { get; set; }
+        
+        public int PortalId { get; set; }
+
+        [ForeignKey("Id")]
+        public virtual Portal Portal { get; set; }
     }
 }

@@ -1,23 +1,48 @@
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
+import {useState} from 'react'
 import PropTypes from 'prop-types'
-import {Divider, Popover, Table} from 'antd'
+import {useRouter} from 'react-router5'
+import {Popover, Table, Menu, Dropdown, Icon} from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
-import {formatDate, formatIsActive} from '@/helpers'
+import {formatDate, formatIsActive, formatCurrency} from '@/helpers'
 
-import {NavItem} from '@/components/Navigation'
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const CampersTable = props => {
+const CampersTable = (props) => {
   const page = usePage()
+  const router = useRouter()
+  const [actionsMenu, setActionMenu] = useState({id: null, visible: false})
+
+  const clickActionItem = (e, camperId) => {
+    if (e.key !== 'delete') {
+      setActionMenu({id: null, visible: false})
+
+      switch (e.key) {
+        case 'edit':
+          router.navigate(page.camperEditPage, {camperId})
+          break
+
+        case 'snackShop':
+          router.navigate(page.camperSnackShopPage, {camperId})
+          break
+
+        default:
+          break
+      }
+    }
+  }
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : props.campers.length === 0 ? (
+    <EmptyState title="Camper" onCreateNew={props.onCreateCamper} />
   ) : (
     <Table
       dataSource={props.campers}
@@ -39,7 +64,7 @@ const CampersTable = props => {
         key="birthDate"
         align="right"
         dataIndex="birthDate"
-        render={formatDate}
+        render={(date) => formatDate(date, false)}
         title="Birthdate"
       />
 
@@ -59,7 +84,7 @@ const CampersTable = props => {
         key="medicine"
         align="center"
         dataIndex="medicine"
-        render={medicine => (
+        render={(medicine) => (
           <Popover
             content={
               medicine ? (
@@ -84,7 +109,7 @@ const CampersTable = props => {
         key="allergies"
         align="center"
         dataIndex="allergies"
-        render={allergies => (
+        render={(allergies) => (
           <Popover
             content={
               allergies ? (
@@ -106,48 +131,64 @@ const CampersTable = props => {
       />
 
       <Column
-        key="createdDate"
+        key="startingBalance"
         align="right"
-        dataIndex="createdDate"
-        render={formatDate}
-        title="Created Date"
-      />
-
-      <Column
-        key="updatedDate"
-        align="right"
-        dataIndex="updatedDate"
-        render={formatDate}
-        title="Updated Date"
+        dataIndex="startingBalance"
+        render={formatCurrency}
+        title="Starting Balance"
       />
 
       <Column
         key="action"
         align="right"
-        render={(text, record) => (
-          <span>
-            <NavItem
-              params={{camperId: record.id}}
-              routeName={page.camperEditPage}
-            >
-              Edit
-            </NavItem>
+        render={(text, record) => {
+          const menu = (
+            <Menu onClick={(e) => clickActionItem(e, record.id)}>
+              <Menu.Item key="snackShop" align="right">
+                Snack Shop
+              </Menu.Item>
 
-            <Divider type="vertical" />
+              <Menu.Item key="edit" align="right">
+                Edit
+              </Menu.Item>
 
-            <DeleteLink
-              title={
-                <p>
-                  Are you sure you want
-                  <br />
-                  to delete this camper?
-                </p>
+              <Menu.Divider />
+
+              <Menu.Item key="delete" align="right">
+                <DeleteLink
+                  style={{color: 'red'}}
+                  title={
+                    <p>
+                      Are you sure you want
+                      <br />
+                      to delete this camper?
+                    </p>
+                  }
+                  onConfirm={async () => {
+                    await props.deleteCamper(record.id)
+                    setActionMenu(false)
+                  }}
+                />
+              </Menu.Item>
+            </Menu>
+          )
+
+          return (
+            <Dropdown
+              overlay={menu}
+              placement="bottomRight"
+              trigger={['click']}
+              visible={actionsMenu.id === record.id && actionsMenu.visible}
+              onVisibleChange={(flag) =>
+                setActionMenu({id: record.id, visible: flag})
               }
-              onConfirm={() => props.deleteCamper(record.id)}
-            />
-          </span>
-        )}
-        title="Actions"
+            >
+              <a href="#">
+                Actions <Icon type="down" />
+              </a>
+            </Dropdown>
+          )
+        }}
       />
     </Table>
   )
@@ -175,6 +216,7 @@ CampersTable.propTypes = {
 
   // functions
   deleteCamper: PropTypes.func.isRequired,
+  onCreateCamper: PropTypes.func.isRequired,
 }
 
 export default loader(CampersTable)

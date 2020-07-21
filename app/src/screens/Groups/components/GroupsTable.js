@@ -3,21 +3,24 @@ import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {Divider, Table} from 'antd'
 
+import {formatIsActive} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
-import {formatDate, formatIsActive} from '@/helpers'
 
 import {NavItem} from '@/components/Navigation'
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const GroupsTable = props => {
+const GroupsTable = (props) => {
   const page = usePage()
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : props.groups.length === 0 ? (
+    <EmptyState title="Group" onCreateNew={props.onCreateGroup} />
   ) : (
     <Table
       dataSource={props.groups}
@@ -31,22 +34,6 @@ const GroupsTable = props => {
         dataIndex="isActive"
         render={formatIsActive}
         title="Is Active"
-      />
-
-      <Column
-        key="createdDate"
-        align="right"
-        dataIndex="createdDate"
-        render={formatDate}
-        title="Created Date"
-      />
-
-      <Column
-        key="updatedDate"
-        align="right"
-        dataIndex="updatedDate"
-        render={formatDate}
-        title="Updated Date"
       />
 
       <Column
@@ -96,6 +83,7 @@ GroupsTable.propTypes = {
 
   // functions
   deleteGroup: PropTypes.func.isRequired,
+  onCreateGroup: PropTypes.func.isRequired,
 }
 
 export default loader(GroupsTable)

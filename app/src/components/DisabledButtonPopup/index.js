@@ -2,21 +2,21 @@
 import {jsx} from '@emotion/core'
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Icon, Popover, Progress} from 'antd'
+import {Icon, Popover} from 'antd'
 
-import Config from '@/config'
-import {formErrors, percentComplete} from '@/helpers'
+import {formErrors} from '@/helpers'
 
-const DisabledButtonPopup = props => {
+import ProgressBar from './components/ProgressBar'
+
+const DisabledButtonPopup = (props) => {
   const errors = formErrors(props.fields)
-  const percent = percentComplete(props.fields)
 
   return (
-    <>
+    <React.Fragment>
       {errors.length > 0 ? (
         <Popover
           content={
-            <>
+            <React.Fragment>
               {errors.map((error, index) => (
                 <p
                   key={index}
@@ -40,7 +40,7 @@ const DisabledButtonPopup = props => {
                   {error.message}
                 </p>
               ))}
-            </>
+            </React.Fragment>
           }
           placement={props.placement}
           title="Form Errors"
@@ -51,10 +51,8 @@ const DisabledButtonPopup = props => {
         props.children
       )}
 
-      {props.showProgress && Config.features.loadingBar && (
-        <Progress percent={percent} showInfo={false} />
-      )}
-    </>
+      {props.showProgress && <ProgressBar fields={props.fields} />}
+    </React.Fragment>
   )
 }
 

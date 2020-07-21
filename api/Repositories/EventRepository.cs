@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CandeeCamp.API.Context;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.Models;
-using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Reclaimed.API.Context;
+using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Models;
+using Reclaimed.API.Repositories.Interfaces;
 
-namespace CandeeCamp.API.Repositories
+namespace Reclaimed.API.Repositories
 {
     public class EventRepository : BaseRepository, IEventRepository
     {
@@ -16,12 +16,88 @@ namespace CandeeCamp.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Event>> GetEvents() =>
-            await Context.Events.Where(x => !x.IsDeleted).ToListAsync();
-
-        public async Task<Event> GetEventById(int eventId)
+        public async Task<IEnumerable<Event>> GetEvents(int portalId, EventFilterModel filter = null)
         {
-            Event dbEvent = await Context.Events.FirstOrDefaultAsync(x => x.Id == eventId && !x.IsDeleted);
+            IQueryable<Event> events = Context.Events.Where(x => x.PortalId == portalId && !x.IsDeleted);
+
+            if (filter == null)
+            {
+                return await events.ToListAsync();
+            }
+            
+            if (!string.IsNullOrEmpty(filter.Name))
+            {
+                events = events.Where(x => x.Name.ToLower().Contains(filter.Name.Trim().ToLower()));
+            }
+
+            if (filter.OnGoing != null)
+            {
+                events = filter.OnGoing.Value
+                    ? events.Where(x => x.StartDate < DateTimeOffset.Now && x.EndDate > DateTimeOffset.Now)
+                    : events.Where(x => x.StartDate > DateTimeOffset.Now || x.EndDate < DateTimeOffset.Now);
+            }
+
+            if (filter.CostEnd != null && filter.CostStart != null)
+            {
+                events = events.Where(x => x.Cost >= filter.CostStart.Value && x.Cost <= filter.CostEnd.Value);
+            }
+
+            if (filter.DateEnd != null && filter.DateStart != null)
+            {
+                events = events.Where(x =>
+                    x.StartDate >= filter.DateStart.Value && x.EndDate <= filter.DateEnd.Value);
+            }
+
+            return await events.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Event>> GetEventsByIds(int portalId, IEnumerable<int> eventIds)
+        {
+            int[] eventIdsArray = eventIds as int[] ?? eventIds.ToArray();
+
+            if (!eventIdsArray.Any())
+            {
+                throw new Exception("No event IDs detected.");
+            }
+
+            return await Context.Events.Where(e => e.PortalId == portalId && eventIdsArray.Contains(e.Id))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Event>> GetEventsForRegistration(int portalId, int? currentEventId)
+        {
+            Event currentEvent = null;
+
+            if (currentEventId != null)
+            {
+                currentEvent = await Context.Events.Where(e => e.PortalId == portalId && e.Id == currentEventId.Value)
+                    .FirstOrDefaultAsync();
+
+                if (currentEvent == null)
+                {
+                    throw new Exception("The current event doesn't exist.");
+                }
+            }
+
+            List<Event> events = await Context.Events
+                .Where(e => e.PortalId == portalId && e.IsActive && !e.IsDeleted && e.StartDate > DateTimeOffset.Now)
+                .ToListAsync();
+
+            if (currentEvent == null)
+            {
+                return events;
+            }
+
+            bool alreadyExists = events.Any(x => x.Id == currentEvent.Id);
+
+            return alreadyExists ? events : new[] {currentEvent}.Concat(events);
+        }
+
+        public async Task<Event> GetEventById(int portalId, int eventId)
+        {
+            Event dbEvent =
+                await Context.Events.FirstOrDefaultAsync(x =>
+                    x.PortalId == portalId && x.Id == eventId && !x.IsDeleted);
 
             if (dbEvent == null)
             {
@@ -31,7 +107,7 @@ namespace CandeeCamp.API.Repositories
             return dbEvent;
         }
 
-        public async Task<Event> CreateEvent(EventModel incomingEvent)
+        public async Task<Event> CreateEvent(int portalId, EventModel incomingEvent)
         {
             if (incomingEvent.StartDate == DateTimeOffset.MinValue || incomingEvent.EndDate == DateTimeOffset.MinValue)
             {
@@ -45,6 +121,7 @@ namespace CandeeCamp.API.Repositories
 
             Event newEvent = new Event()
             {
+                PortalId = portalId,
                 Name = incomingEvent.Name.Trim(),
                 Cost = incomingEvent.Cost,
                 CreatedBy = incomingEvent.CreatedBy,
@@ -55,14 +132,14 @@ namespace CandeeCamp.API.Repositories
                 StartDate = incomingEvent.StartDate,
                 UpdatedDate = DateTimeOffset.Now
             };
-            
+
             await Context.Events.AddAsync(newEvent);
             await Context.SaveChangesAsync();
-            
+
             return newEvent;
         }
 
-        public async Task<Event> UpdateEvent(int eventId, EventModel incomingEvent)
+        public async Task<Event> UpdateEvent(int portalId, int eventId, EventModel incomingEvent)
         {
             if (incomingEvent.StartDate == DateTimeOffset.MinValue ||
                 incomingEvent.EndDate == DateTimeOffset.MinValue)
@@ -75,26 +152,26 @@ namespace CandeeCamp.API.Repositories
                 throw new Exception("The Start Date must occur before the End Date.");
             }
 
-            Event dbEvent = await GetEventById(eventId);
+            Event dbEvent = await GetEventById(portalId, eventId);
 
             dbEvent.Name = incomingEvent.Name.Trim();
             dbEvent.Cost = incomingEvent.Cost;
             dbEvent.StartDate = incomingEvent.StartDate;
             dbEvent.EndDate = incomingEvent.EndDate;
             dbEvent.UpdatedDate = DateTimeOffset.UtcNow;
-            
+
             await Context.SaveChangesAsync();
 
             return dbEvent;
         }
 
-        public async Task DeleteEvent(int eventId)
+        public async Task DeleteEvent(int portalId, int eventId)
         {
-            Event dbEvent = await GetEventById(eventId);
+            Event dbEvent = await GetEventById(portalId, eventId);
 
             dbEvent.IsActive = false;
             dbEvent.IsDeleted = true;
-            
+
             await Context.SaveChangesAsync();
         }
     }

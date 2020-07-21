@@ -2,7 +2,7 @@
 import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 
-const SigninLayout = props => {
+const SigninLayout = (props) => {
   return (
     <div
       css={{
@@ -60,7 +60,7 @@ const SigninLayout = props => {
           zIndex: 0,
           width: '40%',
           position: 'absolute',
-          backgroundColor: '#f0f5f9',
+          backgroundColor: '#E9F1EF',
 
           '@media screen and (max-width: 1095px)': {
             display: 'none',
@@ -74,12 +74,12 @@ const SigninLayout = props => {
             width: 800,
             fontSize: 80,
             marginTop: -60,
-            fontWeight: 700,
-            color: '#9ebedb',
+            fontWeight: 300,
+            color: '#a1cec9',
             position: 'absolute',
             textTransform: 'uppercase',
             transform: 'rotate(-90deg)',
-            fontFamily: "'Comfortaa', sans-serif",
+            fontFamily: "'Montserrat', sans-serif",
 
             '@media screen and (max-width: 1305px)': {
               left: -250,

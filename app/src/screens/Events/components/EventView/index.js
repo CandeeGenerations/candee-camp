@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import {useRouter} from 'react-router5'
-
-import EventViewWrapper from './EventViewWrapper'
+import {useRoute} from 'react-router5'
 
 import usePage from '@/helpers/hooks/usePage'
 import {eventActions as actions} from '@/actions'
@@ -15,29 +13,23 @@ import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const EventView = props => {
+import EventViewWrapper from './EventViewWrapper'
+
+const EventView = (props) => {
   const page = usePage()
-  const router = useRouter()
   const errorWrapper = useError()
+  const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
   const event = useAsyncLoad(actions.loadEvent, props.id)
 
-  const [loading, setLoading] = useState(false)
-  const [eventName, setEventName] = useState('')
   const [fields, setFields] = useState({
+    cost: {value: 0},
     dateTime: {
       includePercent: true,
       isRequired: true,
       value: [
-        moment()
-          .add(1, 'week')
-          .startOf('week')
-          .hour(8),
-        moment()
-          .add(1, 'week')
-          .endOf('week')
-          .hour(15)
-          .add(1, 'minute'),
+        moment().add(1, 'week').startOf('week').hour(8),
+        moment().add(1, 'week').endOf('week').hour(15).add(1, 'minute'),
       ],
     },
     name: {includePercent: true, isRequired: true, value: ''},
@@ -47,17 +39,17 @@ const EventView = props => {
     try {
       const response = await event.load()
 
-      setEventName(response.data.name)
-      setFields(stateFields =>
-        mergeFormData(stateFields, {
-          id: response.data.id,
-          name: response.data.name,
-          dateTime: [
-            moment(response.data.startDate),
-            moment(response.data.endDate),
-          ],
-        }),
-      )
+      if (response) {
+        setFields((stateFields) =>
+          mergeFormData(stateFields, {
+            ...response.data,
+            dateTime: [
+              moment(response.data.startDate),
+              moment(response.data.endDate),
+            ],
+          }),
+        )
+      }
     } catch (error) {
       errorWrapper.handleCatchError()
     }
@@ -69,42 +61,61 @@ const EventView = props => {
     } else {
       event.stopLoading()
     }
-  }, [props.id])
+  }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.events.load()
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
-      setLoading(true)
+      event.startLoading()
 
       const response = await actions.saveEvent(fields)
 
-      setLoading(false)
+      event.stopLoading()
 
       if (response) {
         refreshTable()
-        router.navigate(page.eventEditPage, {eventId: response.data.id})
+
+        if (page.isRegistrationEventEditPage) {
+          routerContext.router.navigate(page.registrationsPage)
+        } else {
+          routerContext.router.navigate(page.eventEditPage, {
+            eventId: response.data.id,
+          })
+        }
       }
     }
   }
 
   const handleDeleteEventClick = async () => {
-    setLoading(true)
+    event.startLoading()
 
-    const response = await props.onDeleteEvent(props.id)
+    const response = await actions.deleteEvent(props.id)
 
-    setLoading(false)
+    event.stopLoading()
 
     if (response) {
-      router.navigate(page.eventsPage)
+      refreshTable()
+      routerContext.router.navigate(
+        page.isRegistrationEventEditPage
+          ? page.registrationsPage
+          : page.eventsPage,
+      )
     }
   }
 
+  const handleFormClose = () =>
+    routerContext.router.navigate(
+      page.isRegistrationEventEditPage
+        ? page.registrationsPage
+        : page.eventsPage,
+    )
+
   const submitButtonDisabled =
-    loading ||
+    event.loading ||
     (!fields.id && !isFormReady(fields)) ||
     (fields.id && !anyTouchedFields(fields)) ||
     (anyTouchedFields(fields) && !isFormReady(fields))
@@ -112,14 +123,20 @@ const EventView = props => {
   return (
     <DrawerView
       fields={fields}
-      parentRoute={page.eventsPage}
       submitButtonDisabled={submitButtonDisabled}
-      title={fields.id ? `Edit Event - ${eventName}` : 'Add a New Event'}
+      title={
+        fields.id
+          ? `Edit Event - ${
+              event.results ? event.results.name : fields.name.value
+            }`
+          : 'Add a New Event'
+      }
       width={512}
+      onClose={handleFormClose}
       onSubmit={handleFormSubmit}
     >
       <LoaderContext.Provider
-        value={{spinning: loading, tip: 'Loading event...'}}
+        value={{spinning: event.loading, tip: 'Loading event...'}}
       >
         <ErrorWrapper handleRetry={getEvent} hasError={errorWrapper.hasError}>
           <EventViewWrapper
@@ -139,9 +156,6 @@ EventView.defaultProps = {
 
 EventView.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-
-  // functions
-  onDeleteEvent: PropTypes.func.isRequired,
 }
 
 export default EventView

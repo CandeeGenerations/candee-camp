@@ -1,9 +1,8 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CandeeCamp.API.DomainObjects.Common;
+using Reclaimed.API.DomainObjects.Common;
 
-namespace CandeeCamp.API.DomainObjects
+namespace Reclaimed.API.DomainObjects
 {
     public class Counselor : ActiveDeleted
     {
@@ -11,6 +10,7 @@ namespace CandeeCamp.API.DomainObjects
         {
             CreatedDate = DateTimeOffset.UtcNow;
         }
+        
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -18,15 +18,27 @@ namespace CandeeCamp.API.DomainObjects
         public decimal StartingBalance { get; set; }
 
         public DateTimeOffset CreatedDate { get; set; }
+        
+        public DateTimeOffset UpdatedDate { get; set; }
 
         public int UserId { get; set; }
 
         [ForeignKey("Id")]
         public virtual User User { get; set; }
+        
+        public int CreatedBy { get; set; }
+        
+        [ForeignKey("CreatedBy")]
+        public virtual User CreatedByUser { get; set; }
 
-        public int CabinId { get; set; }
+        public int? CabinId { get; set; }
 
         [ForeignKey("Id")]
         public virtual Cabin Cabin { get; set; }
+        
+        public int PortalId { get; set; }
+
+        [ForeignKey("Id")]
+        public virtual Portal Portal { get; set; }
     }
 }

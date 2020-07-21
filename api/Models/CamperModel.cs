@@ -1,10 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace CandeeCamp.API.Models
+namespace Reclaimed.API.Models
 {
     public class CamperModel
     {
+        public CamperModel()
+        {
+            CustomFields = new List<CamperCustomFieldModel>();
+        }
+        
         [Required]
         public string FirstName { get; set; }
 
@@ -21,10 +27,11 @@ namespace CandeeCamp.API.Models
 
         public string Allergies { get; set; }
 
+        public decimal StartingBalance { get; set; }
+
         public bool IsActive { get; set; }
 
-        [Required]
-        public int CreatedBy { get; set; }
+        public int? CreatedBy { get; set; }
 
         public int? LoginUser { get; set; }
         
@@ -33,7 +40,11 @@ namespace CandeeCamp.API.Models
         public int? CabinId { get; set; }
         
         public int? CounselorId { get; set; }
+        
+        public int? CouponId { get; set; }
+        
+        public List<CamperCustomFieldModel> CustomFields { get; set; }
 
-        public bool IsMinor => BirthDate > DateTimeOffset.Now.AddYears(-18) && BirthDate <= DateTimeOffset.Now;
+        public bool IsMinor => BirthDate > DateTimeOffset.Now.AddYears(-18) && BirthDate < DateTimeOffset.Now;
     }
 } 

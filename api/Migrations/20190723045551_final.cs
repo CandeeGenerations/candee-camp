@@ -1,13 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CandeeCamp.API.Migrations
+namespace Reclaimed.API.Migrations
 {
     public partial class final : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("SET storage_engine=INNODB");
             migrationBuilder.DropForeignKey(
                 name: "FK_Groups_Users_Id",
                 table: "Groups");

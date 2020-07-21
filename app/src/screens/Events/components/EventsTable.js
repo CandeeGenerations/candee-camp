@@ -5,28 +5,39 @@ import PropTypes from 'prop-types'
 import {useRouter} from 'react-router5'
 import {Divider, Icon, Table, Tag} from 'antd'
 
-import {formatDate} from '@/helpers'
+import {formatDate, formatCurrency} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
 
 import {NavItem} from '@/components/Navigation'
+import EmptyState from '@/components/EmptyState'
 import loader from '@/components/Structure/Loader'
 import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const EventsTable = props => {
+const EventsTable = (props) => {
   const page = usePage()
   const router = useRouter()
 
   return props.loader.spinning ? (
     <div css={{minHeight: 500}} />
+  ) : props.events.length === 0 ? (
+    <EmptyState title="Event" onCreateNew={props.onCreateEvent} />
   ) : (
     <Table
       dataSource={props.events}
       pagination={Constants.TableOptions.PaginationOptions}
     >
       <Column key="name" dataIndex="name" title="Name" />
+
+      <Column
+        key="cost"
+        align="right"
+        dataIndex="cost"
+        render={formatCurrency}
+        title="Cost"
+      />
 
       <Column
         key="onGoing"
@@ -61,11 +72,11 @@ const EventsTable = props => {
       <Column
         key="createdBy"
         dataIndex="createdBy"
-        render={userId => {
+        render={(userId) => {
           let user = null
 
           if (!props.users.loading && props.users.results) {
-            user = props.users.results.find(u => u.id === userId)
+            user = props.users.results.find((u) => u.id === userId)
           }
 
           return props.users.loading ? (
@@ -85,14 +96,6 @@ const EventsTable = props => {
           )
         }}
         title="Created By"
-      />
-
-      <Column
-        key="createdDate"
-        align="right"
-        dataIndex="createdDate"
-        render={formatDate}
-        title="Created Date"
       />
 
       <Column
@@ -146,6 +149,7 @@ EventsTable.propTypes = {
 
   // functions
   deleteEvent: PropTypes.func.isRequired,
+  onCreateEvent: PropTypes.func.isRequired,
 }
 
 export default loader(EventsTable)

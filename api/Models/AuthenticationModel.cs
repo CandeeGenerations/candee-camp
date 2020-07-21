@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace CandeeCamp.API.Models
+namespace Reclaimed.API.Models
 {
     [Serializable]
     public class AuthenticationModel
@@ -13,6 +13,10 @@ namespace CandeeCamp.API.Models
         [Required]
         public string grant_type { get; set; }
 
-        public string refresh_token { get; set; }
+        public string client_uri { get; set; }
+
+        public string client_secret { get; set; }
+
+        public string client_name { get; set; }
     }
 }

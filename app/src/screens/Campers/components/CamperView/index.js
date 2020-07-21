@@ -1,36 +1,44 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React, {useContext, useEffect, useState} from 'react'
 import moment from 'moment'
+import {Card, Button, Popconfirm, Icon} from 'antd'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
-
-import CamperViewWrapper from './CamperViewWrapper'
 
 import usePage from '@/helpers/hooks/usePage'
 import {camperActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
-import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
+import {isFormReady, mergeFormData, openNotification} from '@/helpers'
 
-import {ObjectsContext} from '@/screens/App'
-import DrawerView from '@/components/Structure/DrawerView'
+import MainContent from '@/components/MainContent'
+import {PageHeader} from '@/components/Structure'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const CamperView = props => {
+import CamperViewWrapper from './CamperViewWrapper'
+
+const CamperView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const valuesContext = useContext(ValuesContext)
+  const [customFieldsState, setCustomFieldsState] = useState([])
   const camper = useAsyncLoad(actions.loadCamper, props.id)
 
   const [fields, setFields] = useState({
     firstName: {includePercent: true, isRequired: true, value: null},
     lastName: {includePercent: true, isRequired: true, value: null},
-    birthDate: {includePercent: true, value: null},
-    parentFirstName: {includePercent: true, value: null},
-    parentLastName: {includePercent: true, value: null},
-    medicine: {includePercent: true, value: []},
-    allergies: {includePercent: true, value: []},
-    isActive: {includePercent: true, value: true},
+    birthDate: {value: null},
+    parentFirstName: {value: null},
+    parentLastName: {value: null},
+    medicine: {value: []},
+    allergies: {value: []},
+    startingBalance: {value: 0},
+    couponId: {value: undefined},
+    isActive: {value: true},
   })
 
   const getCamper = async () => {
@@ -38,7 +46,7 @@ const CamperView = props => {
       const response = await camper.load()
 
       if (response) {
-        setFields(stateFields =>
+        setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
             birthDate: response.data.birthDate
@@ -50,8 +58,12 @@ const CamperView = props => {
             allergies: response.data.allergies
               ? response.data.allergies.split(',')
               : [],
+            couponId: response.data.couponId
+              ? `${response.data.couponId}`
+              : undefined,
           }),
         )
+        setCustomFieldsState(response.data.customFields)
       }
     } catch {
       errorWrapper.handleCatchError()
@@ -59,32 +71,67 @@ const CamperView = props => {
   }
 
   useEffect(() => {
-    if (props.id) {
+    objectsContext.coupons.load()
+    objectsContext.customFields.load()
+
+    if (valuesContext.camperValues && valuesContext.camperValues.valid) {
+      camper.stopLoading()
+
+      setFields(valuesContext.camperValues.fields)
+      valuesContext.setCamperValues(undefined)
+    } else if (props.id) {
       getCamper()
     } else {
       camper.stopLoading()
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.campers.load()
 
+  const handleCustomFieldsUpdate = (customField) =>
+    setCustomFieldsState((state) => [
+      ...state.filter((x) => x.customFieldId !== customField.customFieldId),
+      customField,
+    ])
+
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
+      let customError = false
+
+      objectsContext.customFields.results
+        .filter((x) => x.required)
+        .some((customField) => {
+          const field = customFieldsState.find(
+            (x) => x.customFieldId === customField.id,
+          )
+
+          if (!field || !field.value) {
+            customError = true
+            openNotification(
+              'error',
+              `The field "${customField.name}" is required.`,
+            )
+            return true
+          }
+
+          return false
+        })
+
+      if (customError) {
+        return
+      }
+
       camper.startLoading()
 
-      const response = await actions.saveCamper(fields)
+      const response = await actions.saveCamper(fields, customFieldsState)
 
       camper.stopLoading()
 
       if (response) {
         refreshTable()
-
-        routerContext.router.navigate(page.camperEditPage, {
-          camperId: response.data.id,
-        })
       }
     }
   }
@@ -98,46 +145,140 @@ const CamperView = props => {
 
     if (response) {
       refreshTable()
-      routerContext.router.navigate(page.campersPage)
+      routerContext.router.navigate(
+        page.isRegistrationCamperEditPage
+          ? page.registrationsPage
+          : page.campersPage,
+      )
     }
   }
 
-  const submitButtonDisabled =
-    camper.loading ||
-    (!fields.id && !isFormReady(fields)) ||
-    (fields.id && !anyTouchedFields(fields)) ||
-    (anyTouchedFields(fields) && !isFormReady(fields))
+  const handleFormClose = () =>
+    routerContext.router.navigate(
+      routerContext.previousRoute?.name || page.campersPage,
+    )
+
+  const handleCreateNewCoupon = (adding) => {
+    valuesContext.setCamperValues({
+      fields,
+      valid: false,
+      adding,
+    })
+
+    routerContext.router.navigate(page.camperCouponAddPage)
+  }
+
+  const loading = camper.loading || objectsContext.coupons.loading
+
+  const submitButtonDisabled = camper.loading || objectsContext.coupons.loading
 
   return (
-    <>
-      <DrawerView
-        fields={fields}
-        parentRoute={page.campersPage}
-        submitButtonDisabled={submitButtonDisabled}
-        title={
-          fields.id
-            ? `Edit Camper - ${camper.results ? camper.results.firstName : ''}`
-            : 'Add a New Camper'
-        }
-        width={512}
-        onSubmit={handleFormSubmit}
-      >
-        <LoaderContext.Provider
-          value={{spinning: camper.loading, tip: 'Loading camper...'}}
-        >
-          <ErrorWrapper
-            handleRetry={getCamper}
-            hasError={errorWrapper.hasError}
+    <React.Fragment>
+      <MainContent>
+        <Card>
+          <PageHeader
+            routes={[
+              {path: 'visitors', breadcrumbName: 'Visitors'},
+              {path: 'visitors.campers', breadcrumbName: 'Campers'},
+              {
+                path: `visitors.campers.${fields.id ? 'edit' : 'add'}`,
+                params: fields.id ? {camperId: props.id} : {},
+                breadcrumbName: loading
+                  ? '...'
+                  : fields.id
+                  ? camper.results
+                    ? camper.results.firstName
+                    : fields.firstName.value
+                  : 'New Camper',
+              },
+            ]}
+            title={
+              loading
+                ? 'Loading...'
+                : fields.id
+                ? `Edit Camper - ${
+                    camper.results
+                      ? camper.results.firstName
+                      : fields.firstName.value
+                  }`
+                : 'Add a New Camper'
+            }
+          />
+          <LoaderContext.Provider
+            value={{
+              spinning: loading,
+              tip: 'Loading camper...',
+            }}
           >
-            <CamperViewWrapper
-              fields={fields}
-              onDeleteCamper={handleDeleteCamperClick}
-              onFieldChange={handleFieldChange}
-            />
-          </ErrorWrapper>
-        </LoaderContext.Provider>
-      </DrawerView>
-    </>
+            <ErrorWrapper
+              handleRetry={getCamper}
+              hasError={errorWrapper.hasError}
+            >
+              <CamperViewWrapper
+                camperCustomFields={customFieldsState}
+                couponsList={objectsContext.coupons.results || []}
+                customFields={objectsContext.customFields.results || []}
+                fields={fields}
+                onCreateNewCoupon={handleCreateNewCoupon}
+                onCustomFieldsUpdate={handleCustomFieldsUpdate}
+                onFieldChange={handleFieldChange}
+              />
+
+              {page.isCamperEditPage && (
+                <React.Fragment>
+                  <Button
+                    css={{float: 'left', marginRight: 8}}
+                    onClick={() =>
+                      routerContext.router.navigate(page.camperSnackShopPage, {
+                        camperId: props.id,
+                      })
+                    }
+                  >
+                    Snack Shop
+                  </Button>
+
+                  <Popconfirm
+                    cancelText="Cancel"
+                    icon={
+                      <Icon css={{color: 'red'}} type="question-circle-o" />
+                    }
+                    okText="Delete"
+                    okType="danger"
+                    placement="topRight"
+                    title={
+                      <p>
+                        Are you sure you want
+                        <br />
+                        to delete this camper?
+                      </p>
+                    }
+                    onConfirm={handleDeleteCamperClick}
+                  >
+                    <Button css={{float: 'left'}} type="danger">
+                      Delete Camper
+                    </Button>
+                  </Popconfirm>
+                </React.Fragment>
+              )}
+
+              <div css={{textAlign: 'right'}}>
+                <Button css={{marginRight: 8}} onClick={handleFormClose}>
+                  Cancel
+                </Button>
+
+                <Button
+                  disabled={submitButtonDisabled}
+                  type="primary"
+                  onClick={handleFormSubmit}
+                >
+                  Submit
+                </Button>
+              </div>
+            </ErrorWrapper>
+          </LoaderContext.Provider>
+        </Card>
+      </MainContent>
+    </React.Fragment>
   )
 }
 

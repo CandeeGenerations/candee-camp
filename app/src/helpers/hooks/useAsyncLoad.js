@@ -9,7 +9,9 @@ export default (func, ...params) => {
   const replaceResultItem = (item, idField) =>
     setData({
       ...data,
-      results: data.results.map(x => (x[idField] === item[idField] ? item : x)),
+      results: data.results.map((x) =>
+        x[idField] === item[idField] ? item : x,
+      ),
     })
 
   const load = useCallback(

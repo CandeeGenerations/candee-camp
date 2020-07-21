@@ -5,14 +5,15 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.Models;
-using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Reclaimed.API.Common;
+using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Models;
+using Reclaimed.API.Repositories.Interfaces;
 
-namespace CandeeCamp.API.Controllers
+namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
     [Route("api")]
@@ -21,29 +22,45 @@ namespace CandeeCamp.API.Controllers
     {
         private readonly IConfiguration _config;
         private readonly IUserRepository _userRepository;
+        private readonly IAuthClientRepository _authClientRepository;
 
-        public AuthenticationController(IConfiguration config, IUserRepository userRepository)
+        public AuthenticationController(IConfiguration config, IUserRepository userRepository,
+            IAuthClientRepository authClientRepository)
         {
             _config = config;
             _userRepository = userRepository;
+            _authClientRepository = authClientRepository;
         }
-        
+
         [HttpPost("token")]
         [ProducesResponseType(typeof(TokenModel), 200)]
         [ProducesResponseType(401)]
         public async Task<ActionResult<TokenModel>> CreateToken(AuthenticationModel authentication)
         {
-            User user = null;
-                
             switch (authentication.grant_type)
             {
                 case "password":
                 {
-                    user = await _userRepository.ValidateUser(authentication);
+                    User user = await _userRepository.ValidateUser(authentication);
 
-                    if (user == null) return Unauthorized();
+                    if (user == null)
+                    {
+                        return Unauthorized();
+                    }
 
-                    return Ok(BuildToken(user));
+                    return Ok(BuildToken(user, null));
+                }
+
+                case "auth_client":
+                {
+                    AuthClient authClient = await _authClientRepository.GetAuthClient(authentication);
+                    
+                    if (authClient == null)
+                    {
+                        return Unauthorized();
+                    }
+
+                    return Ok(BuildToken(null, authClient));
                 }
 
                 default:
@@ -71,11 +88,11 @@ namespace CandeeCamp.API.Controllers
 
         [HttpPost("reset-password")]
         [ProducesResponseType(typeof(User), 200)]
-        public async Task<ActionResult<bool>> ResetPassword([FromBody]ResetPasswordModel model)
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordModel model)
         {
-            User user = await _userRepository.ResetPassword(model);
+            await _userRepository.ResetPassword(model);
 
-            return Ok(user);
+            return Ok();
         }
 
         [HttpGet("claims")]
@@ -91,11 +108,11 @@ namespace CandeeCamp.API.Controllers
             });
         }
 
-        private TokenModel BuildToken(User user)
+        private TokenModel BuildToken(User user, AuthClient authClient)
         {
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            ClaimsIdentity identityClaims = BuildClaims(user);
+            ClaimsIdentity identityClaims = user != null ? BuildClaims(user) : BuildClientClaims(authClient);
             DateTime expires = DateTime.Now.AddMinutes(30);
             JwtSecurityToken token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"], identityClaims.Claims,
                 expires: expires, signingCredentials: creds);
@@ -113,10 +130,21 @@ namespace CandeeCamp.API.Controllers
             {
                 new Claim(ClaimTypes.Name, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.EmailAddress),
+                new Claim("portal_id", user.PortalId.ToString()),
             };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
 
-            // claimsIdentity.AddClaims(user.UserRoles.Select(x => new Claim(ClaimTypes.Role, x.Role.Name)));
+            return claimsIdentity;
+        }
+
+        private static ClaimsIdentity BuildClientClaims(AuthClient authClient)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, authClient.ClientName),
+                new Claim("portal_id", authClient.PortalId.ToString())
+            };
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token");
 
             return claimsIdentity;
         }

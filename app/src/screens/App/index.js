@@ -1,6 +1,7 @@
+/* eslint-disable max-statements */
 /** @jsx jsx */
 import {jsx} from '@emotion/core'
-import React from 'react'
+import React, {useState} from 'react'
 import _ from 'lodash'
 import {Layout} from 'antd'
 import {useRoute} from 'react-router5'
@@ -12,36 +13,65 @@ import * as actions from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import {getUser} from '@/helpers/authHelpers'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
-import useLocalStorage from '@/helpers/hooks/useLocalStorage'
 
 import Users from '@/screens/Users'
 import Signin from '@/screens/Signin'
 import Events from '@/screens/Events'
 import Groups from '@/screens/Groups'
+import Cabins from '@/screens/Cabins'
+import Import from '@/screens/Import'
+import CampPage from '@/screens/Camp'
+import Coupons from '@/screens/Coupons'
 import Campers from '@/screens/Campers'
 import NavBar from '@/components/NavBar'
 import NotFound from '@/screens/NotFound'
+import Register from '@/screens/Register'
+import Settings from '@/screens/Settings'
 import Version from '@/components/Version'
 import Dashboard from '@/screens/Dashboard'
+import SnackShop from '@/screens/SnackShop'
+import Counselors from '@/screens/Counselors'
+import VisitorsPage from '@/screens/Visitors'
+import CustomFields from '@/screens/CustomFields'
+import Header from '@/components/Structure/Header'
+import Registrations from '@/screens/Registrations'
 import ResetPassword from '@/screens/ResetPassword'
+import SnackShopItems from '@/screens/SnackShopItems'
 import ForgotPassword from '@/screens/ForgotPassword'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import UserView from '@/screens/Users/components/UserView'
+import CabinView from '@/screens/Cabins/components/CabinView'
+import EventView from '@/screens/Events/components/EventView'
+import CouponView from '@/screens/Coupons/components/CouponView'
 
 export const ObjectsContext = React.createContext({})
+export const ValuesContext = React.createContext({})
 
 const App = () => {
   let content = null
   const page = usePage()
   const user = getUser()
   const routerContext = useRoute()
-  const localStorage = useLocalStorage('cc--debug')
+
+  const [camperValues, setCamperValues] = useState(undefined)
+  const [groupValues, setGroupValues] = useState(undefined)
+  const [counselorValues, setCounselorValues] = useState(undefined)
 
   const routeName = routerContext.route.name
-  const users = useAsyncLoad(actions.userActions.loadUsers)
   const events = useAsyncLoad(actions.eventActions.loadEvents)
   const campers = useAsyncLoad(actions.camperActions.loadCampers)
   const groups = useAsyncLoad(actions.groupActions.loadGroups)
+  const registrations = useAsyncLoad(
+    actions.registrationActions.loadRegistrations,
+  )
+  const counselors = useAsyncLoad(actions.counselorActions.loadCounselors)
+  const cabins = useAsyncLoad(actions.cabinActions.loadCabins)
+  const users = useAsyncLoad(actions.userActions.loadUsers)
+  const snackShopItems = useAsyncLoad(
+    actions.snackShopItemActions.loadSnackShopItems,
+  )
+  const coupons = useAsyncLoad(actions.couponActions.loadCoupons)
+  const customFields = useAsyncLoad(actions.customFieldActions.loadCustomFields)
 
   if (user) {
     axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.access_token}`
@@ -51,7 +81,7 @@ const App = () => {
     const unauthenticatedRoutes = ['signin', 'forgotPassword', 'resetPassword']
     let isUnauthenticated = false
 
-    unauthenticatedRoutes.forEach(route => {
+    unauthenticatedRoutes.forEach((route) => {
       isUnauthenticated = isUnauthenticated || routeName.includes(route)
     })
 
@@ -59,19 +89,18 @@ const App = () => {
   }
 
   const testNoNavRoutes = () => {
-    const noNavRoutes = [
-      'signin',
-      'forgotPassword',
-      'resetPassword',
-      'notFound',
-    ]
+    const noNavRoutes = ['signin', 'forgotPassword', 'resetPassword']
     let isNoNav = false
 
-    noNavRoutes.forEach(route => {
+    noNavRoutes.forEach((route) => {
       isNoNav = isNoNav || routeName.includes(route)
     })
 
     return isNoNav
+  }
+
+  if (routeName.includes('register')) {
+    return <Register customFields={customFields} />
   }
 
   const isUnauthenticatedRoute = testUnauthenticatedRoutes()
@@ -86,18 +115,17 @@ const App = () => {
       ...returnParams,
     })
     const params = simpleCrypto.encrypt(paramsString)
-    localStorage.set(JSON.stringify({paramsString, params}))
 
     routerContext.router.navigate('signin', {p: params})
 
     return (
-      <>
+      <React.Fragment>
         <Signin />
 
         <div css={{position: 'relative'}}>
           <Version light />
         </div>
-      </>
+      </React.Fragment>
     )
   }
 
@@ -111,61 +139,133 @@ const App = () => {
     content = <ResetPassword />
   } else if (routeName.includes(page.eventsPage)) {
     content = <Events />
-  } else if (routeName.includes(page.usersPage)) {
-    content = <Users />
+  } else if (routeName === page.visitorsPage) {
+    content = <VisitorsPage />
+  } else if (
+    routeName.includes(page.camperSnackShopPage) ||
+    routeName.includes(page.counselorSnackShopPage)
+  ) {
+    content = <SnackShop />
   } else if (routeName.includes(page.campersPage)) {
     content = <Campers />
   } else if (routeName.includes(page.groupsPage)) {
     content = <Groups />
+  } else if (routeName.includes(page.registrationsPage)) {
+    content = <Registrations />
+  } else if (routeName === page.campPage) {
+    content = <CampPage />
+  } else if (routeName.includes(page.counselorsPage)) {
+    content = <Counselors />
+  } else if (routeName.includes(page.cabinsPage)) {
+    content = <Cabins />
+  } else if (routeName.includes(page.usersPage)) {
+    content = <Users />
+  } else if (routeName.includes(page.snackShopItemsPage)) {
+    content = <SnackShopItems />
+  } else if (routeName.includes(page.couponsPage)) {
+    content = <Coupons />
+  } else if (routeName.includes(page.customFieldsPage)) {
+    content = <CustomFields />
+  } else if (routeName.includes('import')) {
+    content = <Import />
+  } else if (routeName.includes('settings')) {
+    content = <Settings />
   } else {
     content = <NotFound />
   }
 
-  const userViewRoutes = [
-    page.userEditPage,
-    page.userAddPage,
-    page.eventUserEditPage,
-  ]
-
   return testNoNavRoutes() && !(user && isUnauthenticatedRoute) ? (
-    <>
+    <React.Fragment>
       {content}
 
       <div css={{position: 'relative'}}>
         <Version light={isUnauthenticatedRoute} />
       </div>
-    </>
+    </React.Fragment>
   ) : (
-    <Layout css={{backgroundColor: '#2a363e', margin: '0 10px'}}>
-      <NavBar />
+    <React.Fragment>
+      <Header />
 
-      <Layout css={{borderRadius: 20, margin: '10px 10px 10px 0'}}>
-        <ErrorBoundary router={routerContext.route}>
-          <ObjectsContext.Provider
-            value={{
-              campers,
-              events,
-              groups,
-              users,
-            }}
-          >
-            {content}
+      <Layout.Content css={{height: '100vh'}}>
+        <Layout>
+          <NavBar />
 
-            {userViewRoutes.includes(routeName) && (
-              <UserView
-                id={
-                  (routerContext.route.params &&
-                    routerContext.route.params.userId) ||
-                  null
-                }
-              />
-            )}
-          </ObjectsContext.Provider>
+          <ErrorBoundary router={routerContext.route}>
+            <ValuesContext.Provider
+              value={{
+                camperValues,
+                groupValues,
+                counselorValues,
+                setCamperValues,
+                setGroupValues,
+                setCounselorValues,
+              }}
+            >
+              <ObjectsContext.Provider
+                value={{
+                  events,
+                  campers,
+                  groups,
+                  registrations,
+                  counselors,
+                  cabins,
+                  users,
+                  snackShopItems,
+                  coupons,
+                  customFields,
+                }}
+              >
+                <Layout css={{marginTop: 50}}>
+                  {content}
 
-          <Version />
-        </ErrorBoundary>
-      </Layout>
-    </Layout>
+                  <Version />
+                </Layout>
+
+                {page.isUserAddOrEditPage && (
+                  <UserView
+                    id={
+                      (routerContext.route.params &&
+                        routerContext.route.params.userId) ||
+                      null
+                    }
+                  />
+                )}
+
+                {page.isEventAddOrEditPage && (
+                  <EventView
+                    id={
+                      (routerContext.route.params &&
+                        routerContext.route.params.eventId) ||
+                      null
+                    }
+                  />
+                )}
+
+                {page.isCabinAddOrEditPage && (
+                  <CabinView
+                    id={
+                      (routerContext.route.params &&
+                        routerContext.route.params.cabinId) ||
+                      null
+                    }
+                  />
+                )}
+
+                {page.isCouponAddOrEditPage && (
+                  <CouponView
+                    id={
+                      (routerContext.route.params &&
+                        routerContext.route.params.couponId) ||
+                      null
+                    }
+                  />
+                )}
+              </ObjectsContext.Provider>
+            </ValuesContext.Provider>
+          </ErrorBoundary>
+        </Layout>
+      </Layout.Content>
+    </React.Fragment>
   )
 }
 

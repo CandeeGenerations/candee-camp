@@ -1,13 +1,12 @@
-import request from '../api'
-import {handleError, openNotification, formDataToBody} from '../helpers'
-
-import {getUserData} from '@/helpers/authHelpers'
+import request from '@/api'
+import {getUserData, pid} from '@/helpers/authHelpers'
+import {handleError, openNotification, formDataToBody} from '@/helpers'
 
 const mainPath = '/groups'
 
 export const loadGroups = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response
   } catch (error) {
@@ -18,7 +17,7 @@ export const loadGroups = async () => {
 
 export const loadGroupStats = async () => {
   try {
-    const response = await request.get(mainPath)
+    const response = await request.get(pid(mainPath))
 
     return response.data.length
   } catch (error) {
@@ -27,9 +26,9 @@ export const loadGroupStats = async () => {
   }
 }
 
-export const loadGroup = async groupId => {
+export const loadGroup = async (groupId) => {
   try {
-    const response = await request.get(`${mainPath}/${groupId}`)
+    const response = await request.get(pid(`${mainPath}/${groupId}`))
 
     return response
   } catch (error) {
@@ -38,7 +37,7 @@ export const loadGroup = async groupId => {
   }
 }
 
-export const saveGroup = async group => {
+export const saveGroup = async (group) => {
   try {
     let response = null
     const user = getUserData()
@@ -49,14 +48,14 @@ export const saveGroup = async group => {
 
     const body = formDataToBody(group)
 
-    body.loginUser = 3
     body.createdBy = user.id
-    body.campers = body.campers.map(x => Number(x))
+    body.campers = body.campers.map((x) => Number(x))
+    body.loginUser = Number(body.loginUser)
 
     if (group.id) {
-      response = await request.put(`${mainPath}/${group.id.value}`, body)
+      response = await request.put(pid(`${mainPath}/${group.id.value}`), body)
     } else {
-      response = await request.post(mainPath, body)
+      response = await request.post(pid(mainPath), body)
     }
 
     openNotification(
@@ -71,9 +70,9 @@ export const saveGroup = async group => {
   }
 }
 
-export const deleteGroup = async groupId => {
+export const deleteGroup = async (groupId) => {
   try {
-    const response = await request.delete(`${mainPath}/${groupId}`)
+    const response = await request.delete(pid(`${mainPath}/${groupId}`))
 
     openNotification('success', 'The Group has been delete successfully.')
 

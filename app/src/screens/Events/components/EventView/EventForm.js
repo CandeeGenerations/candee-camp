@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx} from '@emotion/core'
 import React from 'react'
 import {
   DatePicker,
@@ -10,16 +12,21 @@ import {
   Icon,
   Button,
   Typography,
+  InputNumber,
 } from 'antd'
 
+import Config from '@/config'
 import usePage from '@/helpers/hooks/usePage'
+import {inputNumberFormatter, inputNumberParser, formatDate} from '@/helpers'
+
+import CodeCopy from '@/components/CodeCopy'
 
 const EventForm = Form.create({
   onFieldsChange(props, changedFields) {
     const {onChange} = props
 
     if (changedFields.dateTime) {
-      changedFields.dateTime.value = changedFields.dateTime.value.map(x =>
+      changedFields.dateTime.value = changedFields.dateTime.value.map((x) =>
         x.startOf('minute'),
       )
     }
@@ -28,9 +35,13 @@ const EventForm = Form.create({
   },
 
   mapPropsToFields(props) {
-    const {dateTime, name} = props
+    const {cost, dateTime, name} = props
 
     return {
+      cost: Form.createFormField({
+        ...cost,
+        value: cost.value,
+      }),
       dateTime: Form.createFormField({
         ...dateTime,
         value: dateTime.value,
@@ -41,7 +52,7 @@ const EventForm = Form.create({
       }),
     }
   },
-})(props => {
+})((props) => {
   const page = usePage()
 
   const {form} = props
@@ -84,8 +95,40 @@ const EventForm = Form.create({
         </Col>
       </Row>
 
+      <Row gutter={16}>
+        <Col span={24}>
+          <Form.Item label="Cost" hasFeedback>
+            {getFieldDecorator('cost')(
+              <InputNumber
+                formatter={inputNumberFormatter}
+                parser={inputNumberParser}
+              />,
+            )}
+          </Form.Item>
+        </Col>
+      </Row>
+
       {page.isEventEditPage && (
-        <>
+        <React.Fragment>
+          <Divider css={{marginTop: 40}} orientation="left">
+            <Typography.Text>Share</Typography.Text>
+          </Divider>
+
+          <p>
+            You can send this link to anyone that you would like to sign up for
+            your event.
+          </p>
+
+          <Row gutter={16}>
+            <Col span={24}>
+              <CodeCopy>
+                {`${Config.appUrl}/register/event/${
+                  (props.id && props.id.value) || 0
+                }`}
+              </CodeCopy>
+            </Col>
+          </Row>
+
           <Divider css={{marginTop: 40}} orientation="left">
             <Typography.Text type="danger">Danger Zone</Typography.Text>
           </Divider>
@@ -111,7 +154,23 @@ const EventForm = Form.create({
               </Popconfirm>
             </Col>
           </Row>
-        </>
+
+          <Row css={{marginTop: 20}} gutter={16}>
+            <Col span={24}>
+              <Typography.Text type="secondary">
+                <small>
+                  Date Created: {formatDate(props.createdDate?.value || null)}
+                </small>
+              </Typography.Text>
+
+              <Typography.Text css={{display: 'block'}} type="secondary">
+                <small>
+                  Date Updated: {formatDate(props.updatedDate?.value || null)}
+                </small>
+              </Typography.Text>
+            </Col>
+          </Row>
+        </React.Fragment>
       )}
     </Form>
   )

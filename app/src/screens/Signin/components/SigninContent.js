@@ -4,33 +4,34 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Col, Row, Button, Divider, Typography} from 'antd'
 
-import SigninForm from './SigninForm'
-
 import useLocalStorage from '@/helpers/hooks/useLocalStorage'
 
 import {NavItem} from '@/components/Navigation'
 import {Copyright} from '@/components/Structure'
 import DisabledButtonPopup from '@/components/DisabledButtonPopup'
 
-const SigninContent = props => {
+import SigninForm from './SigninForm'
+
+const SigninContent = (props) => {
   const unauthorized = useLocalStorage('cc-unauthorized')
 
   return (
-    <>
+    <React.Fragment>
       <h1
         css={{
           fontSize: 60,
-          color: '#085eb0',
+          fontWeight: 300,
+          color: '#2b6d5a',
           margin: '20px 0',
           textAlign: 'center',
-          fontFamily: "'Comfortaa', sans-serif",
+          fontFamily: "'Montserrat', sans-serif",
         }}
       >
         Sign in
       </h1>
 
       <h2 css={{textAlign: 'center'}}>
-        Welcome back! We are happy you like Candee Camp.
+        Welcome back! We are happy you like Reclaimed.
       </h2>
 
       {unauthorized.valueAsBool && (
@@ -74,7 +75,7 @@ const SigninContent = props => {
       </Row>
 
       <Copyright />
-    </>
+    </React.Fragment>
   )
 }
 

@@ -3,6 +3,16 @@ body,
 #cgen-root {
   margin: 0;
   height: 100%;
-  background-color: #2a363e;
+  background-color: #f0f2f5;
   font-family: 'Montserrat', sans-serif;
+}
+
+tr {
+  &.drop-over-downward td {
+    border-bottom: 2px dashed #021802;
+  }
+
+  &.drop-over-upward td {
+    border-top: 2px dashed #021802;
+  }
 }

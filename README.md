@@ -1,19 +1,26 @@
 <div align="center">
-<h1>Candee Camp</h1>
+<h1>Reclaimed App</h1>
 
-<img src="https://emojipedia-us.s3.amazonaws.com/thumbs/320/apple/129/camping_1f3d5.png" style="max-width: 96px;" />
+<img src="https://candeecamp.blob.core.windows.net/images/logo-colored.png" style="max-width: 300px;" />
 
-<h3>Church camp system.</h3>
+<h3>Personalized Software for your Camp!</h3>
 </div>
 
 <hr />
 
-[![GitHub package.json version](https://img.shields.io/github/package-json/v/CandeeGenerations/candee-camp.svg?style=for-the-badge)](#) [![CircleCI branch](https://img.shields.io/circleci/project/github/CandeeGenerations/candee-camp/master.svg?label=Circle%20CI%20Build&style=for-the-badge)](https://circleci.com/gh/CandeeGenerations/candee-camp) [![Netlify Status](https://api.netlify.com/api/v1/badges/a2fdca8d-d111-473f-b5fc-810b4e84d9ce/deploy-status)](https://app.netlify.com/sites/candee-camp/deploys) [![GitHub](https://img.shields.io/github/license/CandeeGenerations/candee-camp.svg?style=for-the-badge)](https://github.com/CandeeGenerations/candee-camp/blob/master/LICENSE) [![Discord](https://img.shields.io/discord/476475501758775309.svg?style=for-the-badge)](https://discordapp.com/widget?id=476475501758775309&theme=dark)
+## Build Status
+
+### JS Build Status
+
+[![JS Build Status](https://dev.azure.com/candeegenerations/Candee%20Camp/_apis/build/status/Candee%20Camp%20JS%20Build?branchName=master)](https://dev.azure.com/candeegenerations/Candee%20Camp/_build/latest?definitionId=14&branchName=master)
+
+### API Build Status
+
+[![API Build Status](https://dev.azure.com/candeegenerations/Candee%20Camp/_apis/build/status/Candee%20Camp%20API%20Build?branchName=master)](https://dev.azure.com/candeegenerations/Candee%20Camp/_build/latest?definitionId=15&branchName=master)
 
 ## Description
 
-This system is built to help church camps better manage
-their camps, events, campers, registrations, etc.
+Reclaimed is an app for your camp! Manage everything from events, to campers, to cabins in Reclaimed.
 
 This project is built with React and .NET Core.
 
@@ -41,17 +48,15 @@ PORT=3300
 BROWSER=none
 
 REACT_APP_VERSION=$npm_package_version
+REACT_APP_URL=http://localhost:3300
 REACT_APP_API_URL=http://localhost:5000/api
 REACT_APP_CRYPTO_KEY=a9f3cd176403126642c142605ef08829
+
+REACT_APP_CLIENT_SECRET=7HVtapegk2LM9oXIWEnOvBhcYfCbyJ
+REACT_APP_CLIENT_NAME=registrations_local
+
+REACT_APP_PAYPAL_SCRIPT_URL=https://www.paypal.com/sdk/js?client-id=
 
 REACT_APP_LOADING_BAR_ENABLED=false
 
 ```
-
-## Contributors
-
-Thanks goes to these people:
-
-| [<img src="https://avatars2.githubusercontent.com/u/39174127" width="100px;"/><br /><sub><b>Tyler Candee</b></sub>](https://candeegenerations.com)<br />[💻](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Code") [📖](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Documentation") [⚠️](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Tests") | [<img src="https://avatars2.githubusercontent.com/u/10689559" width="100px;"/><br /><sub><b>Glenn Stegall</b></sub>](http://github.com/darklordimperatus)<br />[💻](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Code") [📖](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Documentation") [⚠️](https://github.com/candeegenerations/candee-camp-fe/commits?author=cgen01 "Tests") |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-

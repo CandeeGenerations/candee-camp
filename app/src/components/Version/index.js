@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 import Config from '@/config'
 
-const Version = props => {
+const Version = (props) => {
   const versionStyle = css`
     color: #333;
     font-size: 11px;
@@ -18,18 +18,23 @@ const Version = props => {
     position: absolute;
   `
 
+  const version = `v ${Config.version}`
+
   return (
     <div css={props.light ? [versionStyle, lightStyle] : versionStyle}>
-      v {Config.version} &copy; {moment().format('YYYY')} Candee Generations
+      {!props.hideVersion && `${version} `}&copy; {moment().format('YYYY')}{' '}
+      Candee Generations
     </div>
   )
 }
 
 Version.defaultProps = {
+  hideVersion: false,
   light: false,
 }
 
 Version.propTypes = {
+  hideVersion: PropTypes.bool,
   light: PropTypes.bool,
 }
 

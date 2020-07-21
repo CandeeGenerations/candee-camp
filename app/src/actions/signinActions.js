@@ -1,15 +1,16 @@
 import qs from 'qs'
 
+import Config from '@/config'
 import {axiosRequest} from '@/api'
 import {setUser} from '@/helpers/authHelpers'
 import {handleError, openNotification} from '@/helpers'
 
-export const signin = async fields => {
+export const signin = async (fields) => {
   try {
     const response = await axiosRequest.post(
       '/token',
       qs.stringify({
-        grant_type: 'password', // eslint-disable-line babel/camelcase
+        grant_type: 'password',
         username: fields.email.value,
         password: fields.password.value,
       }),
@@ -25,7 +26,28 @@ export const signin = async fields => {
   }
 }
 
-export const forgotPassword = async fields => {
+export const authorizeClient = async () => {
+  try {
+    const response = await axiosRequest.post(
+      '/token',
+      qs.stringify({
+        grant_type: 'auth_client',
+        client_name: Config.authClient.name,
+        client_secret: Config.authClient.secret,
+        client_uri: Config.appUrl,
+      }),
+      {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      },
+    )
+
+    setUser(response.data)
+  } catch (error) {
+    handleError('Unable to Sign in. Please try again.', error)
+  }
+}
+
+export const forgotPassword = async (fields) => {
   try {
     await axiosRequest.post(
       `/forgot-password?emailAddress=${fields.email.value}`,
@@ -79,7 +101,7 @@ export const validateResetPasswordToken = async (userId, token) => {
 export const resetPassword = async (userId, token, fields) => {
   try {
     await axiosRequest.post('/reset-password', {
-      userId,
+      userId: Number(userId),
       token,
       password: fields.newPassword.value,
     })

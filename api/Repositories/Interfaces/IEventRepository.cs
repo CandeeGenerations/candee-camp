@@ -1,16 +1,18 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.Models;
+using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Models;
 
-namespace CandeeCamp.API.Repositories.Interfaces
+namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface IEventRepository
     {
-        Task<IEnumerable<Event>> GetEvents();
-        Task<Event> GetEventById(int eventId);
-        Task<Event> CreateEvent(EventModel incomingEvent);
-        Task<Event> UpdateEvent(int eventId, EventModel incomingEvent);
-        Task DeleteEvent(int eventId);
+        Task<IEnumerable<Event>> GetEvents(int portalId, EventFilterModel filter = null);
+        Task<IEnumerable<Event>> GetEventsByIds(int portalId, IEnumerable<int> eventIds);
+        Task<IEnumerable<Event>> GetEventsForRegistration(int portalId, int? currentEventId);
+        Task<Event> GetEventById(int portalId, int eventId);
+        Task<Event> CreateEvent(int portalId, EventModel incomingEvent);
+        Task<Event> UpdateEvent(int portalId, int eventId, EventModel incomingEvent);
+        Task DeleteEvent(int portalId, int eventId);
     }
 }

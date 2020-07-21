@@ -12,12 +12,51 @@ const errorTrace = (error, response) => {
   return error
 }
 
-export const deepCopy = obj => merge(obj, {})
+export const deepCopy = (obj) => merge(obj, {})
 
-export const formatDate = date =>
-  date ? moment(date).format('MMM D, YYYY h:mm A') : <em>None</em>
+export const toFixed = (num, decimalPlaces = 0) => {
+  const m = Math.pow(10, decimalPlaces)
+  const n = +(decimalPlaces ? num * m : num).toFixed(8) // Avoid rounding errors
+  const i = Math.floor(n)
+  const f = n - i
+  const e = 1e-8 // Allow for rounding errors in f
+  const r =
+    f > 0.5 - e && f < 0.5 + e ? (i % 2 == 0 ? i : i + 1) : Math.round(n)
 
-export const formatIsActive = isActive => (
+  return Number(decimalPlaces ? r / m : r).toFixed(decimalPlaces)
+}
+
+export const selectSearchFunc = (inputValue, option) =>
+  option.props.children.filter((x) =>
+    x.trim().toLowerCase().includes(inputValue),
+  ).length > 0
+
+export const inputNumberFormatter = (value) =>
+  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+export const inputPercentFormatter = (value) => `${value}%`
+
+export const inputNumberParser = (value) => value.replace(/\$\s?|(,*)/g, '')
+
+export const inputPercentParser = (value) => value.replace('%', '')
+
+export const formatDate = (date, withTime = true) =>
+  date ? (
+    moment(date).format(`MMM D, YYYY${withTime ? ' h:mm A' : ''}`)
+  ) : (
+    <em>None</em>
+  )
+
+export const formatCurrency = (amount) => `$${toFixed(amount || 0, 2)}`
+
+export const formatPercent = (number) => {
+  const length = Number(((Math.abs(number) * 100) % 1).toFixed(1))
+  const percent = toFixed(number * 100, length >= 0.6 ? 3 : length > 0 ? 2 : 0)
+
+  return `${percent}%`
+}
+
+export const formatIsActive = (isActive) => (
   <Icon
     theme="twoTone"
     twoToneColor={isActive ? '#52c41a' : '#eb2f96'}
@@ -25,7 +64,7 @@ export const formatIsActive = isActive => (
   />
 )
 
-export const formatRole = role => {
+export const formatRole = (role) => {
   let color = null
   let name = 'None'
 
@@ -59,12 +98,12 @@ export const formatRole = role => {
   return <Tag color={color}>{name}</Tag>
 }
 
-export const splitCamelCase = str => str.replace(/([A-Z])/g, ' $1').trim()
+export const splitCamelCase = (str) => str.replace(/([A-Z])/g, ' $1').trim()
 
 export const rolesList = () => {
   const roles = []
 
-  _.keys(Constants.Roles).forEach(key => {
+  _.keys(Constants.Roles).forEach((key) => {
     roles.push({text: splitCamelCase(key), value: Constants.Roles[key]})
   })
 
@@ -163,7 +202,7 @@ export const anyTouchedFields = (fields: {}) => {
   return false
 }
 
-export const formDataToBody = fields => {
+export const formDataToBody = (fields) => {
   const returnObject = {}
 
   for (const key in fields) {

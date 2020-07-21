@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: app/Dockerfile.dev
+    image: reclaimed_app
+    volumes:
+      - ./app:/usr/src/app
+    ports:
+      - "3300:3300"
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    image: reclaimed_api
+    volumes:
+      - ./api:/usr/src/api
+    ports:
+      - "5000:80"

@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import EventForm from './EventForm'
-
 import loader from '@/components/Structure/Loader'
 
-const EventViewWrapper = props => {
+import EventForm from './EventForm'
+
+const EventViewWrapper = (props) => {
   return props.loader.spinning ? null : (
-    <>
+    <React.Fragment>
       <p>
         {props.fields.id ? 'Edit your event here.' : 'Add a new event here.'}
       </p>
@@ -17,7 +17,7 @@ const EventViewWrapper = props => {
         onChange={props.onFieldChange}
         onDeleteEvent={props.onDeleteEvent}
       />
-    </>
+    </React.Fragment>
   )
 }
 

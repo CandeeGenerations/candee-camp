@@ -2,29 +2,31 @@ import React, {useContext, useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {useRoute} from 'react-router5'
 
-import GroupViewWrapper from './GroupViewWrapper'
-
 import usePage from '@/helpers/hooks/usePage'
 import {groupActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
-import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, ValuesContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
-const GroupView = props => {
+import GroupViewWrapper from './GroupViewWrapper'
+
+const GroupView = (props) => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const valuesContext = useContext(ValuesContext)
   const group = useAsyncLoad(actions.loadGroup, props.id)
 
   const [fields, setFields] = useState({
     name: {includePercent: true, isRequired: true, value: null},
-    campers: {includePercent: true, value: []},
-    isActive: {includePercent: true, value: true},
+    campers: {value: []},
+    isActive: {value: true},
+    loginUser: {value: undefined},
   })
 
   const getGroup = async () => {
@@ -32,10 +34,13 @@ const GroupView = props => {
       const response = await group.load()
 
       if (response) {
-        setFields(stateFields =>
+        setFields((stateFields) =>
           mergeFormData(stateFields, {
             ...response.data,
-            campers: response.data.campers.map(x => `${x}`),
+            campers: response.data.campers.map((x) => `${x}`),
+            loginUser: response.data.loginUser
+              ? `${response.data.loginUser}`
+              : undefined,
           }),
         )
       }
@@ -45,15 +50,23 @@ const GroupView = props => {
   }
 
   useEffect(() => {
-    if (props.id) {
+    objectsContext.campers.load()
+    objectsContext.users.load()
+
+    if (valuesContext.groupValues && valuesContext.groupValues.valid) {
+      group.stopLoading()
+
+      setFields(valuesContext.groupValues.fields)
+      valuesContext.setGroupValues(undefined)
+    } else if (props.id) {
       getGroup()
     } else {
       group.stopLoading()
     }
   }, [props.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () => objectsContext.groups.load()
 
@@ -88,6 +101,16 @@ const GroupView = props => {
     }
   }
 
+  const handleCreateNewAccount = (adding) => {
+    valuesContext.setGroupValues({
+      fields,
+      valid: false,
+      adding,
+    })
+
+    routerContext.router.navigate(page.groupUserAddPage)
+  }
+
   const submitButtonDisabled =
     group.loading ||
     objectsContext.campers.loading ||
@@ -96,7 +119,7 @@ const GroupView = props => {
     (anyTouchedFields(fields) && !isFormReady(fields))
 
   return (
-    <>
+    <React.Fragment>
       <DrawerView
         fields={fields}
         parentRoute={page.groupsPage}
@@ -119,13 +142,15 @@ const GroupView = props => {
             <GroupViewWrapper
               campersList={objectsContext.campers.results || []}
               fields={fields}
+              usersList={objectsContext.users.results || []}
+              onCreateNewAccount={handleCreateNewAccount}
               onDeleteGroup={handleDeleteGroupClick}
               onFieldChange={handleFieldChange}
             />
           </ErrorWrapper>
         </LoaderContext.Provider>
       </DrawerView>
-    </>
+    </React.Fragment>
   )
 }
 

@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CandeeCamp.API.Common
+namespace Reclaimed.API.Common
 {
     public class Helpers
     {

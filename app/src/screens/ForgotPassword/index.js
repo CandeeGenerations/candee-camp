@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
 
-import ForgotPasswordContent from './components/ForgotPasswordContent'
-
 import {isFormReady} from '@/helpers'
 import useTitle from '@/helpers/hooks/useTitle'
 import {signinActions as actions} from '@/actions'
 
 import {SigninLayout} from '@/components/Structure'
+
+import ForgotPasswordContent from './components/ForgotPasswordContent'
 
 const ForgotPassword = () => {
   const [fields, setFields] = useState({
@@ -16,8 +16,8 @@ const ForgotPassword = () => {
 
   useTitle('Forgot Your Password')
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
@@ -29,7 +29,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <SigninLayout title="Candee Camp">
+    <SigninLayout title="Reclaimed">
       <ForgotPasswordContent
         fields={fields}
         loading={loading}

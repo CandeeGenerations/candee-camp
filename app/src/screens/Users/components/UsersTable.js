@@ -3,9 +3,9 @@ import {jsx} from '@emotion/core'
 import PropTypes from 'prop-types'
 import {Divider, Table} from 'antd'
 
+import {formatIsActive} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
 import {Constants} from '@/helpers/constants'
-import {formatDate, formatIsActive} from '@/helpers'
 
 import {NavItem} from '@/components/Navigation'
 import loader from '@/components/Structure/Loader'
@@ -13,7 +13,7 @@ import DeleteLink from '@/components/Structure/DeleteLink'
 
 const {Column} = Table
 
-const UsersTable = props => {
+const UsersTable = (props) => {
   const page = usePage()
 
   return props.loader.spinning ? (
@@ -39,32 +39,6 @@ const UsersTable = props => {
         dataIndex="isActive"
         render={formatIsActive}
         title="Is Active"
-      />
-
-      {/* <Column key="role" dataIndex="role" render={formatRole} title="Role" /> */}
-
-      <Column
-        key="createdDate"
-        align="right"
-        dataIndex="createdDate"
-        render={formatDate}
-        title="Created Date"
-      />
-
-      <Column
-        key="updatedDate"
-        align="right"
-        dataIndex="updatedDate"
-        render={formatDate}
-        title="Updated Date"
-      />
-
-      <Column
-        key="lastLoggedInDate"
-        align="right"
-        dataIndex="lastLoggedInDate"
-        render={formatDate}
-        title="Last Logged In Date"
       />
 
       <Column

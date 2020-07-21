@@ -1,9 +1,8 @@
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CandeeCamp.API.DomainObjects.Common;
+using Reclaimed.API.DomainObjects.Common;
 
-namespace CandeeCamp.API.DomainObjects
+namespace Reclaimed.API.DomainObjects
 {
     public class SnackShopPurchase : ActiveDeleted
     {
@@ -21,14 +20,24 @@ namespace CandeeCamp.API.DomainObjects
         [ForeignKey("Id")]
         public virtual SnackShopItem SnackShopItem { get; set; }
 
-        public int CamperId { get; set; }
+        public int? CamperId { get; set; }
 
         [ForeignKey("Id")]
         public virtual Camper Camper { get; set; }
 
-        public int CounselorId { get; set; }
+        public int? CounselorId { get; set; }
 
         [ForeignKey("Id")]
         public virtual Counselor Counselor { get; set; }
+        
+        public int CreatedBy { get; set; }
+
+        [ForeignKey("CreatedBy")]
+        public virtual User CreatedByUser { get; set; }
+        
+        public int PortalId { get; set; }
+
+        [ForeignKey("Id")]
+        public virtual Portal Portal { get; set; }
     }
 }

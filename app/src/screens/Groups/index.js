@@ -1,10 +1,6 @@
 import React, {useContext, useEffect} from 'react'
 import {Button, Card} from 'antd'
 import {useRoute} from 'react-router5'
-// import {css, Global} from '@emotion/core'
-
-import GroupView from './components/GroupView'
-import GroupsTable from './components/GroupsTable'
 
 import {groupActions as actions} from '@/actions'
 
@@ -17,6 +13,9 @@ import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
+import GroupView from './components/GroupView'
+import GroupsTable from './components/GroupsTable'
+
 const Groups = () => {
   const page = usePage()
   const errorWrapper = useError()
@@ -28,13 +27,12 @@ const Groups = () => {
   useEffect(() => {
     try {
       objectsContext.groups.load()
-      objectsContext.campers.load()
     } catch (error) {
       errorWrapper.handleCatchError()
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDeleteGroupClick = async groupId => {
+  const handleDeleteGroupClick = async (groupId) => {
     const response = await actions.deleteGroup(groupId)
 
     if (response) {
@@ -42,31 +40,31 @@ const Groups = () => {
     }
   }
 
-  return (
-    <>
-      {/* <Global
-        styles={css`
-          html {
-            min-width: 1160px;
-          }
-        `}
-      /> */}
+  const groups = objectsContext.groups.results
 
+  return (
+    <React.Fragment>
       <MainContent>
         <Card>
           <PageHeader
-            actions={[
-              <Button
-                key="add"
-                type="primary"
-                onClick={() => routerContext.router.navigate(page.groupAddPage)}
-              >
-                Add Group
-              </Button>,
-            ]}
+            actions={
+              groups && groups.length > 0
+                ? [
+                    <Button
+                      key="add"
+                      type="primary"
+                      onClick={() =>
+                        routerContext.router.navigate(page.groupAddPage)
+                      }
+                    >
+                      Add Group
+                    </Button>,
+                  ]
+                : []
+            }
             routes={[
-              {path: '/dashboard', breadcrumbName: 'Dashboard'},
-              {path: '/groups', breadcrumbName: 'Groups'},
+              {path: 'visitors', breadcrumbName: 'Visitors'},
+              {path: 'visitors.groups', breadcrumbName: 'Groups'},
             ]}
             title="Groups"
           />
@@ -84,12 +82,15 @@ const Groups = () => {
               <GroupsTable
                 deleteGroup={handleDeleteGroupClick}
                 groups={
-                  (objectsContext.groups.results &&
-                    objectsContext.groups.results.map(group => ({
+                  (groups &&
+                    groups.map((group) => ({
                       ...group,
                       key: group.id,
                     }))) ||
                   []
+                }
+                onCreateGroup={() =>
+                  routerContext.router.navigate(page.groupAddPage)
                 }
               />
             </ErrorWrapper>
@@ -107,7 +108,7 @@ const Groups = () => {
           onDeleteGroup={handleDeleteGroupClick}
         />
       )}
-    </>
+    </React.Fragment>
   )
 }
 

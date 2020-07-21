@@ -1,8 +1,9 @@
 import jwtDecode from 'jwt-decode'
 
-const key = 'candee-camp-user'
+const key = 'reclaimed-user'
 
-export const setUser = value => localStorage.setItem(key, JSON.stringify(value))
+export const setUser = (value) =>
+  localStorage.setItem(key, JSON.stringify(value))
 
 export const getUser = () => {
   const user = localStorage.getItem(key)
@@ -21,6 +22,7 @@ export const getUserData = () => {
 
   return {
     ...userData,
+    portalId: Number(userData.portal_id),
     id: Number(
       userData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
     ),
@@ -30,5 +32,7 @@ export const getUserData = () => {
       ],
   }
 }
+
+export const pid = (path) => `${getUserData().portalId}${path}`
 
 export const removeUser = () => localStorage.removeItem(key)

@@ -2,13 +2,12 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CandeeCamp.API.Migrations
+namespace Reclaimed.API.Migrations
 {
     public partial class Redo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("SET storage_engine=INNODB");
             migrationBuilder.CreateTable(
                 name: "Cabins",
                 columns: table => new
@@ -189,7 +188,7 @@ namespace CandeeCamp.API.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IsActive = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    GroupName = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(nullable: false),
                     LoginUser = table.Column<int>(nullable: false)
                 },

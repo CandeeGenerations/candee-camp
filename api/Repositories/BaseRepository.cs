@@ -1,6 +1,6 @@
-using CandeeCamp.API.Context;
+using Reclaimed.API.Context;
 
-namespace CandeeCamp.API.Repositories
+namespace Reclaimed.API.Repositories
 {
     public class BaseRepository
     {

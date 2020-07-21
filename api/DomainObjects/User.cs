@@ -1,8 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using CandeeCamp.API.DomainObjects.Common;
+using System.ComponentModel.DataAnnotations.Schema;
+using Reclaimed.API.DomainObjects.Common;
 
-namespace CandeeCamp.API.DomainObjects
+namespace Reclaimed.API.DomainObjects
 {
     public class User : ActiveDeleted
     {
@@ -37,5 +38,10 @@ namespace CandeeCamp.API.DomainObjects
         public string ResetPasswordToken { get; set; }
 
         public DateTimeOffset? ResetPasswordExpirationDate { get; set; }
+        
+        public int PortalId { get; set; }
+
+        [ForeignKey("Id")]
+        public virtual Portal Portal { get; set; }
     }
 }

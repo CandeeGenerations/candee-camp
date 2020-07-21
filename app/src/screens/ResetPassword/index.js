@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react'
 import {useRoute} from 'react-router5'
 
-import ResetPasswordContent from './components/ResetPasswordContent'
-
 import {isFormReady} from '@/helpers'
 import useTitle from '@/helpers/hooks/useTitle'
 import {signinActions as actions} from '@/actions'
 
 import {SigninLayout} from '@/components/Structure'
 import {LoaderContext} from '@/components/Structure/Loader'
+
+import ResetPasswordContent from './components/ResetPasswordContent'
 
 const ResetPassword = () => {
   const routerContext = useRoute()
@@ -33,7 +33,7 @@ const ResetPassword = () => {
 
         if (response && response.data) {
           setTimeout(() => {
-            setLoading(stateLoading => ({
+            setLoading((stateLoading) => ({
               ...stateLoading,
               resetPasswordValidate: false,
             }))
@@ -53,12 +53,12 @@ const ResetPassword = () => {
     routerContext.router,
   ])
 
-  const handleFieldChange = changedFields =>
-    setFields(stateFields => ({...stateFields, ...changedFields}))
+  const handleFieldChange = (changedFields) =>
+    setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {
-      setLoading(stateLoading => ({...stateLoading, resetPassword: true}))
+      setLoading((stateLoading) => ({...stateLoading, resetPassword: true}))
 
       const result = await actions.resetPassword(
         routerContext.route.params.userId,
@@ -66,7 +66,7 @@ const ResetPassword = () => {
         fields,
       )
 
-      setLoading(stateLoading => ({...stateLoading, resetPassword: false}))
+      setLoading((stateLoading) => ({...stateLoading, resetPassword: false}))
 
       if (result) {
         routerContext.router.navigate('signin')
@@ -75,7 +75,7 @@ const ResetPassword = () => {
   }
 
   return (
-    <SigninLayout title="Candee Camp">
+    <SigninLayout title="Reclaimed">
       <LoaderContext.Provider
         value={{
           spinning: loading.resetPasswordValidate,

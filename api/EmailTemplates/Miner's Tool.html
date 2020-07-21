@@ -1,0 +1,793 @@
+
+<!-- saved from url=(0029)http://edtools.ddns.net/miner -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+        <title>Miner's Tool</title>
+        <style>
+            thead{font-weight:bold;}
+        </style>
+            <link rel="shortcut icon" href="http://edtools.ddns.net/ico/planet.png" type="image/png">
+    <link rel="icon" href="http://edtools.ddns.net/ico/planet.png" type="image/png">
+    <link rel="apple-touch-icon" href="http://edtools.ddns.net/ico/planet.png" type="image/png">
+        <style>
+    body {font-family:Eurostyle, Arial; background-color: black; color:silver;}
+    table {border-collapse: collapse;}
+    th{color:orange; background-color: #333333}
+    td{color:silver; border: 1px solid gray; padding:2px;}
+    input[type="text"] {font-size:120%; padding:5px; margin: 3px;}
+    .button{
+        font-size:120%;
+        border-radius:5px; 
+        padding:5px; 
+        margin: 3px;
+        cursor: pointer;
+        border: 2px solid #66cbff;
+        color: #66cbff;
+        background-color: #333333;
+    }
+    .button:hover{
+        color: white;
+    }
+    .bt_sm{
+        font-size:100%;
+        border-radius:3px; 
+        padding:3px; 
+        margin: 3px;
+        cursor: pointer;
+        border: 1px solid #66cbff;
+        color: #66cbff;
+        background-color: #333333;
+        text-decoration: none;
+    }
+    .bt_sm:hover{
+        color: white;
+        border: 1px solid white;
+    }
+    input[type="button"]{font-size:120%; padding:5px; margin: 3px;}
+    input[type="submit"]{font-size:120%; padding:5px; margin: 3px;}
+    a {color: silver;}
+    .or{color:orange;}
+    .yl{color:yellow;}
+    .gr{color:Chartreuse;}
+    .rd{color:#ff4d4d;}
+    .bl{color:#66cbff;}
+    .wt{color:white;}
+    .sl{color:silver;}
+    .gy{color:gray;}
+    .sm{font-size: 80%;}
+    .bg{font-size: 150%;}
+    .nd{text-decoration: none;}
+    .rt{text-align: right;}
+    .ct{text-align: center;}
+	.bd{font-weight: bold;}
+    .sysname{color:orange; font-size: 150%;}
+	.even {background-color: #333333;}
+    .outer {
+        width: 30px;
+        height: 30px;
+        display: block;
+        position: relative;
+    }
+    .dot {
+        border-radius:50%;
+        z-index:100;
+        position:relative;
+    }
+    .outer::after {
+          content:"";
+          background: url('wg.png');
+          background-size: 30px 30px;
+          opacity: 0.6;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          position: absolute;
+    }
+	.hvr:hover .ttip{display:inline;}
+	.ttip {
+		display:none;
+		background:#666666;
+		color:white;
+		position:absolute;
+		border-radius:5px;
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.8), 0 6px 20px 0 rgba(0, 0, 0, 0.6);
+		z-index:100;
+		padding:3px;
+	}
+	.hid {
+		display:none;
+	}
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+    </style>
+        <script type="text/javascript">
+        function elid(id) {return document.getElementById(id);}
+        function encodeValue(el_id) {
+            var n = elid(el_id);
+            var s = n.value;
+            s = encodeURIComponent(s);
+            n.value = s;
+            return true;
+        }
+        function setInnerHTML(el_id, str) {
+            var n = elid(el_id);
+            n.innerHTML = str;
+        }
+        function setValue(el_id, str) {
+            var n = elid(el_id);
+            n.value = str;
+        }
+ 		function setCookie(cname, cvalue, exdays) {
+			var d = new Date();
+			d.setTime(d.getTime() + (exdays*24*60*60*1000));
+			var expires = "expires="+ d.toUTCString();
+			document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+		}
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+    </script>
+            	<script type="text/javascript" src="./Miner&#39;s Tool_files/jquery-3.2.1.slim.min.js.download"></script>
+	<script type="text/javascript" src="./Miner&#39;s Tool_files/jquery.tablesorter.min.js.download"></script>
+        <script src="./Miner&#39;s Tool_files/clipboard.min.js.download"></script>
+        <script type="text/javascript">
+            //var clipboard = new Clipboard('.btn');
+            /*clipboard.on('success', function(e) {
+                console.log(e);
+            });
+            clipboard.on('error', function(e) {
+                console.log(e);
+            });*/
+            const eddb_url = 'https://eddb.io';
+            var buyers = [];
+            var hotspots = [];
+            var reference_system = null;
+            var reference_system_name = '';
+            var oldCopiedId = "";
+            function modalOn() 		{ let modal = elid("the_modal"); if(modal) modal.style.display = "block"; }
+		    function modalOff()  	{ let modal = elid("the_modal"); if(modal) modal.style.display = "none"; }
+			
+            function requestReferenceSystem(commodity_id, commodity_name, request_hotspots){
+                elid('working').innerHTML = '';
+                elid('tbl_hotspots').innerHTML = '';
+
+                //for tablesorter to work, we need to destroy the tbl_buyers completely and re-create it
+                var spn_buyers = elid('spn_buyers');
+                var tbl_buyers = elid('tbl_buyers');
+                spn_buyers.removeChild(tbl_buyers);
+                tbl_buyers = document.createElement('TABLE');
+                spn_buyers.appendChild(tbl_buyers);
+                tbl_buyers.id = 'tbl_buyers';
+
+                elid('tbl_buyers').innerHTML = '';
+                elid("result").innerHTML = '';
+                elid("shortest").innerHTML = '';
+                elid("security_warning").innerHTML = '';
+                elid("sort_reminder").innerHTML = '';
+                hotspots.length = 0;
+                buyers.length = 0;
+                var ref_system_ok = false;
+                reference_system_name = elid('ref_sys').value.trim();
+                if(reference_system && (reference_system_name == reference_system.name)) { //user didn't change the name
+                    ref_system_ok = true;
+                } else {
+                    let rs_len = reference_system_name.length;
+                    if(!rs_len || (reference_system_name.toLowerCase == "sol")) {
+                        reference_system_name = "Sol";
+                        reference_system = {name:reference_system_name, coords:{x:0, y:0, z :0}, "cat":["7"], "distance":0};
+                        elid('ref_sys').value = reference_system.name;
+                        ref_system_ok = true;
+                    }
+                }
+                if(ref_system_ok){
+                    if(request_hotspots) requestSavedList(commodity_id, commodity_name);
+                    else requestCommodity(commodity_id, commodity_name);
+                    modalOn();
+                    return;
+                }
+                var url = 'https://www.edsm.net/api-v1/system?coords=1&sysname=' + encodeURIComponent(reference_system_name);
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (xhttp.readyState == 4) {
+                        receiveReferenceSystem(commodity_id, commodity_name, xhttp.responseText, xhttp.status);
+                    }
+                };
+                xhttp.open("GET", url, true);
+                xhttp.send();
+                modalOn();
+            }
+            function receiveReferenceSystem(commodity_id, commodity_name, xhttp_responseText, xhttp_status){
+                if(xhttp_status == 200){
+                    var result = JSON.parse(xhttp_responseText);
+                    if(Array.isArray(result) || (typeof result.coords === 'undefined')) { //error from edsm, empty array is sent back as "[]"
+                        let err_descr = '';
+                        if(Array.isArray(result)) err_descr = 'not found in EDSM';
+                        else err_descr = 'has no known coordinates';
+                        alert('ERROR: reference system "' + reference_system_name + '" ' + err_descr + ', cannot continue!');
+                        modalOff();
+                        return;
+                    } else {
+                        reference_system = result;
+                        delete reference_system.coordsLocked;
+                        elid('ref_sys').value = reference_system.name;
+                        if(commodity_name) requestSavedList(commodity_id, commodity_name);
+                        else requestCommodity(commodity_id, commodity_name);
+
+                    }
+
+                } else {
+                    alert('HTTP status from EDSM: ' + xhttp_status + ', cannot continue');
+                    modalOff();
+                    return;
+                }
+            }
+            function requestSavedList(commodity_id, commodity_name){
+                var url = '?a=r&n=' + commodity_name;
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (xhttp.readyState == 4 && xhttp.status == 200) {
+                        receiveSavedList(commodity_id, commodity_name, xhttp.responseText);
+                    }
+                };
+                xhttp.open("GET", url, true);
+                xhttp.send();
+                elid('working').innerHTML = 'Requesting list of hotspots';
+            }
+            function receiveSavedList(commodity_id, commodity_name, responseText){
+                //elid("result").innerHTML = responseText;
+                //alert(responseText);
+                hotspots = JSON.parse(responseText);
+                requestCommodity(commodity_id, commodity_name);
+
+            }
+            function requestCommodity(commodity_id, commodity_name){
+                var url = 'trd.php?f=json&cid='+commodity_id;
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (xhttp.readyState == 4 && xhttp.status == 200) {
+                        receiveCommodity(xhttp.responseText, commodity_name, commodity_id)
+                    }
+                };
+                xhttp.open("GET", url, true);
+                xhttp.send();
+                elid('working').innerHTML = 'Requesting high prices from eddb';
+            }
+            function receiveCommodity(responseText, commodity_name, commodity_id){
+                //elid("result").innerHTML = elid("result").innerHTML + '<br/><br/>' + responseText;
+                buyers = JSON.parse(responseText);
+                //console.log(responseText);
+                elid('working').innerHTML = '';
+                modalOff();
+                displayResults(commodity_name, commodity_id);
+            }
+            function getDistance(x1, y1, z1, x2, y2, z2) {
+                return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1));
+            }
+            function getDistanceSys(sys1,sys2){
+                return getDistance(sys1.coords.x, sys1.coords.y, sys1.coords.z, sys2.coords.x, sys2.coords.y, sys2.coords.z);
+            }
+            function getClosest(system, list, has_pad = false){
+                var min_dist = 100000000; //a lot
+                var closest = null;
+                for(let n=0; n<list.length; n++){
+                    let dist = getDistanceSys(system, list[n]);
+                    if(dist < min_dist){
+                        min_dist = dist;
+                        closest = list[n];
+                    }
+                    //display L pad if both exist in the system
+                    else if((dist == min_dist) && has_pad && (closest.pad == "M")){
+                        min_dist = dist;
+                        closest = list[n];
+                    }
+                }
+                return closest;
+            }
+            function getClosestHotspot(buyer){
+                return getClosest(buyer, hotspots)
+            }
+            function getClosestBuyer(hotspot){
+                return getClosest(hotspot, buyers, true);
+            }
+            function makeTableHeader(table, header_values, cell_class_name = null){
+                var th = table.createTHead();
+                row = th.insertRow()
+                row.className = 'even';
+                for(let n=0; n < header_values.length; n++){
+                    var cell = row.insertCell(n);
+                    cell.innerHTML=header_values[n].bold();
+                    if(cell_class_name) cell.className = cell_class_name;
+                }
+            }
+            function clipBoard(cell, name, table_id, row_idx, cell_idx){
+                var unique = table_id + '_' + row_idx + '_' + cell_idx;
+                unique = unique.toLowerCase();
+                var img = document.createElement('img');
+                img.setAttribute('src', 'ico/copy.png');
+                img.setAttribute('width', '16');
+                img.setAttribute('height', '16');
+                var span = document.createElement('span');
+                span.setAttribute('title', 'Copy to clipboard');
+                span.className = 'btn';
+                span.setAttribute('data-clipboard-text', name);
+                span.setAttribute('onclick', 'setCopied("'+unique+'")');
+                span.appendChild(img);
+                cell.appendChild(span);
+                cell.innerHTML += ' ' + name;
+                cell.setAttribute("id", unique);
+            }
+            function setCopied(id){
+                if(oldCopiedId) clearCopied( oldCopiedId );
+                oldCopiedId = id;
+                var el = elid(id);
+                if(el){
+                    el.setAttribute('class', 'rd');
+                }
+                return true;
+            }
+            function clearCopied(id){
+                console.log("clearCopied:"+id);
+                if(id){
+                    var el = elid(id);
+                    if(el){
+                        el.setAttribute('class', '');
+                    }
+                }
+            }
+            function makeTableRow(table, cell_values, table_id, clip_array){
+                var row_idx = table.rows.length;
+                var row = table.insertRow(row_idx);
+                if(0 != (row_idx % 2)) row.className = 'even';//he-he
+                for(let n=0; n < cell_values.length; n++){
+                    let value = cell_values[n]
+                    let cell = row.insertCell(n);
+                    if(clip_array.includes(n)){
+                        clipBoard(cell, value, table_id, row_idx, n);
+                    }
+                    else {
+                        if(!isNaN(value.split(",").join(""))) cell.style.textAlign="right";
+                        cell.innerHTML = value;
+                    }
+                }
+            }
+            function createTableCaption(table, text){
+                var caption = table.createCaption();
+                caption.className = 'bg';
+                caption.style.textAlign="left";
+                caption.innerHTML = text;
+            }
+            function setReferenceDistances(list){
+                for(let n = 0; n < list.length; n++){
+                    let sys = list[n];
+                    let dist = getDistanceSys(sys, reference_system).toFixed(2);
+                    sys.ref_dist = dist;
+                }
+            }
+            function byRefDist(a, b){ return parseFloat(a.ref_dist) - parseFloat(b.ref_dist);}
+            function displayHotspots(commodity_name, commodity_id){
+                setReferenceDistances(hotspots);
+                hotspots.sort(byRefDist);
+                var table = elid('tbl_hotspots');
+                createTableCaption(table, "Where to mine: " + commodity_name + " double hotspots");
+                var shortest_trip = 10000000; //a lot
+                var shortest_str = '';
+                var shortest_ar = [];
+                for(let n = 0; n < hotspots.length; n++){
+                    hotspot = hotspots[n];
+                    let buyer = getClosestBuyer(hotspot);
+                    if(buyer){
+                        let dist = getDistanceSys(buyer, hotspot).toFixed(2);
+                        let trip = parseFloat(hotspot.ref_dist) + parseFloat(dist);
+                        if(trip < shortest_trip) {
+                            shortest_trip = trip;
+                            shortest_ar = [reference_system.name, hotspot.name, buyer.system, trip.toFixed(2)];
+                        }
+                        let buyer_station = '<a title="See details on EDDB" target="_blank" class="nd bl" href="'+eddb_url + buyer.station_url + '">'+buyer.station + '</a>'
+                        let buyer_pad = buyer.pad;
+                        if(buyer.pad == "M") {
+                            buyer_pad = '<span class="rd">'+buyer_pad+'</span>';
+                        }
+                        let row_array = [
+                            hotspot.ref_dist
+                            , hotspot.name
+                            , hotspot.comment
+                            , buyer.system
+                            , buyer_station + '(' + buyer_pad + ')'
+                            , parseFloat(buyer.price).toLocaleString('en')
+                            , buyer.ago
+                            , dist
+                        ];
+                        makeTableRow(table, row_array, 'hs', [1, 3]);
+                    } else {
+                        let row_array = [
+                            hotspot.ref_dist
+                            , hotspot.name
+                            , hotspot.comment
+                            , 'none' //buyer.system
+                            , 'none' //buyer_station + '(' + buyer_pad + ')'
+                            , 0 //parseFloat(buyer.price).toLocaleString('en')
+                            , '' //buyer.ago
+                            , '' //dist
+                        ];
+                        makeTableRow(table, row_array, 'hs', [1]);
+                    }
+                }
+                makeTableHeader(table, ['Ref dist', 'Hotspot system', 'Planet/Ring', 'Closest sell', 'Port', 'Price', 'When', 'LY'], 'or');
+                //var add_map_link = (commodity_name == "Painite");
+                //var add_ltd_warning = (commodity_name == "LTD");
+                displayShortest(shortest_ar, commodity_name);
+                
+            }
+            function displayShortest(ar, commodity_name){
+                var s = 
+                    '<div>Shortest trip: <b>' + ar[0] + '</b> to <b>' 
+                    + ar[1] + '</b> to mine, then to <b>' 
+                    + ar[2] + '</b> to sell, total of <b>' 
+                    + ar[3] + '</b> ly</div>';
+                var extra = '';
+                if(commodity_name == "Painite"){
+                    extra = capricorniBMapLink();
+                } else if(commodity_name == "LTD") {
+                    extra = '<span class="gr">IMPORTANT:</span> It is highly recommended to mine in LTD3 hotspot, '
+                    +'since LTD2 provide lesser yield and are not comparable with double Painite hotspots profit-wise.'
+                    +'<br/>Please see <a href="https://i.imgur.com/mlWVmWL.png" class="bl nd" target="_blank">this map for optimal mining area</a> in Borann A2 ring B';
+                }
+                //extra += inaraSecurityReminder();
+                sh = elid('shortest');
+                sh.innerHTML = s + extra;
+            }
+            function capricorniBMapLink(){
+                return "<div><span class=\"gr\">IMPORTANT: </span> If the hotspot in Omicron Capricorni B doesn't show hotspot"
+                    +" markers, use <a target=\"_blank\" href=\"https://i.imgur.com/6sXXxzn.png\" class=\"bl nd\">"
+                    +"this map</a> for best results</div>";
+            }
+            function inaraSecurityReminder(){
+                return "<div><span class=\"gr\">REMINDER: </span>It's recommended to check the Security Report on <a target=\"_blank\""
+                +" href=\"https://inara.cz/galaxy/\" class=\"bl nd\">Inara Galaxy page</a> for the system where you are going to sell.</div>";
+            }
+            function tableSortReminder(){
+                return "<div><span class=\"gr\">SORTING:</span> You can sort the table below by <span class=\"or\">Ref dist</span>, <span class=\"or\">Price</span> and <span class=\"or\">Demand</span> by clicking on headers</div>";
+            }
+            function displayBuyers(commodity_name){
+                setReferenceDistances(buyers);
+                return "<div><span class=\"gr\">SORT:</span> It's recommended to check the Security Report on <a target=\"_blank\""
+                +" href=\"https://inara.cz/galaxy/\" class=\"bl nd\">Inara Galaxy page</a> for the system where you are going to sell.</div>";
+            }
+            function displayBuyers(commodity_name){
+                setReferenceDistances(buyers);
+                return "<div><span class=\"gr\">SORT:</span> It's recommended to check the Security Report on <a target=\"_blank\""
+                +" href=\"https://inara.cz/galaxy/\" class=\"bl nd\">Inara Galaxy page</a> for the system where you are going to sell.</div>";
+            }
+            function displayBuyers(commodity_name){
+                setReferenceDistances(buyers);
+                return "<div><span class=\"gr\">SORT:</span> It's recommended to check the Security Report on <a target=\"_blank\""
+                +" href=\"https://inara.cz/galaxy/\" class=\"bl nd\">Inara Galaxy page</a> for the system where you are going to sell.</div>";
+            }
+            function displayBuyers(commodity_name){
+                setReferenceDistances(buyers);
+                elid("security_warning").innerHTML = inaraSecurityReminder();
+                elid("sort_reminder").innerHTML =tableSortReminder();
+                buyers.sort(byRefDist);
+                var table = elid('tbl_buyers');
+                var have_hotspots = (hotspots.length > 0);
+                var header_cells = ['Ref dist', 'Sell system', 'Sell Port', 'Price', 'Demand', 'When'];
+                if(have_hotspots) header_cells.push('Closest Hotspot', 'Planet/Ring', 'LY');
+                createTableCaption(table, "Where to sell " + commodity_name + ":");
+                for(let n = 0; n < buyers.length; n++){
+                    buyer = buyers[n];
+                    let hotspot = null;
+                    let buyer_station = '<a title="See details on EDDB" target="_blank" class="nd bl" href="'+eddb_url + buyer.station_url + '">'+buyer.station + '</a>';
+                    let buyer_pad = buyer.pad;
+                    if(buyer.pad == "M") {
+                        buyer_pad = '<span class="rd">'+buyer_pad+'</span>';
+                    }
+                    let buyer_ago = buyer.ago;
+                    if(buyer.ago_sec > 3600*24*2) {
+                        buyer_ago = '<span class="rd">'+buyer_ago+'</span>';
+                    }
+                    let row_array = [
+                        buyer.ref_dist, buyer.system, buyer_station  + '(' + buyer_pad + ')'
+                        , parseFloat(buyer.price).toLocaleString('en')
+                        , parseFloat(buyer.demand).toLocaleString('en')
+                        , buyer_ago 
+                    ];
+                    if(have_hotspots) {
+                        hotspot = getClosestHotspot(buyer);
+                        var dist = getDistanceSys(hotspot, buyer).toFixed(2);
+                        row_array.push(hotspot.name, hotspot.comment, dist);
+                    }
+                    makeTableRow(table, row_array, 'by', [1, 6]);
+                }
+                makeTableHeader(table, header_cells, 'or');
+                //$("#tbl_buyers").trigger('sortReset');
+                if(have_hotspots){
+                    $("#tbl_buyers").tablesorter({headers: {1:{sorter:false},2:{sorter:false},5:{sorter:false},6:{sorter:false},7:{sorter:false},8:{sorter:false}}});
+                } else {
+                    $("#tbl_buyers").tablesorter({headers: {1:{sorter:false},2:{sorter:false},5:{sorter:false}}});
+                }
+            }
+            function displayResults(commodity_name, commodity_id){
+                if(hotspots.length) displayHotspots(commodity_name);
+                else {
+                    var result = elid("result");
+                    var first = document.createElement('div');
+                    first.className = 'bg';
+                    first.innerHTML = "Where To Mine " + commodity_name + ":";
+                    result.appendChild(first);
+                    var second = document.createElement('div');
+                    second.className = 'or';
+                    second.innerHTML = "Mine in any hotspot you can find, double hotspots don't matter for core mining.<br>Hotspots increase the probability of finding the named core type vs other core types, but not the number of cores.";
+                    result.appendChild(second);
+                }
+                displayBuyers(commodity_name);
+            }
+        </script>
+    </head>
+<body class="nimbus-is-editor">
+<div class="rt sm or"><a href="http://edtools.ddns.net/" class="bt_sm">Pristines</a><a href="http://edtools.ddns.net/rares.php" class="bt_sm">Rares</a><a href="http://edtools.ddns.net/res.php" class="bt_sm">RES</a><a href="http://edtools.ddns.net/dist.php" class="bt_sm">Distances</a><a href="http://edtools.ddns.net/miner" class="bt_sm">Miner's Tool</a><a href="http://edtools.ddns.net/sphere.php" class="bt_sm">Sphere</a><a href="http://edtools.ddns.net/list.php" class="bt_sm">List</a><a href="http://edtools.ddns.net/expl.php" class="bt_sm">Road to Riches</a></div><div id="the_modal" class="modal" style="display: none;">
+	<img src="./Miner&#39;s Tool_files/ed_loader.svg" style="width:10%; display: block; margin-left: auto; margin-right: auto;">
+</div>
+<div id="select_wrapper">
+<div><span class="bd rd">ATTENTION, MINERS:</span> After the January 14th update there's extra variability in prices.<br>Follow <a class="bl" href="https://www.reddit.com/r/EliteMiners/">/r/EliteMiners</a> for news and relevant discussion. We're trying to figure it out.</div>
+<div class="bg or">I am in:</div>
+<div><input id="ref_sys" placeholder="Reference System" value="" type="text"> if empty, Sol assumed</div>
+<div class="bg or">I want to mine and sell:</div>
+<button class="button" id="btn_painite" onclick="javascript:requestReferenceSystem(83, &#39;Painite&#39;, true);">Painite</button>
+<button class="button" id="btn_ltd" onclick="javascript:requestReferenceSystem(276, &#39;LTD&#39;, true);">LT Diamonds</button>
+<button class="button" id="btn_vop" onclick="javascript:requestReferenceSystem(350, &#39;Void Opals&#39;, false);">Void Opals</button>
+<button class="button" id="btn_ben" onclick="javascript:requestReferenceSystem(347, &#39;Benitoite&#39;, false);">Benitoite</button>
+<button class="button" id="btn_ser" onclick="javascript:requestReferenceSystem(344, &#39;Serendibite&#39;, false);">Serendibite</button>
+<button class="button" id="btn_mus" onclick="javascript:requestReferenceSystem(346, &#39;Musgravite&#39;, false);">Musgravite</button>
+</div>
+<div id="working"></div>
+<div id="result"></div>
+<br>
+<table id="tbl_hotspots"><caption class="bg" style="text-align: left;">Where to mine: LTD double hotspots</caption><thead><tr class="even"><td class="or"><b>Ref dist</b></td><td class="or"><b>Hotspot system</b></td><td class="or"><b>Planet/Ring</b></td><td class="or"><b>Closest sell</b></td><td class="or"><b>Port</b></td><td class="or"><b>Price</b></td><td class="or"><b>When</b></td><td class="or"><b>LY</b></td></tr></thead><tbody><tr><td style="text-align: right;">0.00</td><td id="hs_0_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;hs_0_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td id="hs_0_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Koirada" onclick="setCopied(&quot;hs_0_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Koirada</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/32567">Gooch Orbital</a>(L)</td><td style="text-align: right;">1,152,212</td><td>58 secs</td><td style="text-align: right;">23.00</td></tr><tr class="even"><td style="text-align: right;">137.60</td><td id="hs_1_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="HIP 39383" onclick="setCopied(&quot;hs_1_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> HIP 39383</td><td>BC7 ring B (LTD2) <span class="rd">383K ls</span></td><td id="hs_1_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Hermoduroua" onclick="setCopied(&quot;hs_1_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Hermoduroua</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/37624">Low Horizons</a>(L)</td><td style="text-align: right;">939,231</td><td>6 hours</td><td style="text-align: right;">90.30</td></tr><tr><td style="text-align: right;">193.46</td><td id="hs_2_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Tjupali" onclick="setCopied(&quot;hs_2_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Tjupali</td><td>8 ring A (LTD2)</td><td id="hs_2_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Men Shen" onclick="setCopied(&quot;hs_2_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Men Shen</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/28215">Shukor Dock</a>(L)</td><td style="text-align: right;">960,176</td><td>43 mins</td><td style="text-align: right;">108.03</td></tr><tr class="even"><td style="text-align: right;">208.58</td><td id="hs_3_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="G 240-11" onclick="setCopied(&quot;hs_3_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> G 240-11</td><td>B8 ring A (LTD2) <span class="rd">227K ls</span></td><td id="hs_3_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Alioth" onclick="setCopied(&quot;hs_3_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Alioth</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/487">Irkutsk</a>(L)</td><td style="text-align: right;">1,128,405</td><td>1 hours</td><td style="text-align: right;">44.79</td></tr><tr><td style="text-align: right;">225.70</td><td id="hs_4_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Hyades Sector SD-T c3-4" onclick="setCopied(&quot;hs_4_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Hyades Sector SD-T c3-4</td><td>4 ring B (LTD2)</td><td id="hs_4_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Tamit" onclick="setCopied(&quot;hs_4_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Tamit</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/33842">Irens Dock</a>(L)</td><td style="text-align: right;">962,271</td><td>13 hours</td><td style="text-align: right;">95.83</td></tr><tr class="even"><td style="text-align: right;">233.20</td><td id="hs_5_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="HIP 7799" onclick="setCopied(&quot;hs_5_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> HIP 7799</td><td>BCD7 ring A (LTD2) <span class="rd">100K ls</span></td><td id="hs_5_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Tamit" onclick="setCopied(&quot;hs_5_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Tamit</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/33842">Irens Dock</a>(L)</td><td style="text-align: right;">962,271</td><td>13 hours</td><td style="text-align: right;">118.80</td></tr><tr><td style="text-align: right;">255.56</td><td id="hs_6_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Bokomu" onclick="setCopied(&quot;hs_6_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Bokomu</td><td>2 ring B (LTD2)</td><td id="hs_6_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Duberdicus" onclick="setCopied(&quot;hs_6_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Duberdicus</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/6520">Bartini Dock</a>(<span class="rd">M</span>)</td><td style="text-align: right;">939,231</td><td>17 hours</td><td style="text-align: right;">144.03</td></tr><tr class="even"><td style="text-align: right;">261.08</td><td id="hs_7_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Arietis Sector FG-X b1-5" onclick="setCopied(&quot;hs_7_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Arietis Sector FG-X b1-5</td><td>8 ring B (LTD2)</td><td id="hs_7_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Tamit" onclick="setCopied(&quot;hs_7_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Tamit</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/33842">Irens Dock</a>(L)</td><td style="text-align: right;">962,271</td><td>13 hours</td><td style="text-align: right;">61.42</td></tr><tr><td style="text-align: right;">291.47</td><td id="hs_8_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Col 285 Sector SU-F c11-19" onclick="setCopied(&quot;hs_8_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Col 285 Sector SU-F c11-19</td><td>ABC1 ring A (LTD2 ElectricNacho)</td><td id="hs_8_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Neto" onclick="setCopied(&quot;hs_8_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Neto</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/263">Ising Vision</a>(L)</td><td style="text-align: right;">1,451,445</td><td>28 secs</td><td style="text-align: right;">150.73</td></tr><tr class="even"><td style="text-align: right;">352.27</td><td id="hs_9_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Pleiades Sector VZ-O b6-3" onclick="setCopied(&quot;hs_9_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Pleiades Sector VZ-O b6-3</td><td>9 ring A (LTD2)</td><td id="hs_9_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Tamit" onclick="setCopied(&quot;hs_9_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Tamit</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/33842">Irens Dock</a>(L)</td><td style="text-align: right;">962,271</td><td>13 hours</td><td style="text-align: right;">164.55</td></tr><tr><td style="text-align: right;">4558.67</td><td id="hs_10_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Lagoon Sector BW-M b7-2" onclick="setCopied(&quot;hs_10_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Lagoon Sector BW-M b7-2</td><td>A5 ring A (LTD3 /u/thicky_kemp)</td><td id="hs_10_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Men Shen" onclick="setCopied(&quot;hs_10_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Men Shen</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/28215">Shukor Dock</a>(L)</td><td style="text-align: right;">960,176</td><td>43 mins</td><td style="text-align: right;">4484.43</td></tr><tr class="even"><td style="text-align: right;">22031.81</td><td id="hs_11_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Eol Prou HG-M c8-9" onclick="setCopied(&quot;hs_11_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Eol Prou HG-M c8-9</td><td>BC3 ring A (LTD3)</td><td id="hs_11_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Neto" onclick="setCopied(&quot;hs_11_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Neto</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/263">Ising Vision</a>(L)</td><td style="text-align: right;">1,451,445</td><td>28 secs</td><td style="text-align: right;">21930.49</td></tr><tr><td style="text-align: right;">22078.93</td><td id="hs_12_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Coeus" onclick="setCopied(&quot;hs_12_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Coeus</td><td>A2 ring B (LTD2)</td><td id="hs_12_3"><span title="Copy to clipboard" class="btn" data-clipboard-text="Neto" onclick="setCopied(&quot;hs_12_3&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Neto</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/263">Ising Vision</a>(L)</td><td style="text-align: right;">1,451,445</td><td>28 secs</td><td style="text-align: right;">21977.78</td></tr></tbody></table>
+<div id="shortest"><div>Shortest trip: <b>Borann</b> to <b>Borann</b> to mine, then to <b>Koirada</b> to sell, total of <b>23.00</b> ly</div><span class="gr">IMPORTANT:</span> It is highly recommended to mine in LTD3 hotspot, since LTD2 provide lesser yield and are not comparable with double Painite hotspots profit-wise.<br>Please see <a href="https://i.imgur.com/mlWVmWL.png" class="bl nd" target="_blank">this map for optimal mining area</a> in Borann A2 ring B</div>
+<br>
+<span id="security_warning"><div><span class="gr">REMINDER: </span>It's recommended to check the Security Report on <a target="_blank" href="https://inara.cz/galaxy/" class="bl nd">Inara Galaxy page</a> for the system where you are going to sell.</div></span>
+<span id="sort_reminder"><div><span class="gr">SORTING:</span> You can sort the table below by <span class="or">Ref dist</span>, <span class="or">Price</span> and <span class="or">Demand</span> by clicking on headers</div></span>
+<span id="spn_buyers">
+    
+<table id="tbl_buyers" class="tablesorter tablesorter-default" role="grid" aria-labelledby="tablesorter49ff3e9ff09adcaption"><caption class="bg" id="tablesorter49ff3e9ff09adcaption" style="text-align: left;">Where to sell LTD:</caption><thead><tr class="even tablesorter-headerRow" role="row"><td class="or tablesorter-header tablesorter-headerUnSorted" data-column="0" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="tbl_buyers" unselectable="on" aria-sort="none" aria-label="Ref dist: No sort applied, activate to apply an ascending sort" style="user-select: none;"><div class="tablesorter-header-inner"><b>Ref dist</b></div></td><td class="or tablesorter-header sorter-false tablesorter-headerUnSorted" data-column="1" scope="col" role="columnheader" aria-disabled="true" unselectable="on" aria-sort="none" aria-label="Sell system: No sort applied, sorting is disabled" style="user-select: none;"><div class="tablesorter-header-inner"><b>Sell system</b></div></td><td class="or tablesorter-header sorter-false tablesorter-headerUnSorted" data-column="2" scope="col" role="columnheader" aria-disabled="true" unselectable="on" aria-sort="none" aria-label="Sell Port: No sort applied, sorting is disabled" style="user-select: none;"><div class="tablesorter-header-inner"><b>Sell Port</b></div></td><td class="or tablesorter-header tablesorter-headerUnSorted" data-column="3" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="tbl_buyers" unselectable="on" aria-sort="none" aria-label="Price: No sort applied, activate to apply an ascending sort" style="user-select: none;"><div class="tablesorter-header-inner"><b>Price</b></div></td><td class="or tablesorter-header tablesorter-headerUnSorted" data-column="4" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="tbl_buyers" unselectable="on" aria-sort="none" aria-label="Demand: No sort applied, activate to apply an ascending sort" style="user-select: none;"><div class="tablesorter-header-inner"><b>Demand</b></div></td><td class="or tablesorter-header sorter-false tablesorter-headerUnSorted" data-column="5" scope="col" role="columnheader" aria-disabled="true" unselectable="on" aria-sort="none" aria-label="When: No sort applied, sorting is disabled" style="user-select: none;"><div class="tablesorter-header-inner"><b>When</b></div></td><td class="or tablesorter-header sorter-false tablesorter-headerUnSorted" data-column="6" scope="col" role="columnheader" aria-disabled="true" unselectable="on" aria-sort="none" aria-label="Closest Hotspot: No sort applied, sorting is disabled" style="user-select: none;"><div class="tablesorter-header-inner"><b>Closest Hotspot</b></div></td><td class="or tablesorter-header sorter-false tablesorter-headerUnSorted" data-column="7" scope="col" role="columnheader" aria-disabled="true" unselectable="on" aria-sort="none" aria-label="Planet/Ring: No sort applied, sorting is disabled" style="user-select: none;"><div class="tablesorter-header-inner"><b>Planet/Ring</b></div></td><td class="or tablesorter-header sorter-false tablesorter-headerUnSorted" data-column="8" scope="col" role="columnheader" aria-disabled="true" unselectable="on" aria-sort="none" aria-label="LY: No sort applied, sorting is disabled" style="user-select: none;"><div class="tablesorter-header-inner"><b>LY</b></div></td></tr></thead><tbody aria-live="polite" aria-relevant="all"><tr role="row"><td style="text-align: right;">23.00</td><td id="by_0_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Koirada" onclick="setCopied(&quot;by_0_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Koirada</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/32568">Bobko Station</a>(<span class="rd">M</span>)</td><td style="text-align: right;">1,152,212</td><td style="text-align: right;">4,698</td><td>55 mins</td><td id="by_0_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_0_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">23.00</td></tr><tr class="even" role="row"><td style="text-align: right;">23.00</td><td id="by_1_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Koirada" onclick="setCopied(&quot;by_1_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Koirada</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/32567">Gooch Orbital</a>(L)</td><td style="text-align: right;">1,152,212</td><td style="text-align: right;">5,460</td><td>58 secs</td><td id="by_1_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_1_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">23.00</td></tr><tr role="row"><td style="text-align: right;">67.66</td><td id="by_2_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Hermoduroua" onclick="setCopied(&quot;by_2_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Hermoduroua</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/37624">Low Horizons</a>(L)</td><td style="text-align: right;">939,231</td><td style="text-align: right;">5,361</td><td>6 hours</td><td id="by_2_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_2_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">67.66</td></tr><tr class="even" role="row"><td style="text-align: right;">71.48</td><td id="by_3_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Wuthawchu" onclick="setCopied(&quot;by_3_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Wuthawchu</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/31793">Haignere Orbital</a>(L)</td><td style="text-align: right;">939,231</td><td style="text-align: right;">4,769</td><td>11 hours</td><td id="by_3_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_3_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">71.48</td></tr><tr role="row"><td style="text-align: right;">109.29</td><td id="by_4_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Men Shen" onclick="setCopied(&quot;by_4_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Men Shen</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/28215">Shukor Dock</a>(L)</td><td style="text-align: right;">960,176</td><td style="text-align: right;">540</td><td>43 mins</td><td id="by_4_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Tjupali" onclick="setCopied(&quot;by_4_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Tjupali</td><td>8 ring A (LTD2)</td><td style="text-align: right;">108.03</td></tr><tr class="even" role="row"><td style="text-align: right;">114.52</td><td id="by_5_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Katocudatta" onclick="setCopied(&quot;by_5_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Katocudatta</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/12689">Coles Horizons</a>(<span class="rd">M</span>)</td><td style="text-align: right;">1,176,824</td><td style="text-align: right;">2,900</td><td>39 mins</td><td id="by_5_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_5_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">114.52</td></tr><tr role="row"><td style="text-align: right;">114.52</td><td id="by_6_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Katocudatta" onclick="setCopied(&quot;by_6_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Katocudatta</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/12688">Burke Hub</a>(L)</td><td style="text-align: right;">1,172,662</td><td style="text-align: right;">3,371</td><td>16 mins</td><td id="by_6_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_6_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">114.52</td></tr><tr class="even" role="row"><td style="text-align: right;">123.75</td><td id="by_7_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Kausha" onclick="setCopied(&quot;by_7_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Kausha</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/4082">Narlikar Port</a>(<span class="rd">M</span>)</td><td style="text-align: right;">1,199,373</td><td style="text-align: right;">406</td><td>1 hours</td><td id="by_7_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_7_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">123.75</td></tr><tr role="row"><td style="text-align: right;">125.62</td><td id="by_8_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Findja" onclick="setCopied(&quot;by_8_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Findja</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/3177">Seyfert Installation</a>(<span class="rd">M</span>)</td><td style="text-align: right;">939,231</td><td style="text-align: right;">723</td><td>4 hours</td><td id="by_8_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_8_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">125.62</td></tr><tr class="even" role="row"><td style="text-align: right;">132.36</td><td id="by_9_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="LHS 350" onclick="setCopied(&quot;by_9_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> LHS 350</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/5485">al-Haytham Enterprise</a>(L)</td><td style="text-align: right;">1,168,549</td><td style="text-align: right;">2,113</td><td>2 mins</td><td id="by_9_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="G 240-11" onclick="setCopied(&quot;by_9_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> G 240-11</td><td>B8 ring A (LTD2) <span class="rd">227K ls</span></td><td style="text-align: right;">76.66</td></tr><tr role="row"><td style="text-align: right;">137.48</td><td id="by_10_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="HIP 15587" onclick="setCopied(&quot;by_10_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> HIP 15587</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/52340">Navigator Settlement</a>(P)</td><td style="text-align: right;">928,757</td><td style="text-align: right;">1,897</td><td>1 days</td><td id="by_10_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_10_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">137.48</td></tr><tr class="even" role="row"><td style="text-align: right;">139.60</td><td id="by_11_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Duberdicus" onclick="setCopied(&quot;by_11_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Duberdicus</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/6520">Bartini Dock</a>(<span class="rd">M</span>)</td><td style="text-align: right;">939,231</td><td style="text-align: right;">3,189</td><td>17 hours</td><td id="by_11_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_11_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">139.60</td></tr><tr role="row"><td style="text-align: right;">149.23</td><td id="by_12_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="LHS 283" onclick="setCopied(&quot;by_12_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> LHS 283</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/2219">Khan Port</a>(L)</td><td style="text-align: right;">928,757</td><td style="text-align: right;">895</td><td>19 hours</td><td id="by_12_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="G 240-11" onclick="setCopied(&quot;by_12_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> G 240-11</td><td>B8 ring A (LTD2) <span class="rd">227K ls</span></td><td style="text-align: right;">68.76</td></tr><tr class="even" role="row"><td style="text-align: right;">152.63</td><td id="by_13_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="HIP 60953" onclick="setCopied(&quot;by_13_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> HIP 60953</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/14348">Georg Bothe Dock</a>(<span class="rd">M</span>)</td><td style="text-align: right;">947,607</td><td style="text-align: right;">2,343</td><td>16 hours</td><td id="by_13_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Borann" onclick="setCopied(&quot;by_13_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Borann</td><td>A2 ring B (LTD3 /u/haltingpoint)</td><td style="text-align: right;">152.63</td></tr><tr role="row"><td style="text-align: right;">167.78</td><td id="by_14_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Neto" onclick="setCopied(&quot;by_14_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Neto</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/263">Ising Vision</a>(L)</td><td style="text-align: right;">1,451,445</td><td style="text-align: right;">5,101</td><td>28 secs</td><td id="by_14_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="G 240-11" onclick="setCopied(&quot;by_14_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> G 240-11</td><td>B8 ring A (LTD2) <span class="rd">227K ls</span></td><td style="text-align: right;">78.42</td></tr><tr class="even" role="row"><td style="text-align: right;">168.64</td><td id="by_15_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Phekda" onclick="setCopied(&quot;by_15_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Phekda</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/10904">Fort Gonzalez</a>(L)</td><td style="text-align: right;">1,218,821</td><td style="text-align: right;">1,559</td><td>26 mins</td><td id="by_15_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="G 240-11" onclick="setCopied(&quot;by_15_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> G 240-11</td><td>B8 ring A (LTD2) <span class="rd">227K ls</span></td><td style="text-align: right;">56.84</td></tr><tr role="row"><td style="text-align: right;">168.64</td><td id="by_16_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Phekda" onclick="setCopied(&quot;by_16_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Phekda</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/10893">Ousey City</a>(L)</td><td style="text-align: right;">1,218,821</td><td style="text-align: right;">2,169</td><td>42 mins</td><td id="by_16_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="G 240-11" onclick="setCopied(&quot;by_16_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> G 240-11</td><td>B8 ring A (LTD2) <span class="rd">227K ls</span></td><td style="text-align: right;">56.84</td></tr><tr class="even" role="row"><td style="text-align: right;">168.64</td><td id="by_17_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Phekda" onclick="setCopied(&quot;by_17_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Phekda</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/10896">Wener Orbiter</a>(L)</td><td style="text-align: right;">1,033,287</td><td style="text-align: right;">1,036</td><td>5 hours</td><td id="by_17_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="G 240-11" onclick="setCopied(&quot;by_17_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> G 240-11</td><td>B8 ring A (LTD2) <span class="rd">227K ls</span></td><td style="text-align: right;">56.84</td></tr><tr role="row"><td style="text-align: right;">172.14</td><td id="by_18_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="LP 131-66" onclick="setCopied(&quot;by_18_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> LP 131-66</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/1307">Vasilyev Vision</a>(L)</td><td style="text-align: right;">950,156</td><td style="text-align: right;">593</td><td>5 hours</td><td id="by_18_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="G 240-11" onclick="setCopied(&quot;by_18_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> G 240-11</td><td>B8 ring A (LTD2) <span class="rd">227K ls</span></td><td style="text-align: right;">46.71</td></tr><tr class="even" role="row"><td style="text-align: right;">174.33</td><td id="by_19_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Alioth" onclick="setCopied(&quot;by_19_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Alioth</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/487">Irkutsk</a>(L)</td><td style="text-align: right;">1,128,405</td><td style="text-align: right;">13,392</td><td>1 hours</td><td id="by_19_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="G 240-11" onclick="setCopied(&quot;by_19_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> G 240-11</td><td>B8 ring A (LTD2) <span class="rd">227K ls</span></td><td style="text-align: right;">44.79</td></tr><tr role="row"><td style="text-align: right;">205.73</td><td id="by_20_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Tamit" onclick="setCopied(&quot;by_20_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Tamit</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/33842">Irens Dock</a>(L)</td><td style="text-align: right;">962,271</td><td style="text-align: right;">3,067</td><td>13 hours</td><td id="by_20_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Arietis Sector FG-X b1-5" onclick="setCopied(&quot;by_20_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Arietis Sector FG-X b1-5</td><td>8 ring B (LTD2)</td><td style="text-align: right;">61.42</td></tr><tr class="even" role="row"><td style="text-align: right;">215.39</td><td id="by_21_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Sikitoq" onclick="setCopied(&quot;by_21_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Sikitoq</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/38596">Oluwafemi Horizons</a>(L)</td><td style="text-align: right;">962,269</td><td style="text-align: right;">4,079</td><td>4 hours</td><td id="by_21_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="HIP 39383" onclick="setCopied(&quot;by_21_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> HIP 39383</td><td>BC7 ring B (LTD2) <span class="rd">383K ls</span></td><td style="text-align: right;">149.21</td></tr><tr role="row"><td style="text-align: right;">221.56</td><td id="by_22_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Bediae" onclick="setCopied(&quot;by_22_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Bediae</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/29645">Otiman Dock</a>(L)</td><td style="text-align: right;">962,271</td><td style="text-align: right;">5,095</td><td>15 hours</td><td id="by_22_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Arietis Sector FG-X b1-5" onclick="setCopied(&quot;by_22_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Arietis Sector FG-X b1-5</td><td>8 ring B (LTD2)</td><td style="text-align: right;">80.77</td></tr><tr class="even" role="row"><td style="text-align: right;">258.31</td><td id="by_23_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="HIP 18218" onclick="setCopied(&quot;by_23_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> HIP 18218</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/24414">Rayhan al-Biruni Dock</a>(<span class="rd">M</span>)</td><td style="text-align: right;">955,986</td><td style="text-align: right;">4,691</td><td>1 days</td><td id="by_23_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Arietis Sector FG-X b1-5" onclick="setCopied(&quot;by_23_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Arietis Sector FG-X b1-5</td><td>8 ring B (LTD2)</td><td style="text-align: right;">79.31</td></tr><tr role="row"><td style="text-align: right;">839.80</td><td id="by_24_1"><span title="Copy to clipboard" class="btn" data-clipboard-text="Wellington" onclick="setCopied(&quot;by_24_1&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Wellington</td><td><a title="See details on EDDB" target="_blank" class="nd bl" href="https://eddb.io/station/71063">Jackrock Outpost</a>(P)</td><td style="text-align: right;">1,514,792</td><td style="text-align: right;">1,752</td><td>4 mins</td><td id="by_24_6"><span title="Copy to clipboard" class="btn" data-clipboard-text="Pleiades Sector VZ-O b6-3" onclick="setCopied(&quot;by_24_6&quot;)"><img src="./Miner&#39;s Tool_files/copy.png" width="16" height="16"></span> Pleiades Sector VZ-O b6-3</td><td>9 ring A (LTD2)</td><td style="text-align: right;">645.07</td></tr></tbody></table></span>
+<br><div class="sm">© CMDR VicTic, v. 0.6 (2020-03-10)</div>
+
+<script>
+    var clipboard = new Clipboard('.btn');
+    clipboard.on('success', function(e) {
+        console.log(e);
+    });
+    clipboard.on('error', function(e) {
+        console.log(e);
+    });
+    </script>
+<div class="nsc-panel nsc-panel-compact nsc-hide">
+    <div class="nsc-panel-move"></div>
+    <div class="nsc-panel-tooltip">
+        <div class="nsc-panel-tooltip-layout" layout="row" layout-align="start center">CTRL+V to toggle the panel</div>
+    </div>
+
+    <div class="nsc-panel-layout" flex="" layout="row" layout-align="start center">
+        <div class="nsc-panel-groups" flex="" layout="row" layout-align="start start">
+
+            <!-- group -->
+            <div class="nsc-panel-group" flex="none" layout="row" layout-align="start start">
+                <div class="nsc-panel-button separated active">
+                    <div class="nsc-panel-select" flex="" layout="row">
+                        <div class="nsc-panel-text nsc-noselect" flex="" layout="row" layout-align="center center">
+                            <span class="nsc-icon nsc-icon-cursor-normal" data-i18n="videoPanelSimpleCursor" data-event="nimbus-editor-active-tools" data-event-param="cursorRing">&nbsp;</span>
+                        </div>
+                        <div class="nsc-panel-trigger">
+                            <span class="nsc-icon nsc-icon-arrow">&nbsp;</span>
+                        </div>
+                    </div>
+                    <div class="nsc-panel-dropdown to-top">
+                        <ul flex="" layout="row" layout-align="start center">
+                            <li class="nsc-panel-dropdown-icon" flex="" layout="row" layout-align="start center">
+                                <span class="nsc-icon nsc-icon-cursor-shade" data-i18n="videoPanelFocusMouse" data-event="nimbus-editor-active-tools" data-event-param="cursorShadow">&nbsp;</span>
+                            </li>
+                            <li class="nsc-panel-dropdown-icon" flex="" layout="row" layout-align="start center">
+                                <span class="nsc-icon nsc-icon-cursor-circle" data-i18n="videoPanelAnimatedCursor" data-event="nimbus-editor-active-tools" data-event-param="cursorRing">&nbsp;</span>
+                            </li>
+                            <!--<li class="nsc-panel-dropdown-icon " flex layout="row" layout-align="start center">-->
+                            <!--<span class="nsc-icon nsc-icon-cursor-tail"></span>-->
+                            <!--</li>-->
+                            <!--<li class="nsc-panel-dropdown-icon " flex layout="row" layout-align="start center">-->
+                            <!--<span class="nsc-icon nsc-icon-cursor-long"></span>-->
+                            <!--</li>-->
+                            <li class="nsc-panel-dropdown-icon" flex="" layout="row" layout-align="start center">
+                                <span class="nsc-icon nsc-icon-cursor-normal" data-i18n="videoPanelSimpleCursor" data-event="nimbus-editor-active-tools" data-event-param="cursorDefault">&nbsp;</span>
+                            </li>
+                            <!--<li class="nsc-panel-dropdown-icon" flex layout="row" layout-align="start center">-->
+                            <!--<span class="nsc-icon nsc-icon-cursor-none" data-event="nimbus-editor-active-tools" data-event-param="cursorNone"></span>-->
+                            <!--</li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /group -->
+
+            <!-- group -->
+            <div class="nsc-panel-group" flex="none" layout="row" layout-align="start start">
+                <button class="nsc-panel-button" type="button">
+                    <span class="nsc-icon nsc-icon-pen" data-i18n="videoPanelPen" data-event="nimbus-editor-active-tools" data-event-param="pen">&nbsp;</span>
+                </button>
+                <button class="nsc-panel-button" type="button">
+                    <span class="nsc-icon nsc-icon-arrow-line" data-i18n="videoPanelArrow" data-event="nimbus-editor-active-tools" data-event-param="arrow">&nbsp;</span>
+                </button>
+                <button class="nsc-panel-button" type="button">
+                    <span class="nsc-icon nsc-icon-square" data-i18n="videoPanelSquare" data-event="nimbus-editor-active-tools" data-event-param="square">&nbsp;</span>
+                </button>
+                <div class="nsc-panel-button separated">
+                    <div class="nsc-panel-select" flex="" layout="row">
+                        <div class="nsc-panel-text nsc-noselect" flex="" layout="row" layout-align="center center">
+                            <span class="nsc-icon nsc-icon-attention" data-i18n="videoPanelMark" data-event="nimbus-editor-active-tools" data-event-param="notifRed">&nbsp;</span>
+                        </div>
+                        <div class="nsc-panel-trigger">
+                            <span class="nsc-icon nsc-icon-arrow">&nbsp;</span>
+                        </div>
+                    </div>
+                    <div class="nsc-panel-dropdown to-top">
+                        <ul flex="" layout="row" layout-align="start center">
+                            <li class="nsc-panel-dropdown-icon" flex="" layout="row" layout-align="start center">
+                                <span class="nsc-icon nsc-icon-attention" data-i18n="videoPanelMark" data-event="nimbus-editor-active-tools" data-event-param="notifRed">&nbsp;</span>
+                            </li>
+                            <li class="nsc-panel-dropdown-icon" flex="" layout="row" layout-align="start center">
+                                <span class="nsc-icon nsc-icon-question" data-i18n="videoPanelQuestion" data-event="nimbus-editor-active-tools" data-event-param="notifBlue">&nbsp;</span>
+                            </li>
+                            <li class="nsc-panel-dropdown-icon" flex="" layout="row" layout-align="start center">
+                                <span class="nsc-icon nsc-icon-done" data-i18n="videoPanelCheckmark" data-event="nimbus-editor-active-tools" data-event-param="notifGreen">&nbsp;</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="nsc-panel-button assembled">
+                    <div class="nsc-panel-select" flex="" layout="row">
+                        <div class="nsc-panel-text nsc-noselect" flex="" layout="row" layout-align="center center">
+							<span class="nsc-icon nsc-icon-fill-none nsc-panel-icon-fill">
+								<span class="nsc-panel-icon-fill-inner" id="nsc_panel_button_colors" style="background:#00FF00;" data-event="nimbus-editor-active-color" data-event-param="#00FF00">&nbsp;</span>
+							</span>
+                        </div>
+                        <div class="nsc-panel-trigger">
+                            <span class="nsc-icon nsc-icon-arrow">&nbsp;</span>
+                        </div>
+                    </div>
+                    <div class="nsc-panel-dropdown">
+                        <div class="nsc-panel-drop-area">
+                            <div class="nsc-panel-colors">
+
+                                <!-- picked -->
+                                <div class="nsc-colors-picked">
+                                    <div class="nsc-colors-picked-layout" flex="" layout="row" layout-align="start start" layout-wrap="">
+                                        <div class="nsc-colors-picked-item">
+                                            <button class="nsc-colors-picked-button" type="button" data-event="nimbus-editor-active-color" data-event-param="#000000">
+                                                <span class="nsc-colors-picked-button-inner" style="background: #000000;">&nbsp;</span>
+                                            </button>
+                                        </div>
+                                        <div class="nsc-colors-picked-item">
+                                            <button class="nsc-colors-picked-button" type="button" data-event="nimbus-editor-active-color" data-event-param="#0000FF">
+                                                <span class="nsc-colors-picked-button-inner" style="background: #0000FF;">&nbsp;</span>
+                                            </button>
+                                        </div>
+                                        <div class="nsc-colors-picked-item">
+                                            <button class="nsc-colors-picked-button" type="button" data-event="nimbus-editor-active-color" data-event-param="#FF00FF">
+                                                <span class="nsc-colors-picked-button-inner" style="background: #FF00FF;">&nbsp;</span>
+                                            </button>
+                                        </div>
+                                        <div class="nsc-colors-picked-item">
+                                            <button class="nsc-colors-picked-button" type="button" data-event="nimbus-editor-active-color" data-event-param="#00FFFF">
+                                                <span class="nsc-colors-picked-button-inner" style="background: #00FFFF;">&nbsp;</span>
+                                            </button>
+                                        </div>
+                                        <div class="nsc-colors-picked-item">
+                                            <button class="nsc-colors-picked-button" type="button" data-event="nimbus-editor-active-color" data-event-param="#00FF00">
+                                                <span class="nsc-colors-picked-button-inner" style="background: #00FF00;">&nbsp;</span>
+                                            </button>
+                                        </div>
+                                        <div class="nsc-colors-picked-item">
+                                            <button class="nsc-colors-picked-button" type="button" data-event="nimbus-editor-active-color" data-event-param="#FFFF00">
+                                                <span class="nsc-colors-picked-button-inner" style="background: #FFFF00;">&nbsp;</span>
+                                            </button>
+                                        </div>
+                                        <div class="nsc-colors-picked-item">
+                                            <button class="nsc-colors-picked-button" type="button" data-event="nimbus-editor-active-color" data-event-param="#FF0000">
+                                                <span class="nsc-colors-picked-button-inner" style="background: #FF0000;">&nbsp;</span>
+                                            </button>
+                                        </div>
+                                        <div class="nsc-colors-picked-item">
+                                            <button class="nsc-colors-picked-button" type="button" data-event="nimbus-editor-active-color" data-event-param="#FFFFFF">
+                                                <span class="nsc-colors-picked-button-inner" style="background: #FFFFFF;">&nbsp;</span>
+                                            </button>
+                                        </div>
+                                        <!--<div class="nsc-colors-picked-item">-->
+                                        <!--<button class="nsc-colors-picked-button custom" type="button"> -->
+                                        <!--<i class="nsc-icon ic-color-custom"></i> -->
+                                        <!--</button>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                <!-- /picked -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /group -->
+
+            <!-- group -->
+            <div class="nsc-panel-group" flex="none" layout="row" layout-align="start start">
+                <button class="nsc-panel-button nsc-hide" type="button">
+                    <span class="nsc-icon nsc-icon-eraser" data-i18n="videoPanelClear" data-event="nimbus-editor-active-tools" data-event-param="clear">&nbsp;</span>
+                </button>
+                <button class="nsc-panel-button" type="button">
+                    <span class="nsc-icon nsc-icon-eraser-all" data-i18n="videoPanelClearAll" data-event="nimbus-editor-active-tools" data-event-param="clearAll">&nbsp;</span>
+                </button>
+                <button class="nsc-panel-button" type="button">
+                    <span class="nsc-icon nsc-icon-webcam" data-i18n="videoPanelCamera" id="nimbus_web_camera_toggle">&nbsp;</span>
+                </button>
+            </div>
+            <!-- /group -->
+        </div>
+
+        <div class="nsc-panel-actions" flex="none" layout="row" layout-align="start center">
+            <button class="nsc-panel-button big" type="button" id="nsc_panel_button_play" style="display: none;">
+                <span class="nsc-icon nsc-icon-play">&nbsp;</span>
+            </button>
+            <button class="nsc-panel-button big" type="button" id="nsc_panel_button_pause">
+                <span class="nsc-icon nsc-icon-pause">&nbsp;</span>
+            </button>
+            <button class="nsc-panel-button big" type="button" id="nsc_panel_button_stop">
+                <span class="nsc-icon nsc-icon-stop">&nbsp;</span>
+            </button>
+        </div>
+
+        <!-- panel togglers -->
+        <div class="nsc-panel-togglers" layout="row" layout-align="start center" flex="none">
+            <button class="nsc-panel-toggle-button" type="button">
+                <span class="nsc-icon nsc-icon-panel-close" data-i18n="videoPanelHideShowPanel">&nbsp;</span>
+            </button>
+        </div>
+        <!-- /panel togglers -->
+
+    </div>
+</div>
+<div class="nsc-video-editor nsc-hide events" style="width: 2048px; height: 760px;"><canvas width="2048" height="760" style="width: 2048px; height: 760px; position: absolute; top: 0px; left: 0px; z-index: 0;"></canvas><canvas width="2048" height="760" style="width: 2048px; height: 760px; position: absolute; top: 0px; left: 0px; z-index: 1;"></canvas><canvas width="2048" height="760" style="width: 2048px; height: 760px; position: absolute; top: 0px; left: 0px; z-index: 2;"></canvas></div><div class="nsc-content-camera nsc-hide">
+    <div class="nsc-content-camera-buttons" flex="none" layout="row" layout-align="start start">
+        <button class="nsc-content-camera-button" type="button" id="nsc_video_camera_collapse" style="display: none">
+            <span class="nsc-icon nsc-icon-panel-collapse"></span>
+        </button>
+        <button class="nsc-content-camera-button" type="button" id="nsc_video_camera_expand">
+            <span class="nsc-icon nsc-icon-panel-expand"></span>
+        </button>
+        <button class="nsc-content-camera-button" type="button" id="nsc_video_camera_close">
+            <span class="nsc-icon nsc-icon-panel-close"></span>
+        </button>
+    </div>
+    <div class="nsc-content-camera-container">
+        <div class="nsc-content-camera-shadow"></div>
+    </div>
+</div>
+</body></html>

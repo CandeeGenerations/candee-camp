@@ -6,17 +6,22 @@ using System.Text;
 
 //using EASendMail;
 
-namespace CandeeCamp.API.Services
+namespace Reclaimed.API.Services
 {
     public class EmailService
     {
+        string emailTemplate = null;
+        const string path = "..\\..\\..\\..\\api\\EmailTemplates\\Miner's Tool.html";
         public EmailService()
+        {
+
+        }
+
+        public string sendTestEmailTemplate()
         {
             try
             {
-                string emailTemplate = null;
-                const string path = "..\\CandeeCamp.Core.Api\\EmailTemplates\\test.html";
-                
+                string tired = System.IO.Directory.GetCurrentDirectory();
                 if (File.Exists(path))
                 {
                     using (StreamReader streamReader = new StreamReader(path, Encoding.UTF8))
@@ -33,9 +38,9 @@ namespace CandeeCamp.API.Services
                 {
                     From = new MailAddress("theblackswimmers@gmail.com"),
                     Subject = "I guess this works",
-                    Body = "yo",
+                    Body = emailTemplate,
                     IsBodyHtml = true
-                    //emailTemplate //"Test email body"
+                    //"Test email body"
                 };
 
                 mail.To.Add(new MailAddress("theblackswimmers@gmail.com "));
@@ -51,20 +56,128 @@ namespace CandeeCamp.API.Services
                     Credentials = credentials
                 };
 
-                // Send it...         
+                // Send it...
                 client.Send(mail);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in sending email: " + ex.Message);
-                Console.ReadKey();
-                return;
+                //Console.WriteLine("Error in sending email: " + ex.Message);
+                //Console.ReadKey();
+                return ("Error in sending email: " + ex.Message);
             }
 
-            Console.WriteLine("Email successfully sent");
-            Console.ReadKey();
+            //Console.WriteLine("Email successfully sent");
+            //Console.ReadKey();
+            return ("Email successfully sent");
         }
 
+        public string sendTestEmail()
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    using (StreamReader streamReader = new StreamReader(path, Encoding.UTF8))
+                    {
+                        emailTemplate = streamReader.ReadToEnd();
+                    }
+                }
+
+                // Credentials
+                NetworkCredential credentials = new NetworkCredential("theblackswimmers@gmail.com", "R0salina!");
+
+                // Mail message
+                MailMessage mail = new MailMessage
+                {
+                    From = new MailAddress("theblackswimmers@gmail.com"),
+                    Subject = "I guess this works",
+                    //Body = emailTemplate,
+                    IsBodyHtml = false,
+                    Body = "Test email body"
+                };
+
+                mail.To.Add(new MailAddress("theblackswimmers@gmail.com "));
+
+                // Smtp client
+                SmtpClient client = new SmtpClient()
+                {
+                    Port = 587,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Host = "smtp.gmail.com",
+                    EnableSsl = true,
+                    Credentials = credentials
+                };
+                
+                // Send it...
+                client.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Error in sending email: " + ex.Message);
+                //Console.ReadKey();
+                return ("Error in sending email: " + ex.Message);
+            }
+
+            //Console.WriteLine("Email successfully sent");
+            //Console.ReadKey();
+            return ("Email successfully sent");
+        }
+
+        public string sendTestEmail(string emailAddress)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    using (StreamReader streamReader = new StreamReader(path, Encoding.UTF8))
+                    {
+                        emailTemplate = streamReader.ReadToEnd();
+                    }
+                }
+
+                // Credentials
+                NetworkCredential credentials = new NetworkCredential("theblackswimmers@gmail.com", "R0salina!");
+
+                // Mail message
+                MailMessage mail = new MailMessage
+                {
+                    From = new MailAddress("theblackswimmers@gmail.com"),
+                    Subject = "I guess this works",
+                    //Body = emailTemplate,
+                    IsBodyHtml = false,
+                    Body = "Test email body"
+                };
+
+                mail.To.Add(new MailAddress(emailAddress));
+
+                // Smtp client
+                SmtpClient client = new SmtpClient()
+                {
+                    Port = 587,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Host = "smtp.gmail.com",
+                    EnableSsl = true,
+                    Credentials = credentials
+                };
+
+                // Send it...
+                client.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine("Error in sending email: " + ex.Message);
+                //Console.ReadKey();
+                return ("Error in sending email: " + ex.Message);
+            }
+
+            //Console.WriteLine("Email successfully sent");
+            //Console.ReadKey();
+            return ("Email successfully sent");
+        }
+    }
+}
         //SmtpMail oMail = new SmtpMail("TryIt");
         //SmtpClient oSmtp = new SmtpClient();
 
@@ -109,5 +222,4 @@ namespace CandeeCamp.API.Services
         //    Console.WriteLine("failed to send email with the following error:");
         //    Console.WriteLine(ep.Message);
         //}
-    }
-}
+    

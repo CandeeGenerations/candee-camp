@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CandeeCamp.API.Models
+namespace Reclaimed.API.Models
 {
     public class GroupModel
     {
@@ -9,13 +9,11 @@ namespace CandeeCamp.API.Models
         [Required]
         public string Name { get; set; }
         
-        [Required]
-        public int LoginUser { get; set; }
+        public int? LoginUser { get; set; }
 
         public bool IsActive { get; set; }
 
-        [Required]
-        public int CreatedBy { get; set; }
+        public int? CreatedBy { get; set; }
         
         public int[] Campers { get; set; }
     }

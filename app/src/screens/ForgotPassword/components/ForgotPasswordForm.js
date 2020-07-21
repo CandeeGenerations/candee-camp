@@ -18,7 +18,7 @@ export default Form.create({
       }),
     }
   },
-})(props => {
+})((props) => {
   const {form, onSubmit} = props
   const {getFieldDecorator} = form
 
@@ -35,7 +35,7 @@ export default Form.create({
             placeholder="e.g. johndoe@gmail.com"
             size="large"
             autoFocus
-            onKeyUp={e => {
+            onKeyUp={(e) => {
               if (e.keyCode === 13) {
                 onSubmit()
               }

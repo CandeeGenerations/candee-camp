@@ -15,6 +15,7 @@ import {
   Select,
 } from 'antd'
 
+import {selectSearchFunc, formatDate} from '@/helpers'
 import usePage from '@/helpers/hooks/usePage'
 
 const GroupForm = Form.create({
@@ -25,12 +26,7 @@ const GroupForm = Form.create({
   },
 
   mapPropsToFields(props) {
-    const {
-      name,
-      campers,
-      // loginUser,
-      isActive,
-    } = props
+    const {name, campers, loginUser, isActive} = props
 
     return {
       name: Form.createFormField({
@@ -45,9 +41,13 @@ const GroupForm = Form.create({
         ...isActive,
         value: isActive.value,
       }),
+      loginUser: Form.createFormField({
+        ...loginUser,
+        value: loginUser.value,
+      }),
     }
   },
-})(props => {
+})((props) => {
   const page = usePage()
 
   const {form} = props
@@ -69,22 +69,54 @@ const GroupForm = Form.create({
 
       <Row gutter={16}>
         <Col span={24}>
+          <Form.Item label="Login User Account">
+            {getFieldDecorator('loginUser')(
+              <Select
+                dropdownRender={(menu) => (
+                  <div>
+                    <div
+                      css={{padding: 8, cursor: 'pointer'}}
+                      onClick={() =>
+                        props.onCreateNewAccount(page.isGroupAddPage)
+                      }
+                      onMouseDown={(e) => e.preventDefault()}
+                    >
+                      <Icon type="plus" /> Create New User
+                    </div>
+
+                    <Divider css={{margin: '4px 0'}} />
+
+                    {menu}
+                  </div>
+                )}
+                filterOption={selectSearchFunc}
+                optionFilterProp="children"
+                placeholder="e.g. John Doe"
+                allowClear
+                showSearch
+              >
+                {props.usersList.map((x) => (
+                  <Select.Option key={x.id} value={`${x.id}`}>
+                    {x.firstName} {x.lastName}
+                  </Select.Option>
+                ))}
+              </Select>,
+            )}
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={16}>
+        <Col span={24}>
           <Form.Item label="Campers">
             {getFieldDecorator('campers')(
               <Select
-                filterOption={(inputValue, option) =>
-                  option.props.children.filter(x =>
-                    x
-                      .trim()
-                      .toLowerCase()
-                      .includes(inputValue),
-                  ).length > 0
-                }
+                filterOption={selectSearchFunc}
                 mode="multiple"
                 placeholder="e.g. John Doe"
                 allowClear
               >
-                {props.campersList.map(x => (
+                {props.campersList.map((x) => (
                   <Select.Option key={x.id} value={`${x.id}`}>
                     {x.firstName} {x.lastName}
                   </Select.Option>
@@ -96,7 +128,7 @@ const GroupForm = Form.create({
       </Row>
 
       {page.isGroupEditPage && (
-        <>
+        <React.Fragment>
           <Divider css={{marginTop: 40}} orientation="left">
             <Typography.Text type="danger">Danger Zone</Typography.Text>
           </Divider>
@@ -134,7 +166,23 @@ const GroupForm = Form.create({
               </Popconfirm>
             </Col>
           </Row>
-        </>
+
+          <Row css={{marginTop: 20}} gutter={16}>
+            <Col span={24}>
+              <Typography.Text type="secondary">
+                <small>
+                  Date Created: {formatDate(props.createdDate?.value || null)}
+                </small>
+              </Typography.Text>
+
+              <Typography.Text css={{display: 'block'}} type="secondary">
+                <small>
+                  Date Updated: {formatDate(props.updatedDate?.value || null)}
+                </small>
+              </Typography.Text>
+            </Col>
+          </Row>
+        </React.Fragment>
       )}
     </Form>
   )

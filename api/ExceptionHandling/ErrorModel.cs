@@ -1,4 +1,4 @@
-namespace CandeeCamp.API.ExceptionHandling
+namespace Reclaimed.API.ExceptionHandling
 {
     public class ExceptionModel
     {

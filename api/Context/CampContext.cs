@@ -1,18 +1,21 @@
-using System;
-using CandeeCamp.API.DomainObjects;
 using Microsoft.EntityFrameworkCore;
+using Reclaimed.API.DomainObjects;
 
-namespace CandeeCamp.API.Context
+namespace Reclaimed.API.Context
 {
     public class CampContext : DbContext
     {
         public CampContext(DbContextOptions options) : base (options)
         { }
 
+        public DbSet<Portal> Portals { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Payment_Donation> Payments_Donations { get; set; }
+        public DbSet<PayPal_Payment> PayPal_Payments { get; set; }
+        public DbSet<RegistrationPayment> RegistrationPayments { get; set; }
+        public DbSet<UserPayment> UserPayments { get; set; }
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<Camper> Campers { get; set; }
         public DbSet<Counselor> Counselors { get; set; }
@@ -21,69 +24,40 @@ namespace CandeeCamp.API.Context
         public DbSet<Group> Groups { get; set; }
         public DbSet<SnackShopPurchase> SnackShopPurchases { get; set; }
         public DbSet<SnackShopItem> SnackShopItems { get; set; }
+        public DbSet<AuthClient> AuthClients { get; set; }
+        public DbSet<Setting> Settings { get; set; }
+        public DbSet<CustomField> CustomFields { get; set; }
+        public DbSet<CamperCustomField> CamperCustomFields { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasData(new User
-            {
-                Id = -1,
-                FirstName = "Tyler",
-                LastName = "Candee",
-                CreatedDate = DateTimeOffset.Now,
-                UpdatedDate = DateTimeOffset.Now,
-                EmailAddress = "tyler@cgen.com",
-                Salt = "VkkXfciryMpzvrSaHzyfDQJYBGhFbDUuHqgHhXhsrOASYyqPGsLGyKSivTeKPdcy",
-                PasswordHash =
-                    "wBgGr1+o8FslJLuthZD3kW8s3vJh7u3A/MOWFhuGHIjIh2sMdabi5CsiabpubEGW6k3JBPb5+Wme1YePXbrZZg==",
-                IsActive = true,
-                IsDeleted = false,
-            });
-            modelBuilder.Entity<User>().HasData(new User
-            {
-                Id = -2,
-                FirstName = "joe",
-                LastName = "plumber",
-                CreatedDate = DateTimeOffset.Now,
-                UpdatedDate = DateTimeOffset.Now,
-                EmailAddress = "theblackswimmers@gmail.com",
-                Salt = "nqJBdDHXBCGrPiZHRmUBgYMVdgsSCZxaWyjOZnCxAAMrPghUzARqcAcEynPwQNkD",
-                PasswordHash =
-                    "WkZsAKSKmh9C/WoaCfI4xiSOl7nRw8p5i4T90h54+EkMmtfLwcjCRi9kFkIZRMv/RFaGrTP3FzxcWapHnuNdzw==",
-                IsActive = true,
-                IsDeleted = false,
-            });
-
-            modelBuilder.Entity<Event>().HasData(new Event
-            {
-                Id = -1, Name = "Event 1", IsActive = true, IsDeleted = false, CreatedBy = -1
-            });
+            modelBuilder.Entity<AuthClient>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
             
-            modelBuilder.Entity<Camper>().HasData(new Camper
-            {
-                Id = -1,
-                FirstName = "Jocelyn",
-                LastName = "Lacombe",
-                BirthDate = new DateTimeOffset(new DateTime(2010, 5, 25, 0, 0, 0)),
-                Allergies = "Strawberries",
-                Medicine = "Ibuprofen",
-                IsActive = true,
-                IsDeleted = false,
-                ParentFirstName = "John",
-                ParentLastName = "Lacombe",
-                CreatedDate = DateTimeOffset.Now,
-                UpdatedDate = DateTimeOffset.Now,
-                CreatedBy = -1,
-            });
-
+            modelBuilder.Entity<Setting>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+            
+            modelBuilder.Entity<User>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+            
             modelBuilder.Entity<Event>().HasOne(u => u.User).WithMany().HasForeignKey(e => e.CreatedBy);
+            modelBuilder.Entity<Event>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+
+            modelBuilder.Entity<RegistrationPayment>().HasOne(r => r.Registration).WithMany().HasForeignKey(rp => rp.RegistrationId);
+            modelBuilder.Entity<RegistrationPayment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(rp => rp.PaymentDonationId);
             
-            modelBuilder.Entity<Payment_Donation>().HasOne(u => u.User).WithMany().HasForeignKey(pd => pd.UserId);
+            modelBuilder.Entity<UserPayment>().HasOne(u => u.User).WithMany().HasForeignKey(up => up.UserId);
+            modelBuilder.Entity<UserPayment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(up => up.PaymentDonationId);
             
-            modelBuilder.Entity<Registration>().HasOne(u => u.User).WithMany().HasForeignKey(r => r.EventId);
-            modelBuilder.Entity<Registration>().HasOne(u => u.User).WithMany().HasForeignKey(r => r.CamperId);
+            modelBuilder.Entity<PayPal_Payment>().HasOne(pd => pd.PaymentDonation).WithMany().HasForeignKey(ppp => ppp.PaymentDonationId);
             
+            modelBuilder.Entity<Payment_Donation>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+
+            modelBuilder.Entity<Registration>().HasOne(e => e.Event).WithMany().HasForeignKey(r => r.EventId);
+            modelBuilder.Entity<Registration>().HasOne(ca => ca.Camper).WithMany().HasForeignKey(r => r.CamperId);
+            modelBuilder.Entity<Registration>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+
             modelBuilder.Entity<Group>().HasOne(u => u.User).WithMany().HasForeignKey(g => g.LoginUser);
             modelBuilder.Entity<Group>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(g => g.CreatedBy);
+            modelBuilder.Entity<Group>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
             
             modelBuilder.Entity<RedeemedCoupon>().HasOne(co => co.Coupon).WithMany().HasForeignKey(rc => rc.CouponId);
             modelBuilder.Entity<RedeemedCoupon>().HasOne(ca => ca.Camper).WithMany().HasForeignKey(rc => rc.CamperId);
@@ -93,9 +67,23 @@ namespace CandeeCamp.API.Context
             modelBuilder.Entity<Camper>().HasOne(g => g.Group).WithMany().HasForeignKey(ca => ca.GroupId);
             modelBuilder.Entity<Camper>().HasOne(cb => cb.Cabin).WithMany().HasForeignKey(ca => ca.CabinId);
             modelBuilder.Entity<Camper>().HasOne(co => co.Counselor).WithMany().HasForeignKey(ca => ca.CounselorId);
-            
+            modelBuilder.Entity<Camper>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+
             modelBuilder.Entity<Counselor>().HasOne(u => u.User).WithMany().HasForeignKey(co => co.UserId);
+            modelBuilder.Entity<Counselor>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(co => co.CreatedBy);
             modelBuilder.Entity<Counselor>().HasOne(cb => cb.Cabin).WithMany().HasForeignKey(co => co.CabinId);
+            modelBuilder.Entity<Counselor>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+
+            modelBuilder.Entity<Cabin>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(cb => cb.CreatedBy);
+            modelBuilder.Entity<Cabin>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+            
+            modelBuilder.Entity<Coupon>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(cp => cp.CreatedBy);
+            modelBuilder.Entity<Coupon>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+
+            modelBuilder.Entity<SnackShopItem>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+
+            modelBuilder.Entity<Notification>().HasOne(u => u.CreatedByUser).WithMany().HasForeignKey(no => no.CreatedBy);
+            modelBuilder.Entity<Notification>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
 
             modelBuilder.Entity<SnackShopPurchase>().HasOne(s => s.SnackShopItem).WithMany()
                 .HasForeignKey(s => s.SnackShopItemId);
@@ -103,6 +91,17 @@ namespace CandeeCamp.API.Context
                 .HasForeignKey(co => co.CamperId);
             modelBuilder.Entity<SnackShopPurchase>().HasOne(cb => cb.Counselor).WithMany()
                 .HasForeignKey(co => co.CounselorId);
+            modelBuilder.Entity<SnackShopPurchase>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+
+            modelBuilder.Entity<CustomField>().HasOne(u => u.CreatedByUser).WithMany()
+                .HasForeignKey(cf => cf.CreatedBy);
+            modelBuilder.Entity<CustomField>().HasOne(x => x.Portal).WithMany().HasForeignKey(x => x.PortalId);
+
+            modelBuilder.Entity<CamperCustomField>().HasOne(cf => cf.CustomField).WithMany()
+                .HasForeignKey(ccf => ccf.CustomFieldId);
+            modelBuilder.Entity<CamperCustomField>().HasOne(c => c.Camper).WithMany()
+                .HasForeignKey(ccf => ccf.CamperId);
+
 
 
             base.OnModelCreating(modelBuilder);

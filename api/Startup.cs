@@ -1,32 +1,32 @@
 using System;
 using System.Text;
-using CandeeCamp.API.Context;
-using CandeeCamp.API.ExceptionHandling;
-using CandeeCamp.API.Repositories;
-using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Reclaimed.API.Common;
+using Reclaimed.API.Context;
+using Reclaimed.API.ExceptionHandling;
+using Reclaimed.API.Repositories;
+using Reclaimed.API.Repositories.Interfaces;
+using Reclaimed.API.Schedulers;
 
-namespace CandeeCamp.API
+namespace Reclaimed.API
 {
     public class Startup
     {
-        private readonly IHostingEnvironment _env;
+        private readonly IHostEnvironment _env;
         private readonly IConfiguration _config;
         private readonly ILoggerFactory _loggerFactory;
         
-        public Startup(IHostingEnvironment env, IConfiguration config, 
+        public Startup(IHostEnvironment env, IConfiguration config, 
             ILoggerFactory loggerFactory)
         {
             _env = env;
@@ -51,10 +51,12 @@ namespace CandeeCamp.API
                 ));
 
             services.AddMvc()
-                .AddJsonOptions(options =>
-                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
-                .AddMvcOptions(options => options.Filters.Add(new GlobalExceptionFilter(_loggerFactory)))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddMvcOptions(options =>
+                {
+                    options.EnableEndpointRouting = false;
+                    options.Filters.Add(new GlobalExceptionFilter(_loggerFactory));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             
             services.AddApiVersioning(options =>
             {
@@ -80,9 +82,17 @@ namespace CandeeCamp.API
                                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]))
                         };
                     });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(CampPolicies.SamePortal,
+                    policy => policy.Requirements.Add(new PortalRequirement()));
+            });
+            //JobScheduler.Start(_config);
+            //JobScheduler.Stop();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -96,14 +106,12 @@ namespace CandeeCamp.API
             
             app.UseCors(options =>
             {
-                options.AllowAnyOrigin();
+                options.WithOrigins("http://localhost:3300", _config["FrontFacingUrl"]);
+
                 options.AllowAnyHeader();
                 options.AllowAnyMethod();
                 options.AllowCredentials();
             });
-
-            loggerFactory.AddConsole(_config.GetSection("Logging"));
-            loggerFactory.AddDebug();
 
             app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
@@ -115,6 +123,20 @@ namespace CandeeCamp.API
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ICamperRepository, CamperRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<ICounselorRepository, CounselorRepository>();
+            services.AddScoped<ICabinRepository, CabinRepository>();
+            services.AddScoped<ICouponRepository, CouponRepository>();
+            services.AddScoped<IRedeemedCouponRepository, RedeemedCouponRepository>();
+            services.AddScoped<ISnackShopItemRepository, SnackShopItemRepository>();
+            services.AddScoped<ISnackShopPurchaseRepository, SnackShopPurchaseRepository>();
+            services.AddScoped<IRegistrationRepository, RegistrationRepository>();
+            services.AddScoped<IAuthClientRepository, AuthClientRepository>();
+            services.AddScoped<IPaymentDonationRepository, PaymentDonationRepository>();
+            services.AddScoped<IPayPalPaymentRepository, PayPalPaymentRepository>();
+            services.AddScoped<ISettingRepository, SettingRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<ICustomFieldRepository, CustomFieldRepository>();
+            services.AddScoped<ICamperCustomFieldRepository, CamperCustomFieldRepository>();
         }
     }
 }

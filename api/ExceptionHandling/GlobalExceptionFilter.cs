@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
-namespace CandeeCamp.API.ExceptionHandling
+namespace Reclaimed.API.ExceptionHandling
 {
     public class GlobalExceptionFilter : IExceptionFilter, IDisposable
     {

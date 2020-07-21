@@ -2,29 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CandeeCamp.API.Context;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.Models;
-using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Reclaimed.API.Context;
+using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Models;
+using Reclaimed.API.Repositories.Interfaces;
 
-namespace CandeeCamp.API.Repositories
+namespace Reclaimed.API.Repositories
 {
     public class GroupRepository : BaseRepository, IGroupRepository
     {
         private readonly ICamperRepository _camperRepository;
-        
+
         public GroupRepository(CampContext context, ICamperRepository camperRepository) : base(context)
         {
             _camperRepository = camperRepository;
         }
 
-        public async Task<IEnumerable<Group>> GetGroups() =>
-            await Context.Groups.Where(x => !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Group>> GetGroups(int portalId) =>
+            await Context.Groups.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
 
-        public async Task<Group> GetGroupById(int groupId)
+        public async Task<Group> GetGroupById(int portalId, int groupId)
         {
-            Group dbGroup = await Context.Groups.FirstOrDefaultAsync(x => x.Id == groupId && !x.IsDeleted);
+            Group dbGroup =
+                await Context.Groups.FirstOrDefaultAsync(x =>
+                    x.PortalId == portalId && x.Id == groupId && !x.IsDeleted);
 
             if (dbGroup == null)
             {
@@ -34,21 +36,23 @@ namespace CandeeCamp.API.Repositories
             return dbGroup;
         }
 
-        public async Task<IEnumerable<Group>> GetGroupsByName(string name) => await Context.Groups
-            .Where(x => !x.IsDeleted && string.Equals(x.Name, name.Trim(), StringComparison.CurrentCultureIgnoreCase))
+        public async Task<IEnumerable<Group>> GetGroupsByName(int portalId, string name) => await Context.Groups
+            .Where(x => x.PortalId == portalId && !x.IsDeleted &&
+                        string.Equals(x.Name, name.Trim(), StringComparison.CurrentCultureIgnoreCase))
             .ToListAsync();
 
-        public async Task<Group> CreateGroup(GroupModel group)
+        public async Task<Group> CreateGroup(int portalId, GroupModel group)
         {
-            IEnumerable<Group> existingGroups = await GetGroupsByName(group.Name);
+            IEnumerable<Group> existingGroups = await GetGroupsByName(portalId, group.Name);
 
             if (existingGroups.Any())
             {
                 throw new Exception("This group already exists. Please use another name.");
             }
-            
+
             Group newGroup = new Group
             {
+                PortalId = portalId,
                 IsDeleted = false,
                 CreatedDate = DateTimeOffset.Now,
                 UpdatedDate = DateTimeOffset.Now,
@@ -60,46 +64,52 @@ namespace CandeeCamp.API.Repositories
 
             await Context.Groups.AddAsync(newGroup);
             await Context.SaveChangesAsync();
-            
-            await _camperRepository.UpdateGroups(group.Campers, newGroup.Id);
+
+            if (group.Campers != null && group.Campers.Any())
+            {
+                await _camperRepository.UpdateGroups(portalId, group.Campers, newGroup.Id);
+            }
 
             return newGroup;
         }
 
-        public async Task DeleteGroup(int groupId)
+        public async Task DeleteGroup(int portalId, int groupId)
         {
-            Group dbGroup = await GetGroupById(groupId);
+            Group dbGroup = await GetGroupById(portalId, groupId);
 
             dbGroup.IsActive = false;
             dbGroup.IsDeleted = true;
 
             await Context.SaveChangesAsync();
-            
-            await _camperRepository.RemoveGroups(groupId);
+
+            await _camperRepository.RemoveGroups(portalId, groupId);
         }
 
-        public async Task<Group> UpdateGroup(int groupId, GroupModel group)
+        public async Task<Group> UpdateGroup(int portalId, int groupId, GroupModel group)
         {
-            IEnumerable<Group> existingGroups = await GetGroupsByName(group.Name);
+            Group dbGroup = await GetGroupById(portalId, groupId);
 
-            if (existingGroups.Count() > 1)
+            if (!string.Equals(dbGroup.Name, group.Name.Trim(), StringComparison.CurrentCultureIgnoreCase))
             {
-                throw new Exception("This group already exists. Please use another name.");
+                IEnumerable<Group> existingGroups = await GetGroupsByName(portalId, group.Name);
+
+                if (existingGroups.Any())
+                {
+                    throw new Exception("This group already exists. Please use another name.");
+                }
             }
-            
-            Group dbGroup = await GetGroupById(groupId);
 
             dbGroup.Name = group.Name.Trim();
             dbGroup.LoginUser = group.LoginUser;
             dbGroup.IsActive = group.IsActive;
             dbGroup.UpdatedDate = DateTimeOffset.Now;
-            
+
             await Context.SaveChangesAsync();
-            
-            await _camperRepository.RemoveGroups(groupId);
-            await _camperRepository.UpdateGroups(group.Campers, groupId);
+
+            await _camperRepository.RemoveGroups(portalId, groupId);
+            await _camperRepository.UpdateGroups(portalId, group.Campers, groupId);
 
             return dbGroup;
         }
     }
-} 
+}

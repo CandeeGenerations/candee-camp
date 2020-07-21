@@ -3,8 +3,6 @@ import {Button, Card} from 'antd'
 import {useRoute} from 'react-router5'
 import {css, Global} from '@emotion/core'
 
-import UsersTable from './components/UsersTable'
-
 import {userActions as actions} from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
@@ -14,6 +12,8 @@ import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+
+import UsersTable from './components/UsersTable'
 
 const Users = () => {
   const page = usePage()
@@ -31,7 +31,7 @@ const Users = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDeleteUserClick = async userId => {
+  const handleDeleteUserClick = async (userId) => {
     const response = await actions.deleteUser(userId)
 
     if (response) {
@@ -40,7 +40,7 @@ const Users = () => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <Global
         styles={css`
           html {
@@ -62,8 +62,8 @@ const Users = () => {
               </Button>,
             ]}
             routes={[
-              {path: '/dashboard', breadcrumbName: 'Dashboard'},
-              {path: '/users', breadcrumbName: 'Users'},
+              {path: 'camp', breadcrumbName: 'Camp Management'},
+              {path: 'camp.users', breadcrumbName: 'Users'},
             ]}
             title="Users"
           />
@@ -82,7 +82,7 @@ const Users = () => {
                 deleteUser={handleDeleteUserClick}
                 users={
                   (objectsContext.users.results &&
-                    objectsContext.users.results.map(user => ({
+                    objectsContext.users.results.map((user) => ({
                       ...user,
                       key: user.id,
                     }))) ||
@@ -93,7 +93,7 @@ const Users = () => {
           </LoaderContext.Provider>
         </Card>
       </MainContent>
-    </>
+    </React.Fragment>
   )
 }
 

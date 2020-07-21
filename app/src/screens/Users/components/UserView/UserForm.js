@@ -15,6 +15,7 @@ import {
 } from 'antd'
 
 import usePage from '@/helpers/hooks/usePage'
+import {formatDate} from '@/helpers'
 
 const UserForm = Form.create({
   onFieldsChange(props, changedFields) {
@@ -69,7 +70,7 @@ const UserForm = Form.create({
 
     return fields
   },
-})(props => {
+})((props) => {
   const page = usePage()
 
   const {form} = props
@@ -126,11 +127,11 @@ const UserForm = Form.create({
       </Row>
 
       {page.isUserAddOrEditPage && (
-        <>
+        <React.Fragment>
           <Divider orientation="left">Security</Divider>
 
           {props.id ? (
-            <>
+            <React.Fragment>
               <Row gutter={16}>
                 <Col span={24}>
                   <Button type="primary" onClick={props.onPasswordChange}>
@@ -178,7 +179,32 @@ const UserForm = Form.create({
                   </Popconfirm>
                 </Col>
               </Row>
-            </>
+
+              <Row css={{marginTop: 20}} gutter={16}>
+                <Col span={24}>
+                  <Typography.Text type="secondary">
+                    <small>
+                      Date Created:{' '}
+                      {formatDate(props.createdDate?.value || null)}
+                    </small>
+                  </Typography.Text>
+
+                  <Typography.Text css={{display: 'block'}} type="secondary">
+                    <small>
+                      Date Updated:{' '}
+                      {formatDate(props.updatedDate?.value || null)}
+                    </small>
+                  </Typography.Text>
+
+                  <Typography.Text css={{display: 'block'}} type="secondary">
+                    <small>
+                      Date Last Logged In:{' '}
+                      {formatDate(props.lastLoggedInDate?.value || null)}
+                    </small>
+                  </Typography.Text>
+                </Col>
+              </Row>
+            </React.Fragment>
           ) : (
             <Row gutter={16}>
               <Col span={12}>
@@ -208,7 +234,7 @@ const UserForm = Form.create({
               </Col>
             </Row>
           )}
-        </>
+        </React.Fragment>
       )}
     </Form>
   )

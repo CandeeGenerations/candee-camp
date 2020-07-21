@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CandeeCamp.API.DomainObjects;
-using CandeeCamp.API.Models;
-using CandeeCamp.API.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Reclaimed.API.Common;
+using Reclaimed.API.DomainObjects;
+using Reclaimed.API.Models;
+using Reclaimed.API.Repositories.Interfaces;
 
-namespace CandeeCamp.API.Controllers
+namespace Reclaimed.API.Controllers
 {
     [ApiVersion("1.0")]
-    [Authorize]
-    [Route("api/[controller]")]
+    [Authorize(Policy = CampPolicies.SamePortal)]
+    [Route("api/{portalId}/[controller]")]
     [Produces("application/json")]
     public class UsersController : Controller
     {
@@ -23,73 +24,73 @@ namespace CandeeCamp.API.Controllers
         
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<User>), 200)]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers(int portalId)
         {
-            IEnumerable<User> users = await _userRepository.GetUsers();
+            IEnumerable<User> users = await _userRepository.GetUsers(portalId);
 
             return Ok(users);
         }
 
         [HttpGet("by-ids")]
         [ProducesResponseType(typeof(IEnumerable<User>), 200)]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsersByIds(IEnumerable<int> userIds)
+        public async Task<ActionResult<IEnumerable<User>>> GetUsersByIds(int portalId, IEnumerable<int> userIds)
         {
-            IEnumerable<User> users = await _userRepository.GetUsersByIds(userIds);
+            IEnumerable<User> users = await _userRepository.GetUsersByIds(portalId, userIds);
 
             return Ok(users);
         }
 
         [HttpGet("{userId}")]
         [ProducesResponseType(typeof(User), 200)]
-        public async Task<ActionResult<User>> GetUser(int userId)
+        public async Task<ActionResult<User>> GetUser(int portalId, int userId)
         {
-            User user = await _userRepository.GetUserById(userId);
+            User user = await _userRepository.GetUserByIdPortalId(portalId, userId);
 
             return Ok(user);
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(User), 200)]
-        public async Task<ActionResult<User>> CreateUser([FromBody] NewUserModel user)
+        public async Task<ActionResult<User>> CreateUser(int portalId, [FromBody] NewUserModel user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            User newUser = await _userRepository.CreateUser(user);
+            User newUser = await _userRepository.CreateUser(portalId, user);
 
             return Ok(newUser);
         }
 
         [HttpPut("{userId}")]
         [ProducesResponseType(typeof(User), 200)]
-        public async Task<ActionResult<User>> UpdateUser(int userId, [FromBody] UserModel user)
+        public async Task<ActionResult<User>> UpdateUser(int portalId, int userId, [FromBody] UserModel user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            User updatedUser = await _userRepository.UpdateUser(userId, user);
+            User updatedUser = await _userRepository.UpdateUser(portalId, userId, user);
 
             return Ok(updatedUser);
         }
 
         [HttpDelete("{userId}")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult> DeleteUser(int userId)
+        public async Task<ActionResult> DeleteUser(int portalId, int userId)
         {
-            await _userRepository.DeleteUser(userId);
+            await _userRepository.DeleteUser(portalId, userId);
 
             return Ok();
         }
 
         [HttpPost("{userId}/change-password")]
         [ProducesResponseType(typeof(User), 200)]
-        public async Task<ActionResult<User>> ChangePassword(int userId, string password)
+        public async Task<ActionResult<User>> ChangePassword(int portalId, int userId, string password)
         {
-            User user = await _userRepository.ChangePassword(userId, password);
+            User user = await _userRepository.ChangePassword(portalId, userId, password);
 
             return Ok(user);
         }
