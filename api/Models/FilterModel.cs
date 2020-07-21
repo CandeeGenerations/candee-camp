@@ -56,4 +56,19 @@ namespace Reclaimed.API.Models
 
         public int? BalanceEnd { get; set; }
     }
+
+    public class CouponFilterModel : ActiveFilterModel
+    {
+        public string Code { get; set; }
+
+        public int? AmountStart { get; set; }
+
+        public int? AmountEnd { get; set; }
+
+        public CouponType? AmountType { get; set; }
+
+        public DateTimeOffset? ExpirationDateStart { get; set; }
+
+        public DateTimeOffset? ExpirationDateEnd { get; set; }
+    }
 }

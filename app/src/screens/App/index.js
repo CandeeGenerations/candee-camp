@@ -165,7 +165,37 @@ const App = () => {
   const snackShopItems = useAsyncLoad(
     actions.snackShopItemActions.loadSnackShopItems,
   )
+
+  // coupons
   const coupons = useAsyncLoad(actions.couponActions.loadCoupons)
+  const couponFilters = useFilters(
+    {
+      name: null,
+      code: null,
+      isActive: 'all',
+      amountStart: null,
+      amountEnd: null,
+      amountType: 'all',
+      expirationDates: [],
+    },
+    (filters) => ({
+      name: filters.name,
+      code: filters.code,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+      amountStart: filters.amountType === 'all' ? null : filters.amountStart,
+      amountEnd: filters.amountType === 'all' ? null : filters.amountEnd,
+      amountType: filters.amountType === 'all' ? null : filters.amountType,
+      expirationDateStart:
+        (filters.expirationDates.length > 0 &&
+          filters.expirationDates[0].startOf('day').format()) ||
+        null,
+      expirationDateEnd:
+        (filters.expirationDates.length > 0 &&
+          filters.expirationDates[1].endOf('day').format()) ||
+        null,
+    }),
+  )
+
   const customFields = useAsyncLoad(actions.customFieldActions.loadCustomFields)
 
   if (user) {
@@ -316,6 +346,7 @@ const App = () => {
                     eventFilters,
                     camperFilters,
                     counselorFilters,
+                    couponFilters,
                   }}
                 >
                   <Layout css={{marginTop: 50}}>

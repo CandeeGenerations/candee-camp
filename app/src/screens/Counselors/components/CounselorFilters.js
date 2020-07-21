@@ -46,7 +46,7 @@ const CounselorFilters = (props) => {
 
   return (
     <Filters>
-      <Row css={{marginBottom: 15}}>
+      <Row>
         <Col css={{padding: '0 15px'}} span={6}>
           <p>
             <strong>First name</strong>
