@@ -1,6 +1,6 @@
 {
   "name": "reclaimed-fe",
-  "version": "0.21.196",
+  "version": "0.21.197",
   "description": "Reclaimed App Front End",
   "keywords": [
     "candee",
@@ -53,7 +53,7 @@
     "deep-equal": "^2.0.3",
     "deepmerge": "^4.2.2",
     "jwt-decode": "^2.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
     "prettier": "^2.0.5",
