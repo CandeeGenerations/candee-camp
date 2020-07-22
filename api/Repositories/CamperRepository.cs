@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Reclaimed.API.Context;
 using Reclaimed.API.DomainObjects;
-using Reclaimed.API.Migrations;
 using Reclaimed.API.Models;
 using Reclaimed.API.Repositories.Interfaces;
 
