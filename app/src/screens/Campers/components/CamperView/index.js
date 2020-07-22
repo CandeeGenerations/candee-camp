@@ -14,7 +14,7 @@ import {isFormReady, mergeFormData, openNotification} from '@/helpers'
 import MainContent from '@/components/MainContent'
 import {PageHeader} from '@/components/Structure'
 import {LoaderContext} from '@/components/Structure/Loader'
-import {ObjectsContext, ValuesContext} from '@/screens/App'
+import {ObjectsContext, ValuesContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import CamperViewWrapper from './CamperViewWrapper'
@@ -25,6 +25,9 @@ const CamperView = (props) => {
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
   const valuesContext = useContext(ValuesContext)
+  const {
+    camperFilters: {transformedFilters},
+  } = useContext(FiltersContext)
   const [customFieldsState, setCustomFieldsState] = useState([])
   const camper = useAsyncLoad(actions.loadCamper, props.id)
 
@@ -89,7 +92,7 @@ const CamperView = (props) => {
   const handleFieldChange = (changedFields) =>
     setFields((stateFields) => ({...stateFields, ...changedFields}))
 
-  const refreshTable = () => objectsContext.campers.load()
+  const refreshTable = () => objectsContext.campers.load(transformedFilters)
 
   const handleCustomFieldsUpdate = (customField) =>
     setCustomFieldsState((state) => [

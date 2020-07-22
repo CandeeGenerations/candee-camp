@@ -27,9 +27,9 @@ namespace Reclaimed.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Group>), 200)]
-        public async Task<ActionResult<IEnumerable<Group>>> GetGroups(int portalId)
+        public async Task<ActionResult<IEnumerable<Group>>> GetGroups(int portalId, ActiveFilterModel filters = null)
         {
-            IEnumerable<Group> groups = await _groupRepository.GetGroups(portalId);
+            IEnumerable<Group> groups = await _groupRepository.GetGroups(portalId, filters);
 
             return Ok(groups);
         }

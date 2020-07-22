@@ -8,36 +8,44 @@ import {camperActions as actions} from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 
-import {ObjectsContext} from '@/screens/App'
 import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import CamperView from './components/CamperView'
 import CampersTable from './components/CampersTable'
+import CamperFilters from './components/CamperFilters'
 
 const Campers = () => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const {
+    camperFilters: {transformedFilters},
+  } = useContext(FiltersContext)
 
   useTitle('Campers')
 
-  useEffect(() => {
+  const loadCampers = async () => {
     try {
-      objectsContext.campers.load()
+      objectsContext.campers.load(transformedFilters)
     } catch (error) {
       errorWrapper.handleCatchError()
     }
+  }
+
+  useEffect(() => {
+    loadCampers()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteCamperClick = async (camperId) => {
     const response = await actions.deleteCamper(camperId)
 
     if (response) {
-      objectsContext.campers.load()
+      loadCampers()
     }
   }
 
@@ -87,6 +95,8 @@ const Campers = () => {
               title="Campers"
             />
 
+            <CamperFilters onApplyFilters={loadCampers} />
+
             <LoaderContext.Provider
               value={{
                 spinning: objectsContext.campers.loading,
@@ -94,7 +104,7 @@ const Campers = () => {
               }}
             >
               <ErrorWrapper
-                handleRetry={objectsContext.campers.load}
+                handleRetry={loadCampers}
                 hasError={errorWrapper.hasError}
               >
                 <CampersTable

@@ -24,9 +24,9 @@ namespace Reclaimed.API.Controllers
         
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<User>), 200)]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers(int portalId)
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers(int portalId, UserFilterModel filters = null)
         {
-            IEnumerable<User> users = await _userRepository.GetUsers(portalId);
+            IEnumerable<User> users = await _userRepository.GetUsers(portalId, filters);
 
             return Ok(users);
         }

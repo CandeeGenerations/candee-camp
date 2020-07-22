@@ -16,8 +16,39 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Counselor>> GetCounselors(int portalId) =>
-            await Context.Counselors.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Counselor>> GetCounselors(int portalId, CounselorFilterModel filters = null)
+        {
+            IQueryable<Counselor> counselors = Context.Counselors.Where(x => x.PortalId == portalId && !x.IsDeleted);
+
+            if (filters == null) return await counselors.ToListAsync();
+            {
+                if (!string.IsNullOrEmpty(filters.FirstName))
+                {
+                    counselors = counselors.Where(x =>
+                        x.FirstName.ToLower().Contains(filters.FirstName.Trim().ToLower()));
+                }
+
+                if (!string.IsNullOrEmpty(filters.LastName))
+                {
+                    counselors =
+                        counselors.Where(x => x.LastName.ToLower().Contains(filters.LastName.Trim().ToLower()));
+                }
+
+                if (filters.IsActive != null)
+                {
+                    counselors = counselors.Where(x => x.IsActive == filters.IsActive.Value);
+                }
+
+                if (filters.BalanceStart != null && filters.BalanceEnd != null)
+                {
+                    counselors = counselors.Where(x =>
+                        x.StartingBalance >= filters.BalanceStart.Value &&
+                        x.StartingBalance <= filters.BalanceEnd.Value);
+                }
+            }
+
+            return await counselors.ToListAsync();
+        }
 
         public async Task<Counselor> GetCounselorById(int portalId, int counselorId)
         {

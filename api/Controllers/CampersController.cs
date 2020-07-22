@@ -33,9 +33,10 @@ namespace Reclaimed.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Camper>), 200)]
-        public async Task<ActionResult<IEnumerable<AdjustedCamper>>> GetCampers(int portalId)
+        public async Task<ActionResult<IEnumerable<AdjustedCamper>>> GetCampers(int portalId,
+            CamperFilterModel filters = null)
         {
-            IEnumerable<Camper> campers = await _camperRepository.GetCampers(portalId);
+            IEnumerable<Camper> campers = await _camperRepository.GetCampers(portalId, filters);
             List<AdjustedCamper> adjustedCampers = new List<AdjustedCamper>();
 
             foreach (Camper camper in campers)

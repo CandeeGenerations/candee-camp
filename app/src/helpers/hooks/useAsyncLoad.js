@@ -15,7 +15,7 @@ export default (func, ...params) => {
     })
 
   const load = useCallback(
-    async (keepLoading = false, overrideParams = null) => {
+    async (overrideParams = null) => {
       let d = null
 
       if (isLoading) {
@@ -33,10 +33,8 @@ export default (func, ...params) => {
       } catch (error) {
         throw new Error(error)
       } finally {
-        if (!keepLoading) {
-          setLoading(false)
-          setIsLoading(false)
-        }
+        setLoading(false)
+        setIsLoading(false)
       }
 
       return d

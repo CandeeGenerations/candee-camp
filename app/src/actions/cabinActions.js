@@ -4,9 +4,15 @@ import {handleError, formDataToBody, openNotification} from '@/helpers'
 
 const mainPath = '/cabins'
 
-export const loadCabins = async () => {
+export const loadCabins = async (filters = null) => {
   try {
-    const response = await request.get(pid(mainPath))
+    const config = {}
+
+    if (filters) {
+      config = {params: {...filters}}
+    }
+
+    const response = await request.get(pid(mainPath), config)
 
     return response
   } catch (error) {

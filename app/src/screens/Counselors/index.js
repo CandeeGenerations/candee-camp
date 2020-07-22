@@ -8,36 +8,44 @@ import {counselorActions as actions} from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 
-import {ObjectsContext} from '@/screens/App'
 import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import CounselorView from './components/CounselorView'
 import CounselorsTable from './components/CounselorsTable'
+import CounselorFilters from './components/CounselorFilters'
 
 const Counselors = () => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const {
+    counselorFilters: {transformedFilters},
+  } = useContext(FiltersContext)
 
   useTitle('Counselors')
 
-  useEffect(() => {
+  const loadCounselors = () => {
     try {
-      objectsContext.counselors.load()
+      objectsContext.counselors.load(transformedFilters)
     } catch (error) {
       errorWrapper.handleCatchError()
     }
+  }
+
+  useEffect(() => {
+    loadCounselors()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteCounselorClick = async (counselorId) => {
     const response = await actions.deleteCounselor(counselorId)
 
     if (response) {
-      objectsContext.counselors.load()
+      loadCounselors()
     }
   }
 
@@ -78,6 +86,8 @@ const Counselors = () => {
             title="Counselors"
           />
 
+          <CounselorFilters onApplyFilters={loadCounselors} />
+
           <LoaderContext.Provider
             value={{
               spinning: objectsContext.counselors.loading,
@@ -85,7 +95,7 @@ const Counselors = () => {
             }}
           >
             <ErrorWrapper
-              handleRetry={objectsContext.counselors.load}
+              handleRetry={loadCounselors}
               hasError={errorWrapper.hasError}
             >
               <CounselorsTable

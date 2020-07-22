@@ -10,9 +10,9 @@ import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
-import {ObjectsContext, ValuesContext} from '@/screens/App'
-import ResetPasswordForm from '@/screens/ResetPassword/components/ResetPasswordForm'
+import {ObjectsContext, ValuesContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
+import ResetPasswordForm from '@/screens/ResetPassword/components/ResetPasswordForm'
 
 import UserViewWrapper from './UserViewWrapper'
 
@@ -33,6 +33,7 @@ const UserView = (props) => {
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
   const valuesContext = useContext(ValuesContext)
+  const {userFilters, eventFilters} = useContext(FiltersContext)
   const user = useAsyncLoad(actions.loadUser, props.id)
 
   const [fields, setFields] = useState(
@@ -68,7 +69,11 @@ const UserView = (props) => {
     setFields((stateFields) => ({...stateFields, ...changedFields}))
 
   const refreshTable = () =>
-    objectsContext[page.isUserAddOrEditPage ? 'users' : page.eventsPage].load()
+    objectsContext[page.isUserAddOrEditPage ? 'users' : page.eventsPage].load(
+      page.isUserAddOrEditPage
+        ? userFilters.transformedFilters
+        : eventFilters.transformedFilters,
+    )
 
   const navigateToCounselor = (userId) => {
     const updates = {valid: true}
