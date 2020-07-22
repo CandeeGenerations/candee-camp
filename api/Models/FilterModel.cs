@@ -80,4 +80,19 @@ namespace Reclaimed.API.Models
 
         public string EmailAddress { get; set; }
     }
+
+    public class SnackShopItemFilterModel : ActiveFilterModel
+    {
+        public string Barcode { get; set; }
+        
+        public bool? HasBarcode { get; set; }
+
+        public int? PriceStart { get; set; }
+
+        public int? PriceEnd { get; set; }
+
+        public int? AmountAvailableStart { get; set; }
+
+        public int? AmountAvailableEnd { get; set; }
+    }
 }

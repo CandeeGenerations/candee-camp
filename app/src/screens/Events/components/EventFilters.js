@@ -162,7 +162,7 @@ const EventFilters = (props) => {
             Reset
           </Button>
 
-          <Button type="primary" onClick={() => handleApplyFilters(false)}>
+          <Button type="primary" onClick={handleApplyFilters}>
             Apply
           </Button>
         </Col>

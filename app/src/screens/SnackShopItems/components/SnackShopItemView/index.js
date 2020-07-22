@@ -7,9 +7,9 @@ import {snackShopItemActions as actions} from '@/actions'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
-import {ObjectsContext} from '@/screens/App'
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import SnackShopItemViewWrapper from './SnackShopItemViewWrapper'
@@ -19,6 +19,9 @@ const SnackShopItemView = (props) => {
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const {
+    snackShopItemFilters: {transformedFilters},
+  } = useContext(FiltersContext)
   const snackShopItem = useAsyncLoad(actions.loadSnackShopItem, props.id)
 
   const [fields, setFields] = useState({
@@ -52,7 +55,8 @@ const SnackShopItemView = (props) => {
   const handleFieldChange = (changedFields) =>
     setFields((stateFields) => ({...stateFields, ...changedFields}))
 
-  const refreshTable = () => objectsContext.snackShopItems.load()
+  const refreshTable = () =>
+    objectsContext.snackShopItems.load(transformedFilters)
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {

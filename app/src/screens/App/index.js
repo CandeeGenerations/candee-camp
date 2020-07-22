@@ -190,8 +190,32 @@ const App = () => {
     }),
   )
 
+  // snack shop items
   const snackShopItems = useAsyncLoad(
     actions.snackShopItemActions.loadSnackShopItems,
+  )
+  const snackShopItemFilters = useFilters(
+    {
+      name: null,
+      barcode: null,
+      hasBarcode: 'all',
+      isActive: 'all',
+      priceStart: null,
+      priceEnd: null,
+      amountAvailableStart: null,
+      amountAvailableEnd: null,
+    },
+    (filters) => ({
+      name: filters.name,
+      barcode: filters.barcode,
+      hasBarcode:
+        filters.hasBarcode === 'all' ? null : filters.hasBarcode === 'true',
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+      priceStart: filters.priceStart,
+      priceEnd: filters.priceEnd,
+      amountAvailableStart: filters.amountAvailableStart,
+      amountAvailableEnd: filters.amountAvailableEnd,
+    }),
   )
 
   // coupons
@@ -377,6 +401,7 @@ const App = () => {
                     couponFilters,
                     groupFilters,
                     userFilters,
+                    snackShopItemFilters,
                   }}
                 >
                   <Layout css={{marginTop: 50}}>
