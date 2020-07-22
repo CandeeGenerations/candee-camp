@@ -9,7 +9,7 @@ namespace Reclaimed.API.Repositories.Interfaces
     {
         Task<User> CreateUser(int portalId, NewUserModel user);
         Task<User> ValidateUser(AuthenticationModel user);
-        Task<IEnumerable<User>> GetUsers(int portalId);
+        Task<IEnumerable<User>> GetUsers(int portalId, UserFilterModel filters = null);
         Task<User> GetUserById(int userId);
         Task<User> GetUserByIdPortalId(int portalId, int userId);
         Task SendForgotPasswordEmail(string emailAddress);

@@ -58,6 +58,7 @@ const EventFilters = (props) => {
           <Input
             placeholder="Name"
             value={filters.name}
+            allowClear
             onChange={(e) => setFilters({...filters, name: e.target.value})}
           />
         </Col>
@@ -146,6 +147,7 @@ const EventFilters = (props) => {
 
           <DatePicker.RangePicker
             value={filters.dates}
+            allowClear
             onChange={(dates) => setFilters({...filters, dates})}
           />
         </Col>

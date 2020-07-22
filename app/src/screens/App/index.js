@@ -173,7 +173,23 @@ const App = () => {
     }),
   )
 
+  // users
   const users = useAsyncLoad(actions.userActions.loadUsers)
+  const userFilters = useFilters(
+    {
+      firstName: null,
+      lastName: null,
+      emailAddress: null,
+      isActive: 'all',
+    },
+    (filters) => ({
+      firstName: filters.firstName,
+      lastName: filters.lastName,
+      emailAddress: filters.emailAddress,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+    }),
+  )
+
   const snackShopItems = useAsyncLoad(
     actions.snackShopItemActions.loadSnackShopItems,
   )
@@ -360,6 +376,7 @@ const App = () => {
                     counselorFilters,
                     couponFilters,
                     groupFilters,
+                    userFilters,
                   }}
                 >
                   <Layout css={{marginTop: 50}}>

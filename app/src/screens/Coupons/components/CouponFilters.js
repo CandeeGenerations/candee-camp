@@ -62,6 +62,7 @@ const CouponFilters = (props) => {
           <Input
             placeholder="Name"
             value={filters.name}
+            allowClear
             onChange={(e) => setFilters({...filters, name: e.target.value})}
           />
         </Col>
@@ -218,6 +219,7 @@ const CouponFilters = (props) => {
           <Input
             placeholder="Code"
             value={filters.code}
+            allowClear
             onChange={(e) => setFilters({...filters, code: e.target.value})}
           />
         </Col>

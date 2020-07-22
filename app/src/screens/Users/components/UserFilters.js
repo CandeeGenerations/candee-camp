@@ -7,9 +7,9 @@ import {Button, Col, Row, Input, Dropdown, Icon, Menu} from 'antd'
 import {FiltersContext} from '@/screens/App'
 import Filters from '@/components/Structure/Filters'
 
-const GroupFilters = (props) => {
+const UserFilters = (props) => {
   const {
-    groupFilters: {filters, setFilters, resetFilters},
+    userFilters: {filters, setFilters, resetFilters},
   } = useContext(FiltersContext)
 
   useEffect(() => {
@@ -24,16 +24,50 @@ const GroupFilters = (props) => {
       <Row>
         <Col css={{padding: '0 15px'}} span={6}>
           <p>
-            <strong>Name</strong>
+            <strong>First name</strong>
             <br />
-            <em>Search by name</em>
+            <em>Search by first name</em>
           </p>
 
           <Input
-            placeholder="Name"
-            value={filters.name}
+            placeholder="First name"
+            value={filters.firstName}
             allowClear
-            onChange={(e) => setFilters({...filters, name: e.target.value})}
+            onChange={(e) =>
+              setFilters({...filters, firstName: e.target.value})
+            }
+          />
+        </Col>
+
+        <Col css={{padding: '0 15px'}} span={6}>
+          <p>
+            <strong>Last name</strong>
+            <br />
+            <em>Search by last name</em>
+          </p>
+
+          <Input
+            placeholder="Last name"
+            value={filters.lastName}
+            allowClear
+            onChange={(e) => setFilters({...filters, lastName: e.target.value})}
+          />
+        </Col>
+
+        <Col css={{padding: '0 15px'}} span={6}>
+          <p>
+            <strong>Email address</strong>
+            <br />
+            <em>Search by email address</em>
+          </p>
+
+          <Input
+            placeholder="Email address"
+            value={filters.emailAddress}
+            allowClear
+            onChange={(e) =>
+              setFilters({...filters, emailAddress: e.target.value})
+            }
           />
         </Col>
 
@@ -41,7 +75,7 @@ const GroupFilters = (props) => {
           <p>
             <strong>Is Active</strong>
             <br />
-            <em>Filter by active groups</em>
+            <em>Filter by active users</em>
           </p>
 
           <Dropdown
@@ -55,18 +89,18 @@ const GroupFilters = (props) => {
                   })
                 }
               >
-                <Menu.Item key="all">All groups</Menu.Item>
-                <Menu.Item key="true">Active groups</Menu.Item>
-                <Menu.Item key="false">Inactive groups</Menu.Item>
+                <Menu.Item key="all">All users</Menu.Item>
+                <Menu.Item key="true">Active users</Menu.Item>
+                <Menu.Item key="false">Inactive users</Menu.Item>
               </Menu>
             }
           >
             <Button css={{textAlign: 'left', width: '100%'}}>
               {filters.isActive === 'all'
-                ? 'All groups'
+                ? 'All users'
                 : filters.isActive === 'true'
-                ? 'Active groups'
-                : 'Inactive groups'}{' '}
+                ? 'Active users'
+                : 'Inactive users'}{' '}
               <Icon css={{float: 'right', marginTop: 4}} type="down" />
             </Button>
           </Dropdown>
@@ -94,9 +128,9 @@ const GroupFilters = (props) => {
   )
 }
 
-GroupFilters.propTypes = {
+UserFilters.propTypes = {
   // functions
   onApplyFilters: PropTypes.func.isRequired,
 }
 
-export default GroupFilters
+export default UserFilters

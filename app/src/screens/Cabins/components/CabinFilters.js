@@ -32,6 +32,7 @@ const CabinFilters = (props) => {
           <Input
             placeholder="Name"
             value={filters.name}
+            allowClear
             onChange={(e) => setFilters({...filters, name: e.target.value})}
           />
         </Col>

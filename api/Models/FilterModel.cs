@@ -71,4 +71,13 @@ namespace Reclaimed.API.Models
 
         public DateTimeOffset? ExpirationDateEnd { get; set; }
     }
+
+    public class UserFilterModel : ActiveFilterModel
+    {
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string EmailAddress { get; set; }
+    }
 }

@@ -7,35 +7,43 @@ import {userActions as actions} from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 
-import {ObjectsContext} from '@/screens/App'
 import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import UsersTable from './components/UsersTable'
+import UserFilters from './components/UserFilters'
 
 const Users = () => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const {
+    userFilters: {transformedFilters},
+  } = useContext(FiltersContext)
 
   useTitle('Users')
 
-  useEffect(() => {
+  const loadUsers = () => {
     try {
-      objectsContext.users.load()
+      objectsContext.users.load(transformedFilters)
     } catch (error) {
       errorWrapper.handleCatchError()
     }
+  }
+
+  useEffect(() => {
+    loadUsers()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteUserClick = async (userId) => {
     const response = await actions.deleteUser(userId)
 
     if (response) {
-      objectsContext.users.load()
+      loadUsers()
     }
   }
 
@@ -68,6 +76,8 @@ const Users = () => {
             title="Users"
           />
 
+          <UserFilters onApplyFilters={loadUsers} />
+
           <LoaderContext.Provider
             value={{
               spinning: objectsContext.users.loading,
@@ -75,7 +85,7 @@ const Users = () => {
             }}
           >
             <ErrorWrapper
-              handleRetry={objectsContext.users.load}
+              handleRetry={loadUsers}
               hasError={errorWrapper.hasError}
             >
               <UsersTable

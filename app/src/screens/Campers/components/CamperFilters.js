@@ -58,6 +58,7 @@ const CamperFilters = (props) => {
           <Input
             placeholder="First name"
             value={filters.firstName}
+            allowClear
             onChange={(e) =>
               setFilters({...filters, firstName: e.target.value})
             }
@@ -190,6 +191,7 @@ const CamperFilters = (props) => {
           <Input
             placeholder="Last name"
             value={filters.lastName}
+            allowClear
             onChange={(e) => setFilters({...filters, lastName: e.target.value})}
           />
         </Col>
@@ -204,6 +206,7 @@ const CamperFilters = (props) => {
           <Input
             placeholder="Parent's name"
             value={filters.parentsName}
+            allowClear
             onChange={(e) =>
               setFilters({...filters, parentsName: e.target.value})
             }
@@ -254,6 +257,7 @@ const CamperFilters = (props) => {
 
           <DatePicker.RangePicker
             value={filters.birthdates}
+            allowClear
             onChange={(dates) => setFilters({...filters, birthdates: dates})}
           />
         </Col>

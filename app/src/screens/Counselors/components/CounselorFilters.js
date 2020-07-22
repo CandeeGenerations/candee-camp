@@ -57,6 +57,7 @@ const CounselorFilters = (props) => {
           <Input
             placeholder="First name"
             value={filters.firstName}
+            allowClear
             onChange={(e) =>
               setFilters({...filters, firstName: e.target.value})
             }
@@ -73,6 +74,7 @@ const CounselorFilters = (props) => {
           <Input
             placeholder="Last name"
             value={filters.lastName}
+            allowClear
             onChange={(e) => setFilters({...filters, lastName: e.target.value})}
           />
         </Col>
