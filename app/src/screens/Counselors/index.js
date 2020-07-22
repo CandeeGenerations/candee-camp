@@ -95,7 +95,7 @@ const Counselors = () => {
             }}
           >
             <ErrorWrapper
-              handleRetry={objectsContext.counselors.load}
+              handleRetry={loadCounselors}
               hasError={errorWrapper.hasError}
             >
               <CounselorsTable

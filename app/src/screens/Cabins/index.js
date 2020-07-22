@@ -94,7 +94,7 @@ const Cabins = () => {
             }}
           >
             <ErrorWrapper
-              handleRetry={() => objectsContext.cabins.load(transformedFilters)}
+              handleRetry={loadCabins}
               hasError={errorWrapper.hasError}
             >
               <CabinsTable

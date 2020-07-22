@@ -86,7 +86,7 @@ const Groups = () => {
             }}
           >
             <ErrorWrapper
-              handleRetry={objectsContext.groups.load}
+              handleRetry={loadGroups}
               hasError={errorWrapper.hasError}
             >
               <GroupsTable

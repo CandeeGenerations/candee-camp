@@ -94,7 +94,7 @@ const Coupons = () => {
             }}
           >
             <ErrorWrapper
-              handleRetry={objectsContext.coupons.load}
+              handleRetry={loadCoupons}
               hasError={errorWrapper.hasError}
             >
               <CouponsTable

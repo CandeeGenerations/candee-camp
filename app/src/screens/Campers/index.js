@@ -104,7 +104,7 @@ const Campers = () => {
               }}
             >
               <ErrorWrapper
-                handleRetry={objectsContext.campers.load}
+                handleRetry={loadCampers}
                 hasError={errorWrapper.hasError}
               >
                 <CampersTable
