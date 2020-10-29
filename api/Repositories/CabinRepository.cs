@@ -16,8 +16,25 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Cabin>> GetCabins(int portalId) =>
-            await Context.Cabins.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Cabin>> GetCabins(int portalId, ActiveFilterModel filters = null)
+        {
+            IQueryable<Cabin> cabins = Context.Cabins.Where(x => x.PortalId == portalId && !x.IsDeleted);
+
+            if (filters == null) return await cabins.ToListAsync();
+            {
+                if (!string.IsNullOrEmpty(filters.Name))
+                {
+                    cabins = cabins.Where(x => x.Name.ToLower().Contains(filters.Name.Trim().ToLower()));
+                }
+
+                if (filters.IsActive != null)
+                {
+                    cabins = cabins.Where(x => x.IsActive == filters.IsActive.Value);
+                }
+            }
+
+            return await cabins.ToListAsync();
+        }
 
         public async Task<Cabin> GetCabinById(int portalId, int cabinId)
         {

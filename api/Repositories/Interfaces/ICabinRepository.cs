@@ -7,7 +7,7 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ICabinRepository
     {
-        Task<IEnumerable<Cabin>> GetCabins(int portalId);
+        Task<IEnumerable<Cabin>> GetCabins(int portalId, ActiveFilterModel filters = null);
         Task<Cabin> GetCabinById(int portalId, int cabinId);
         Task<IEnumerable<Cabin>> GetCabinsByName(int portalId, string name);
         Task<Cabin> CreateCabin(int portalId, CabinModel cabin);

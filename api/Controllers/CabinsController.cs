@@ -24,9 +24,9 @@ namespace Reclaimed.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Cabin>), 200)]
-        public async Task<ActionResult<IEnumerable<Cabin>>> GetCabins(int portalId)
+        public async Task<ActionResult<IEnumerable<Cabin>>> GetCabins(int portalId, ActiveFilterModel filters = null)
         {
-            IEnumerable<Cabin> cabins = await _cabinRepository.GetCabins(portalId);
+            IEnumerable<Cabin> cabins = await _cabinRepository.GetCabins(portalId, filters);
 
             return Ok(cabins);
         }

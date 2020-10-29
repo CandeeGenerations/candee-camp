@@ -10,7 +10,7 @@ import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
-import {ObjectsContext, ValuesContext} from '@/screens/App'
+import {ObjectsContext, ValuesContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import CouponViewWrapper from './CouponViewWrapper'
@@ -21,6 +21,9 @@ const CouponView = (props) => {
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
   const valuesContext = useContext(ValuesContext)
+  const {
+    couponFilters: {transformedFilters},
+  } = useContext(FiltersContext)
   const coupon = useAsyncLoad(actions.loadCoupon, props.id)
 
   const [fields, setFields] = useState({
@@ -67,7 +70,7 @@ const CouponView = (props) => {
   const handleFieldChange = (changedFields) =>
     setFields((stateFields) => ({...stateFields, ...changedFields}))
 
-  const refreshTable = () => objectsContext.coupons.load()
+  const refreshTable = () => objectsContext.coupons.load(transformedFilters)
 
   const navigateToCamper = (couponId) => {
     const updates = {valid: true}

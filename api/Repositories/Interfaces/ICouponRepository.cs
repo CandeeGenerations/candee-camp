@@ -7,7 +7,7 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ICouponRepository
     {
-        Task<IEnumerable<Coupon>> GetCoupons(int portalId);
+        Task<IEnumerable<Coupon>> GetCoupons(int portalId, CouponFilterModel filters = null);
         Task<Coupon> GetCouponById(int portalId, int couponId);
         Task<IEnumerable<Coupon>> GetCouponsByName(int portalId, string name);
         Task<IEnumerable<Coupon>> GetCouponsByCode(int portalId, string code);

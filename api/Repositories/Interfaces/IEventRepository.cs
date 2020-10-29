@@ -7,7 +7,7 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface IEventRepository
     {
-        Task<IEnumerable<Event>> GetEvents(int portalId, EventFilterModel filter = null);
+        Task<IEnumerable<Event>> GetEvents(int portalId, EventFilterModel filters = null);
         Task<IEnumerable<Event>> GetEventsByIds(int portalId, IEnumerable<int> eventIds);
         Task<IEnumerable<Event>> GetEventsForRegistration(int portalId, int? currentEventId);
         Task<Event> GetEventById(int portalId, int eventId);

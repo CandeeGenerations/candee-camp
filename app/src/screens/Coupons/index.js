@@ -8,35 +8,43 @@ import {couponActions as actions} from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 
-import {ObjectsContext} from '@/screens/App'
 import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import CouponsTable from './components/CouponsTable'
+import CouponFilters from './components/CouponFilters'
 
 const Coupons = () => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const {
+    couponFilters: {transformedFilters},
+  } = useContext(FiltersContext)
 
   useTitle('Coupons')
 
-  useEffect(() => {
+  const loadCoupons = () => {
     try {
-      objectsContext.coupons.load()
+      objectsContext.coupons.load(transformedFilters)
     } catch (error) {
       errorWrapper.handleCatchError()
     }
+  }
+
+  useEffect(() => {
+    loadCoupons()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteCouponClick = async (couponId) => {
     const response = await actions.deleteCoupon(couponId)
 
     if (response) {
-      objectsContext.coupons.load()
+      loadCoupons()
     }
   }
 
@@ -77,6 +85,8 @@ const Coupons = () => {
             title="Coupons"
           />
 
+          <CouponFilters onApplyFilters={loadCoupons} />
+
           <LoaderContext.Provider
             value={{
               spinning: objectsContext.coupons.loading,
@@ -84,7 +94,7 @@ const Coupons = () => {
             }}
           >
             <ErrorWrapper
-              handleRetry={objectsContext.coupons.load}
+              handleRetry={loadCoupons}
               hasError={errorWrapper.hasError}
             >
               <CouponsTable

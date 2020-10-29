@@ -7,7 +7,7 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface IGroupRepository
     {
-        Task<IEnumerable<Group>> GetGroups(int portalId);
+        Task<IEnumerable<Group>> GetGroups(int portalId, ActiveFilterModel filters = null);
         Task<Group> GetGroupById(int portalId, int groupId);
         Task<IEnumerable<Group>> GetGroupsByName(int portalId, string name);
         Task<Group> CreateGroup(int portalId, GroupModel group);

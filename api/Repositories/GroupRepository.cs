@@ -19,8 +19,25 @@ namespace Reclaimed.API.Repositories
             _camperRepository = camperRepository;
         }
 
-        public async Task<IEnumerable<Group>> GetGroups(int portalId) =>
-            await Context.Groups.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Group>> GetGroups(int portalId, ActiveFilterModel filters = null)
+        {
+            IQueryable<Group> groups = Context.Groups.Where(x => x.PortalId == portalId && !x.IsDeleted);
+
+            if (filters == null) return await groups.ToListAsync();
+            {
+                if (!string.IsNullOrEmpty(filters.Name))
+                {
+                    groups = groups.Where(x => x.Name.ToLower().Contains(filters.Name.Trim().ToLower()));
+                }
+
+                if (filters.IsActive != null)
+                {
+                    groups = groups.Where(x => x.IsActive == filters.IsActive.Value);
+                }
+            }
+
+            return await groups.ToListAsync();
+        }
 
         public async Task<Group> GetGroupById(int portalId, int groupId)
         {

@@ -16,8 +16,54 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<SnackShopItem>> GetSnackShopItems(int portalId) =>
-            await Context.SnackShopItems.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<SnackShopItem>> GetSnackShopItems(int portalId,
+            SnackShopItemFilterModel filters = null)
+        {
+            IQueryable<SnackShopItem> snackShopItems =
+                Context.SnackShopItems.Where(x => x.PortalId == portalId && !x.IsDeleted);
+
+            if (filters == null) return await snackShopItems.ToListAsync();
+            {
+                if (!string.IsNullOrEmpty(filters.Name))
+                {
+                    snackShopItems =
+                        snackShopItems.Where(x => x.Name.ToLower().Contains(filters.Name.Trim().ToLower()));
+                }
+
+                if (!string.IsNullOrEmpty(filters.Barcode))
+                {
+                    snackShopItems =
+                        snackShopItems.Where(x => x.Barcode.ToLower().Contains(filters.Barcode.Trim().ToLower()));
+                }
+
+                if (filters.HasBarcode != null)
+                {
+                    snackShopItems = filters.HasBarcode.Value
+                        ? snackShopItems.Where(x => x.Barcode != null)
+                        : snackShopItems.Where(x => x.Barcode == null);
+                }
+                
+                if (filters.PriceStart != null && filters.PriceEnd != null)
+                {
+                    snackShopItems = snackShopItems.Where(x =>
+                        x.Price >= filters.PriceStart.Value && x.Price <= filters.PriceEnd.Value);
+                }
+                
+                if (filters.AmountAvailableStart != null && filters.AmountAvailableEnd != null)
+                {
+                    snackShopItems = snackShopItems.Where(x =>
+                        x.AmountAvailable >= filters.AmountAvailableStart.Value &&
+                        x.AmountAvailable <= filters.AmountAvailableEnd.Value);
+                }
+
+                if (filters.IsActive != null)
+                {
+                    snackShopItems = snackShopItems.Where(x => x.IsActive == filters.IsActive.Value);
+                }
+            }
+
+            return await snackShopItems.ToListAsync();
+        }
 
         public async Task<SnackShopItem> GetSnackShopItemById(int portalId, int snackShopItemId)
         {
@@ -98,7 +144,7 @@ namespace Reclaimed.API.Repositories
             }
 
             dbSnackShopItem.Name = snackShopItem.Name.Trim();
-            dbSnackShopItem.Barcode = snackShopItem.Barcode.Trim();
+            dbSnackShopItem.Barcode = snackShopItem.Barcode?.Trim();
             dbSnackShopItem.Price = snackShopItem.Price;
             dbSnackShopItem.AmountAvailable = snackShopItem.AmountAvailable;
             dbSnackShopItem.UpdatedDate = DateTimeOffset.Now;
