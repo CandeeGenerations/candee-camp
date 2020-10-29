@@ -59,7 +59,7 @@ jobs:
        
         - uses: azure/webapps-deploy@v2
           with:
-            app-name: 'reclaimedapi'
+            app-name: 'reclaimed-api'
             images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/reclaimedapi:${{ github.sha }}
 
         - name: Azure logout
