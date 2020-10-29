@@ -20,6 +20,19 @@ jobs:
             login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
             username: ${{ secrets.REGISTRY_USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }}
+        
+        - name: Make envfile
+          uses: SpicyPizza/create-envfile@v1
+          with:
+            envkey_REACT_APP_API_URL: https://api.reclaimedapp.com/api
+            envkey_REACT_APP_CLIENT_NAME: registrations
+            envkey_REACT_APP_CLIENT_SECRET: ${{ secrets.REACT_APP_CLIENT_SECRET }}
+            envkey_REACT_APP_CRYPTO_KEY: ${{ secrets.REACT_APP_CRYPTO_KEY }}
+            envkey_REACT_APP_PAYPAL_SCRIPT_URL: https://www.paypal.com/sdk/js?client-id=
+            envkey_REACT_APP_URL: https://portal.reclaimedapp.com
+            envkey_REACT_APP_VERSION: $npm_package_version
+            file_name: app/.env
+            
         - run: |
             cd app
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/reclaimedapp:${{ github.sha }}
