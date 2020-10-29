@@ -60,7 +60,7 @@ const RegistrationView = (props) => {
           }),
         )
 
-        events.load(false, response.data.eventId ? response.data.eventId : null)
+        events.load(response.data.eventId ? response.data.eventId : null)
         campers.load(
           false,
           response.data.camperId ? response.data.camperId : null,

@@ -17,8 +17,35 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<User>> GetUsers(int portalId) =>
-            await Context.Users.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<User>> GetUsers(int portalId, UserFilterModel filters = null)
+        {
+            IQueryable<User> users = Context.Users.Where(x => x.PortalId == portalId && !x.IsDeleted);
+
+            if (filters == null) return await users.ToListAsync();
+            {
+                if (!string.IsNullOrEmpty(filters.FirstName))
+                {
+                    users = users.Where(x => x.FirstName.ToLower().Contains(filters.FirstName.Trim().ToLower()));
+                }
+                
+                if (!string.IsNullOrEmpty(filters.LastName))
+                {
+                    users = users.Where(x => x.LastName.ToLower().Contains(filters.LastName.Trim().ToLower()));
+                }
+
+                if (!string.IsNullOrEmpty(filters.EmailAddress))
+                {
+                    users = users.Where(x => x.EmailAddress.ToLower().Contains(filters.EmailAddress.Trim().ToLower()));
+                }
+
+                if (filters.IsActive != null)
+                {
+                    users = users.Where(x => x.IsActive == filters.IsActive.Value);
+                }
+            }
+
+            return await users.ToListAsync();
+        }
 
         private async Task<User> GetUserByEmail(string emailAddress) =>
             await Context.Users.FirstOrDefaultAsync(x => x.EmailAddress == emailAddress && !x.IsDeleted);

@@ -12,6 +12,7 @@ import {axiosRequest} from '@/api'
 import * as actions from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import {getUser} from '@/helpers/authHelpers'
+import useFilters from '@/helpers/hooks/useFilters'
 import useAsyncLoad from '@/helpers/hooks/useAsyncLoad'
 
 import Users from '@/screens/Users'
@@ -46,6 +47,7 @@ import CouponView from '@/screens/Coupons/components/CouponView'
 
 export const ObjectsContext = React.createContext({})
 export const ValuesContext = React.createContext({})
+export const FiltersContext = React.createContext({})
 
 const App = () => {
   let content = null
@@ -58,19 +60,194 @@ const App = () => {
   const [counselorValues, setCounselorValues] = useState(undefined)
 
   const routeName = routerContext.route.name
+
+  // events
   const events = useAsyncLoad(actions.eventActions.loadEvents)
+  const eventFilters = useFilters(
+    {
+      name: null,
+      costStart: null,
+      costEnd: null,
+      onGoing: 'all',
+      dates: [],
+    },
+    (filters) => ({
+      name: filters.name,
+      costStart: filters.costStart,
+      costEnd: filters.costEnd,
+      onGoing: filters.onGoing === 'all' ? null : filters.onGoing === 'true',
+      dateStart:
+        (filters.dates.length > 0 &&
+          filters.dates[0].startOf('day').format()) ||
+        null,
+      dateEnd:
+        (filters.dates.length > 0 && filters.dates[1].endOf('day').format()) ||
+        null,
+    }),
+  )
+
+  // campers
   const campers = useAsyncLoad(actions.camperActions.loadCampers)
+  const camperFilters = useFilters(
+    {
+      firstName: null,
+      lastName: null,
+      isActive: 'all',
+      birthdates: [],
+      parentsName: null,
+      hasMedication: 'all',
+      hasAllergies: 'all',
+      balanceStart: null,
+      balanceEnd: null,
+    },
+    (filters) => ({
+      firstName: filters.firstName,
+      lastName: filters.lastName,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+      birthdateStart:
+        (filters.birthdates.length > 0 &&
+          filters.birthdates[0].startOf('day').format()) ||
+        null,
+      birthdateEnd:
+        (filters.birthdates.length > 0 &&
+          filters.birthdates[1].endOf('day').format()) ||
+        null,
+      parentsName: filters.parentsName,
+      hasMedication:
+        filters.hasMedication === 'all'
+          ? null
+          : filters.hasMedication === 'true',
+      hasAllergies:
+        filters.hasAllergies === 'all' ? null : filters.hasAllergies === 'true',
+      balanceStart: filters.balanceStart,
+      balanceEnd: filters.balanceEnd,
+    }),
+  )
+
+  // groups
   const groups = useAsyncLoad(actions.groupActions.loadGroups)
+  const groupFilters = useFilters(
+    {
+      name: null,
+      isActive: 'all',
+    },
+    (filters) => ({
+      name: filters.name,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+    }),
+  )
+
   const registrations = useAsyncLoad(
     actions.registrationActions.loadRegistrations,
   )
+
+  // counselors
   const counselors = useAsyncLoad(actions.counselorActions.loadCounselors)
+  const counselorFilters = useFilters(
+    {
+      firstName: null,
+      lastName: null,
+      isActive: 'all',
+      balanceStart: null,
+      balanceEnd: null,
+    },
+    (filters) => ({
+      firstName: filters.firstName,
+      lastName: filters.lastName,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+      balanceStart: filters.balanceStart,
+      balanceEnd: filters.balanceEnd,
+    }),
+  )
+
+  // cabins
   const cabins = useAsyncLoad(actions.cabinActions.loadCabins)
+  const cabinFilters = useFilters(
+    {
+      name: null,
+      isActive: 'all',
+    },
+    (filters) => ({
+      name: filters.name,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+    }),
+  )
+
+  // users
   const users = useAsyncLoad(actions.userActions.loadUsers)
+  const userFilters = useFilters(
+    {
+      firstName: null,
+      lastName: null,
+      emailAddress: null,
+      isActive: 'all',
+    },
+    (filters) => ({
+      firstName: filters.firstName,
+      lastName: filters.lastName,
+      emailAddress: filters.emailAddress,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+    }),
+  )
+
+  // snack shop items
   const snackShopItems = useAsyncLoad(
     actions.snackShopItemActions.loadSnackShopItems,
   )
+  const snackShopItemFilters = useFilters(
+    {
+      name: null,
+      barcode: null,
+      hasBarcode: 'all',
+      isActive: 'all',
+      priceStart: null,
+      priceEnd: null,
+      amountAvailableStart: null,
+      amountAvailableEnd: null,
+    },
+    (filters) => ({
+      name: filters.name,
+      barcode: filters.barcode,
+      hasBarcode:
+        filters.hasBarcode === 'all' ? null : filters.hasBarcode === 'true',
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+      priceStart: filters.priceStart,
+      priceEnd: filters.priceEnd,
+      amountAvailableStart: filters.amountAvailableStart,
+      amountAvailableEnd: filters.amountAvailableEnd,
+    }),
+  )
+
+  // coupons
   const coupons = useAsyncLoad(actions.couponActions.loadCoupons)
+  const couponFilters = useFilters(
+    {
+      name: null,
+      code: null,
+      isActive: 'all',
+      amountStart: null,
+      amountEnd: null,
+      amountType: 'all',
+      expirationDates: [],
+    },
+    (filters) => ({
+      name: filters.name,
+      code: filters.code,
+      isActive: filters.isActive === 'all' ? null : filters.isActive === 'true',
+      amountStart: filters.amountType === 'all' ? null : filters.amountStart,
+      amountEnd: filters.amountType === 'all' ? null : filters.amountEnd,
+      amountType: filters.amountType === 'all' ? null : filters.amountType,
+      expirationDateStart:
+        (filters.expirationDates.length > 0 &&
+          filters.expirationDates[0].startOf('day').format()) ||
+        null,
+      expirationDateEnd:
+        (filters.expirationDates.length > 0 &&
+          filters.expirationDates[1].endOf('day').format()) ||
+        null,
+    }),
+  )
+
   const customFields = useAsyncLoad(actions.customFieldActions.loadCustomFields)
 
   if (user) {
@@ -215,51 +392,64 @@ const App = () => {
                   customFields,
                 }}
               >
-                <Layout css={{marginTop: 50}}>
-                  {content}
+                <FiltersContext.Provider
+                  value={{
+                    cabinFilters,
+                    eventFilters,
+                    camperFilters,
+                    counselorFilters,
+                    couponFilters,
+                    groupFilters,
+                    userFilters,
+                    snackShopItemFilters,
+                  }}
+                >
+                  <Layout css={{marginTop: 50}}>
+                    {content}
 
-                  <Version />
-                </Layout>
+                    <Version />
+                  </Layout>
 
-                {page.isUserAddOrEditPage && (
-                  <UserView
-                    id={
-                      (routerContext.route.params &&
-                        routerContext.route.params.userId) ||
-                      null
-                    }
-                  />
-                )}
+                  {page.isUserAddOrEditPage && (
+                    <UserView
+                      id={
+                        (routerContext.route.params &&
+                          routerContext.route.params.userId) ||
+                        null
+                      }
+                    />
+                  )}
 
-                {page.isEventAddOrEditPage && (
-                  <EventView
-                    id={
-                      (routerContext.route.params &&
-                        routerContext.route.params.eventId) ||
-                      null
-                    }
-                  />
-                )}
+                  {page.isEventAddOrEditPage && (
+                    <EventView
+                      id={
+                        (routerContext.route.params &&
+                          routerContext.route.params.eventId) ||
+                        null
+                      }
+                    />
+                  )}
 
-                {page.isCabinAddOrEditPage && (
-                  <CabinView
-                    id={
-                      (routerContext.route.params &&
-                        routerContext.route.params.cabinId) ||
-                      null
-                    }
-                  />
-                )}
+                  {page.isCabinAddOrEditPage && (
+                    <CabinView
+                      id={
+                        (routerContext.route.params &&
+                          routerContext.route.params.cabinId) ||
+                        null
+                      }
+                    />
+                  )}
 
-                {page.isCouponAddOrEditPage && (
-                  <CouponView
-                    id={
-                      (routerContext.route.params &&
-                        routerContext.route.params.couponId) ||
-                      null
-                    }
-                  />
-                )}
+                  {page.isCouponAddOrEditPage && (
+                    <CouponView
+                      id={
+                        (routerContext.route.params &&
+                          routerContext.route.params.couponId) ||
+                        null
+                      }
+                    />
+                  )}
+                </FiltersContext.Provider>
               </ObjectsContext.Provider>
             </ValuesContext.Provider>
           </ErrorBoundary>

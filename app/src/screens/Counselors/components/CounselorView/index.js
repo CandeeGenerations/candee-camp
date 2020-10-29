@@ -10,7 +10,7 @@ import {isFormReady, mergeFormData, anyTouchedFields} from '@/helpers'
 
 import DrawerView from '@/components/Structure/DrawerView'
 import {LoaderContext} from '@/components/Structure/Loader'
-import {ObjectsContext, ValuesContext} from '@/screens/App'
+import {ObjectsContext, ValuesContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import CounselorViewWrapper from './CounselorViewWrapper'
@@ -21,6 +21,9 @@ const CounselorView = (props) => {
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
   const valuesContext = useContext(ValuesContext)
+  const {
+    counselorFilters: {transformedFilters},
+  } = useContext(FiltersContext)
   const counselor = useAsyncLoad(actions.loadCounselor, props.id)
 
   const [fields, setFields] = useState({
@@ -71,7 +74,7 @@ const CounselorView = (props) => {
   const handleFieldChange = (changedFields) =>
     setFields((stateFields) => ({...stateFields, ...changedFields}))
 
-  const refreshTable = () => objectsContext.counselors.load()
+  const refreshTable = () => objectsContext.counselors.load(transformedFilters)
 
   const handleFormSubmit = async () => {
     if (isFormReady(fields)) {

@@ -7,7 +7,7 @@ namespace Reclaimed.API.Repositories.Interfaces
 {
     public interface ICamperRepository
     {
-        Task<IEnumerable<Camper>> GetCampers(int portalId);
+        Task<IEnumerable<Camper>> GetCampers(int portalId, CamperFilterModel filters = null);
         Task<IEnumerable<Camper>> GetCampersByIds(int portalId, IEnumerable<int> userIds);
         Task<IEnumerable<Camper>> GetCampersForRegistration(int portalId, int? currentCamperId);
         Task<IEnumerable<Camper>> GetCampersByGroup(int portalId, int groupId);

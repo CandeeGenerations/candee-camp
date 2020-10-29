@@ -24,9 +24,11 @@ namespace Reclaimed.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<SnackShopItem>), 200)]
-        public async Task<ActionResult<IEnumerable<SnackShopItem>>> GetSnackShopItems(int portalId)
+        public async Task<ActionResult<IEnumerable<SnackShopItem>>> GetSnackShopItems(int portalId,
+            SnackShopItemFilterModel filters = null)
         {
-            IEnumerable<SnackShopItem> snackShopItems = await _snackShopItemRepository.GetSnackShopItems(portalId);
+            IEnumerable<SnackShopItem> snackShopItems =
+                await _snackShopItemRepository.GetSnackShopItems(portalId, filters);
 
             return Ok(snackShopItems);
         }

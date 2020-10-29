@@ -8,36 +8,44 @@ import {snackShopItemActions as actions} from '@/actions'
 import usePage from '@/helpers/hooks/usePage'
 import useTitle from '@/helpers/hooks/useTitle'
 
-import {ObjectsContext} from '@/screens/App'
 import MainContent from '@/components/MainContent'
 import PageHeader from '@/components/Structure/PageHeader'
 import {LoaderContext} from '@/components/Structure/Loader'
+import {ObjectsContext, FiltersContext} from '@/screens/App'
 import ErrorWrapper, {useError} from '@/components/ErrorBoundary/ErrorWrapper'
 
 import SnackShopItemView from './components/SnackShopItemView'
 import SnackShopItemsTable from './components/SnackShopItemsTable'
+import SnackShopItemFilters from './components/SnackShopItemFilters'
 
 const SnackShopItems = () => {
   const page = usePage()
   const errorWrapper = useError()
   const routerContext = useRoute()
   const objectsContext = useContext(ObjectsContext)
+  const {
+    snackShopItemFilters: {transformedFilters},
+  } = useContext(FiltersContext)
 
   useTitle('Snack Shop Items')
 
-  useEffect(() => {
+  const loadSnackShopItems = () => {
     try {
-      objectsContext.snackShopItems.load()
+      objectsContext.snackShopItems.load(transformedFilters)
     } catch (error) {
       errorWrapper.handleCatchError()
     }
+  }
+
+  useEffect(() => {
+    loadSnackShopItems()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeleteSnackShopItemClick = async (snackShopItemId) => {
     const response = await actions.deleteSnackShopItem(snackShopItemId)
 
     if (response) {
-      objectsContext.snackShopItems.load()
+      loadSnackShopItems()
     }
   }
 
@@ -81,6 +89,8 @@ const SnackShopItems = () => {
             title="Snack Shop Items"
           />
 
+          <SnackShopItemFilters onApplyFilters={loadSnackShopItems} />
+
           <LoaderContext.Provider
             value={{
               spinning: objectsContext.snackShopItems.loading,
@@ -88,7 +98,7 @@ const SnackShopItems = () => {
             }}
           >
             <ErrorWrapper
-              handleRetry={objectsContext.snackShopItems.load}
+              handleRetry={loadSnackShopItems}
               hasError={errorWrapper.hasError}
             >
               <SnackShopItemsTable

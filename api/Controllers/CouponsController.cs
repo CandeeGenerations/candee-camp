@@ -25,9 +25,9 @@ namespace Reclaimed.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Coupon>), 200)]
-        public async Task<ActionResult<IEnumerable<Coupon>>> GetCoupons(int portalId)
+        public async Task<ActionResult<IEnumerable<Coupon>>> GetCoupons(int portalId, CouponFilterModel filters = null)
         {
-            IEnumerable<Coupon> coupons = await _couponRepository.GetCoupons(portalId);
+            IEnumerable<Coupon> coupons = await _couponRepository.GetCoupons(portalId, filters);
 
             return Ok(coupons);
         }

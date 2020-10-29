@@ -24,10 +24,10 @@ namespace Reclaimed.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Counselor>), 200)]
-
-        public async Task<ActionResult<IEnumerable<Counselor>>> GetCounselors(int portalId)
+        public async Task<ActionResult<IEnumerable<Counselor>>> GetCounselors(int portalId,
+            CounselorFilterModel filters = null)
         {
-            IEnumerable<Counselor> counselors = await _counselorRepository.GetCounselors(portalId);
+            IEnumerable<Counselor> counselors = await _counselorRepository.GetCounselors(portalId, filters);
 
             return Ok(counselors);
         }

@@ -16,8 +16,56 @@ namespace Reclaimed.API.Repositories
         {
         }
 
-        public async Task<IEnumerable<Coupon>> GetCoupons(int portalId) =>
-            await Context.Coupons.Where(x => x.PortalId == portalId && !x.IsDeleted).ToListAsync();
+        public async Task<IEnumerable<Coupon>> GetCoupons(int portalId, CouponFilterModel filters = null)
+        {
+            IQueryable<Coupon> coupons = Context.Coupons.Where(x => x.PortalId == portalId && !x.IsDeleted);
+
+            if (filters == null) return await coupons.ToListAsync();
+            {
+                if (!string.IsNullOrEmpty(filters.Name))
+                {
+                    coupons = coupons.Where(x => x.Name.ToLower().Contains(filters.Name.Trim().ToLower()));
+                }
+
+                if (!string.IsNullOrEmpty(filters.Code))
+                {
+                    coupons = coupons.Where(x => x.Code.ToLower().Contains(filters.Code.Trim().ToLower()));
+                }
+
+                if (filters.AmountStart != null && filters.AmountEnd != null && filters.AmountType != null)
+                {
+                    if (filters.AmountType == CouponType.Percent)
+                    {
+                        coupons = coupons.Where(x =>
+                            x.Amount * 100 >= filters.AmountStart.Value && x.Amount * 100 <= filters.AmountEnd.Value);
+                    }
+                    else
+                    {
+                        coupons = coupons.Where(x =>
+                            x.Amount >= filters.AmountStart.Value && x.Amount <= filters.AmountEnd.Value);
+                    }
+                }
+
+                if (filters.AmountType != null)
+                {
+                    coupons = coupons.Where(x => x.Type == Enum.GetName(typeof(CouponType), filters.AmountType.Value));
+                }
+
+                if (filters.ExpirationDateStart != null && filters.ExpirationDateEnd != null)
+                {
+                    coupons = coupons.Where(x =>
+                        x.ExpirationDate >= filters.ExpirationDateStart.Value &&
+                        x.ExpirationDate <= filters.ExpirationDateEnd.Value);
+                }
+
+                if (filters.IsActive != null)
+                {
+                    coupons = coupons.Where(x => x.IsActive == filters.IsActive.Value);
+                }
+            }
+
+            return await coupons.ToListAsync();
+        }
 
         public async Task<Coupon> GetCouponById(int portalId, int couponId)
         {
