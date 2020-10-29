@@ -2,7 +2,7 @@ on: [push]
 name: Linux_Container_Workflow
 
 jobs:
-    build-and-deploy:
+    build-and-deploy-app:
         runs-on: ubuntu-latest
         steps:
         # checkout the repo
@@ -21,6 +21,7 @@ jobs:
             username: ${{ secrets.REGISTRY_USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }}
         - run: |
+            cd app
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/reclaimedapp:${{ github.sha }}
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/reclaimedapp:${{ github.sha }}
        
@@ -28,6 +29,38 @@ jobs:
           with:
             app-name: 'reclaimedapp'
             images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/reclaimedapp:${{ github.sha }}
+
+        - name: Azure logout
+          run: |
+            az logout
+            
+    build-and-deploy-api:
+        runs-on: ubuntu-latest
+        steps:
+        # checkout the repo
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@master
+          
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+        - name: 'Build and push image'
+          uses: azure/docker-login@v1
+          with:
+            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            username: ${{ secrets.REGISTRY_USERNAME }}
+            password: ${{ secrets.REGISTRY_PASSWORD }}
+        - run: |
+            cd api
+            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/reclaimedapi:${{ github.sha }}
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/reclaimedapi:${{ github.sha }}
+       
+        - uses: azure/webapps-deploy@v2
+          with:
+            app-name: 'reclaimedapi'
+            images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/reclaimedapi:${{ github.sha }}
 
         - name: Azure logout
           run: |
